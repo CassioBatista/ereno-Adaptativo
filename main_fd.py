@@ -4,20 +4,23 @@ Fluxo:
   1. GRASP roda centralizado no dataset completo → seleciona subconjunto de features
   2. Dataset é filtrado pelas features selecionadas
   3. Dataset filtrado é particionado entre N clientes
-  4. Clientes treinam localmente; servidor agrega (ensemble ou federated_nb)
+  4. Clientes treinam localmente; servidor agrega (ensemble, federated_nb ou XGBoost)
 
 Usage:
     python main_fd.py <strategy> <grasp_method> <classifier_idx> <dataset_name> [<num_clients>]
 
-    strategy       : ensemble | federated_nb
+    strategy       : ensemble | federated_nb | xgb_bagging | xgb_cyclic
     grasp_method   : GR-G-BF | GR-G-VND | GR-G-RVND | F-G-VND | F-G-RVND | I-G-VND
     classifier_idx : 1=RandomTree  2=J48  3=REPTree  4=NaiveBayes  5=RandomForest
+                     (ignorado para xgb_bagging e xgb_cyclic — usa XGBoost nativo)
     dataset_name   : ARFF sem .csv  (ex: all_in_one_wsn)
     num_clients    : clientes federados  (default: 3)
 
 Exemplos:
     python main_fd.py ensemble      GR-G-VND 2 all_in_one_wsn 3
     python main_fd.py federated_nb  GR-G-VND 4 all_in_one_wsn 5
+    python main_fd.py xgb_bagging   GR-G-VND 2 all_in_one_wsn 3
+    python main_fd.py xgb_cyclic    GR-G-VND 2 all_in_one_wsn 3
 """
 
 import sys
@@ -37,6 +40,8 @@ from fd.client   import ErenoClient
 from fd.evaluate import evaluate_model, evaluate_predictions
 from fd.strategy.ensemble     import EnsembleStrategy
 from fd.strategy.federated_nb import FederatedNBStrategy
+from fd.strategy.xgb_bagging  import XgbBaggingStrategy
+from fd.strategy.xgb_cyclic   import XgbCyclicStrategy
 from fd.model import nb_to_params, serialize_model
 
 
@@ -130,6 +135,8 @@ def main():
     if not os.path.exists(dataset_path):
         sys.exit(f"Dataset não encontrado: {dataset_path}")
 
+    _xgb_strategy = strategy_name in ("xgb_bagging", "xgb_cyclic")
+
     clf_ext  = all_classifiers[clf_idx]
     base_clf = clf_ext.get_classifier()
 
@@ -199,6 +206,24 @@ def main():
                 on_fit_config_fn=lambda _: fit_config,
                 initial_parameters=ndarrays_to_parameters(nb_to_params(_dummy)),
             )
+        case "xgb_bagging":
+            strategy = XgbBaggingStrategy(
+                num_features=X_filtered.shape[1],
+                min_fit_clients=num_clients,
+                min_evaluate_clients=num_clients,
+                min_available_clients=num_clients,
+                on_fit_config_fn=lambda _: fit_config,
+                initial_parameters=ndarrays_to_parameters([np.array([], dtype=np.uint8)]),
+            )
+        case "xgb_cyclic":
+            strategy = XgbCyclicStrategy(
+                num_clients=num_clients,
+                min_fit_clients=1,
+                min_evaluate_clients=1,
+                min_available_clients=num_clients,
+                on_fit_config_fn=lambda _: fit_config,
+                initial_parameters=ndarrays_to_parameters([np.array([], dtype=np.uint8)]),
+            )
         case _:  # ensemble
             _dummy_clf = clone(base_clf)
             _dummy_clf.fit(X_tr[:20], y_tr[:20])
@@ -210,15 +235,22 @@ def main():
                 initial_parameters=ndarrays_to_parameters(serialize_model(_dummy_clf)),
             )
 
+    # xgb_cyclic: N rounds sequenciais (um cliente diferente por round)
+    # xgb_bagging / ensemble / federated_nb: 1 round paralelo
+    _num_rounds = num_clients if strategy_name == "xgb_cyclic" else 1
+
     def client_fn(cid: str) -> fl.client.Client:
         i = int(cid)
         X_ctr, y_ctr, X_cte, y_cte = client_splits[i]
+        if _xgb_strategy:
+            from fd.client_xgb import XgbClient
+            return XgbClient(i, X_ctr, y_ctr, X_cte, y_cte).to_client()
         return ErenoClient(i, X_ctr, y_ctr, X_cte, y_cte, base_clf).to_client()
 
     fl.simulation.start_simulation(
         client_fn=client_fn,
         num_clients=num_clients,
-        config=fl.server.ServerConfig(num_rounds=1),
+        config=fl.server.ServerConfig(num_rounds=_num_rounds),
         strategy=strategy,
     )
 
@@ -235,6 +267,16 @@ def main():
                 sys.exit("Agregação falhou — nenhum modelo global disponível.")
             r_fed = evaluate_model(global_model, X_te, y_te, "FederatedNB")
             fed_label = "FEDERADO-SF (NaiveBayes exato)"
+        case "xgb_bagging" | "xgb_cyclic":
+            import xgboost as xgb
+            global_booster = strategy.get_global_model()
+            if global_booster is None:
+                sys.exit("Agregação XGBoost falhou — nenhum modelo global disponível.")
+            dtest_global = xgb.DMatrix(X_te)
+            y_prob = global_booster.predict(dtest_global)
+            y_pred_xgb = (y_prob >= 0.5).astype(int)
+            r_fed = evaluate_predictions(strategy_name, y_te, y_pred_xgb)
+            fed_label = f"FEDERADO-SF (XGBoost {strategy_name}, {num_clients} clientes)"
         case _:
             y_pred = strategy.majority_vote_predict(X_te)
             r_fed  = evaluate_predictions("Ensemble", y_te, y_pred)
@@ -243,10 +285,24 @@ def main():
     _print_result(fed_label, r_fed)
 
     # baseline centralizado com as mesmas features selecionadas
-    clf_central = clone(base_clf)
-    clf_central.fit(X_tr, y_tr)
-    r_central = evaluate_model(clf_central, X_te, y_te, clf_ext.get_classifier_name())
-    _print_result(f"CENTRALIZADO-SF — {clf_ext.get_classifier_name()}", r_central)
+    if _xgb_strategy:
+        import xgboost as xgb
+        dtrain_c = xgb.DMatrix(X_tr, label=y_tr)
+        dtest_c  = xgb.DMatrix(X_te)
+        booster_c = xgb.train(
+            {"objective": "binary:logistic", "eval_metric": "logloss",
+             "eta": 0.1, "max_depth": 6, "seed": 42, "nthread": 1},
+            dtrain_c, num_boost_round=num_clients * 10, verbose_eval=False,
+        )
+        y_prob_c = booster_c.predict(dtest_c)
+        y_pred_c = (y_prob_c >= 0.5).astype(int)
+        r_central = evaluate_predictions("XGBoost-central", y_te, y_pred_c)
+        _print_result("CENTRALIZADO-SF — XGBoost", r_central)
+    else:
+        clf_central = clone(base_clf)
+        clf_central.fit(X_tr, y_tr)
+        r_central = evaluate_model(clf_central, X_te, y_te, clf_ext.get_classifier_name())
+        _print_result(f"CENTRALIZADO-SF — {clf_ext.get_classifier_name()}", r_central)
 
     # ── delta ─────────────────────────────────────────────────────────────
     print(f"\n{'='*60}")
