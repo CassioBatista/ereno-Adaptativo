@@ -83,7 +83,7 @@ def make_client_app(
     base_clf     : unfitted sklearn estimator (will be cloned per client).
     """
     def client_fn(context: Context) -> NumPyClient:
-        cid = int(context.node_id % len(client_splits))
+        cid = int(context.node_config["partition-id"])
         X_ctr, y_ctr, X_cte, y_cte = client_splits[cid]
         return ErenoClient(cid, X_ctr, y_ctr, X_cte, y_cte, base_clf)
 

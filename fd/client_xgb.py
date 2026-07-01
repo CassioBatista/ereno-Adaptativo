@@ -106,7 +106,7 @@ def make_xgb_client_app(
     xgb_params   : optional XGBoost hyperparameters (uses defaults if None).
     """
     def client_fn(context: Context) -> NumPyClient:
-        cid = int(context.node_id % len(client_splits))
+        cid = int(context.node_config["partition-id"])
         X_ctr, y_ctr, X_cte, y_cte = client_splits[cid]
         return XgbClient(cid, X_ctr, y_ctr, X_cte, y_cte, xgb_params)
 
