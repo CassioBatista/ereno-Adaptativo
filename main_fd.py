@@ -26,8 +26,8 @@ Exemplos:
 import sys
 import os
 import numpy as np
-import flwr as fl
 from flwr.common import ndarrays_to_parameters
+from flwr.simulation import run_simulation
 from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 
@@ -36,7 +36,8 @@ import python.util   as util
 from python.classifiers import all_classifiers
 
 from fd.dataset  import load_and_partition
-from fd.client   import ErenoClient
+from fd.client   import make_client_app
+from fd.server   import make_server_app
 from fd.evaluate import evaluate_model, evaluate_predictions
 from fd.strategy.ensemble     import EnsembleStrategy
 from fd.strategy.federated_nb import FederatedNBStrategy
@@ -239,19 +240,18 @@ def main():
     # xgb_bagging / ensemble / federated_nb: 1 round paralelo
     _num_rounds = num_clients if strategy_name == "xgb_cyclic" else 1
 
-    def client_fn(cid: str) -> fl.client.Client:
-        i = int(cid)
-        X_ctr, y_ctr, X_cte, y_cte = client_splits[i]
-        if _xgb_strategy:
-            from fd.client_xgb import XgbClient
-            return XgbClient(i, X_ctr, y_ctr, X_cte, y_cte).to_client()
-        return ErenoClient(i, X_ctr, y_ctr, X_cte, y_cte, base_clf).to_client()
+    if _xgb_strategy:
+        from fd.client_xgb import make_xgb_client_app
+        client_app = make_xgb_client_app(client_splits)
+    else:
+        client_app = make_client_app(client_splits, base_clf)
 
-    fl.simulation.start_simulation(
-        client_fn=client_fn,
-        num_clients=num_clients,
-        config=fl.server.ServerConfig(num_rounds=_num_rounds),
-        strategy=strategy,
+    server_app = make_server_app(strategy, num_rounds=_num_rounds)
+
+    run_simulation(
+        server_app=server_app,
+        client_app=client_app,
+        num_supernodes=num_clients,
     )
 
     # ── avaliação ─────────────────────────────────────────────────────────

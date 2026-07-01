@@ -4,14 +4,17 @@ Separate from ErenoClient (sklearn) to avoid modifying tested code.
 Supports two XGBoost federation modes:
   - mode="xgb_bagging" : train local model, send full Booster
   - mode="xgb_cyclic"  : receive global model, add trees, send back
+
+Follows Flower 1.31 guidelines: XgbClient implements NumPyClient;
+make_xgb_client_app() wraps it in a ClientApp for use with run_simulation().
 """
 
 from typing import Any
 
 import numpy as np
 import xgboost as xgb
-from flwr.client import NumPyClient
-from flwr.common import NDArrays, parameters_to_ndarrays
+from flwr.client import ClientApp, NumPyClient
+from flwr.common import Context, NDArrays, parameters_to_ndarrays
 
 import python.util as util
 
@@ -91,3 +94,20 @@ class XgbClient(NumPyClient):
         y_pred = (y_prob >= 0.5).astype(int)
         acc    = float(np.mean(y_pred == self.y_test))
         return 1.0 - acc, len(self.y_test), {"local_accuracy": acc, "cid": self.cid}
+
+
+def make_xgb_client_app(
+    client_splits: list[tuple],
+    xgb_params: dict | None = None,
+) -> ClientApp:
+    """Build a ClientApp wrapping XgbClient.
+
+    client_splits: list of (X_train, y_train, X_test, y_test) per client.
+    xgb_params   : optional XGBoost hyperparameters (uses defaults if None).
+    """
+    def client_fn(context: Context) -> NumPyClient:
+        cid = int(context.node_id % len(client_splits))
+        X_ctr, y_ctr, X_cte, y_cte = client_splits[cid]
+        return XgbClient(cid, X_ctr, y_ctr, X_cte, y_cte, xgb_params)
+
+    return ClientApp(client_fn=client_fn)
