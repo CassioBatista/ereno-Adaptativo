@@ -2,25 +2,31 @@
 
 Fluxo:
   1. GRASP roda centralizado no dataset completo → seleciona subconjunto de features
-  2. Dataset é filtrado pelas features selecionadas
-  3. Dataset filtrado é particionado entre N clientes
-  4. Clientes treinam localmente; servidor agrega (ensemble, federated_nb ou XGBoost)
+  2. Dataset é filtrado pelas features selecionadas e particionado entre N clientes
+  3. Clientes treinam localmente; servidor agrega (ensemble, federated_nb ou XGBoost)
 
 Usage:
-    python main_fd.py <strategy> <grasp_method> <classifier_idx> <dataset_name> [<num_clients>]
+    python main_fd.py <strategy> <grasp_method> <classifier_idx> <dataset_name>
+                      [<num_clients>] [<partitioner> [<partitioner_arg>]]
 
-    strategy       : ensemble | federated_nb | xgb_bagging | xgb_cyclic
-    grasp_method   : GR-G-BF | GR-G-VND | GR-G-RVND | F-G-VND | F-G-RVND | I-G-VND
-    classifier_idx : 1=RandomTree  2=J48  3=REPTree  4=NaiveBayes  5=RandomForest
-                     (ignorado para xgb_bagging e xgb_cyclic — usa XGBoost nativo)
-    dataset_name   : ARFF sem .csv  (ex: all_in_one_wsn)
-    num_clients    : clientes federados  (default: 3)
+    strategy         : ensemble | federated_nb | xgb_bagging | xgb_cyclic
+    grasp_method     : GR-G-BF | GR-G-VND | GR-G-RVND | F-G-VND | F-G-RVND | I-G-VND
+    classifier_idx   : 1=RandomTree  2=J48  3=REPTree  4=NaiveBayes  5=RandomForest
+                       (ignorado para xgb_bagging e xgb_cyclic — usa XGBoost nativo)
+    dataset_name     : dataset sem extensão  (ex: all_in_one_wsn)
+    num_clients      : clientes federados  (default: 3)
+    partitioner      : iid | dirichlet | shard | exponential | linear  (default: iid)
+    partitioner_arg  : alpha para dirichlet (default: 0.5)
+                       shards_per_client para shard (default: 2)
 
 Exemplos:
-    python main_fd.py ensemble      GR-G-VND 2 all_in_one_wsn 3
-    python main_fd.py federated_nb  GR-G-VND 4 all_in_one_wsn 5
-    python main_fd.py xgb_bagging   GR-G-VND 2 all_in_one_wsn 3
-    python main_fd.py xgb_cyclic    GR-G-VND 2 all_in_one_wsn 3
+    python main_fd.py ensemble     GR-G-VND 2 all_in_one_wsn 3
+    python main_fd.py ensemble     GR-G-VND 2 all_in_one_wsn 3 dirichlet 0.3
+    python main_fd.py ensemble     GR-G-VND 2 all_in_one_wsn 3 shard 2
+    python main_fd.py ensemble     GR-G-VND 2 all_in_one_wsn 3 exponential
+    python main_fd.py federated_nb GR-G-VND 4 all_in_one_wsn 5
+    python main_fd.py xgb_bagging  GR-G-VND 2 all_in_one_wsn 3
+    python main_fd.py xgb_cyclic   GR-G-VND 2 all_in_one_wsn 3
 """
 
 import sys
@@ -126,11 +132,13 @@ def main():
         print(__doc__)
         sys.exit(1)
 
-    strategy_name = sys.argv[1].lower()
-    grasp_method  = sys.argv[2]
-    clf_idx       = int(sys.argv[3]) - 1   # 0-based index into all_classifiers
-    dataset_name  = sys.argv[4]
-    num_clients   = int(sys.argv[5]) if len(sys.argv) > 5 else 3
+    strategy_name  = sys.argv[1].lower()
+    grasp_method   = sys.argv[2]
+    clf_idx        = int(sys.argv[3]) - 1   # 0-based index into all_classifiers
+    dataset_name   = sys.argv[4]
+    num_clients    = int(sys.argv[5])  if len(sys.argv) > 5 else 3
+    partitioner    = sys.argv[6].lower() if len(sys.argv) > 6 else "iid"
+    partitioner_arg = sys.argv[7]       if len(sys.argv) > 7 else None
 
     dataset_path  = f"{dataset_name}.csv"
     if not os.path.exists(dataset_path):
@@ -167,11 +175,24 @@ def main():
 
     # ── PASSO 2: filtrar dataset e particionar ────────────────────────────
     print(f"\n{'='*60}")
-    print(f"  PASSO 2 — Particionamento ({num_clients} clientes)")
+    # montar kwargs do particionador
+    partitioner_kwargs: dict = {}
+    if partitioner_arg is not None:
+        match partitioner:
+            case "dirichlet":
+                partitioner_kwargs["alpha"] = float(partitioner_arg)
+            case "shard":
+                partitioner_kwargs["shards_per_client"] = int(partitioner_arg)
+
+    print(f"  PASSO 2 — Particionamento ({num_clients} clientes, método: {partitioner}"
+          + (f", arg={partitioner_arg}" if partitioner_arg else "") + ")")
     print(f"{'='*60}\n")
 
     partitions, X_filtered, y_all = load_and_partition(
-        dataset_path, selected_features, num_clients, seed=config.EVALUATION_SEED,
+        dataset_path, selected_features, num_clients,
+        seed=config.EVALUATION_SEED,
+        partitioner=partitioner,
+        **partitioner_kwargs,
     )
 
     # Split global 80/20 (mesmo dado visto nas duas comparações)
