@@ -127,18 +127,20 @@ def run_grasp(grasp_method: str, clf_idx: int, dataset_name: str) -> list[int]:
 
 # ── main ───────────────────────────────────────────────────────────────────
 
-def main():
-    if len(sys.argv) < 5:
+def main(args: list[str] | None = None):
+    argv = args if args is not None else sys.argv[1:]
+
+    if len(argv) < 4:
         print(__doc__)
         sys.exit(1)
 
-    strategy_name  = sys.argv[1].lower()
-    grasp_method   = sys.argv[2]
-    clf_idx        = int(sys.argv[3]) - 1   # 0-based index into all_classifiers
-    dataset_name   = sys.argv[4]
-    num_clients    = int(sys.argv[5])  if len(sys.argv) > 5 else 3
-    partitioner    = sys.argv[6].lower() if len(sys.argv) > 6 else "iid"
-    partitioner_arg = sys.argv[7]       if len(sys.argv) > 7 else None
+    strategy_name   = argv[0].lower()
+    grasp_method    = argv[1]
+    clf_idx         = int(argv[2]) - 1   # 0-based index into all_classifiers
+    dataset_name    = argv[3]
+    num_clients     = int(argv[4])        if len(argv) > 4 else 3
+    partitioner     = argv[5].lower()     if len(argv) > 5 else "iid"
+    partitioner_arg = argv[6]             if len(argv) > 6 else None
 
     dataset_path  = f"{dataset_name}.csv"
     if not os.path.exists(dataset_path):
