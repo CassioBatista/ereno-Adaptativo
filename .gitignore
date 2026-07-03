@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+
+# Datasets — serão migrados para HuggingFace
+*.csv
+*.arff
