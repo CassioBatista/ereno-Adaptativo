@@ -1,0 +1,4 @@
+name: chain
+nodes: 5
+# sequência linear: 0-1-2-3-4
+# primeiro e último têm apenas um vizinho

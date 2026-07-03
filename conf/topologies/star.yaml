@@ -1,0 +1,4 @@
+name: star
+nodes: 5
+# nó 0 é o hub; todos os outros conectam-se apenas ao nó 0
+# equivalente ao paradigma federado clássico

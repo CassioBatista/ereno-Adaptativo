@@ -1,14 +1,14 @@
-"""ERENO-FD-SF — ponto de entrada unificado.
+"""ERENO-FD-SF-GLow — ponto de entrada unificado.
 
 Usage:
-    python ereno.py central   <grasp_method> <clf_idx> <dataset_name> [folds]
-    python ereno.py federated <strategy> <grasp_method> <clf_idx> <dataset_name>
-                              [num_clients] [partitioner] [partitioner_arg]
+    python ereno.py central      <grasp_method> <clf_idx> <dataset_name> [folds]
+    python ereno.py distributed  <grasp_method> <clf_idx> <dataset_name> [opções]
 
 Subcomandos
 -----------
-  central    Pipeline centralizado (GRASP + cross-validation)
-  federated  Pipeline federado (GRASP + Flower 1.31)
+  central      Pipeline centralizado (GRASP + cross-validation)
+  distributed  Pipeline adaptativo  (GRASP + Flower 1.31 + HybridStrategy)
+               Suporta comutação round-a-round entre federated e gossip.
 
 Parâmetros comuns
 -----------------
@@ -20,23 +20,40 @@ Parâmetros exclusivos de 'central'
 -----------------------------------
   folds          : número de folds do CV  (default: 5)
 
-Parâmetros exclusivos de 'federated'
---------------------------------------
-  strategy       : ensemble | federated_nb | xgb_bagging | xgb_cyclic
-  num_clients    : clientes federados  (default: 3)
-  partitioner    : iid | dirichlet | shard | exponential | linear  (default: iid)
-  partitioner_arg: alpha p/ dirichlet (default 0.5) | shards_per_client p/ shard (default 2)
+Parâmetros exclusivos de 'distributed'
+---------------------------------------
+  --conf PATH          : arquivo de configuração YAML  (default: conf/base.yaml)
+  --strategy NAME      : ensemble | federated_nb | xgb_bagging | xgb_cyclic
+  --topology NAME      : star | ring | chain | <caminho.yaml>
+  --clients N          : número de agentes/clientes  (default: lido do conf)
+  --rounds N           : total de rounds de simulação  (default: lido do conf)
+  --partitioner NAME   : iid | dirichlet | shard | exponential | linear
+  --partitioner-arg V  : alpha (dirichlet) ou shards_per_client (shard)
+
+  O schedule de comutação federated↔gossip é definido em conf/base.yaml:
+    architecture:
+      manager: fixed
+      schedule:
+        - {from: 1,  to: 10, mode: federated}
+        - {from: 11, to: 20, mode: gossip}
 
 Exemplos
 --------
-  python ereno.py central   GR-G-VND 2 all_in_one_wsn
-  python ereno.py central   GR-G-VND 2 all_in_one_wsn 10
+  # Centralizado
+  python ereno.py central GR-G-VND 2 all_in_one_wsn
+  python ereno.py central GR-G-VND 2 all_in_one_wsn 10
 
-  python ereno.py federated ensemble     GR-G-VND 2 all_in_one_wsn
-  python ereno.py federated ensemble     GR-G-VND 2 all_in_one_wsn 5 dirichlet 0.3
-  python ereno.py federated federated_nb GR-G-VND 4 all_in_one_wsn 3 shard 2
-  python ereno.py federated xgb_bagging  GR-G-VND 2 all_in_one_wsn 3 exponential
-  python ereno.py federated xgb_cyclic   GR-G-VND 2 all_in_one_wsn 3 linear
+  # Distribuído — federado puro (schedule só federated)
+  python ereno.py distributed GR-G-VND 2 all_in_one_wsn --strategy ensemble --clients 3
+
+  # Distribuído — gossip puro (schedule só gossip)
+  python ereno.py distributed GR-G-VND 2 all_in_one_wsn --topology ring --rounds 20
+
+  # Distribuído — híbrido adaptativo (definido no conf/base.yaml)
+  python ereno.py distributed GR-G-VND 2 all_in_one_wsn --conf conf/base.yaml
+
+  # Distribuído — particionamento não-IID
+  python ereno.py distributed GR-G-VND 2 all_in_one_wsn --partitioner dirichlet --partitioner-arg 0.3
 """
 
 import sys
@@ -57,14 +74,12 @@ def cmd_central(args: list[str]) -> None:
     central.main(args)
 
 
-def cmd_federated(args: list[str]) -> None:
-    """Despacha para o pipeline federado (main_fd.py)."""
-    if len(args) < 4:
-        _usage_exit(
-            "federated requer: <strategy> <grasp_method> <clf_idx> <dataset_name>"
-        )
-    import main_fd as federated
-    federated.main(args)
+def cmd_distributed(args: list[str]) -> None:
+    """Despacha para o pipeline adaptativo (main_dist.py)."""
+    if len(args) < 3:
+        _usage_exit("distributed requer: <grasp_method> <clf_idx> <dataset_name>")
+    import main_dist as distributed
+    distributed.main(args)
 
 
 def main() -> None:
@@ -77,12 +92,15 @@ def main() -> None:
     match subcmd:
         case "central":
             cmd_central(args)
-        case "federated":
-            cmd_federated(args)
+        case "distributed":
+            cmd_distributed(args)
         case "help" | "--help" | "-h":
             print(__doc__)
         case _:
-            _usage_exit(f"subcomando desconhecido: '{subcmd}'. Use 'central' ou 'federated'.")
+            _usage_exit(
+                f"subcomando desconhecido: '{subcmd}'. "
+                f"Use 'central' ou 'distributed'."
+            )
 
 
 if __name__ == "__main__":

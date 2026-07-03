@@ -1,0 +1,4 @@
+name: ring
+nodes: 5
+# adjacency é gerado automaticamente quando ausente:
+# cada nó i conecta-se a (i-1)%n e (i+1)%n

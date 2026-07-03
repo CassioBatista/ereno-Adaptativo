@@ -1,0 +1,22 @@
+architecture:
+  default_mode: federated
+  manager: fixed
+  schedule:
+  - from: 1
+    mode: federated
+    to: 2
+  - from: 3
+    mode: gossip
+    to: 4
+dataset:
+  name: all_in_one_wsn
+  partitioner: iid
+grasp:
+  max_iterations: 1
+seed: 42
+simulation:
+  num_rounds: 4
+  strategy: ensemble
+topology:
+  num_nodes: 3
+  type: ring
