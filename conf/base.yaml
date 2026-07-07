@@ -9,8 +9,10 @@ grasp:
   max_iterations: 10
 
 # ── Dataset ────────────────────────────────────────────────────────────────────
+# O nome do dataset vem do argumento posicional da CLI; aqui ficam só
+# particionador e argumento.
 dataset:
-  name: all_in_one_wsn
+  name: all_in_one_cicids
   partitioner: iid        # iid | dirichlet | shard | exponential | linear
   partitioner_arg: null   # alpha (dirichlet) ou shards_per_client (shard)
 
@@ -20,18 +22,21 @@ dataset:
 #                     ou caminho para um YAML em conf/topologies/.
 topology:
   type: ring              # ring | chain | star | caminho .yaml
-  num_nodes: 5            # usado quando type é ring|chain|star
+  num_nodes: 3            # usado quando type é ring|chain|star (CLI --clients tem precedência)
 
 # ── Simulação ──────────────────────────────────────────────────────────────────
 simulation:
   num_rounds: 20
-  strategy: ensemble      # ensemble | federated_nb | xgb_bagging | xgb_cyclic
+  strategy: xgb_bagging   # ensemble | federated_nb | xgb_bagging | xgb_cyclic
 
 # ── Architecture Manager ───────────────────────────────────────────────────────
 # Define qual modo (federated ou gossip) será usado em cada round.
 architecture:
   manager: fixed          # fixed | api (futuro)
   default_mode: federated
+  # Agregação dos rounds gossip: inplace (média ponderada) | score | xgb.
+  # Com strategy xgb_* use 'xgb' — boosters não podem ser promediados.
+  aggregation: xgb
   schedule:
     - {from: 1,  to: 10, mode: federated}
     # active_clients é opcional — omitir usa todos os nós disponíveis
