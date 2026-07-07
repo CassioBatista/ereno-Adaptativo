@@ -121,12 +121,58 @@ Para trocar o seed entre repetições, editar `seed:` no YAML do experimento
 
 ## 5. Métricas coletadas
 
-**Primárias** (do teste global, 20% estratificado): F1-score, accuracy,
-precision, recall, VP/VN/FP/FN.
+Organizadas em cinco famílias. As marcadas com ★ são o núcleo prioritário;
+as demais são extensões que enriquecem a análise sem alterar a matriz.
+A coluna "instrumentação" indica onde cada uma se implementa no código.
 
-**Secundárias**: tempo do GRASP, tempo total da simulação, features
-selecionadas (quantidade e índices), nº de árvores do booster final
-(bagging cresce o modelo — comparar tamanho), logs de comutação.
+### 5.1 Qualidade de detecção (teste global, 20% estratificado)
+
+> Contexto: o pipeline XGBoost atual treina com `binary:logistic` e limiar
+> 0,5 — binariza o problema (ataque × normal), embora o CICIDS tenha 11
+> classes. As métricas por classe exigem `multi:softprob` ou pós-análise.
+
+| Métrica | Por que | Instrumentação |
+|---|---|---|
+| F1, accuracy, precision, recall, VP/VN/FP/FN | básicas (já existem) | `fd/evaluate.py` |
+| ★ FPR (taxa de falsos alarmes) | operacionalmente decisiva em IDS; mesmo F1 pode esconder FPRs muito diferentes | derivada da matriz de confusão em `fd/evaluate.py` |
+| ★ Recall por classe de ataque + macro-F1 | o F1 binário esconde classes raras (ex.: Heartbleed) | `evaluate_predictions` com rótulos originais multi-classe |
+| MCC, balanced accuracy | robustas ao desbalanceamento do CICIDS | `sklearn.metrics` em `fd/evaluate.py` |
+| PR-AUC / ROC-AUC | avalia o trade-off inteiro, não só o limiar 0,5 | usar `y_prob` do booster antes da binarização |
+
+### 5.2 Temporais (por round) — centrais para H2 e H3
+
+| Métrica | Por que | Instrumentação |
+|---|---|---|
+| ★ Curva de convergência (F1 do modelo agregado a cada round) | sem ela, H2/H3 são avaliadas só pela fotografia final | hook em `aggregate_evaluate` das estratégias (pré-requisito P5) |
+| ★ Custo da comutação: queda de F1 no round da troca + rounds de recuperação | quantifica a tese central do modo adaptativo; se ≈0, a HybridStrategy cumpre o prometido | derivada da curva por round, em torno do round 11 |
+| Rounds-até-alvo (95% do F1 final) | compara velocidade de convergência, não só o destino | derivada da curva por round |
+| Estabilidade (desvio do F1 nos últimos 5 rounds) | gossip tende a oscilar (agregação por vizinhança) | derivada da curva por round |
+
+### 5.3 Custo computacional e de comunicação
+
+| Métrica | Por que | Instrumentação |
+|---|---|---|
+| ★ Bytes transmitidos por round | é o argumento clássico a favor do gossip (estrela vs vizinhança); sem ela a comparação só mostra onde o gossip perde | somar tamanhos dos `Parameters` em `configure_fit`/`aggregate_fit` |
+| Tamanho do modelo global (nº de árvores, bytes) | bagging concatena árvores: separa ganho de arquitetura de ganho de capacidade | `get_global_model()` ao final + por round |
+| Tempo de parede por fase (GRASP / treino / agregação) | custo real de cada arquitetura | timestamps nos logs (parcialmente existente) |
+
+### 5.4 Perspectiva por cliente (equidade e consenso)
+
+| Métrica | Por que | Instrumentação |
+|---|---|---|
+| F1 no teste local por cliente (média, desvio, pior cliente) | modelo bom na média pode ser péssimo num nó; crítico em não-IID | `EvaluateRes.metrics` dos clientes, agregado no servidor |
+| Divergência do pool gossip (taxa de desacordo de predição entre nós) | mede se o anel converge para consenso ou fragmenta; dimensão exclusiva do gossip | comparar predições dos `pool_parameters` da `GlowStrategy` num conjunto de sondagem |
+
+### 5.5 Robustez (estende a matriz — opcional)
+
+| Métrica | Por que | Instrumentação |
+|---|---|---|
+| Degradação relativa sob não-IID (`dirichlet` α ∈ {0.1, 0.5, 1.0}) | hipótese da literatura: gossip sofre mais que federado fora do IID | repetir células-chave variando `--partitioner dirichlet --partitioner-arg α` |
+| ΔF1 sob perda de nós | robustez da comutação com rede degradada | célula E10 |
+
+**Metadados por execução** (sempre coletar): tempo do GRASP, features
+selecionadas (quantidade e índices — alimenta V5), seed, config YAML usada,
+logs de comutação.
 
 ## 6. Procedimento
 
