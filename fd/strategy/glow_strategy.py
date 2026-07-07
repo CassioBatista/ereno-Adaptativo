@@ -7,10 +7,12 @@ and returns an updated model. Non-head nodes validate for the head.
 Aggregation modes:
   inplace  — weighted average of neighbour models (weight = num_samples)
   score    — weight proportional to neighbour's reported local accuracy
+  xgb      — merge XGBoost boosters by concatenating trees (bagging)
 """
 
 from __future__ import annotations
 
+import numpy as np
 import xgboost as xgb
 from flwr.common import (
     Parameters, Scalar, NDArrays,
@@ -30,7 +32,7 @@ class GlowStrategy(Strategy):
     Parameters
     ----------
     topology        : Topology object with adjacency information
-    aggregation     : 'inplace' (weighted avg) | 'score' (accuracy-weighted)
+    aggregation     : 'inplace' (weighted avg) | 'score' (accuracy-weighted) | 'xgb' (booster merge)
     initial_parameters : starting Parameters for all nodes
     """
 
@@ -170,6 +172,9 @@ class GlowStrategy(Strategy):
         params_list: list[Parameters],
         node_ids:    list[int],
     ) -> Parameters:
+        if self.aggregation == "xgb":
+            return _aggregate_xgb(params_list)
+
         arrays_list: list[NDArrays] = [parameters_to_ndarrays(p) for p in params_list]
 
         if self.aggregation == "score":
@@ -190,3 +195,65 @@ class GlowStrategy(Strategy):
 
     def get_node_model(self, node_id: int) -> Parameters | None:
         return self.pool_parameters.get(node_id)
+
+
+# ── XGBoost aggregation helpers ───────────────────────────────────────────────
+
+def _aggregate_xgb(params_list: list[Parameters]) -> Parameters:
+    """Merge XGBoost boosters by concatenating their trees (gossip bagging).
+
+    Each node contributes its full booster. The merged booster contains
+    all trees from all nodes — equivalent to a bagging ensemble.
+    """
+    import json
+
+    boosters: list[xgb.Booster] = []
+    for params in params_list:
+        arr = parameters_to_ndarrays(params)[0]
+        b = xgb.Booster()
+        b.load_model(bytearray(arr.tobytes()))
+        boosters.append(b)
+
+    merged = boosters[0]
+    for other in boosters[1:]:
+        merged = _merge_boosters(merged, other)
+
+    raw = merged.save_raw("json")
+    return ndarrays_to_parameters([np.frombuffer(raw, dtype=np.uint8)])
+
+
+def _merge_boosters(base: xgb.Booster, other: xgb.Booster) -> xgb.Booster:
+    """Concatenate trees of two XGBoost Boosters into a single Booster."""
+    import json
+
+    base_cfg  = json.loads(base.save_raw("json"))
+    other_cfg = json.loads(other.save_raw("json"))
+
+    base_model  = base_cfg["learner"]["gradient_booster"]["model"]
+    other_model = other_cfg["learner"]["gradient_booster"]["model"]
+
+    base_trees  = base_model.get("trees", [])
+    other_trees = other_model.get("trees", [])
+
+    # Re-index other trees to avoid id collisions
+    offset = len(base_trees)
+    for i, t in enumerate(other_trees):
+        t["id"] = offset + i
+
+    merged_trees = base_trees + other_trees
+    base_model["trees"]     = merged_trees
+    base_model["tree_info"] = base_model.get("tree_info", []) + other_model.get("tree_info", [])
+
+    # Update num_trees in gbtree_model_param
+    base_model["gbtree_model_param"]["num_trees"] = str(len(merged_trees))
+
+    # Extend iteration_indptr: append other's indptr shifted by offset
+    base_indptr  = base_model.get("iteration_indptr", list(range(offset + 1)))
+    other_indptr = other_model.get("iteration_indptr", list(range(len(other_trees) + 1)))
+    # other_indptr[0] == 0; shift subsequent entries by offset
+    extra = [offset + v for v in other_indptr[1:]]
+    base_model["iteration_indptr"] = base_indptr + extra
+
+    merged = xgb.Booster()
+    merged.load_model(bytearray(json.dumps(base_cfg).encode("utf-8")))
+    return merged
