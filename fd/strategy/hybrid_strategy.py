@@ -40,6 +40,9 @@ class HybridStrategy(Strategy):
     fed_strategy  : Strategy to use when mode == 'federated'
     glow_strategy : Strategy to use when mode == 'gossip'
     arch_manager  : ArchitectureManager that returns the mode for each round
+    round_eval_fn : optional callback (round, mode, parameters) -> (loss, metrics) | None,
+                    called server-side after each round with the aggregated
+                    parameters (per-round convergence metrics)
     """
 
     def __init__(
@@ -47,11 +50,14 @@ class HybridStrategy(Strategy):
         fed_strategy:  Strategy,
         glow_strategy: Strategy,
         arch_manager:  ArchitectureManager,
+        round_eval_fn=None,
     ) -> None:
         self._strategies  = {"federated": fed_strategy, "gossip": glow_strategy}
         self.arch_manager = arch_manager
+        self.round_eval_fn = round_eval_fn
         self._prev_mode:  str | None = None
         self._last_params: Parameters | None = None
+        self.final_parameters: Parameters | None = None
 
     # ── internal ──────────────────────────────────────────────────────────────
 
@@ -138,7 +144,10 @@ class HybridStrategy(Strategy):
         failures:     FitFailures,
     ) -> tuple[Parameters | None, dict[str, Scalar]]:
         _, strategy = self._active(server_round)
-        return strategy.aggregate_fit(server_round, results, failures)
+        params, metrics = strategy.aggregate_fit(server_round, results, failures)
+        if params is not None:
+            self.final_parameters = params
+        return params, metrics
 
     def configure_evaluate(
         self,
@@ -164,7 +173,9 @@ class HybridStrategy(Strategy):
         server_round: int,
         parameters:   Parameters,
     ) -> tuple[float, dict[str, Scalar]] | None:
-        _, strategy = self._active(server_round)
+        mode, strategy = self._active(server_round)
+        if self.round_eval_fn is not None and server_round > 0:
+            return self.round_eval_fn(server_round, mode, parameters)
         return strategy.evaluate(server_round, parameters)
 
     # ── convenience accessors ─────────────────────────────────────────────────

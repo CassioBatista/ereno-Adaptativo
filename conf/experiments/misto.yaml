@@ -1,0 +1,32 @@
+# Experimento: MISTO — federated (rounds 1–10) → gossip (11–20)
+# (E07–E09 do docs/PLANO_VALIDACAO.md)
+# Nº de clientes vem da CLI (--clients 3|5|10). Trocar o seed a cada repetição.
+# Métrica-chave: custo da comutação — observar as linhas ROUND;10..13 no log.
+
+run_name: exp-misto
+seed: 42
+
+grasp:
+  enabled: true
+  max_iterations: 10
+
+dataset:
+  name: all_in_one_cicids
+  partitioner: iid
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 3
+
+simulation:
+  num_rounds: 20
+  strategy: xgb_bagging
+
+architecture:
+  manager: fixed
+  default_mode: federated
+  aggregation: xgb
+  schedule:
+    - {from: 1,  to: 10, mode: federated}
+    - {from: 11, to: 20, mode: gossip}

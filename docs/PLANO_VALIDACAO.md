@@ -109,15 +109,45 @@ Convenção de nome de log: `results/<ID>_<arquitetura>_c<clientes>_s<seed>.log`
 Para trocar o seed entre repetições, editar `seed:` no YAML do experimento
 (ver pré-requisito P3).
 
-## 4. Pré-requisitos (corrigir ANTES de iniciar a campanha)
+## 4. Pré-requisitos
 
-| # | Gap | Impacto | Correção |
-|---|-----|---------|----------|
-| P1 **(bloqueante)** | `main_dist.py` só imprime métricas finais para estratégias com `majority_vote_predict` (só `ensemble`). Com `xgb_bagging`, a simulação termina **sem reportar F1** | Sem P1 não há dados para coletar | Avaliar via `strategy.get_global_model()` + `evaluate_predictions`, como o `main_fd.py` já faz |
-| P2 **(bloqueante p/ E00)** | Não existe baseline monolítico no `main_dist.py`. O `ereno.py central` usa cross-validation, **não comparável** com o holdout 80/20 do distribuído | E00 incomparável | Treinar um XGBoost centralizado com as mesmas features e o mesmo split 80/20 dentro do `main_dist.py` (espelhar `main_fd.py:311-323`) |
-| P3 | `seed` não tem flag CLI; repetições exigem editar YAML | Fricção operacional, risco de erro | Adicionar `--seed` ao `main_dist.py` (ou aceitar a edição manual) |
-| P4 | GRASP re-executa a cada rodada e é estocástico: features podem variar entre execuções | Confunde a fonte de variação (features × arquitetura) | `I-G-VND` mitiga (espaço restrito a 11 features); **verificar V5**. Solução definitiva: cache/warm-start de features (projetado, não implementado) |
-| P5 *(desejável)* | Não há métrica por round exportada | Sem curvas de convergência; H2/H3 avaliadas só pelo F1 final | Logar F1 do modelo agregado a cada round (via `aggregate_evaluate`) |
+| # | Gap | Status |
+|---|-----|--------|
+| P1 | `main_dist.py` não reportava métricas finais para estratégias `xgb_*`/`federated_nb` | ✅ **Resolvido** — avaliação final via parâmetros agregados do último round (`HybridStrategy.final_parameters`, cobre o modo misto) com fallback para `get_global_model()` |
+| P2 | Não existia baseline monolítico comparável (o `ereno.py central` usa CV, não holdout) | ✅ **Resolvido** — `main_dist.py` treina baseline centralizado com as mesmas features e o mesmo split 80/20 e imprime o delta |
+| P3 | `seed` não tem flag CLI; repetições exigem editar YAML | ⏳ Pendente (aceitável: editar `seed:` no YAML do experimento) |
+| P4 | GRASP re-executa a cada rodada e é estocástico: features podem variar entre execuções | ⏳ Mitigado com `I-G-VND` (espaço restrito); **verificar V5**. Solução definitiva: cache/warm-start (projetado, não implementado) |
+| P5 | Não havia métrica por round | ✅ **Resolvido** — `round_eval_fn` na `HybridStrategy` avalia o modelo agregado no teste global a cada round e imprime `ROUND;<n>;<modo>;f1=...;acc=...` (estratégias xgb) |
+
+Correções adicionais aplicadas junto com P1/P2/P5 (bugs bloqueantes encontrados
+na preparação):
+
+- `xgb_bagging._merge_boosters` usava `save_model(to_buffer=True)` (API
+  inexistente) — substituído pelo merge correto de `glow_strategy.py`;
+- o cliente XGBoost treina `binary:logistic`, mas os rótulos do CICIDS são
+  multi-classe (0–10) — `main_dist.py` agora binariza (normal=0, ataque=1)
+  **após** o particionamento, preservando as classes originais para os
+  particionadores não-IID;
+- `main_dist.run_grasp` passava sempre a `RCL_GR`, ignorando o método —
+  `I-G-VND` não usava o subconjunto IWSSR (nem `F-*` a RCL completa);
+  agora a RCL é selecionada pelo método, como no `main_fd.py`;
+- a topologia era resolvida pelo modo do **round 1**: no modo misto
+  (começa federated) a fase gossip rodava numa star implícita, não no
+  anel configurado — agora, se qualquer round do schedule for gossip, a
+  topologia pedida é respeitada (E07–E09 comparáveis com E04–E06).
+
+> Limitação conhecida: a transição **gossip → federated** com estratégias
+> `xgb_*` não é suportada (a transferência de modelo promedia arrays, o que
+> não se aplica a boosters). A matriz deste plano só usa federated → gossip.
+
+### Extração da curva de convergência dos logs
+
+```bash
+grep '^ROUND;' results/E08_misto_c5_s42.log
+# ROUND;1;federated;f1=...;acc=...
+# ...
+# ROUND;11;gossip;f1=...;acc=...   ← custo da comutação: comparar 10↔11..13
+```
 
 ## 5. Métricas coletadas
 

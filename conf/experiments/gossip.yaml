@@ -1,0 +1,29 @@
+# Experimento: GOSSIP PURO em anel (E04–E06 do docs/PLANO_VALIDACAO.md)
+# Nº de clientes vem da CLI (--clients 3|5|10). Trocar o seed a cada repetição.
+
+run_name: exp-gossip
+seed: 42
+
+grasp:
+  enabled: true
+  max_iterations: 10
+
+dataset:
+  name: all_in_one_cicids
+  partitioner: iid
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 3
+
+simulation:
+  num_rounds: 20
+  strategy: xgb_bagging
+
+architecture:
+  manager: fixed
+  default_mode: gossip
+  aggregation: xgb
+  schedule:
+    - {from: 1, to: 20, mode: gossip}

@@ -27,7 +27,7 @@ import yaml
 import numpy as np
 
 try:
-    import xgboost  # noqa: F401 — exigido pelas estratégias xgb_* e pela GlowStrategy
+    import xgboost as xgb  # exigido pelas estratégias xgb_* e pela GlowStrategy
 except ImportError:
     sys.exit("Dependência ausente: xgboost. Instale com: pip install xgboost")
 from sklearn.base import clone
@@ -35,10 +35,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
-from flwr.common import ndarrays_to_parameters
+from flwr.common import ndarrays_to_parameters, parameters_to_ndarrays
 from flwr.simulation import run_simulation
 
 import python.config as config
+import python.util   as util
 from python.feature_subsets.wsn    import WsnFeatures
 from python.feature_subsets.kdd    import KddFeatures
 from python.feature_subsets.cicids import CicidsFeatures
@@ -50,7 +51,7 @@ from fd.client            import make_client_app
 from fd.client_xgb        import make_xgb_client_app
 from fd.client_glow       import make_glow_client_app
 from fd.model             import serialize_model
-from fd.evaluate          import evaluate_predictions
+from fd.evaluate          import evaluate_predictions, evaluate_model
 from fd.topology          import resolve_topology, Topology
 from fd.arch_manager      import load_arch_manager
 from fd.strategy.ensemble     import EnsembleStrategy
@@ -109,9 +110,19 @@ def run_grasp(
         case _:
             grasp = GraspSimple()
 
+    # RCL conforme o método (espelha main_fd.run_grasp):
+    #   GR-* → ranking Gain Ratio | F-* → todas as features | I-* → IWSSR do classificador
+    match grasp_method.upper():
+        case "F-G-VND" | "F-G-RVND":
+            rcl = feature_subsets.RCL_FULL
+        case "I-G-VND":
+            rcl = feature_subsets.RCL_I[clf_idx]
+        case _:
+            rcl = feature_subsets.RCL_GR
+
     grasp.setup_grasp_microservice(clf_idx)
     grasp.max_iterations = max_iterations
-    best = grasp.run(feature_subsets.RCL_GR, grasp_method, dataset)
+    best = grasp.run(rcl, grasp_method, dataset)
     return best.get_array_features()
 
 
@@ -163,6 +174,43 @@ def _build_fed_strategy(
         initial_parameters=ndarrays_to_parameters(serialize_model(dummy)),
         **common_kw,
     )
+
+
+def _booster_from_parameters(parameters) -> xgb.Booster | None:
+    """Deserialize an XGBoost Booster from Flower Parameters (or None)."""
+    if parameters is None:
+        return None
+    arr = parameters_to_ndarrays(parameters)[0]
+    if arr.size == 0:
+        return None
+    booster = xgb.Booster()
+    booster.load_model(bytearray(arr.tobytes()))
+    return booster
+
+
+def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray):
+    """Server-side per-round evaluation of the aggregated model (P5).
+
+    Prints machine-readable lines for the convergence curve:
+        ROUND;<round>;<mode>;f1=<...>;acc=<...>
+    Only implemented for xgb strategies (the aggregated Parameters carry
+    the serialized global booster); returns None for the others.
+    """
+    if strategy_name not in ("xgb_bagging", "xgb_cyclic"):
+        return None
+
+    dtest = xgb.DMatrix(X_te)
+
+    def eval_fn(server_round: int, mode: str, parameters):
+        booster = _booster_from_parameters(parameters)
+        if booster is None:
+            return None
+        y_pred = (booster.predict(dtest) >= 0.5).astype(int)
+        r = evaluate_predictions(f"round-{server_round}", y_te, y_pred)
+        print(f"ROUND;{server_round};{mode};f1={r.f1score:.4f};acc={r.accuracy:.4f}")
+        return 1.0 - r.accuracy / 100.0, {"f1": r.f1score, "mode": mode}
+
+    return eval_fn
 
 
 # ── main ──────────────────────────────────────────────────────────────────────
@@ -218,10 +266,19 @@ def main(args: list[str] | None = None) -> None:
     print(f"  Features selecionadas ({len(features)}): {sorted(features)}")
 
     # ── ② Topologia ───────────────────────────────────────────────────────────
-    # Determine initial mode to resolve topology correctly
+    # A topologia só é consumida pelos rounds gossip; se QUALQUER round do
+    # schedule for gossip, resolve a topologia pedida (senão o modo misto
+    # cairia na star implícita do federated e a fase gossip rodaria na
+    # topologia errada).
     arch_manager = load_arch_manager(conf)
     initial_mode = arch_manager.get_mode(1)
-    topology: Topology = resolve_topology(initial_mode, topology_arg, num_clients)
+    uses_gossip = (
+        getattr(arch_manager, "default_mode", None) == "gossip"
+        or any(e.get("mode") == "gossip"
+               for e in getattr(arch_manager, "schedule", []))
+    )
+    topo_mode = "gossip" if uses_gossip else "federated"
+    topology: Topology = resolve_topology(topo_mode, topology_arg, num_clients)
     num_clients = topology.num_nodes
     print(f"\n  ② Topologia: {topology}")
 
@@ -247,6 +304,19 @@ def main(args: list[str] | None = None) -> None:
         Xct, Xce, yct, yce = train_test_split(X_c, y_c, test_size=0.2, random_state=seed)
         client_splits.append((Xct, yct, Xce, yce))
 
+    # XGBoost treina binary:logistic — binariza os rótulos (normal=0, ataque=1)
+    # DEPOIS do particionamento, para os particionadores por classe (dirichlet,
+    # shard) continuarem enxergando as classes originais.
+    _is_xgb = strategy_name in ("xgb_bagging", "xgb_cyclic")
+    if _is_xgb:
+        nc = util.normal_class
+        _bin = lambda y: (y != nc).astype(np.int64)
+        y_tr, y_te = _bin(y_tr), _bin(y_te)
+        client_splits = [
+            (Xct, _bin(yct), Xce, _bin(yce))
+            for Xct, yct, Xce, yce in client_splits
+        ]
+
     # ── ④ Estratégias ─────────────────────────────────────────────────────────
     base_clf    = _build_base_clf(strategy_name, seed)
     fed_strategy = _build_fed_strategy(
@@ -257,7 +327,10 @@ def main(args: list[str] | None = None) -> None:
         aggregation = conf.get("architecture", {}).get("aggregation", "inplace"),
         initial_parameters = fed_strategy.initialize_parameters(None),
     )
-    hybrid = HybridStrategy(fed_strategy, glow_strategy, arch_manager)
+    hybrid = HybridStrategy(
+        fed_strategy, glow_strategy, arch_manager,
+        round_eval_fn=_make_round_eval_fn(strategy_name, X_te, y_te),
+    )
 
     print(f"\n  ④ Strategy: {strategy_name}  |  ArchManager: {arch_manager.__class__.__name__}")
     print(f"     num_rounds={num_rounds}")
@@ -285,11 +358,66 @@ def main(args: list[str] | None = None) -> None:
         num_supernodes= num_clients,
     )
 
-    # ── resultado ─────────────────────────────────────────────────────────────
-    if hasattr(fed_strategy, "majority_vote_predict"):
-        y_pred = fed_strategy.majority_vote_predict(X_te)
-        result = evaluate_predictions("Hybrid (fed_strategy)", y_te, y_pred)
-        _print_result(f"Pipeline Adaptativo [{strategy_name}]", result)
+    # ── resultado final (P1) ──────────────────────────────────────────────────
+    print(f"\n{'='*60}")
+    print("  Avaliação final — teste global (20%, mesmas features)")
+    print(f"{'='*60}")
+
+    result = None
+    match strategy_name:
+        case "xgb_bagging" | "xgb_cyclic":
+            # Preferir os parâmetros agregados do último round (no modo misto,
+            # o modelo final pode ter saído do gossip, não da fed_strategy).
+            booster = _booster_from_parameters(hybrid.final_parameters) \
+                      or fed_strategy.get_global_model()
+            if booster is None:
+                print("  [AVISO] nenhum modelo global disponível — agregação falhou.")
+            else:
+                y_pred = (booster.predict(xgb.DMatrix(X_te)) >= 0.5).astype(int)
+                result = evaluate_predictions(strategy_name, y_te, y_pred)
+                n_trees = len(booster.get_dump())
+                _print_result(
+                    f"DISTRIBUÍDO [{strategy_name}] ({n_trees} árvores)", result
+                )
+        case "federated_nb":
+            model = fed_strategy.get_global_model()
+            if model is None:
+                print("  [AVISO] nenhum modelo global disponível — agregação falhou.")
+            else:
+                result = evaluate_model(model, X_te, y_te, "FederatedNB")
+                _print_result(f"DISTRIBUÍDO [{strategy_name}]", result)
+        case _:
+            if hasattr(fed_strategy, "majority_vote_predict"):
+                y_pred = fed_strategy.majority_vote_predict(X_te)
+                result = evaluate_predictions("Ensemble", y_te, y_pred)
+                _print_result(f"DISTRIBUÍDO [{strategy_name}]", result)
+
+    # ── baseline monolítico (P2): mesmas features, mesmo split 80/20 ──────────
+    if result is not None:
+        if _is_xgb:
+            booster_c = xgb.train(
+                {"objective": "binary:logistic", "eval_metric": "logloss",
+                 "max_depth": 4, "eta": 0.1, "seed": seed, "nthread": 1},
+                xgb.DMatrix(X_tr, label=y_tr),
+                num_boost_round=num_clients * 10,
+                verbose_eval=False,
+            )
+            y_pred_c = (booster_c.predict(xgb.DMatrix(X_te)) >= 0.5).astype(int)
+            r_central = evaluate_predictions("XGBoost-central", y_te, y_pred_c)
+            _print_result("MONOLÍTICO — XGBoost (mesmas features/split)", r_central)
+        else:
+            clf_central = clone(base_clf)
+            clf_central.fit(X_tr, y_tr)
+            r_central = evaluate_model(clf_central, X_te, y_te, "central")
+            _print_result("MONOLÍTICO (mesmas features/split)", r_central)
+
+        print(f"\n{'='*60}")
+        print("  Diferença  (distribuído − monolítico)")
+        print(f"{'='*60}")
+        for attr, label in [("f1score", "F1-score "), ("accuracy", "Accuracy "),
+                            ("recall", "Recall   "), ("precision", "Precision")]:
+            delta = getattr(result, attr) - getattr(r_central, attr)
+            print(f"  {label}: {delta:+.4f} pp")
 
 
 if __name__ == "__main__":
