@@ -5,7 +5,7 @@ Usage:
   python main.py GR-G-BF 2 all_in_one_wsn
 
 grasp_algorithm : GR-G-BF | GR-G-VND | GR-G-RVND | F-G-VND | F-G-RVND | I-G-VND
-classifier_index: 1=RandomTree 2=J48 3=REPTree 4=NaiveBayes 5=RandomForest
+classifier_index: 1=RandomTree 2=J48 3=REPTree 4=NaiveBayes 5=RandomForest 6=XGBoost
 dataset_name    : filename without .csv (must be an ARFF file in working directory)
 """
 from __future__ import annotations

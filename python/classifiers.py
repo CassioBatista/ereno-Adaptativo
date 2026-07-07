@@ -4,6 +4,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
+from xgboost import XGBClassifier
 
 
 class ClassifierExtended:
@@ -43,6 +44,20 @@ RANDOM_FOREST = ClassifierExtended(
     "RandomForest",
 )
 KNN = ClassifierExtended(KNeighborsClassifier(n_neighbors=1), "KNN")
+XGB = ClassifierExtended(
+    XGBClassifier(
+        n_estimators=50,
+        max_depth=6,
+        learning_rate=0.1,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        eval_metric="mlogloss",
+        random_state=42,
+        n_jobs=-1,
+        verbosity=0,
+    ),
+    "XGBoost",
+)
 
-all_classifiers = [RANDOM_TREE, J48, REP_TREE, NAIVE_BAYES, RANDOM_FOREST]
+all_classifiers = [RANDOM_TREE, J48, REP_TREE, NAIVE_BAYES, RANDOM_FOREST, XGB]
 all_custom      = all_classifiers
