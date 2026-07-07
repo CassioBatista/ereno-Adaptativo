@@ -111,3 +111,8 @@ pip install -r requirements.txt
 ```
 
 Solução desenvolvida em Python 3.14.
+
+## Referências
+
+- Beutel, D. J., Topal, T., Mathur, A., Qiu, X., Fernandez-Marques, J., Gao, Y., ... & Lane, N. D. (2020). Flower: A friendly federated learning research framework. *arXiv preprint* arXiv:2007.14390.
+- Belenguer, A., Pascual, J. A., & Navaridas, J. (2026). GLow — A Novel, Flower-Based Simulated Gossip Learning Strategy. *Journal of Parallel and Distributed Computing*, 105272.
