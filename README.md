@@ -1,6 +1,6 @@
 # ereno-Adaptativo
 
-Pipeline adaptativo de detecção de intrusão (IDS) que combina **aprendizado centralizado, federado e gossip** em uma única execução, com **comutação de modo round a round**. Evolução do ERENO-FD-SF, construído sobre [Flower](https://flower.ai/) 1.31, scikit-learn e XGBoost.
+Pipeline adaptativo de detecção de intrusão (IDS) que combina **aprendizado centralizado, federado e gossip** em uma única execução, com **comutação de modo round a round**. Evolução do ERENO-FD-SF incluindo Gossip Learning baseado em implementação do framework Glow, construído sobre [Flower](https://flower.ai/) 1.31, scikit-learn e XGBoost.
 
 A ideia central: em vez de escolher *a priori* entre treinar de forma federada (coordenação por servidor central) ou por gossip (troca de modelos entre vizinhos numa topologia), um **Architecture Manager** decide o modo de cada round. Isso permite simular cenários reais onde a infraestrutura muda durante o treinamento — por exemplo, perda do servidor central forçando os nós a continuar por gossip, ou nós que entram e saem da rede.
 
