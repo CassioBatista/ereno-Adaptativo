@@ -10,9 +10,20 @@ from __future__ import annotations
 from flwr.common import Parameters, Scalar, NDArrays, ndarrays_to_parameters, parameters_to_ndarrays
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
+from flwr.server.criterion import Criterion
 from flwr.server.strategy import Strategy
 
 from fd.arch_manager import ArchitectureManager
+
+
+class _ActiveClientsCriterion(Criterion):
+    """Selects only clients whose cid is in the allowed set."""
+
+    def __init__(self, active_ids: list[int]) -> None:
+        self._allowed = {str(i) for i in active_ids}
+
+    def select(self, client: ClientProxy) -> bool:
+        return client.cid in self._allowed
 
 
 FitResults     = list[tuple[ClientProxy, any]]
@@ -47,6 +58,15 @@ class HybridStrategy(Strategy):
     def _active(self, round: int) -> tuple[str, Strategy]:
         mode = self.arch_manager.get_mode(round)
         return mode, self._strategies[mode]
+
+    def _filter_manager(
+        self, client_manager: ClientManager, round: int
+    ) -> ClientManager:
+        """Return a view of client_manager restricted to active clients, if defined."""
+        active = self.arch_manager.get_active_clients(round)
+        if active is None:
+            return client_manager
+        return _FilteredClientManager(client_manager, active)
 
     def _transfer_model(
         self,
@@ -108,7 +128,8 @@ class HybridStrategy(Strategy):
 
         self._prev_mode   = mode
         self._last_params = parameters
-        return strategy.configure_fit(server_round, parameters, client_manager)
+        filtered_manager  = self._filter_manager(client_manager, server_round)
+        return strategy.configure_fit(server_round, parameters, filtered_manager)
 
     def aggregate_fit(
         self,
@@ -126,7 +147,8 @@ class HybridStrategy(Strategy):
         client_manager: ClientManager,
     ) -> list[tuple[ClientProxy, any]]:
         _, strategy = self._active(server_round)
-        return strategy.configure_evaluate(server_round, parameters, client_manager)
+        filtered_manager = self._filter_manager(client_manager, server_round)
+        return strategy.configure_evaluate(server_round, parameters, filtered_manager)
 
     def aggregate_evaluate(
         self,
@@ -152,3 +174,52 @@ class HybridStrategy(Strategy):
 
     def get_glow_strategy(self) -> Strategy:
         return self._strategies["gossip"]
+
+
+# ── FilteredClientManager ─────────────────────────────────────────────────────
+
+class _FilteredClientManager(ClientManager):
+    """Read-only view of a ClientManager restricted to a subset of client IDs.
+
+    Passed to sub-strategies so they only see and sample from `active_ids`.
+    All mutating operations (register/unregister) are forwarded to the base manager.
+    """
+
+    def __init__(self, base: ClientManager, active_ids: list[int]) -> None:
+        self._base    = base
+        self._allowed = {str(i) for i in active_ids}
+
+    def num_available(self) -> int:
+        return sum(1 for cid in self._base.all() if cid in self._allowed)
+
+    def register(self, client: ClientProxy) -> bool:
+        return self._base.register(client)
+
+    def unregister(self, client: ClientProxy) -> None:
+        self._base.unregister(client)
+
+    def all(self) -> dict[str, ClientProxy]:
+        return {cid: proxy for cid, proxy in self._base.all().items()
+                if cid in self._allowed}
+
+    def wait_for(self, num_clients: int, timeout: int = 86400) -> bool:
+        return self._base.wait_for(num_clients, timeout)
+
+    def sample(
+        self,
+        num_clients: int,
+        min_num_clients: int | None = None,
+        criterion: Criterion | None = None,
+    ) -> list[ClientProxy]:
+        active_criterion = _ActiveClientsCriterion(list(self._allowed))
+        if criterion is not None:
+            # combine both criteria: client must pass both
+            class _Combined(Criterion):
+                def __init__(self, a: Criterion, b: Criterion) -> None:
+                    self._a, self._b = a, b
+                def select(self, client: ClientProxy) -> bool:
+                    return self._a.select(client) and self._b.select(client)
+            combined = _Combined(active_criterion, criterion)
+        else:
+            combined = active_criterion
+        return self._base.sample(num_clients, min_num_clients, combined)
