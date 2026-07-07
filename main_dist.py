@@ -25,6 +25,11 @@ import sys
 import os
 import yaml
 import numpy as np
+
+try:
+    import xgboost  # noqa: F401 — exigido pelas estratégias xgb_* e pela GlowStrategy
+except ImportError:
+    sys.exit("Dependência ausente: xgboost. Instale com: pip install xgboost")
 from sklearn.base import clone
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
