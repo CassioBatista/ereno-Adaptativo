@@ -37,7 +37,9 @@ architecture:
   # Agregação dos rounds gossip: inplace (média ponderada) | score | xgb.
   # Com strategy xgb_* use 'xgb' — boosters não podem ser promediados.
   aggregation: xgb
+  # active_clients é opcional — omitir usa todos os nós disponíveis.
+  # Explícito aqui por legibilidade (num_nodes=3 fixo); os IDs referem-se
+  # às partições de dados 0..N-1.
   schedule:
-    - {from: 1,  to: 10, mode: federated}
-    # active_clients é opcional — omitir usa todos os nós disponíveis
-    - {from: 11, to: 20, mode: gossip, active_clients: [0, 1, 2]}
+    - {from: 1,  to: 10, mode: federated, active_clients: [0, 1, 2]}
+    - {from: 11, to: 20, mode: gossip,    active_clients: [0, 1, 2]}
