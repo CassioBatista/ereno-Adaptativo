@@ -14,13 +14,14 @@ from flwr.server.criterion import Criterion
 from flwr.server.strategy import Strategy
 
 from fd.arch_manager import ArchitectureManager
+from fd.strategy.glow_strategy import resolve_node_index, learn_cid_map
 
 
-class _ActiveClientsCriterion(Criterion):
-    """Selects only clients whose cid is in the allowed set."""
+class _AllowedCidsCriterion(Criterion):
+    """Selects only clients whose (real) proxy cid is in the allowed set."""
 
-    def __init__(self, active_ids: list[int]) -> None:
-        self._allowed = {str(i) for i in active_ids}
+    def __init__(self, allowed_cids: set[str]) -> None:
+        self._allowed = allowed_cids
 
     def select(self, client: ClientProxy) -> bool:
         return client.cid in self._allowed
@@ -58,6 +59,11 @@ class HybridStrategy(Strategy):
         self._prev_mode:  str | None = None
         self._last_params: Parameters | None = None
         self.final_parameters: Parameters | None = None
+        # proxy cid -> partition id, learned from client metrics and shared
+        # with the gossip strategy (proxy cids are opaque under flwr sim)
+        self.cid_map: dict[str, int] = {}
+        if hasattr(glow_strategy, "cid_map"):
+            glow_strategy.cid_map = self.cid_map
 
     # ── internal ──────────────────────────────────────────────────────────────
 
@@ -72,7 +78,7 @@ class HybridStrategy(Strategy):
         active = self.arch_manager.get_active_clients(round)
         if active is None:
             return client_manager
-        return _FilteredClientManager(client_manager, active)
+        return _FilteredClientManager(client_manager, active, self.cid_map)
 
     def _sync_participation(self, strategy: Strategy, active: list[int] | None) -> None:
         """Align the sub-strategy's expectations with the round's active clients.
@@ -177,6 +183,7 @@ class HybridStrategy(Strategy):
         results:      FitResults,
         failures:     FitFailures,
     ) -> tuple[Parameters | None, dict[str, Scalar]]:
+        learn_cid_map(self.cid_map, results)
         _, strategy = self._active(server_round)
         params, metrics = strategy.aggregate_fit(server_round, results, failures)
         if params is not None:
@@ -200,6 +207,7 @@ class HybridStrategy(Strategy):
         results:      EvalResults,
         failures:     EvalFailures,
     ) -> tuple[float | None, dict[str, Scalar]]:
+        learn_cid_map(self.cid_map, results)
         _, strategy = self._active(server_round)
         return strategy.aggregate_evaluate(server_round, results, failures)
 
@@ -225,18 +233,35 @@ class HybridStrategy(Strategy):
 # ── FilteredClientManager ─────────────────────────────────────────────────────
 
 class _FilteredClientManager(ClientManager):
-    """Read-only view of a ClientManager restricted to a subset of client IDs.
+    """Read-only view of a ClientManager restricted to a subset of node indices.
 
-    Passed to sub-strategies so they only see and sample from `active_ids`.
-    All mutating operations (register/unregister) are forwarded to the base manager.
+    The active ids refer to logical partition/node indices (0..N-1); each
+    proxy cid is resolved to its index via the shared cid_map (learned from
+    client metrics), so filtering works under flwr's simulation where proxy
+    cids are opaque node ids. All mutating operations are forwarded to the
+    base manager.
     """
 
-    def __init__(self, base: ClientManager, active_ids: list[int]) -> None:
+    def __init__(
+        self,
+        base:       ClientManager,
+        active_ids: list[int],
+        cid_map:    dict[str, int] | None = None,
+    ) -> None:
         self._base    = base
-        self._allowed = {str(i) for i in active_ids}
+        self._active  = set(active_ids)
+        self._cid_map = cid_map if cid_map is not None else {}
+
+    def _allowed_cids(self) -> set[str]:
+        all_cids = list(self._base.all().keys())
+        n = len(all_cids)
+        return {
+            cid for cid in all_cids
+            if resolve_node_index(cid, all_cids, self._cid_map, n) in self._active
+        }
 
     def num_available(self) -> int:
-        return sum(1 for cid in self._base.all() if cid in self._allowed)
+        return len(self._allowed_cids())
 
     def register(self, client: ClientProxy) -> bool:
         return self._base.register(client)
@@ -245,8 +270,9 @@ class _FilteredClientManager(ClientManager):
         self._base.unregister(client)
 
     def all(self) -> dict[str, ClientProxy]:
+        allowed = self._allowed_cids()
         return {cid: proxy for cid, proxy in self._base.all().items()
-                if cid in self._allowed}
+                if cid in allowed}
 
     def wait_for(self, num_clients: int, timeout: int = 86400) -> bool:
         return self._base.wait_for(num_clients, timeout)
@@ -257,7 +283,7 @@ class _FilteredClientManager(ClientManager):
         min_num_clients: int | None = None,
         criterion: Criterion | None = None,
     ) -> list[ClientProxy]:
-        active_criterion = _ActiveClientsCriterion(list(self._allowed))
+        active_criterion = _AllowedCidsCriterion(self._allowed_cids())
         if criterion is not None:
             # combine both criteria: client must pass both
             class _Combined(Criterion):

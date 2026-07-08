@@ -26,6 +26,39 @@ from flwr.server.strategy import Strategy
 from fd.topology import Topology
 
 
+def resolve_node_index(
+    cid:       str,
+    all_cids:  list[str],
+    cid_map:   dict[str, int],
+    num_nodes: int,
+) -> int:
+    """Map a server-side proxy cid to a logical node/partition index 0..N-1.
+
+    Under flwr's simulation the proxy cids are opaque node ids, NOT the
+    partition ids. Resolution order:
+      1. cid_map — learned from FitRes/EvaluateRes metrics['cid'] reported
+         by the clients (the true partition id);
+      2. small digit cids ("0".."N-1") — in-process tests;
+      3. stable sort of all known cids — deterministic fallback before any
+         results have been seen (consistent within a run, but the index is
+         not guaranteed to equal the data partition id).
+    """
+    if cid in cid_map:
+        return cid_map[cid]
+    if cid.isdigit() and int(cid) < num_nodes:
+        return int(cid)
+    ordered = sorted(all_cids, key=lambda c: (0, int(c)) if c.isdigit() else (1, c))
+    return ordered.index(cid) % num_nodes
+
+
+def learn_cid_map(cid_map: dict[str, int], results) -> None:
+    """Update cid_map from client-reported metrics['cid'] (true partition id)."""
+    for proxy, res in results:
+        metrics = getattr(res, "metrics", None)
+        if metrics and "cid" in metrics:
+            cid_map[proxy.cid] = int(metrics["cid"])
+
+
 class GlowStrategy(Strategy):
     """Gossip Learning strategy with round-robin head election.
 
@@ -49,6 +82,12 @@ class GlowStrategy(Strategy):
         # per-node model state (Parameters keyed by node index 0..N-1)
         self.pool_parameters: dict[int, Parameters] = {}
         self._last_accuracies: dict[int, float]     = {}
+        # proxy cid -> partition/node index, learned from client metrics
+        # (may be replaced by a shared dict from HybridStrategy)
+        self.cid_map: dict[str, int] = {}
+
+    def _node_index(self, cid: str, all_cids: list[str]) -> int:
+        return resolve_node_index(cid, all_cids, self.cid_map, self.topology.num_nodes)
 
     # ── head election ─────────────────────────────────────────────────────────
 
@@ -75,10 +114,11 @@ class GlowStrategy(Strategy):
         print(f"[GLow] round={server_round}  head={head_cid}  neighbours={neighbours}")
 
         all_clients = list(client_manager.all().values())
+        all_cids    = [p.cid for p in all_clients]
         instructions = []
 
         for proxy in all_clients:
-            cid = int(proxy.cid) if proxy.cid.isdigit() else hash(proxy.cid) % self.topology.num_nodes
+            cid = self._node_index(proxy.cid, all_cids)
 
             # Send each node its own current model (or global if not yet initialised)
             node_params = self.pool_parameters.get(cid, parameters)
@@ -104,9 +144,12 @@ class GlowStrategy(Strategy):
 
         head_cid = self._head_for_round(server_round)
 
-        # Collect updated models from all nodes
+        # Learn the proxy->partition mapping from client-reported metrics,
+        # then collect updated models from all nodes
+        learn_cid_map(self.cid_map, results)
+        all_cids = [proxy.cid for proxy, _ in results]
         for proxy, fit_res in results:
-            cid = int(proxy.cid) if proxy.cid.isdigit() else hash(proxy.cid) % self.topology.num_nodes
+            cid = self._node_index(proxy.cid, all_cids)
             self.pool_parameters[cid] = fit_res.parameters
             acc = fit_res.metrics.get("accuracy", 0.0)
             self._last_accuracies[cid] = float(acc)
@@ -142,9 +185,10 @@ class GlowStrategy(Strategy):
     ) -> list[tuple[ClientProxy, EvaluateIns]]:
         # Evaluate all nodes with their own local models
         all_clients = list(client_manager.all().values())
+        all_cids    = [p.cid for p in all_clients]
         instructions = []
         for proxy in all_clients:
-            cid = int(proxy.cid) if proxy.cid.isdigit() else hash(proxy.cid) % self.topology.num_nodes
+            cid = self._node_index(proxy.cid, all_cids)
             node_params = self.pool_parameters.get(cid, parameters)
             instructions.append((proxy, EvaluateIns(node_params, {"round": str(server_round)})))
         return instructions
