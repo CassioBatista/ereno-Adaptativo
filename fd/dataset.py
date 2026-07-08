@@ -8,6 +8,9 @@ Supported partitioners (mirrors flwr-datasets strategies, pure numpy):
   shard        — each client receives shards_per_client contiguous class shards
   exponential  — exponentially unequal volumes (client 0 largest)
   linear       — linearly unequal volumes (client 0 largest)
+  attack       — each client receives ONE attack class + an IID slice of the
+                 normal class (specialist sensors; use num_clients == number
+                 of attack classes for a strict 1:1 mapping)
 """
 
 import numpy as np
@@ -53,6 +56,8 @@ def load_and_partition(
     rng = np.random.default_rng(seed)
 
     match partitioner:
+        case "attack":
+            splits = _attack_per_client(Xf, y_all, num_clients, rng)
         case "iid":
             splits = _iid(Xf, y_all, num_clients, rng)
         case "dirichlet":
@@ -68,7 +73,7 @@ def load_and_partition(
         case _:
             raise ValueError(
                 f"Particionador inválido: '{partitioner}'. "
-                f"Opções: iid, dirichlet, shard, exponential, linear."
+                f"Opções: iid, dirichlet, shard, exponential, linear, attack."
             )
 
     partitions = [(Xf[idx], y_all[idx]) for idx in splits]
@@ -76,6 +81,57 @@ def load_and_partition(
 
 
 # ── partitioners ──────────────────────────────────────────────────────────────
+
+def _attack_per_client(
+    X: np.ndarray,
+    y: np.ndarray,
+    num_clients: int,
+    rng: np.random.Generator,
+) -> list[np.ndarray]:
+    """Each client receives ONE attack class + an IID slice of the normal class.
+
+    Models a network of specialist sensors: every client knows the benign
+    baseline but has only ever seen a single attack type. Attack classes are
+    assigned in descending-size order; with fewer clients than attack classes
+    the leftover classes are distributed round-robin (a warning is printed —
+    use num_clients == number of attack classes for a strict 1:1 mapping).
+    """
+    normal = util.normal_class
+
+    benign_idx = np.where(y == normal)[0].copy()
+    rng.shuffle(benign_idx)
+    benign_slices = np.array_split(benign_idx, num_clients)
+
+    attack_classes = sorted(
+        (int(c) for c in np.unique(y) if c != normal),
+        key=lambda c: -int((y == c).sum()),
+    )
+    if len(attack_classes) < num_clients:
+        raise ValueError(
+            f"Particionador 'attack' requer num_clients <= nº de classes de "
+            f"ataque ({len(attack_classes)}); recebeu {num_clients}."
+        )
+    if len(attack_classes) > num_clients:
+        print(f"[attack] AVISO: {len(attack_classes)} classes de ataque para "
+              f"{num_clients} clientes — excedentes vão em round-robin "
+              f"(use num_clients={len(attack_classes)} para 1 ataque/cliente).")
+
+    client_indices: list[list[int]] = [s.tolist() for s in benign_slices]
+    assignment: list[list[int]] = [[] for _ in range(num_clients)]
+    for j, cls in enumerate(attack_classes):
+        cid = j % num_clients
+        client_indices[cid].extend(np.where(y == cls)[0].tolist())
+        assignment[cid].append(cls)
+
+    for cid in range(num_clients):
+        n_benign = len(benign_slices[cid])
+        n_total  = len(client_indices[cid])
+        print(f"[attack] cliente {cid}: classes de ataque {assignment[cid]} "
+              f"({n_total - n_benign} amostras) + {n_benign} benignas")
+
+    return [rng.permutation(np.array(idx, dtype=np.intp))
+            for idx in client_indices]
+
 
 def _iid(
     X: np.ndarray,

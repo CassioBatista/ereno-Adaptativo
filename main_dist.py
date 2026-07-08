@@ -15,7 +15,7 @@ Uso via ereno.py:
                               [--topology ring|chain|star|<path.yaml>]
                               [--clients N]
                               [--rounds N]
-                              [--partitioner iid|dirichlet|shard|exponential|linear]
+                              [--partitioner iid|dirichlet|shard|exponential|linear|attack]
                               [--partitioner-arg FLOAT]
 """
 

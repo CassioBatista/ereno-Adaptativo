@@ -13,7 +13,7 @@ grasp:
 # particionador e argumento.
 dataset:
   name: all_in_one_cicids
-  partitioner: iid        # iid | dirichlet | shard | exponential | linear
+  partitioner: iid        # iid | dirichlet | shard | exponential | linear | attack
   partitioner_arg: null   # alpha (dirichlet) ou shards_per_client (shard)
 
 # ── Topologia ──────────────────────────────────────────────────────────────────

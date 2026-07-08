@@ -15,7 +15,7 @@ Usage:
                        (ignorado para xgb_bagging e xgb_cyclic — usa XGBoost nativo)
     dataset_name     : dataset sem extensão  (ex: all_in_one_wsn)
     num_clients      : clientes federados  (default: 3)
-    partitioner      : iid | dirichlet | shard | exponential | linear  (default: iid)
+    partitioner      : iid | dirichlet | shard | exponential | linear | attack  (default: iid)
     partitioner_arg  : alpha para dirichlet (default: 0.5)
                        shards_per_client para shard (default: 2)
 

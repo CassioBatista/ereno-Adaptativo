@@ -27,7 +27,7 @@ Parâmetros exclusivos de 'distributed'
   --topology NAME      : star | ring | chain | <caminho.yaml>
   --clients N          : número de agentes/clientes  (default: lido do conf)
   --rounds N           : total de rounds de simulação  (default: lido do conf)
-  --partitioner NAME   : iid | dirichlet | shard | exponential | linear
+  --partitioner NAME   : iid | dirichlet | shard | exponential | linear | attack
   --partitioner-arg V  : alpha (dirichlet) ou shards_per_client (shard)
 
   O schedule de comutação federated↔gossip é definido em conf/base.yaml:
