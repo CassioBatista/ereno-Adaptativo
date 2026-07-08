@@ -55,6 +55,8 @@ arquitetura em tempo de execução não degrada o modelo.
 | E08 | Mista | 5 | 1–10 federated, 11–20 gossip |
 | E09 | Mista | 10 | 1–10 federated, 11–20 gossip |
 | E10 *(opcional)* | Mista c/ perda de nós | 10→5 | 1–10 federated (10 nós), 11–20 gossip com `active_clients: [0,1,2,3,4]` |
+| E11 *(opcional)* | Federada c/ participação parcial | 10 (5 ativos) | 1–20 federated com `active_clients: [0..4]` — client sampling clássico |
+| E12 *(opcional)* | Federada c/ perda de nós | 10→5 | 1–10 federated (todos), 11–20 federated com `active_clients: [0..4]` — espelho do E10 para comparação simétrica de dropout |
 
 Total: 10 células × 3 seeds = **30 execuções** (+3 do E10 opcional).
 E00 é 1 execução por seed (não depende de clientes).
@@ -134,7 +136,16 @@ na preparação):
 - a topologia era resolvida pelo modo do **round 1**: no modo misto
   (começa federated) a fase gossip rodava numa star implícita, não no
   anel configurado — agora, se qualquer round do schedule for gossip, a
-  topologia pedida é respeitada (E07–E09 comparáveis com E04–E06).
+  topologia pedida é respeitada (E07–E09 comparáveis com E04–E06);
+- `active_clients` em rounds **federated** não funcionava: as estratégias
+  eram criadas com `min_fit_clients = total`, então a amostragem filtrada
+  falhava e o round virava no-op silencioso. A `HybridStrategy` agora
+  ajusta os `min_*_clients` da sub-estratégia por round (e restaura ao
+  voltar para "todos") — habilita E11/E12 (participação parcial);
+- no **gossip**, a eleição de head ignorava o `active_clients` (usava só
+  o status da topologia): um nó inativo podia ser eleito head e a
+  agregação falhar. O status up/down dos nós da topologia agora é
+  sincronizado com o `active_clients` de cada round — E10 coerente.
 
 > Limitação conhecida: a transição **gossip → federated** com estratégias
 > `xgb_*` não é suportada (a transferência de modelo promedia arrays, o que

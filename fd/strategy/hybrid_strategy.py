@@ -74,6 +74,39 @@ class HybridStrategy(Strategy):
             return client_manager
         return _FilteredClientManager(client_manager, active)
 
+    def _sync_participation(self, strategy: Strategy, active: list[int] | None) -> None:
+        """Align the sub-strategy's expectations with the round's active clients.
+
+        FedAvg-style strategies: min_*_clients must not exceed the number of
+        active clients, or sampling fails and the round becomes a no-op.
+        Originals are captured once and restored when active is None.
+
+        GlowStrategy: node up/down status in the topology must mirror the
+        active set, or head election may pick an inactive node.
+        """
+        if hasattr(strategy, "min_fit_clients"):
+            if not hasattr(strategy, "_orig_min_clients"):
+                strategy._orig_min_clients = (
+                    strategy.min_fit_clients,
+                    strategy.min_evaluate_clients,
+                    strategy.min_available_clients,
+                )
+            orig_fit, orig_eval, orig_avail = strategy._orig_min_clients
+            if active is None:
+                strategy.min_fit_clients       = orig_fit
+                strategy.min_evaluate_clients  = orig_eval
+                strategy.min_available_clients = orig_avail
+            else:
+                n = len(active)
+                strategy.min_fit_clients       = min(orig_fit, n)
+                strategy.min_evaluate_clients  = min(orig_eval, n)
+                strategy.min_available_clients = min(orig_avail, n)
+
+        topology = getattr(strategy, "topology", None)
+        if topology is not None:
+            for node in topology.all_nodes():
+                topology.set_status(node, active is None or node in active)
+
     def _transfer_model(
         self,
         from_mode: str,
@@ -134,6 +167,7 @@ class HybridStrategy(Strategy):
 
         self._prev_mode   = mode
         self._last_params = parameters
+        self._sync_participation(strategy, self.arch_manager.get_active_clients(server_round))
         filtered_manager  = self._filter_manager(client_manager, server_round)
         return strategy.configure_fit(server_round, parameters, filtered_manager)
 
@@ -156,6 +190,7 @@ class HybridStrategy(Strategy):
         client_manager: ClientManager,
     ) -> list[tuple[ClientProxy, any]]:
         _, strategy = self._active(server_round)
+        self._sync_participation(strategy, self.arch_manager.get_active_clients(server_round))
         filtered_manager = self._filter_manager(client_manager, server_round)
         return strategy.configure_evaluate(server_round, parameters, filtered_manager)
 
