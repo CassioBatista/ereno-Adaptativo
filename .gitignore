@@ -4,3 +4,4 @@ __pycache__/
 # Datasets — serão migrados para HuggingFace
 *.csv
 *.arff
+all_in_one_cicids_v2.csv
