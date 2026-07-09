@@ -78,11 +78,13 @@ def _get_feature_subsets(dataset: str):
 
 
 def _print_result(label: str, r) -> None:
+    fpr = 100.0 * r.FP / (r.FP + r.VN) if (r.FP + r.VN) else 0.0
     print(f"\n  [{label}]")
     print(f"    F1       : {r.f1score:.4f}%")
     print(f"    Accuracy : {r.accuracy:.4f}%")
     print(f"    Precision: {r.precision:.4f}%")
     print(f"    Recall   : {r.recall:.4f}%")
+    print(f"    FPR      : {fpr:.4f}%   (falsos alarmes / benignos)")
     print(f"    VP={r.VP}  VN={r.VN}  FP={r.FP}  FN={r.FN}")
 
 
@@ -225,8 +227,10 @@ def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray):
             return None
         y_pred = (booster.predict(dtest) >= 0.5).astype(int)
         r = evaluate_predictions(f"round-{server_round}", y_te, y_pred)
-        print(f"ROUND;{server_round};{mode};f1={r.f1score:.4f};acc={r.accuracy:.4f}")
-        return 1.0 - r.accuracy / 100.0, {"f1": r.f1score, "mode": mode}
+        fpr = 100.0 * r.FP / (r.FP + r.VN) if (r.FP + r.VN) else 0.0
+        print(f"ROUND;{server_round};{mode};f1={r.f1score:.4f};"
+              f"recall={r.recall:.4f};fpr={fpr:.4f}")
+        return 1.0 - r.accuracy / 100.0, {"f1": r.f1score, "fpr": fpr, "mode": mode}
 
     return eval_fn
 
@@ -452,6 +456,8 @@ def main(args: list[str] | None = None) -> None:
                             ("recall", "Recall   "), ("precision", "Precision")]:
             delta = getattr(result, attr) - getattr(r_central, attr)
             print(f"  {label}: {delta:+.4f} pp")
+        _fpr = lambda r: 100.0 * r.FP / (r.FP + r.VN) if (r.FP + r.VN) else 0.0
+        print(f"  FPR      : {_fpr(result) - _fpr(r_central):+.4f} pp")
 
 
 if __name__ == "__main__":
