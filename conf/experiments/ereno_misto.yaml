@@ -1,0 +1,39 @@
+# Experimento: ERENO IEC-61850 — MISTO federated (1–10) → gossip (11–20)
+# Dataset: all_in_one_ereno_train/test (ver docs/DATASETS.md; fora do git).
+# Uso:
+#   python ereno.py distributed GR-G-VND 2 all_in_one_ereno_train \
+#          --conf conf/experiments/ereno_misto.yaml --clients 3
+
+run_name: exp-ereno-misto
+seed: 42
+
+grasp:
+  enabled: true
+  max_iterations: 10
+  # GRASP roda numa subamostra estratificada (train tem 2,96M linhas);
+  # o treinamento distribuído usa o dataset completo.
+  sample: 150000
+
+dataset:
+  name: all_in_one_ereno_train
+  # test set do próprio autor (split por blocos — NÃO re-dividir
+  # aleatoriamente: as features GOOSE se repetem por ~4.800 linhas SV).
+  test_file: all_in_one_ereno_test
+  partitioner: iid
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 3
+
+simulation:
+  num_rounds: 20
+  strategy: xgb_bagging
+
+architecture:
+  manager: fixed
+  default_mode: federated
+  aggregation: xgb
+  schedule:
+    - {from: 1,  to: 10, mode: federated}
+    - {from: 11, to: 20, mode: gossip}

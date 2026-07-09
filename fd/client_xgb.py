@@ -62,6 +62,16 @@ class XgbClient(NumPyClient):
     def fit(self, parameters: NDArrays, config: dict[str, Any]) -> tuple[NDArrays, int, dict]:
         mode: str = config.get("mode", "xgb_bagging")
 
+        # Reequilibra a perda pelo desbalanceamento LOCAL do cliente
+        # (binary:logistic): classes passam a pesar igual sem duplicar dados.
+        label = self.dtrain.get_label()
+        n_pos = float(label.sum())
+        n_neg = float(len(label)) - n_pos
+        params = dict(self.params)
+        if n_pos > 0 and n_neg > 0:
+            params["scale_pos_weight"] = n_neg / n_pos
+        self.params = params
+
         if mode == "xgb_cyclic" and parameters[0].size > 0:
             # Load global model received from server, then continue boosting
             self.booster = xgb.Booster()

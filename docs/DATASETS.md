@@ -75,6 +75,54 @@ python scripts/regenerate_cicids_v2.py <dir_dos_csvs> all_in_one_cicids_v2.csv
   (o sufixo contém "cicid", então os subconjuntos de features do CICIDS
   são selecionados automaticamente).
 
+## ERENO IEC-61850 (all_in_one_ereno_train/test.csv — NÃO versionados)
+
+Dataset do domínio-alvo da pesquisa: IDS para subestações IEC-61850
+(mensagens GOOSE/SV, tráfego sintético do framework ERENO). Fonte:
+<https://www.kaggle.com/datasets/sequincozes/ereno-iec61850-ids>
+(Quincozes et al.; download anônimo via `kagglehub`).
+
+### Conversão (scripts/build_ereno_dataset.py)
+
+- Origem: `train.arff` (2.955.738 linhas) e `test.arff` (2.955.648) do
+  Kaggle — **split do próprio autor, que deve ser respeitado**: cada GOOSE
+  periódico acompanha ~4.800 mensagens SV, então as features GOOSE se
+  repetem em blocos e um re-split aleatório vazaria (aviso do autor).
+  Usar `dataset.test_file` no YAML (implementado no main_dist).
+- **58 features numéricas mantidas** (F1..F58), na ordem do ARFF original.
+  Os 11 atributos nominais (ethDst/ethSrc/ethType, gooseAppid, TPID,
+  gocbRef, datSet, goID, test, ndsCom, protocol) são **descartados**:
+  identidades (MACs/goID) são vazamento em testbed sintético — o modelo
+  memorizaria *quem* ataca, não *como*; o sinal comportamental já está
+  nas features derivadas (stDiff, sqDiff, timestampDiff, delay...).
+- Zero linhas descartadas por higiene (dado sintético, sem NaN/Inf).
+
+### Distribuição (train ≈ test)
+
+| classe | train | % |
+|---|---:|---:|
+| normal | 2.759.425 | 93,36% |
+| injection / random_replay / high_StNum | 39.000 cada | 1,32% cada |
+| inverse_replay | 26.033 | 0,88% |
+| poisoned_high_rate | 18.574 | 0,63% |
+| masquerade_fake_normal | 17.419 | 0,59% |
+| masquerade_fake_fault | 17.287 | 0,58% |
+
+Desbalanceamento ~14:1 (normal:ataques) — o `scale_pos_weight` local dos
+clientes XGBoost (automático desde a integração) é essencial aqui.
+
+### Hashes (MD5)
+
+| arquivo | md5 |
+|---|---|
+| all_in_one_ereno_train.csv | `f50d51f9c8b11854e443921b01c96c32` |
+| all_in_one_ereno_test.csv | `dc6c7e6e0978396efa8899f5d6ae3440` |
+
+### Custo
+
+Train com 2,96 M linhas: o GRASP usa subamostra estratificada
+(`grasp.sample` no YAML, ex.: 150000); o treinamento distribuído usa tudo.
+
 ## Outros datasets versionados
 
 | arquivo | amostras | origem |

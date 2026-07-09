@@ -44,6 +44,7 @@ from python.feature_subsets.wsn    import WsnFeatures
 from python.feature_subsets.kdd    import KddFeatures
 from python.feature_subsets.cicids import CicidsFeatures
 from python.feature_subsets.swat   import SWATFeatures
+from python.feature_subsets.ereno  import ErenoFeatures
 
 from fd.dataset           import load_and_partition
 from fd.server            import make_server_app
@@ -70,7 +71,10 @@ def _get_feature_subsets(dataset: str):
         case s if "kdd"   in s: return KddFeatures()
         case s if "cicid" in s: return CicidsFeatures()
         case s if "swat"  in s: return SWATFeatures()
-        case _:                 return WsnFeatures()
+        case s if "ereno" in s: return ErenoFeatures()
+        case _:
+            sys.exit(f"Dataset '{dataset}' sem subconjuntos de features "
+                     f"definidos. Use: wsn, kdd, cicids, swat ou ereno.")
 
 
 def _print_result(label: str, r) -> None:
@@ -92,6 +96,7 @@ def run_grasp(
     clf_idx:      int,
     dataset:      str,
     max_iterations: int = 10,
+    sample:       int | None = None,
 ) -> list[int]:
     from python.grasp.vnd  import GraspVND
     from python.grasp.rvnd import GraspRVND
@@ -121,6 +126,19 @@ def run_grasp(
             rcl = feature_subsets.RCL_GR
 
     grasp.setup_grasp_microservice(clf_idx)
+
+    # GRASP em subamostra estratificada (datasets grandes): a seleção de
+    # features roda sobre a amostra; o treinamento distribuído usa tudo.
+    if sample and grasp._all_instances is not None:
+        X_all, y_all = grasp._all_instances
+        if sample < len(y_all):
+            idx, _ = train_test_split(
+                np.arange(len(y_all)), train_size=sample,
+                random_state=config.GRASP_SEED, stratify=y_all,
+            )
+            grasp._all_instances = (X_all[idx], y_all[idx])
+            print(f"[GRASP] subamostra estratificada: {sample:,} de {len(y_all):,} amostras")
+
     grasp.max_iterations = max_iterations
     best = grasp.run(rcl, grasp_method, dataset)
     return best.get_array_features()
@@ -257,12 +275,15 @@ def main(args: list[str] | None = None) -> None:
     partitioner     = partitioner    or data_conf.get("partitioner", "iid")
     partitioner_arg = partitioner_arg or data_conf.get("partitioner_arg")
     max_iterations  = int(grasp_conf.get("max_iterations", 10))
+    grasp_sample    = grasp_conf.get("sample")
+    grasp_sample    = int(grasp_sample) if grasp_sample else None
+    test_file       = data_conf.get("test_file")   # test set pré-definido (opcional)
     seed            = int(conf.get("seed", 42))
 
     # ── ① GRASP ───────────────────────────────────────────────────────────────
     print(f"\n{'='*60}")
     print(f"  ① GRASP — {grasp_method}  clf={clf_idx+1}  dataset={dataset}")
-    features = run_grasp(grasp_method, clf_idx, dataset, max_iterations)
+    features = run_grasp(grasp_method, clf_idx, dataset, max_iterations, grasp_sample)
     print(f"  Features selecionadas ({len(features)}): {sorted(features)}")
 
     # ── ② Topologia ───────────────────────────────────────────────────────────
@@ -296,9 +317,19 @@ def main(args: list[str] | None = None) -> None:
     )
     print(f"\n  ③ Particionamento: {partitioner}  num_clients={num_clients}")
 
-    X_tr, X_te, y_tr, y_te = train_test_split(
-        X_f, y_all, test_size=0.2, random_state=seed, stratify=y_all
-    )
+    if test_file:
+        # Test set pré-definido (ex.: split do autor do dataset — evita o
+        # vazamento do split aleatório e respeita separação por blocos).
+        nc_train = util.normal_class
+        X_te_raw, y_te, _ = util.load_arff(f"{test_file}.csv")
+        util.normal_class = nc_train      # o global é redefinido a cada load
+        X_te = util.filter_features(X_te_raw, features)
+        X_tr, y_tr = X_f, y_all           # baseline treina no train inteiro
+        print(f"  test set pré-definido: {test_file}.csv ({len(y_te):,} amostras)")
+    else:
+        X_tr, X_te, y_tr, y_te = train_test_split(
+            X_f, y_all, test_size=0.2, random_state=seed, stratify=y_all
+        )
     client_splits = []
     for X_c, y_c in partitions:
         Xct, Xce, yct, yce = train_test_split(X_c, y_c, test_size=0.2, random_state=seed)
@@ -395,9 +426,12 @@ def main(args: list[str] | None = None) -> None:
     # ── baseline monolítico (P2): mesmas features, mesmo split 80/20 ──────────
     if result is not None:
         if _is_xgb:
+            n_pos = int(y_tr.sum())
+            n_neg = len(y_tr) - n_pos
             booster_c = xgb.train(
                 {"objective": "binary:logistic", "eval_metric": "logloss",
-                 "max_depth": 4, "eta": 0.1, "seed": seed, "nthread": 1},
+                 "max_depth": 4, "eta": 0.1, "seed": seed, "nthread": 1,
+                 "scale_pos_weight": n_neg / max(n_pos, 1)},
                 xgb.DMatrix(X_tr, label=y_tr),
                 num_boost_round=num_clients * 10,
                 verbose_eval=False,
