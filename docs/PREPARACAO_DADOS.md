@@ -55,10 +55,19 @@ arquivo — todos os all-in-one começam com uma amostra normal/BENIGN.
      áreas trapezoidais; protocolo: SqNum, StNum, frames; derivadas: stDiff,
      sqDiff, timestampDiff, delay...);
   3. **descarta os 11 atributos nominais** (ethDst/ethSrc/ethType,
-     gooseAppid, TPID, gocbRef, datSet, goID, test, ndsCom, protocol) —
-     decisão de projeto: identidades (MACs) são vazamento em testbed
-     sintético (o modelo memorizaria *quem* ataca, não *como*), e o sinal
-     comportamental já está nas features derivadas;
+     gooseAppid, TPID, gocbRef, datSet, goID, test, ndsCom, protocol).
+     Justificativa **medida** (amostra de 147.532 linhas do train): todos
+     os 11 são quase-constantes — um único valor cobre 99,997% das linhas
+     (com a taxa base de 6,6% de ataque) — e **todos os desvios raros
+     (1–5 ocorrências) são 100% ataque** (frames forjados pelo gerador com
+     MACs broadcast, ethertype 0x77b7, appid/TPID alternativos, flags
+     test/ndsCom=TRUE). Ou seja: (a) não separam nada no grosso dos dados
+     — os ataques abundantes usam os valores legítimos por definição;
+     (b) onde desviam, são vazamento de artefato do testbed (detecção por
+     memorização de identidade, não comportamento); (c) em implantação
+     real são forjáveis trivialmente, e as mesmas mensagens anômalas já
+     alteram campos numéricos mantidos (frameLen, APDUSize,
+     gooseLengthDiff...) — o sinal legítimo não se perde;
   4. zero descartes por higiene (dado sintético é limpo).
 - **Resultado**: 8 classes (normal + 7 ataques GOOSE), **93,4% normal**
   (desbalanceamento ~14:1).
