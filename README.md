@@ -102,7 +102,15 @@ O mesmo arquivo configura dataset, particionador, topologia, número de rounds e
 
 ## Datasets
 
-Testado com datasets de detecção de intrusão no formato "all-in-one" (CSV): **WSN**, **NSL-KDD**, **CICIDS** e **SWaT**, com subconjuntos de features definidos em `python/feature_subsets/`.
+Datasets de trabalho: **CICIDS2017** (regenerado dos originais — `all_in_one_cicids_v2`) e **ERENO IEC-61850** (GOOSE/SV, domínio-alvo), além de WSN, NSL-KDD e SWaT no formato "all-in-one". Subconjuntos de features em `python/feature_subsets/`.
+
+## Documentação
+
+| Documento | Conteúdo |
+|---|---|
+| [docs/PREPARACAO_DADOS.md](docs/PREPARACAO_DADOS.md) | pipeline de dados completo: preparação dos datasets, seleção de features (GRASP) e particionamento |
+| [docs/DATASETS.md](docs/DATASETS.md) | proveniência, hashes de verificação e receitas de regeneração |
+| [docs/PLANO_VALIDACAO.md](docs/PLANO_VALIDACAO.md) | plano de validação e testes: matriz de experimentos, métricas e sanity checks |
 
 ## Instalação
 
