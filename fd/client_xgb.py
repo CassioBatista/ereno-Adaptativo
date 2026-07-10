@@ -61,6 +61,8 @@ class XgbClient(NumPyClient):
     # ------------------------------------------------------------------
     def fit(self, parameters: NDArrays, config: dict[str, Any]) -> tuple[NDArrays, int, dict]:
         mode: str = config.get("mode", "xgb_bagging")
+        # Rounds gossip (GLow) carregam o contexto de vizinhança no config.
+        is_gossip = "head_cid" in config
 
         # Reequilibra a perda pelo desbalanceamento LOCAL do cliente
         # (binary:logistic): classes passam a pesar igual sem duplicar dados.
@@ -72,8 +74,17 @@ class XgbClient(NumPyClient):
             params["scale_pos_weight"] = n_neg / n_pos
         self.params = params
 
-        if mode == "xgb_cyclic" and parameters[0].size > 0:
-            # Load global model received from server, then continue boosting
+        adopt = (
+            # cyclic: continua o boosting do modelo global recebido
+            (mode == "xgb_cyclic" and parameters[0].size > 0)
+            # gossip fiel ao GLow: ADOTA o modelo recebido (o equivalente
+            # para árvores do set_parameters + train do GLow original).
+            # Conjuntos multi-booster (fusão OR) não têm warm-start único —
+            # nesse modo o nó treina do zero e a memória vive no pool.
+            or (is_gossip and len(parameters) == 1 and parameters[0].size > 0)
+        )
+
+        if adopt:
             self.booster = xgb.Booster()
             self.booster.load_model(bytearray(parameters[0].tobytes()))
             self.booster = xgb.train(
@@ -84,7 +95,7 @@ class XgbClient(NumPyClient):
                 verbose_eval=False,
             )
         else:
-            # bagging or first cyclic round: train from scratch
+            # bagging federado ou primeiro round: treina do zero
             self.booster = xgb.train(
                 self.params,
                 self.dtrain,

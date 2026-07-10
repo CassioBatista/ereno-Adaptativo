@@ -59,6 +59,29 @@ def learn_cid_map(cid_map: dict[str, int], results) -> None:
             cid_map[proxy.cid] = int(metrics["cid"])
 
 
+def dedup_union(params_list: list[Parameters | None]) -> Parameters:
+    """União de conjuntos de boosters com deduplicação por conteúdo.
+
+    Cada Parameters pode carregar 1+ tensores (boosters serializados); a
+    união preserva a ordem de chegada e descarta cópias byte a byte —
+    re-treinos determinísticos (mesmos dados/seed) deduplicam naturalmente,
+    limitando o pool de cada nó ao nº de nós da rede.
+    """
+    seen: set[bytes] = set()
+    arrays: list[np.ndarray] = []
+    for p in params_list:
+        if p is None:
+            continue
+        for a in parameters_to_ndarrays(p):
+            if a.size == 0:
+                continue
+            key = a.tobytes()
+            if key not in seen:
+                seen.add(key)
+                arrays.append(a)
+    return ndarrays_to_parameters(arrays)
+
+
 class GlowStrategy(Strategy):
     """Gossip Learning strategy with round-robin head election.
 
@@ -150,7 +173,14 @@ class GlowStrategy(Strategy):
         all_cids = [proxy.cid for proxy, _ in results]
         for proxy, fit_res in results:
             cid = self._node_index(proxy.cid, all_cids)
-            self.pool_parameters[cid] = fit_res.parameters
+            if self.aggregation == "xgb_union":
+                # gossip COM MEMÓRIA: o nó acumula o que já sabe (recebido
+                # em rounds anteriores) + o re-treino local — sem isso o
+                # pool é sobrescrito e o conhecimento nunca difunde
+                self.pool_parameters[cid] = dedup_union(
+                    [self.pool_parameters.get(cid), fit_res.parameters])
+            else:
+                self.pool_parameters[cid] = fit_res.parameters
             acc = fit_res.metrics.get("accuracy", 0.0)
             self._last_accuracies[cid] = float(acc)
 
@@ -217,11 +247,13 @@ class GlowStrategy(Strategy):
         node_ids:    list[int],
     ) -> Parameters:
         if self.aggregation == "xgb_union":
-            # fusão OR: o agregado é o CONJUNTO dos boosters da vizinhança
-            # (um tensor por booster; a união de decisões ocorre na predição)
-            arrays = [a for p in params_list for a in parameters_to_ndarrays(p)
-                      if a.size > 0]
-            return ndarrays_to_parameters(arrays)
+            # fusão OR: o agregado é o CONJUNTO (deduplicado) dos boosters
+            # acumulados pela vizinhança — a união de decisões ocorre na
+            # predição. É este agregado que vira o pool do head, fazendo o
+            # conhecimento difundir de vizinhança em vizinhança.
+            union = dedup_union(params_list)
+            print(f"[GLow] união do head: {len(union.tensors)} boosters")
+            return union
 
         if self.aggregation == "xgb":
             return _aggregate_xgb(params_list)

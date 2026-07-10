@@ -146,9 +146,14 @@ class HybridStrategy(Strategy):
         elif from_mode == "federated" and to_mode == "gossip":
             glow = self._strategies["gossip"]
             if hasattr(glow, "pool_parameters"):
-                for node_id in glow.pool_parameters:
+                # semeia TODOS os nós da topologia com o modelo global —
+                # iterar o pool (vazio na primeira comutação) era um no-op
+                nodes = (glow.topology.all_nodes()
+                         if hasattr(glow, "topology") else list(glow.pool_parameters))
+                for node_id in nodes:
                     glow.pool_parameters[node_id] = parameters
-                print(f"[Hybrid] federated→gossip: distributed global model to all nodes")
+                print(f"[Hybrid] federated→gossip: global model seeded to "
+                      f"{len(nodes)} nodes")
 
         return parameters
 
