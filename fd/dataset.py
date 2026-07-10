@@ -92,9 +92,15 @@ def _attack_per_client(
 
     Models a network of specialist sensors: every client knows the benign
     baseline but has only ever seen a single attack type. Attack classes are
-    assigned in descending-size order; with fewer clients than attack classes
-    the leftover classes are distributed round-robin (a warning is printed —
-    use num_clients == number of attack classes for a strict 1:1 mapping).
+    assigned in descending-size order.
+
+    num_clients vs number of attack classes:
+      ==  strict 1:1 mapping (one specialist per attack);
+      >   redundant sensors: extra clients are assigned to the LARGEST
+          classes, one at a time, splitting that class's samples into IID
+          slices (e.g. ERENO with 10 clients: the three 39k classes get two
+          specialists each, the other four get one);
+      <   leftover classes are distributed round-robin (warning printed).
     """
     normal = util.normal_class
 
@@ -106,22 +112,37 @@ def _attack_per_client(
         (int(c) for c in np.unique(y) if c != normal),
         key=lambda c: -int((y == c).sum()),
     )
-    if len(attack_classes) < num_clients:
-        raise ValueError(
-            f"Particionador 'attack' requer num_clients <= nº de classes de "
-            f"ataque ({len(attack_classes)}); recebeu {num_clients}."
-        )
-    if len(attack_classes) > num_clients:
-        print(f"[attack] AVISO: {len(attack_classes)} classes de ataque para "
-              f"{num_clients} clientes — excedentes vão em round-robin "
-              f"(use num_clients={len(attack_classes)} para 1 ataque/cliente).")
+    n_att = len(attack_classes)
 
     client_indices: list[list[int]] = [s.tolist() for s in benign_slices]
     assignment: list[list[int]] = [[] for _ in range(num_clients)]
-    for j, cls in enumerate(attack_classes):
-        cid = j % num_clients
-        client_indices[cid].extend(np.where(y == cls)[0].tolist())
-        assignment[cid].append(cls)
+
+    if num_clients > n_att:
+        # sensores redundantes: excedentes vão às maiores classes, 1 por vez
+        sensors_per_class = {c: 1 for c in attack_classes}
+        for i in range(num_clients - n_att):
+            sensors_per_class[attack_classes[i % n_att]] += 1
+        dup = {c: k for c, k in sensors_per_class.items() if k > 1}
+        print(f"[attack] {num_clients} clientes para {n_att} classes — "
+              f"sensores redundantes (classe: nº de sensores): {dup}")
+
+        cid = 0
+        for cls in attack_classes:
+            cls_idx = np.where(y == cls)[0].copy()
+            rng.shuffle(cls_idx)
+            for part in np.array_split(cls_idx, sensors_per_class[cls]):
+                client_indices[cid].extend(part.tolist())
+                assignment[cid].append(cls)
+                cid += 1
+    else:
+        if n_att > num_clients:
+            print(f"[attack] AVISO: {n_att} classes de ataque para "
+                  f"{num_clients} clientes — excedentes vão em round-robin "
+                  f"(use num_clients={n_att} para 1 ataque/cliente).")
+        for j, cls in enumerate(attack_classes):
+            cid = j % num_clients
+            client_indices[cid].extend(np.where(y == cls)[0].tolist())
+            assignment[cid].append(cls)
 
     for cid in range(num_clients):
         n_benign = len(benign_slices[cid])
