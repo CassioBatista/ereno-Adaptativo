@@ -216,6 +216,13 @@ class GlowStrategy(Strategy):
         params_list: list[Parameters],
         node_ids:    list[int],
     ) -> Parameters:
+        if self.aggregation == "xgb_union":
+            # fusão OR: o agregado é o CONJUNTO dos boosters da vizinhança
+            # (um tensor por booster; a união de decisões ocorre na predição)
+            arrays = [a for p in params_list for a in parameters_to_ndarrays(p)
+                      if a.size > 0]
+            return ndarrays_to_parameters(arrays)
+
         if self.aggregation == "xgb":
             return _aggregate_xgb(params_list)
 

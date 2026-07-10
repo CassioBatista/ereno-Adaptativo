@@ -22,11 +22,20 @@ from fd.strategy.glow_strategy import _merge_boosters
 
 
 class XgbBaggingStrategy(FedAvg):
-    """Aggregates XGBoost models by pooling all client trees (bagging)."""
+    """Aggregates XGBoost models by pooling all client trees (bagging).
 
-    def __init__(self, num_features: int, **kwargs):
+    fusion:
+      'sum' — merge all client trees into ONE booster (margens somadas);
+      'or'  — keep each client's booster separate (um tensor por booster);
+              a predição global dispara se QUALQUER booster disparar
+              (união de decisões — adequada a sensores especialistas,
+              onde a soma de margens é vetada pela maioria "normal").
+    """
+
+    def __init__(self, num_features: int, fusion: str = "sum", **kwargs):
         super().__init__(**kwargs)
         self.num_features = num_features
+        self.fusion = fusion
         self.global_model: Optional[xgb.Booster] = None
 
     # ------------------------------------------------------------------
@@ -40,7 +49,13 @@ class XgbBaggingStrategy(FedAvg):
         if not results:
             return None, {}
 
-        # Build global model by loading first client's model then appending others
+        if self.fusion == "or":
+            # um tensor por booster de cliente — fusão acontece na predição
+            arrays = [parameters_to_ndarrays(fit_res.parameters)[0]
+                      for _, fit_res in results]
+            return ndarrays_to_parameters(arrays), {}
+
+        # fusion == 'sum': merge all client trees into one booster
         _, first_res = results[0]
         first_bytes = parameters_to_ndarrays(first_res.parameters)[0].tobytes()
         self.global_model = xgb.Booster()

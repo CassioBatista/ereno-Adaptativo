@@ -164,6 +164,7 @@ def _build_fed_strategy(
     X_tr:          np.ndarray,
     y_tr:          np.ndarray,
     seed:          int = 42,
+    xgb_fusion:    str = "sum",
 ):
     fit_config   = {"mode": strategy_name}
     config_fn    = lambda _: fit_config
@@ -185,7 +186,8 @@ def _build_fed_strategy(
     if strategy_name in ("xgb_bagging", "xgb_cyclic"):
         if strategy_name == "xgb_cyclic":
             return XgbCyclicStrategy(num_clients=num_clients, **common_kw)
-        return XgbBaggingStrategy(num_features=num_features, **common_kw)
+        return XgbBaggingStrategy(num_features=num_features,
+                                  fusion=xgb_fusion, **common_kw)
 
     # ensemble (default)
     dummy = clone(base_clf)
@@ -196,16 +198,29 @@ def _build_fed_strategy(
     )
 
 
-def _booster_from_parameters(parameters) -> xgb.Booster | None:
-    """Deserialize an XGBoost Booster from Flower Parameters (or None)."""
+def _boosters_from_parameters(parameters) -> list[xgb.Booster]:
+    """Deserialize XGBoost Booster(s) from Flower Parameters.
+
+    Um tensor = modelo único (fusão 'sum'); vários tensores = conjunto de
+    boosters especialistas (fusão 'or' — um por cliente/nó).
+    """
     if parameters is None:
-        return None
-    arr = parameters_to_ndarrays(parameters)[0]
-    if arr.size == 0:
-        return None
-    booster = xgb.Booster()
-    booster.load_model(bytearray(arr.tobytes()))
-    return booster
+        return []
+    boosters = []
+    for arr in parameters_to_ndarrays(parameters):
+        if arr.size == 0:
+            continue
+        b = xgb.Booster()
+        b.load_model(bytearray(arr.tobytes()))
+        boosters.append(b)
+    return boosters
+
+
+def _predict_boosters(boosters: list[xgb.Booster], dtest: "xgb.DMatrix") -> np.ndarray:
+    """Predição binária: booster único direto; conjunto = união de decisões
+    (alarme se QUALQUER booster der prob >= 0.5)."""
+    probs = np.max([b.predict(dtest) for b in boosters], axis=0)
+    return (probs >= 0.5).astype(int)
 
 
 def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray):
@@ -222,10 +237,10 @@ def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray):
     dtest = xgb.DMatrix(X_te)
 
     def eval_fn(server_round: int, mode: str, parameters):
-        booster = _booster_from_parameters(parameters)
-        if booster is None:
+        boosters = _boosters_from_parameters(parameters)
+        if not boosters:
             return None
-        y_pred = (booster.predict(dtest) >= 0.5).astype(int)
+        y_pred = _predict_boosters(boosters, dtest)
         r = evaluate_predictions(f"round-{server_round}", y_te, y_pred)
         fpr = 100.0 * r.FP / (r.FP + r.VN) if (r.FP + r.VN) else 0.0
         print(f"ROUND;{server_round};{mode};f1={r.f1score:.4f};"
@@ -353,9 +368,11 @@ def main(args: list[str] | None = None) -> None:
         ]
 
     # ── ④ Estratégias ─────────────────────────────────────────────────────────
+    xgb_fusion  = sim_conf.get("xgb_fusion", "sum")   # sum | or
     base_clf    = _build_base_clf(strategy_name, seed)
     fed_strategy = _build_fed_strategy(
-        strategy_name, num_clients, len(features), base_clf, X_tr, y_tr, seed
+        strategy_name, num_clients, len(features), base_clf, X_tr, y_tr, seed,
+        xgb_fusion=xgb_fusion,
     )
     glow_strategy = GlowStrategy(
         topology    = topology,
@@ -403,16 +420,18 @@ def main(args: list[str] | None = None) -> None:
         case "xgb_bagging" | "xgb_cyclic":
             # Preferir os parâmetros agregados do último round (no modo misto,
             # o modelo final pode ter saído do gossip, não da fed_strategy).
-            booster = _booster_from_parameters(hybrid.final_parameters) \
-                      or fed_strategy.get_global_model()
-            if booster is None:
+            boosters = _boosters_from_parameters(hybrid.final_parameters)
+            if not boosters and fed_strategy.get_global_model() is not None:
+                boosters = [fed_strategy.get_global_model()]
+            if not boosters:
                 print("  [AVISO] nenhum modelo global disponível — agregação falhou.")
             else:
-                y_pred = (booster.predict(xgb.DMatrix(X_te)) >= 0.5).astype(int)
+                y_pred = _predict_boosters(boosters, xgb.DMatrix(X_te))
                 result = evaluate_predictions(strategy_name, y_te, y_pred)
-                n_trees = len(booster.get_dump())
+                n_trees = sum(len(b.get_dump()) for b in boosters)
+                fusao = f"{len(boosters)} boosters/OR, " if len(boosters) > 1 else ""
                 _print_result(
-                    f"DISTRIBUÍDO [{strategy_name}] ({n_trees} árvores)", result
+                    f"DISTRIBUÍDO [{strategy_name}] ({fusao}{n_trees} árvores)", result
                 )
         case "federated_nb":
             model = fed_strategy.get_global_model()
