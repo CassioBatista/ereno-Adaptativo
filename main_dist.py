@@ -223,16 +223,29 @@ def _predict_boosters(boosters: list[xgb.Booster], dtest: "xgb.DMatrix") -> np.n
     return (probs >= 0.5).astype(int)
 
 
-def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray):
+def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray,
+                        eval_sample: int | None = None):
     """Server-side per-round evaluation of the aggregated model (P5).
 
     Prints machine-readable lines for the convergence curve:
-        ROUND;<round>;<mode>;f1=<...>;acc=<...>
+        ROUND;<round>;<mode>;f1=<...>;recall=<...>;fpr=<...>
     Only implemented for xgb strategies (the aggregated Parameters carry
     the serialized global booster); returns None for the others.
+
+    eval_sample: avalia os rounds numa subamostra estratificada do teste
+    (economia de memória/tempo em testes grandes); a avaliação FINAL
+    continua usando o teste completo.
     """
     if strategy_name not in ("xgb_bagging", "xgb_cyclic"):
         return None
+
+    if eval_sample and eval_sample < len(y_te):
+        idx, _ = train_test_split(
+            np.arange(len(y_te)), train_size=eval_sample,
+            random_state=42, stratify=y_te,
+        )
+        X_te, y_te = X_te[idx], y_te[idx]
+        print(f"[round-eval] subamostra estratificada do teste: {eval_sample:,}")
 
     dtest = xgb.DMatrix(X_te)
 
@@ -350,6 +363,7 @@ def main(args: list[str] | None = None) -> None:
         X_te_raw, y_te, _ = util.load_arff(f"{test_file}.csv")
         util.normal_class = nc_train      # o global é redefinido a cada load
         X_te = util.filter_features(X_te_raw, features)
+        del X_te_raw                      # libera as colunas não usadas (~1.4 GB no ERENO)
         X_tr, y_tr = X_f, y_all           # baseline treina no train inteiro
         print(f"  test set pré-definido: {test_file}.csv ({len(y_te):,} amostras)")
     else:
@@ -386,9 +400,12 @@ def main(args: list[str] | None = None) -> None:
         aggregation = conf.get("architecture", {}).get("aggregation", "inplace"),
         initial_parameters = fed_strategy.initialize_parameters(None),
     )
+    eval_sample = sim_conf.get("eval_sample")
     hybrid = HybridStrategy(
         fed_strategy, glow_strategy, arch_manager,
-        round_eval_fn=_make_round_eval_fn(strategy_name, X_te, y_te),
+        round_eval_fn=_make_round_eval_fn(
+            strategy_name, X_te, y_te,
+            eval_sample=int(eval_sample) if eval_sample else None),
     )
 
     print(f"\n  ④ Strategy: {strategy_name}  |  ArchManager: {arch_manager.__class__.__name__}")
