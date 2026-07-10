@@ -58,6 +58,41 @@ adotando o recebido):
 | D | **seleção por score** (ScoreAVG do GLow adaptado) | head adota o MELHOR booster da vizinhança (validação local) | constante | evita poluição por especialistas ruidosos |
 | E | **destilação** | novo booster treinado com rótulos suaves dos vizinhos | constante | a forma teoricamente correta de "promediar" árvores; custo maior |
 
+## Análise: k-de-n, redundância e o efeito da difusão
+
+O operador C (k-de-n) só faz sentido sob duas condições, ambas ligadas a
+decisões já tomadas no projeto:
+
+**1. k-de-n e sensores redundantes são um pacote.** Os "n votantes"
+precisam ser testemunhas reais do mesmo fenômeno:
+
+- **Com redundância** (particionador `attack` com N > nº de ataques: 2
+  sensores da mesma classe, treinados em metades disjuntas do ataque e
+  fatias disjuntas de benignos), k=2 é corroboração entre testemunhas
+  independentes — erros de FP tendem a ser independentes, então o alarme
+  corroborado tem FPR ≈ produto dos individuais (2% e 2% → ~0,04%,
+  contra ~4% da união), com recall preservado para a classe duplicada.
+- **No 1:1 estrito** (1 especialista por ataque), k=2 depende de
+  generalização cruzada entre especialistas (medida: trios cobrem ~73%,
+  bem além das próprias classes — ataques "aparentados" se corroboram),
+  mas **suprime as classes sem parentes**. Refinamento natural: **k por
+  classe** (k=2 onde há 2 sensores, k=1 onde há 1), que degenera para a
+  união seletiva.
+
+**2. A difusão afeta os operadores de forma oposta** ("quando o gossip
+difunde, fica tudo igual?"):
+
+| | Operador A (merge) | Operador B (união) |
+|---|---|---|
+| Após a difusão, os nós... | convergem **misturando** — modelos progressivamente correlacionados (nunca idênticos: dados locais diferem) | convergem **colecionando** — todo nó carrega o MESMO conjunto, mas os membros permanecem os N boosters distintos |
+| O que homogeneíza | os próprios votantes | quem carrega os votantes (a diversidade interna é preservada pela deduplicação) |
+| k-de-n | perde sentido com o tempo (votos correlacionados não corroboram) | mantém/ganha sentido — após difusão, qualquer nó aplica localmente a votação da rede inteira |
+
+Consequência para o desenho experimental: o k-de-n é um diferencial
+**exclusivo do operador B** e casa com o particionador de sensores
+redundantes — mais um eixo de comparação A×B, além de acurácia/FPR e
+custo de crescimento do modelo.
+
 ## Protocolo corrigido (por round gossip)
 
 ```
