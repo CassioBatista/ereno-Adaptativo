@@ -315,11 +315,22 @@ def main(args: list[str] | None = None) -> None:
     # ── ① GRASP ───────────────────────────────────────────────────────────────
     print(f"\n{'='*60}")
     fixed_features = grasp_conf.get("features")
+    features_file  = grasp_conf.get("features_file")
     if fixed_features:
         # features fixadas no YAML: pula o GRASP — garante o MESMO subconjunto
         # entre execuções comparadas (sanity check V5 do plano de validação)
         features = sorted(int(f) for f in fixed_features)
         print(f"  ① GRASP pulado — features fixadas pelo conf")
+    elif features_file:
+        # pipeline separado: as features vêm do JSON gerado uma única vez
+        # pelo GRASP one-shot (python ereno.py grasp ...) — a simulação
+        # NUNCA executa seleção de features
+        import json as _json
+        with open(features_file) as fh:
+            payload = _json.load(fh)
+        features = sorted(int(f) for f in payload["features"])
+        print(f"  ① GRASP bypassado — {features_file} "
+              f"({payload.get('grasp_method')}, f1_cv={payload.get('f1_grasp_cv')})")
     else:
         print(f"  ① GRASP — {grasp_method}  clf={clf_idx+1}  dataset={dataset}")
         features = run_grasp(grasp_method, clf_idx, dataset, max_iterations, grasp_sample)

@@ -82,6 +82,18 @@ def cmd_distributed(args: list[str]) -> None:
     distributed.main(args)
 
 
+def cmd_grasp(args: list[str]) -> None:
+    """Despacha para a seleção de features one-shot (main_grasp.py).
+
+    Roda o GRASP até a convergência e persiste as features em JSON;
+    as simulações carregam o arquivo via grasp.features_file no YAML.
+    """
+    if len(args) < 3:
+        _usage_exit("grasp requer: <grasp_method> <clf_idx> <dataset_name>")
+    import main_grasp as grasp
+    grasp.main(args)
+
+
 def main() -> None:
     if len(sys.argv) < 2:
         _usage_exit()
@@ -94,12 +106,14 @@ def main() -> None:
             cmd_central(args)
         case "distributed":
             cmd_distributed(args)
+        case "grasp":
+            cmd_grasp(args)
         case "help" | "--help" | "-h":
             print(__doc__)
         case _:
             _usage_exit(
                 f"subcomando desconhecido: '{subcmd}'. "
-                f"Use 'central' ou 'distributed'."
+                f"Use 'central', 'distributed' ou 'grasp'."
             )
 
 
