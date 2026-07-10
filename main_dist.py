@@ -301,8 +301,15 @@ def main(args: list[str] | None = None) -> None:
 
     # ── ① GRASP ───────────────────────────────────────────────────────────────
     print(f"\n{'='*60}")
-    print(f"  ① GRASP — {grasp_method}  clf={clf_idx+1}  dataset={dataset}")
-    features = run_grasp(grasp_method, clf_idx, dataset, max_iterations, grasp_sample)
+    fixed_features = grasp_conf.get("features")
+    if fixed_features:
+        # features fixadas no YAML: pula o GRASP — garante o MESMO subconjunto
+        # entre execuções comparadas (sanity check V5 do plano de validação)
+        features = sorted(int(f) for f in fixed_features)
+        print(f"  ① GRASP pulado — features fixadas pelo conf")
+    else:
+        print(f"  ① GRASP — {grasp_method}  clf={clf_idx+1}  dataset={dataset}")
+        features = run_grasp(grasp_method, clf_idx, dataset, max_iterations, grasp_sample)
     print(f"  Features selecionadas ({len(features)}): {sorted(features)}")
 
     # ── ② Topologia ───────────────────────────────────────────────────────────
