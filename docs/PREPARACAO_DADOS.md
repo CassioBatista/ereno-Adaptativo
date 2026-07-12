@@ -83,6 +83,15 @@ arquivo — todos os all-in-one começam com uma amostra normal/BENIGN.
      campos numéricos mantidos (frameLen, APDUSize, gooseLengthDiff...) —
      o sinal legítimo não se perde;
   4. zero descartes por higiene (dado sintético é limpo).
+  5. **Exclusão adicional na SELEÇÃO** (não no arquivo): os marcadores de
+     posição temporal absoluta — `F1 Time`, `F38 t`, `F39 GooseTimestamp`
+     — ficam fora das RCLs do GRASP (`python/feature_subsets/ereno.py`),
+     pela mesma justificativa dos nominais: posição na linha do tempo da
+     simulação é artefato do ambiente, não comportamento — não generaliza
+     e explora o viés de blocos da CV interna (a primeira seleção
+     definitiva elegeu `t`, confirmando o risco). As temporais
+     **relativas** (`timestampDiff`, `tDiff`, `timeFromLastChange`,
+     `delay`) permanecem elegíveis — são comportamentais.
 - **Resultado**: 8 classes (normal + 7 ataques GOOSE), **93,4% normal**
   (desbalanceamento ~14:1).
 - **Split**: **o train/test do autor é preservado** (`dataset.test_file` no
