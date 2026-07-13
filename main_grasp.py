@@ -102,6 +102,7 @@ def main(args: list[str] | None = None) -> None:
 
     grasp.setup_grasp_microservice(clf_idx)
 
+    dropped_classes: list[int] = []
     if sample and grasp._all_instances is not None:
         X_all, y_all = grasp._all_instances
         if sample < len(y_all):
@@ -109,8 +110,23 @@ def main(args: list[str] | None = None) -> None:
                 np.arange(len(y_all)), train_size=sample,
                 random_state=config.GRASP_SEED, stratify=y_all,
             )
-            grasp._all_instances = (X_all[idx], y_all[idx])
+            X_s, y_s = X_all[idx], y_all[idx]
             print(f"[GRASP] subamostra estratificada: {sample:,} de {len(y_all):,}")
+
+            # Classes ultra-raras podem ficar com <10 amostras (ou zero) na
+            # subamostra — inavaliáveis em 5 folds, e o XGBClassifier exige
+            # rótulos contíguos 0..n-1. Filtra e re-mapeia (normal continua 0).
+            classes, counts = np.unique(y_s, return_counts=True)
+            keep_classes = classes[counts >= 10]
+            dropped_classes = sorted(int(c) for c in set(classes) - set(keep_classes))
+            if dropped_classes or len(keep_classes) < (y_all.max() + 1):
+                mask = np.isin(y_s, keep_classes)
+                X_s, y_s = X_s[mask], y_s[mask]
+                remap = {int(c): i for i, c in enumerate(sorted(keep_classes))}
+                y_s = np.array([remap[int(v)] for v in y_s], dtype=y_s.dtype)
+                print(f"[GRASP] classes raras fora da subamostra/avaliação: "
+                      f"{dropped_classes} (rótulos re-mapeados para contíguos)")
+            grasp._all_instances = (X_s, y_s)
 
     # convergência: para após K iterações sem melhora do melhor global
     grasp.max_no_improvement = no_improve
@@ -135,6 +151,7 @@ def main(args: list[str] | None = None) -> None:
         "evaluations":    grasp.number_evaluation,
         "no_improvement": no_improve,
         "sample":         sample,
+        "dropped_classes": dropped_classes,
         "seed":           config.GRASP_SEED,
         "elapsed_s":      round(dt, 1),
     }
