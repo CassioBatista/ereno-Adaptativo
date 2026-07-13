@@ -5,8 +5,8 @@ run_name: exp-gossip
 seed: 42
 
 grasp:
-  enabled: true
-  max_iterations: 10
+  # seleção definitiva (GRASP one-shot J48, convergência plena)
+  features_file: features/all_in_one_cicids_v2.json
 
 dataset:
   name: all_in_one_cicids

@@ -8,11 +8,9 @@ run_name: exp-ereno-misto
 seed: 42
 
 grasp:
-  enabled: true
-  max_iterations: 10
-  # GRASP roda numa subamostra estratificada (train tem 2,96M linhas);
-  # o treinamento distribuído usa o dataset completo.
-  sample: 150000
+  # seleção definitiva (GRASP one-shot J48, convergência plena,
+  # RCL sem tempo absoluto — ver docs/PREPARACAO_DADOS.md)
+  features_file: features/all_in_one_ereno_train.json
 
 dataset:
   name: all_in_one_ereno_train

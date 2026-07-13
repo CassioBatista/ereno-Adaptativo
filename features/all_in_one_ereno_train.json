@@ -1,0 +1,22 @@
+{
+  "dataset": "all_in_one_ereno_train",
+  "grasp_method": "GR-G-VND",
+  "classifier_idx": 2,
+  "features": [
+    40,
+    41,
+    42,
+    43,
+    44,
+    54,
+    56,
+    57
+  ],
+  "f1_grasp_cv": 99.87945755901558,
+  "iterations": 16,
+  "evaluations": 8776,
+  "no_improvement": 15,
+  "sample": 150000,
+  "seed": 5,
+  "elapsed_s": 12622.3
+}

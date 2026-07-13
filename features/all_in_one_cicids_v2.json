@@ -1,0 +1,27 @@
+{
+  "dataset": "all_in_one_cicids_v2",
+  "grasp_method": "GR-G-VND",
+  "classifier_idx": 2,
+  "features": [
+    1,
+    4,
+    10,
+    25,
+    33,
+    50,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    78
+  ],
+  "f1_grasp_cv": 99.68049034950442,
+  "iterations": 16,
+  "evaluations": 15102,
+  "no_improvement": 15,
+  "sample": 150000,
+  "seed": 5,
+  "elapsed_s": 22384.7
+}
