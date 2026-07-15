@@ -12,7 +12,8 @@ custo/ganho de cada arquitetura contra um baseline monolítico. Construído
 sobre o framework Flower 1.31+ [ref], cuja simulação utiliza o Ray [ref]
 como backend de execução, com scikit-learn [ref] e XGBoost [ref]; a
 implementação de *gossip learning* é baseada na estratégia GLow [ref].
-Executa em WSL/Ubuntu com Python 3.14.
+Executa em Ubuntu Linux sobre o Windows Subsystem for Linux (WSL2) com
+Python 3.14.
 
 Referências: Flower — Beutel et al., 2020 (arXiv:2007.14390); Ray — Moritz
 et al., OSDI 2018; scikit-learn — Pedregosa et al., JMLR 2011; XGBoost —
@@ -112,6 +113,20 @@ Para um dataset inteiramente novo:
 4. opcionais conforme o dado: `dataset.test_file` (splits pré-definidos /
    estrutura de blocos), `grasp.sample` (datasets grandes) e a
    documentação de proveniência/higiene em `docs/DATASETS.md`.
+
+## Ambiente de execução
+
+O projeto roda em **Ubuntu Linux sobre o WSL2** (Windows Subsystem for
+Linux) — não por preferência, mas por necessidade: o motor de simulação
+do Flower depende do **Ray** como backend, e o Ray não publica pacote
+para Windows no Python 3.14. O fluxo de desenvolvimento reflete isso —
+edição e validação de lógica no Windows, execução das simulações e do
+GRASP no WSL (venv `venv-ereno314`, projeto em `~/ereno-Adaptativo`).
+
+Como o WSL2 roda num contêiner leve, tem limites próprios (memória
+configurável em `.wslconfig`) e é sensível à suspensão do Windows — em
+execuções longas, convém manter a máquina ligada e usar os scripts de
+retomada idempotente (`scripts/resume_grasp_selections.sh`).
 
 ## Particionadores
 
