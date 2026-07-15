@@ -108,6 +108,8 @@ Datasets de trabalho: **CICIDS2017** (regenerado dos originais — `all_in_one_c
 
 | Documento | Conteúdo |
 |---|---|
+| [docs/ARQUITETURA.md](docs/ARQUITETURA.md) | visão geral do sistema: pipelines, dados, estratégias, achados e pendências |
+| [docs/GOSSIP_DESIGN.md](docs/GOSSIP_DESIGN.md) | desenho do gossip learning: fidelidade ao GLow, operadores de agregação XGBoost, análise k-de-n |
 | [docs/PREPARACAO_DADOS.md](docs/PREPARACAO_DADOS.md) | pipeline de dados completo: preparação dos datasets, seleção de features (GRASP) e particionamento |
 | [docs/DATASETS.md](docs/DATASETS.md) | proveniência, hashes de verificação e receitas de regeneração |
 | [docs/PLANO_VALIDACAO.md](docs/PLANO_VALIDACAO.md) | plano de validação e testes: matriz de experimentos, métricas e sanity checks |
