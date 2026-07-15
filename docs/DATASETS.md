@@ -78,7 +78,7 @@ python scripts/regenerate_cicids_v2.py <dir_dos_csvs> all_in_one_cicids_v2.csv
 ## ERENO IEC-61850 (all_in_one_ereno_train/test.csv — NÃO versionados)
 
 Dataset do domínio-alvo da pesquisa: IDS para subestações IEC-61850
-(mensagens GOOSE/SV, tráfego sintético do framework ERENO). Fonte:
+(mensagens GOOSE/SV geradas pelo framework ERENO a partir de medições reais). Fonte:
 <https://www.kaggle.com/datasets/sequincozes/ereno-iec61850-ids>
 (Quincozes et al.; download anônimo via `kagglehub`).
 
@@ -92,10 +92,10 @@ Dataset do domínio-alvo da pesquisa: IDS para subestações IEC-61850
 - **58 features numéricas mantidas** (F1..F58), na ordem do ARFF original.
   Os 11 atributos nominais (ethDst/ethSrc/ethType, gooseAppid, TPID,
   gocbRef, datSet, goID, test, ndsCom, protocol) são **descartados**:
-  identidades (MACs/goID) são vazamento em testbed sintético — o modelo
+  identidades (MACs/goID) são vazamento do ambiente experimental — o modelo
   memorizaria *quem* ataca, não *como*; o sinal comportamental já está
   nas features derivadas (stDiff, sqDiff, timestampDiff, delay...).
-- Zero linhas descartadas por higiene (dado sintético, sem NaN/Inf).
+- Zero linhas descartadas por higiene (dado gerado pelo framework, sem NaN/Inf).
 
 ### Distribuição (train ≈ test)
 
