@@ -78,7 +78,7 @@ python scripts/regenerate_cicids_v2.py <dir_dos_csvs> all_in_one_cicids_v2.csv
 ## ERENO IEC-61850 (all_in_one_ereno_train/test.csv — NÃO versionados)
 
 Dataset do domínio-alvo da pesquisa: IDS para subestações IEC-61850
-(mensagens GOOSE/SV geradas pelo framework ERENO a partir de medições reais). Fonte:
+(mensagens GOOSE/SV geradas pelo framework ERENO, que simula a comunicação IEC-61850 entre subestações elétricas). Fonte:
 <https://www.kaggle.com/datasets/sequincozes/ereno-iec61850-ids>
 (Quincozes et al.; download anônimo via `kagglehub`).
 

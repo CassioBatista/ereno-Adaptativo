@@ -5,7 +5,7 @@
 Pipeline de pesquisa para IDS adaptativo em aprendizado **centralizado ou
 distribuído**: oferece múltiplos classificadores — incluindo XGBoost — sobre
 datasets de detecção de intrusão (tráfego TI de testbed, CICIDS2017 [ref]; e
-tráfego IEC-61850 gerado pelo framework ERENO a partir de medições reais
+tráfego IEC-61850 gerado pelo framework ERENO, que simula a comunicação GOOSE/SV entre subestações elétricas
 [ref]) e, no aprendizado distribuído, permite comutar, round a round, entre
 aprendizado federado e *gossip learning* na mesma simulação, medindo o
 custo/ganho de cada arquitetura contra um baseline monolítico. Construído
@@ -80,7 +80,7 @@ GRASP + cross-validation, sem federação.
 ## Os dados
 
 - **ERENO IEC-61850** (domínio-alvo): 5,9 M mensagens GOOSE/SV geradas pelo
-  framework ERENO a partir de medições reais (Kaggle/Quincozes), convertidas
+  framework ERENO, que simula a comunicação IEC-61850 entre subestações elétricas (Kaggle/Quincozes), convertidas
   para 58 features numéricas — 11 atributos nominais descartados
   (identificadores do ambiente experimental) e 3 marcadores de tempo
   absoluto fora da RCL de seleção, justificados atributo a atributo;

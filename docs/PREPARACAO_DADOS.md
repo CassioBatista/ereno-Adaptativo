@@ -48,7 +48,7 @@ arquivo — todos os all-in-one começam com uma amostra normal/BENIGN.
 ### 1.2 ERENO IEC-61850 (`all_in_one_ereno_train/test.csv`) — dataset alvo
 
 - **Origem**: Kaggle `sequincozes/ereno-iec61850-ids` (download anônimo via
-  `kagglehub`), tráfego GOOSE/SV gerado pelo framework ERENO a partir de medições reais.
+  `kagglehub`), tráfego GOOSE/SV gerado pelo framework ERENO, que simula a comunicação IEC-61850 entre subestações elétricas.
 - **Receita**: [scripts/build_ereno_dataset.py](../scripts/build_ereno_dataset.py):
   1. lê os `train.arff`/`test.arff` do autor (~2,96 M linhas cada);
   2. **mantém as 58 features numéricas** (elétricas: correntes/tensões/RMS/
