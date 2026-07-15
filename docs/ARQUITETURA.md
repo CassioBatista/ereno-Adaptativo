@@ -93,6 +93,26 @@ GRASP + cross-validation, sem federação.
   limitações em [DATASETS.md](DATASETS.md) e
   [PREPARACAO_DADOS.md](PREPARACAO_DADOS.md).
 
+## Extensibilidade a outros datasets
+
+O pipeline é agnóstico ao dataset — os dois em uso são escolha
+experimental, não limite. **Disponíveis no repositório sem código novo**:
+WSN-DS (`all_in_one_wsn.csv`, 374 mil amostras) e NSL-KDD
+(`all_in_one_kdd.csv`, 148 mil), com classes de features registradas —
+basta a seleção one-shot (`ereno.py grasp`) e um YAML de experimento.
+Para um dataset inteiramente novo:
+
+1. converter para o formato all-in-one (ARFF numérico `F1..FN` + classe
+   por último; primeira linha da classe normal) — o
+   `scripts/build_ereno_dataset.py` serve de gabarito, inclusive para as
+   decisões de descarte de atributos;
+2. registrar a classe de features em `python/feature_subsets/` (~10
+   linhas: RCLs) e o nome no seletor de datasets;
+3. rodar a seleção one-shot → `features/<dataset>.json`;
+4. opcionais conforme o dado: `dataset.test_file` (splits pré-definidos /
+   estrutura de blocos), `grasp.sample` (datasets grandes) e a
+   documentação de proveniência/higiene em `docs/DATASETS.md`.
+
 ## Particionadores
 
 `iid`, `dirichlet(α)`, `shard`, `exponential`, `linear` e **`attack`**:
