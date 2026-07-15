@@ -58,15 +58,15 @@ arquivo — todos os all-in-one começam com uma amostra normal/BENIGN.
 
      | Atributo | O que é | Justificativa da remoção |
      |---|---|---|
-     | `ethDst` | Endereço MAC destino | Identificador de hardware específico da rede experimental — não generaliza para outras redes |
+     | `ethDst` | Endereço MAC destino | Identificador de hardware específico do ambiente de simulação — não generaliza para outras redes |
      | `ethSrc` | Endereço MAC origem | Mesmo motivo do `ethDst` |
      | `ethType` | Tipo Ethernet (0x88b8 = GOOSE) | Constante estrutural do protocolo, não característica de comportamento |
-     | `gooseAppid` | AppID do publicador GOOSE | Constante de configuração do ambiente simulado |
+     | `gooseAppid` | AppID do publicador GOOSE | Constante de configuração do ambiente de simulação |
      | `TPID` | Tag VLAN (0x8100) | Constante de configuração de rede — não varia com o comportamento |
-     | `gocbRef` | Referência do bloco de controle GOOSE | Identificador de configuração da subestação — específico do ambiente de captura |
+     | `gocbRef` | Referência do bloco de controle GOOSE | Identificador de configuração da subestação — específico do ambiente de simulação |
      | `datSet` | Nome do dataset GOOSE | Rótulo de configuração, não característica do tráfego em si |
      | `goID` | Identificador GOOSE | ID fixo de configuração — não varia com ataques |
-     | `test` | Flag de teste (IEC 61850) | Constante (FALSE) no tráfego legítimo do testbed |
+     | `test` | Flag de teste (IEC 61850) | Constante (FALSE) no tráfego legítimo simulado |
      | `ndsCom` | Flag *needs commissioning* | Estado de configuração, constante no ambiente |
      | `protocol` | Tipo da mensagem (GOOSE/SV) | Indicador estrutural, não comportamental |
 
@@ -77,7 +77,7 @@ arquivo — todos os all-in-one começam com uma amostra normal/BENIGN.
      MACs broadcast, ethertype 0x77b7, appid/TPID alternativos, flags
      TRUE). Consequências: (a) não separam nada no grosso dos dados — os
      ataques abundantes usam os valores legítimos por definição; (b) onde
-     desviam, são vazamento de artefato do testbed (memorização de
+     desviam, são vazamento de artefato do ambiente de simulação (memorização de
      identidade, não de comportamento); (c) em implantação real são
      forjáveis trivialmente, e as mesmas mensagens anômalas já alteram
      campos numéricos mantidos (frameLen, APDUSize, gooseLengthDiff...) —
