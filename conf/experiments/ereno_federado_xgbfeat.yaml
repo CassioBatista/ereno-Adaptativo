@@ -1,0 +1,35 @@
+# ERENO — FEDERADO PURO, 10 clientes especialistas, features do XGBoost.
+# Fusão OR (especialistas: a soma de margens sofre veto da maioria).
+# O baseline CENTRALIZADO (monolítico) é impresso automaticamente ao final.
+# Uso: python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
+#        --conf conf/experiments/ereno_federado_xgbfeat.yaml --clients 10
+
+run_name: ereno-fed-xgbfeat-c10
+seed: 42
+
+grasp:
+  # features selecionadas com o avaliador XGBoost (análise de estabilidade)
+  features_file: features/all_in_one_ereno_train_xgb.json
+
+dataset:
+  name: all_in_one_ereno_train
+  test_file: all_in_one_ereno_test
+  partitioner: attack
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 10
+
+simulation:
+  num_rounds: 20
+  strategy: xgb_bagging
+  xgb_fusion: or
+  eval_sample: 500000
+
+architecture:
+  manager: fixed
+  default_mode: federated
+  aggregation: xgb_union
+  schedule:
+    - {from: 1, to: 20, mode: federated}
