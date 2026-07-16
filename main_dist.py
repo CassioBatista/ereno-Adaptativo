@@ -355,6 +355,9 @@ def main(args: list[str] | None = None) -> None:
 
     # ── ③ Particionamento ─────────────────────────────────────────────────────
     kwargs = {}
+    benign_cap = data_conf.get("benign_cap")
+    if benign_cap:
+        kwargs["benign_cap"] = int(benign_cap)
     if partitioner_arg is not None:
         if partitioner == "dirichlet":
             kwargs["alpha"] = float(partitioner_arg)

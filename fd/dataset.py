@@ -55,6 +55,23 @@ def load_and_partition(
 
     rng = np.random.default_rng(seed)
 
+    # benign_cap: limita a classe normal a N amostras (subamostra aleatória),
+    # mantendo TODOS os ataques. Controle de memória para datasets muito
+    # desbalanceados e redundantes (ex.: ERENO, 93% normal) — os ataques,
+    # que são o sinal escasso, ficam intactos.
+    benign_cap = kwargs.get("benign_cap")
+    if benign_cap:
+        benign_cap = int(benign_cap)
+        normal = util.normal_class
+        normal_idx = np.where(y_all == normal)[0]
+        if len(normal_idx) > benign_cap:
+            drop = rng.permutation(normal_idx)[benign_cap:]
+            keep = np.ones(len(y_all), dtype=bool)
+            keep[drop] = False
+            Xf, y_all = Xf[keep], y_all[keep]
+            print(f"[benign_cap] classe normal limitada a {benign_cap:,} "
+                  f"(de {len(normal_idx):,}); ataques preservados")
+
     match partitioner:
         case "attack":
             splits = _attack_per_client(Xf, y_all, num_clients, rng)
