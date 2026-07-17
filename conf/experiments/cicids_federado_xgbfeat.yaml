@@ -1,0 +1,34 @@
+# CICIDS2017 (cenário TI/smart grid) — FEDERADO PURO, 10 clientes
+# especialistas, features do XGBoost. Réplica do experimento ERENO.
+# 10 clientes = 10 classes de ataque → mapeamento 1:1 estrito.
+# O baseline CENTRALIZADO (monolítico) é impresso automaticamente.
+# Uso: python ereno.py distributed GR-G-VND 6 all_in_one_cicids_v2 \
+#        --conf conf/experiments/cicids_federado_xgbfeat.yaml --clients 10
+
+run_name: cicids-fed-xgbfeat-c10
+seed: 42
+
+grasp:
+  features_file: features/all_in_one_cicids_v2_xgb.json
+
+dataset:
+  name: all_in_one_cicids_v2
+  partitioner: attack
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 10
+
+simulation:
+  num_rounds: 20
+  strategy: xgb_bagging
+  xgb_fusion: or
+  eval_sample: 300000
+
+architecture:
+  manager: fixed
+  default_mode: federated
+  aggregation: xgb_union
+  schedule:
+    - {from: 1, to: 20, mode: federated}
