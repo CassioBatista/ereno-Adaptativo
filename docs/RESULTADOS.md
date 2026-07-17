@@ -194,6 +194,30 @@ Quatro cenários, nos dois datasets e nos dois sentidos, mesmo setup
    teve efeito mensurável — e, de quebra, reexibe a não-monotonicidade do
    gossip (pico no round 3), reforçando o argumento da união seletiva (§4).
 
+### 5.1 Tolerância a falhas — perda progressiva de nós
+
+Cenário (ERENO, 60 rounds, `results/ereno_nodeloss_c10.log`,
+`conf/experiments/ereno_adapt_nodeloss.yaml`): 20 rounds FL, depois gossip
+com a rede **encolhendo** — 10 (rounds 21–30) → 7 (31–40) → 5 (41–50) →
+3 (51–60) nós ativos (via `active_clients`; saem os índices mais altos =
+os especialistas em masquerade/poisoned).
+
+**Resultado: F1 87,54 / recall 99,67 / FPR 2,04 constantes nos 60 rounds**
+— linha perfeitamente horizontal atravessando as quatro reduções
+(`conv_ereno_nodeloss_metricas.png`). Perder 70% dos sensores (10→3) **não
+degrada a detecção em nada**.
+
+Motivo: os 20 rounds de FL formaram a união completa antes do gossip; a
+partir daí, cada nó carrega no pool o conhecimento de toda a rede. Quando
+os nós de masquerade/poisoned saem, seus boosters já estão nos nós
+sobreviventes — nenhum ataque deixa de ser detectado. É a **resiliência do
+gossip com memória**: para um IDS de infraestrutura crítica, o sistema
+opera sem servidor central e sobrevive à queda progressiva de equipamentos.
+
+*Escopo*: o teste derruba nós sobre uma rede **já madura** (conhecimento
+difundido). Não cobre perda de nós *durante* a difusão inicial — cenário
+mais duro, deixado como trabalho futuro.
+
 ## Notas metodológicas
 
 - **`benign_cap`**: os 2,76 M benignos de treino foram subamostrados para
