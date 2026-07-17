@@ -7,10 +7,12 @@ Extrai as linhas 'ROUND;<n>;<modo>;f1=..;recall=..;fpr=..' e
   3. <saida>.csv           — dados tabulados (log, round, modo, f1, recall, fpr, boosters)
 
 Uso:
-    python scripts/plot_convergencia.py <saida> <rótulo>=<log.log> [<rótulo>=<log.log> ...]
+    python scripts/plot_convergencia.py <saida> [--titulo "..."] \
+        <rótulo>=<log.log> [<rótulo>=<log.log> ...]
 
 Exemplo:
     python scripts/plot_convergencia.py results/conv_ereno_c10 \
+        --titulo "ERENO, 10 clientes" \
         Federado=results/ereno_fed_percli_c10.log \
         Gossip=results/ereno_gossip_percli_c10.log
 """
@@ -52,8 +54,14 @@ def main():
     if len(sys.argv) < 3:
         sys.exit(__doc__)
     out = sys.argv[1]
+    args = sys.argv[2:]
+    titulo = "10 clientes"
+    if "--titulo" in args:
+        i = args.index("--titulo")
+        titulo = args[i + 1]
+        del args[i:i + 2]
     series = []
-    for arg in sys.argv[2:]:
+    for arg in args:
         label, path = arg.split("=", 1)
         rounds, boosters = parse_log(path)
         series.append((label, rounds, boosters))
@@ -81,7 +89,7 @@ def main():
         ax.set_title(title)
         ax.grid(True, alpha=0.3)
         ax.legend()
-    fig.suptitle("Convergência por round — federado vs gossip (ERENO, 10 clientes)")
+    fig.suptitle(f"Convergência por round — federado vs gossip ({titulo})")
     fig.tight_layout()
     fig.savefig(f"{out}_metricas.png", dpi=130)
     print(f"[plot] {out}_metricas.png")
