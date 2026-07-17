@@ -1,0 +1,36 @@
+# ERENO — ADAPTABILIDADE INVERTIDA: 20 rounds GOSSIP → 20 rounds FEDERADO.
+# Exercita o chaveamento no sentido oposto (gossip→federated).
+# Na comutação (round 21) a UNIÃO do pool gossip vira o global federado.
+# Uso: python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
+#        --conf conf/experiments/ereno_adapt_gl_fl.yaml --clients 10
+
+run_name: ereno-adapt-gl-fl-c10
+seed: 42
+
+grasp:
+  features_file: features/all_in_one_ereno_train_xgb.json
+
+dataset:
+  name: all_in_one_ereno_train
+  test_file: all_in_one_ereno_test
+  partitioner: attack
+  benign_cap: 500000
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 10
+
+simulation:
+  num_rounds: 40
+  strategy: xgb_bagging
+  xgb_fusion: or
+  eval_sample: 500000
+
+architecture:
+  manager: fixed
+  default_mode: gossip
+  aggregation: xgb_union
+  schedule:
+    - {from: 1,  to: 20, mode: gossip}
+    - {from: 21, to: 40, mode: federated}

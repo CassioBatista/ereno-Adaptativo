@@ -14,7 +14,7 @@ from flwr.server.criterion import Criterion
 from flwr.server.strategy import Strategy
 
 from fd.arch_manager import ArchitectureManager
-from fd.strategy.glow_strategy import resolve_node_index, learn_cid_map
+from fd.strategy.glow_strategy import resolve_node_index, learn_cid_map, dedup_union
 
 
 class _AllowedCidsCriterion(Criterion):
@@ -132,16 +132,26 @@ class HybridStrategy(Strategy):
         if from_mode == "gossip" and to_mode == "federated":
             glow = self._strategies["gossip"]
             if hasattr(glow, "pool_parameters") and glow.pool_parameters:
-                arrays_list = [
-                    parameters_to_ndarrays(p)
-                    for p in glow.pool_parameters.values()
-                ]
-                avg: NDArrays = [
-                    sum(a[i] for a in arrays_list) / len(arrays_list)
-                    for i in range(len(arrays_list[0]))
-                ]
-                parameters = ndarrays_to_parameters(avg)
-                print(f"[Hybrid] gossip→federated: averaged {len(arrays_list)} node models")
+                agg = str(getattr(glow, "aggregation", ""))
+                if agg.startswith("xgb"):
+                    # XGBoost: boosters não são promediáveis — a transferência
+                    # é a UNIÃO (deduplicada) do conhecimento acumulado nos nós
+                    parameters = dedup_union(list(glow.pool_parameters.values()))
+                    print(f"[Hybrid] gossip→federated (xgb): união do pool de "
+                          f"{len(glow.pool_parameters)} nós → "
+                          f"{len(parameters.tensors)} boosters")
+                else:
+                    arrays_list = [
+                        parameters_to_ndarrays(p)
+                        for p in glow.pool_parameters.values()
+                    ]
+                    avg: NDArrays = [
+                        sum(a[i] for a in arrays_list) / len(arrays_list)
+                        for i in range(len(arrays_list[0]))
+                    ]
+                    parameters = ndarrays_to_parameters(avg)
+                    print(f"[Hybrid] gossip→federated: averaged "
+                          f"{len(arrays_list)} node models")
 
         elif from_mode == "federated" and to_mode == "gossip":
             glow = self._strategies["gossip"]
