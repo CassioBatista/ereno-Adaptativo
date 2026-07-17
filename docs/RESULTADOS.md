@@ -154,6 +154,46 @@ com os ruins. É a evidência mais forte a favor da união seletiva / k-de-n
 já domina no round 1 — e refina para 99,2%; no ERENO partia de 51,6%,
 curva bem mais acentuada, pois nenhum sensor dominava.)
 
+## 5. Adaptabilidade — comutação de arquitetura em tempo de execução
+
+O experimento central do ereno-**Adaptativo**: comutar entre federado e
+gossip no meio do treinamento (round 21 de 40) e medir o efeito.
+Quatro cenários, nos dois datasets e nos dois sentidos, mesmo setup
+(10 clientes `attack`, features XGB, fusão OR). Logs
+`results/{ereno,cicids}_adapt_{fl_gl,gl_fl}_c10.log`; curvas
+`results/conv_*_adapt_*_metricas.png`.
+
+**A transferência de modelo na comutação** (implementada na
+`HybridStrategy._transfer_model`):
+- **federated → gossip**: o modelo global é semeado em todos os nós da
+  topologia (cada nó começa o gossip com a união completa);
+- **gossip → federated** (XGBoost): a **união deduplicada** do pool vira
+  o global federado — boosters não são promediáveis, então a média
+  aritmética original (válida só para NaiveBayes) foi substituída pela
+  união (senão o caminho GL→FL falhava).
+
+| Cenário | Comutação (round 21) | Comportamento observado |
+|---|---|---|
+| ERENO FL→GL | fed→gossip | F1 constante em 87,54 do round 1 ao 40 — comutação sem custo |
+| ERENO GL→FL | gossip→fed | difusão sobe 60→87,54 (round 8), comuta no 21 **sem queda** |
+| CICIDS FL→GL | fed→gossip | F1 constante em 94,64 — comutação sem custo |
+| CICIDS GL→FL | gossip→fed | pico 97,25 (r3) → 94,27 → **degrau no r21** para 94,64 (FPR 2,90→2,69) |
+
+**Conclusões:**
+
+1. **A comutação é transparente nos dois sentidos** — o modelo é
+   preservado, sem queda de desempenho. O sistema pode migrar entre
+   federado e gossip conforme a infraestrutura muda (perda/retorno do
+   servidor central) sem sacrificar a detecção. É a validação central da
+   proposta;
+2. **Transferir o modelo torna a comutação gratuita**: no FL→GL, o gossip
+   não precisa difundir do zero (partiria de 51,6%) porque recebe a união
+   pronta do federado — a curva é uma reta atravessando a troca;
+3. **A comutação é observável, não apenas nominal**: no CICIDS GL→FL, o
+   degrau no FPR (2,90→2,69) no round 21 prova que a troca de arquitetura
+   teve efeito mensurável — e, de quebra, reexibe a não-monotonicidade do
+   gossip (pico no round 3), reforçando o argumento da união seletiva (§4).
+
 ## Notas metodológicas
 
 - **`benign_cap`**: os 2,76 M benignos de treino foram subamostrados para
