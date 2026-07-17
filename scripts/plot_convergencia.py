@@ -24,6 +24,14 @@ import sys
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MultipleLocator
+
+
+def _int_rounds_axis(ax, max_round: int) -> None:
+    """Eixo x com rounds inteiros: passo 2 (2,4,6,...), ou 5 se >30 rounds."""
+    step = 2 if max_round <= 30 else 5
+    ax.xaxis.set_major_locator(MultipleLocator(step))
+    ax.set_xlim(left=1)
 
 ROUND_RE = re.compile(
     r"^ROUND;(\d+);(\w+);f1=([\d.]+);recall=([\d.]+);fpr=([\d.]+)")
@@ -81,14 +89,17 @@ def main():
     fig, axes = plt.subplots(1, 3, figsize=(15, 4.2))
     for ax, metric, title in zip(
             axes, ["f1", "recall", "fpr"], ["F1-score (%)", "Recall (%)", "FPR (%)"]):
+        max_r = 1
         for label, rounds, _ in series:
             xs = sorted(rounds)
             ys = [rounds[r][metric] for r in xs]
             ax.plot(xs, ys, marker="o", markersize=3, label=label)
+            max_r = max(max_r, xs[-1] if xs else 1)
         ax.set_xlabel("round")
         ax.set_title(title)
         ax.grid(True, alpha=0.3)
         ax.legend()
+        _int_rounds_axis(ax, max_r)
     fig.suptitle(f"Convergência por round — federado vs gossip ({titulo})")
     fig.tight_layout()
     fig.savefig(f"{out}_metricas.png", dpi=130)
@@ -98,14 +109,17 @@ def main():
     gossip_series = [(l, b) for l, _, b in series if b]
     if gossip_series:
         fig2, ax2 = plt.subplots(figsize=(6.5, 4.2))
+        max_r = 1
         for label, boosters in gossip_series:
             ax2.plot(range(1, len(boosters) + 1), boosters,
                      marker="s", markersize=4, label=label)
+            max_r = max(max_r, len(boosters))
         ax2.set_xlabel("round")
         ax2.set_ylabel("nº de boosters na união do head")
         ax2.set_title("Difusão do conhecimento no gossip")
         ax2.grid(True, alpha=0.3)
         ax2.legend()
+        _int_rounds_axis(ax2, max_r)
         fig2.tight_layout()
         fig2.savefig(f"{out}_difusao.png", dpi=130)
         print(f"[plot] {out}_difusao.png")
