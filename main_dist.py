@@ -223,6 +223,45 @@ def _predict_boosters(boosters: list[xgb.Booster], dtest: "xgb.DMatrix") -> np.n
     return (probs >= 0.5).astype(int)
 
 
+def _read_class_names(path: str) -> list[str] | None:
+    """Lê só a linha @attribute @class@ do ARFF (sem carregar os dados)."""
+    try:
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                low = line.lower()
+                if low.startswith("@attribute") and "@class@" in low and "{" in line:
+                    return [v.strip() for v in
+                            line[line.index("{") + 1:line.index("}")].split(",")]
+                if low.startswith("@data"):
+                    break
+    except OSError:
+        pass
+    return None
+
+
+def _print_per_client_table(client_models, specialists, X_te, y_te, arch: str) -> None:
+    """Avalia o modelo LOCAL de cada cliente no teste global e imprime
+    cliente | classe-especialista | F1 | Recall | Precision | FPR.
+
+    client_models[cid] é uma lista de boosters (1 = modelo único; vários =
+    conjunto acumulado do nó no gossip, avaliado por união OR)."""
+    dtest = xgb.DMatrix(X_te)
+    print(f"\n{'='*72}")
+    print(f"  Métricas por cliente — {arch} (modelo local × teste global)")
+    print(f"{'='*72}")
+    print(f"  {'cli':>3} {'classe-especialista':<24} {'F1':>7} {'Recall':>7} "
+          f"{'Prec':>7} {'FPR':>7} {'#bst':>5}")
+    for cid, boosters in enumerate(client_models):
+        if not boosters:
+            print(f"  {cid:>3} {specialists[cid]:<24} {'—':>7} (sem modelo)")
+            continue
+        y_pred = _predict_boosters(boosters, dtest)
+        r = evaluate_predictions(f"cli{cid}", y_te, y_pred)
+        fpr = 100.0 * r.FP / (r.FP + r.VN) if (r.FP + r.VN) else 0.0
+        print(f"  {cid:>3} {specialists[cid]:<24} {r.f1score:>7.2f} "
+              f"{r.recall:>7.2f} {r.precision:>7.2f} {fpr:>7.2f} {len(boosters):>5}")
+
+
 def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray,
                         eval_sample: int | None = None):
     """Server-side per-round evaluation of the aggregated model (P5).
@@ -370,6 +409,18 @@ def main(args: list[str] | None = None) -> None:
     )
     print(f"\n  ③ Particionamento: {partitioner}  num_clients={num_clients}")
 
+    # classe-especialista de cada cliente (rótulos multi-classe, antes da
+    # binarização) — para a tabela de métricas por cliente
+    class_names = _read_class_names(f"{dataset}.csv")
+    nc0 = util.normal_class
+    client_specialist = []
+    for _, y_c in partitions:
+        atk = sorted(int(c) for c in np.unique(y_c) if int(c) != nc0)
+        if class_names and all(a < len(class_names) for a in atk):
+            client_specialist.append("+".join(class_names[a] for a in atk) or "—")
+        else:
+            client_specialist.append("+".join(map(str, atk)) or "—")
+
     if test_file:
         # Test set pré-definido (ex.: split do autor do dataset — evita o
         # vazamento do split aleatório e respeita separação por blocos).
@@ -515,6 +566,31 @@ def main(args: list[str] | None = None) -> None:
             print(f"  {label}: {delta:+.4f} pp")
         _fpr = lambda r: 100.0 * r.FP / (r.FP + r.VN) if (r.FP + r.VN) else 0.0
         print(f"  FPR      : {_fpr(result) - _fpr(r_central):+.4f} pp")
+
+    # ── métricas por cliente (FL e GL) ────────────────────────────────────────
+    if _is_xgb and result is not None:
+        glow = hybrid.get_glow_strategy()
+        pool = getattr(glow, "pool_parameters", None)
+        if pool:
+            # GOSSIP: modelo evoluído de cada nó (conjunto acumulado; união OR)
+            client_models = [_boosters_from_parameters(glow.get_node_model(cid))
+                             for cid in range(num_clients)]
+            arch_label = "GOSSIP"
+        else:
+            # FEDERADO: reproduz o modelo local de cada cliente (treino do zero,
+            # mesmos params do XgbClient) — determinístico
+            client_models = []
+            for cid in range(num_clients):
+                Xct, yct, _, _ = client_splits[cid]
+                npos = int(np.sum(yct)); nneg = len(yct) - npos
+                p = dict(xgb_params, nthread=1)
+                if npos > 0 and nneg > 0:
+                    p["scale_pos_weight"] = nneg / npos
+                b = xgb.train(p, xgb.DMatrix(Xct, label=yct),
+                              num_boost_round=10, verbose_eval=False)
+                client_models.append([b])
+            arch_label = "FEDERADO"
+        _print_per_client_table(client_models, client_specialist, X_te, y_te, arch_label)
 
 
 if __name__ == "__main__":
