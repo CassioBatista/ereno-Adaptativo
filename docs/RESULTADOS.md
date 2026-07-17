@@ -1,8 +1,10 @@
-# Resultados — Centralizado × Federado × Gossip (ERENO)
+# Resultados — Centralizado × Federado × Gossip
 
-Comparação das três arquiteturas de treinamento do IDS no dataset ERENO
-IEC-61850, avaliadas no **test set do autor** (2.955.648 mensagens, split
-por blocos — sem vazamento).
+Comparação das três arquiteturas de treinamento do IDS em dois cenários:
+**ERENO IEC-61850** (subestação elétrica, §1–3) e **CICIDS2017** (rede
+TI / smart grid, §4). ERENO avaliado no test set do autor (2.955.648
+mensagens, split por blocos — sem vazamento); CICIDS no split 80/20
+estratificado.
 
 ## Configuração do experimento
 
@@ -94,6 +96,63 @@ de que "gossip = federado, ao custo de ~N rounds de difusão".
 
 Recall do gossip por round: 51,6 → 78,2 → 78,2 → 78,2 → 79,2 → 91,0 →
 91,0 → **99,7** (round 8) → 99,7 …
+
+## 4. Réplica em CICIDS2017 (cenário TI / smart grid)
+
+Mesmo protocolo (XGBoost, features do avaliador XGBoost, 10 clientes
+`attack`, fusão OR, federado/gossip/centralizado), no CICIDS v2 — split
+80/20 estratificado, **sem `benign_cap`** (dataset mais leve; capar
+distorceria a prevalência do teste). 10 clientes = 10 classes de ataque →
+mapeamento **1:1 estrito**. Logs: `results/cicids_{fed,gossip}_percli_c10.log`.
+
+### Métricas globais — os dois cenários
+
+| | ERENO distrib. | ERENO central | CICIDS distrib. | CICIDS central |
+|---|---:|---:|---:|---:|
+| F1 | 87,5% | 96,9% | 94,6% | 99,5% |
+| Recall | 99,7% | 99,5% | 99,2% | 99,9% |
+| FPR | 2,05% | 0,43% | 2,7% | 0,23% |
+
+**O mesmo padrão nos dois domínios**: federado ≈ gossip; distribuído com
+recall altíssimo; centralizado vence no F1 por FPR muito menor. A tese se
+sustenta em subestação (ERENO) e em rede TI (CICIDS) — não é artefato de
+um dataset.
+
+### Federado por cliente — o desbalanceamento extremo do CICIDS
+
+| cli | classe | Recall isolado |
+|---:|---|---:|
+| 0 | hulk | 92,68 |
+| 1 | GoldenEye | 32,72 |
+| 4 | slowloris | 32,71 |
+| 8 | sql | 25,47 |
+| 2 | ftp | 2,96 |
+| 3 | ssh | 2,20 |
+| 7 | xss | 1,28 |
+| 9 | Heartbleed | **0,00** (11 amostras) |
+
+Vários sensores isolados são **quase inúteis** (Heartbleed F1 0,01%; xss
+1,3%; ftp/ssh ~2–3%) — bem pior que no ERENO (onde os isolados já tinham
+recall 19–42%). **Após a difusão do gossip, os 10 nós ficam idênticos
+com F1 94,27%** (19 boosters cada): a difusão **resgata os sensores
+inúteis**. Argumento mais forte que no ERENO: *o gossip é indispensável
+justamente quando os dados locais são pobres*.
+
+### Achado: F1 do gossip é NÃO-monotônico no CICIDS
+
+A curva de F1 do gossip **sobe até 97,25% no round 3 e depois cai para
+94,27%** (`conv_cicids_c10_metricas.png`). No início, a união tem poucos
+boosters, mas os "bons" (hulk, alta precisão) → F1 alto; conforme os
+especialistas ruidosos entram, o recall sobe mas o FPR também, e o F1
+líquido piora. **O gossip parcial (round 3, F1 97,25%) supera o federado
+completo (94,64%) e a própria difusão final (94,27%)** — prova
+experimental de que a difusão total pode diluir os bons especialistas
+com os ruins. É a evidência mais forte a favor da união seletiva / k-de-n
+([GOSSIP_DESIGN.md](GOSSIP_DESIGN.md)): nem sempre se quer a rede inteira.
+
+(Difusão CICIDS: recall parte de 92,9% — o cliente hulk, classe gigante,
+já domina no round 1 — e refina para 99,2%; no ERENO partia de 51,6%,
+curva bem mais acentuada, pois nenhum sensor dominava.)
 
 ## Notas metodológicas
 
