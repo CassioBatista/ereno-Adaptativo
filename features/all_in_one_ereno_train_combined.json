@@ -1,0 +1,21 @@
+{
+  "dataset": "all_in_one_ereno_train",
+  "grasp_method": "combined (global GR-G-VND[XGB] UNIAO per-attack gain>=3%)",
+  "classifier_idx": 6,
+  "features": [5, 7, 8, 11, 19, 20, 31, 33, 40, 41, 42, 43, 44, 45, 46, 50, 55, 57, 58],
+  "n_features": 19,
+  "componentes": {
+    "global_xgb_15": [5, 7, 8, 11, 19, 31, 33, 40, 41, 42, 44, 45, 50, 57, 58],
+    "superset_per_attack_10": [8, 20, 40, 41, 42, 43, 46, 55, 57, 58],
+    "so_do_global": [5, 7, 11, 19, 31, 33, 44, 45, 50],
+    "so_do_superset": [20, 43, 46, 55]
+  },
+  "resultado_teste": {
+    "descricao": "OR dos 10 especialistas, teste do autor (2.9M)",
+    "f1": 94.70, "recall": 99.93, "precision": 89.99, "fpr": 0.809,
+    "vs_global15_fpr": 1.701, "vs_superset10_fpr": 1.567,
+    "masq9_fpr": 0.618
+  },
+  "nota": "Uniao da selecao global (GRASP/XGB) com a selecao por-ataque (proxy por gain>=3%). Efeito de interacao: as eletricas do global e as pistas-de-ataque do superset so rendem juntas. FPR cai pela metade vs global-15. A parte per-attack usou importancia por gain como proxy de wrapper; versao mais rigorosa rodaria GRASP por ataque.",
+  "seed": 42
+}

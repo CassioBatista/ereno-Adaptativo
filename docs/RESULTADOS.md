@@ -236,6 +236,47 @@ Duas vias foram testadas para cortar os FP do distribuído (`scripts/`):
   paradigmas de treinamento.* (FL≡GL também confirma que a escolha
   FL/GL é de arquitetura de rede, não de capacidade de detecção.)
 
+## 7. Seleção de features: global × por-ataque × combinada
+
+Investigação motivada pelo FP do especialista de masquerade (§6). Scripts
+`analise_especialistas.py`, `superset_features.py`, `teste_combinado.py`
+(ERENO, 10 especialistas, fusão OR, teste do autor 2,9 M).
+
+**Diagnóstico**: cada especialista detecta ~100% da própria classe
+(masquerade_fake_normal 100%, masquerade_fake_fault 99,85%) — o FP **não é
+falta de cobertura, é precisão** (masquerade imita o normal → fronteira
+intrínseca). Features específicas não resolvem sozinhas.
+
+**Seleção por-ataque**: rodando seleção por classe (gain≥3%), os ataques
+**quase não compartilham features** (Jaccard médio 0,07; nenhuma comum aos
+7). A união é compacta (10 features) e **supera a seleção global-15**
+(F1 90,2 vs 89,4) — porque a seleção global, otimizada para o problema
+todo (dominado pelos ataques fáceis), *cega* pistas dos ataques difíceis
+(perdeu vsbARms, frameLen, timestampDiff, confRev).
+
+**Combinada (união global-15 ∪ superset-10 = 19 features) — o melhor**:
+
+| Conjunto | F1 | Recall | Prec | FPR | #FP | masq9_FPR |
+|---|---:|---:|---:|---:|---:|---:|
+| global-15 | 89,39 | 99,71 | 81,01 | 1,701% | 46.854 | 1,508% |
+| superset-10 | 90,24 | 99,91 | 82,27 | 1,567% | 43.185 | 1,036% |
+| **combinado-19** | **94,70** | **99,93** | **89,99** | **0,809%** | **22.298** | **0,618%** |
+
+**Achado central (efeito de interação)**: as 9 features elétricas que só o
+global tinha **não são ruído** — sozinhas (global-15) ou ausentes
+(superset-10) rendem pouco, mas *combinadas* com as pistas-de-ataque do
+superset, o FPR **cai pela metade** (1,70%→0,81%) e o F1 salta para 94,7.
+Features fracas isoladas viram fortes em conjunto (típico de XGBoost).
+
+**Conclusão para a seleção de features**: o melhor não é "global *ou*
+por-ataque", é a **união dos dois** — captura tanto as features de
+interação (que o wrapper global acha) quanto as pistas causais dos ataques
+difíceis (que só a seleção por-ataque acha). Conjunto adotado:
+`features/all_in_one_ereno_train_combined.json` (19 features). *Ressalva: a
+parte por-ataque usou importância por gain como proxy; a versão plena
+rodaria GRASP por ataque.* O masquerade segue o maior FP residual
+(0,62%) — base para a divisão-com-corroboração (trabalho seguinte).
+
 ## Notas metodológicas
 
 - **`benign_cap`**: os 2,76 M benignos de treino foram subamostrados para
