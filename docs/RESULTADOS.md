@@ -218,6 +218,24 @@ opera sem servidor central e sobrevive à queda progressiva de equipamentos.
 difundido). Não cobre perda de nós *durante* a difusão inicial — cenário
 mais duro, deixado como trabalho futuro.
 
+## 6. Redução de falsos positivos
+
+Duas vias foram testadas para cortar os FP do distribuído (`scripts/`):
+
+- **Entre os 10 especialistas** (`analise_fp.py`, votação k-de-n *dentro* do
+  federado): a diversidade útil — exigir concordância de ≥k sensores derruba
+  o FPR drasticamente (a fusão OR = k≥1 é a mais sensível; k maior troca
+  recall por precisão). É o eixo que rende ganho de sistema.
+- **Entre arquiteturas** (`voto_arquiteturas.py`, votação Centralizado × FL ×
+  GL): **não** rende ganho. Motivo medido: **FL e GL são idênticos sample a
+  sample (concordância 100,00%)** — o GL difundido é a união dos mesmos 10
+  especialistas que o FL agrega, logo o mesmo classificador. A votação
+  colapsa para Centralizado × Distribuído; exigir consenso (k=3) apenas
+  reproduz o centralizado (FPR 0,43%). *Resultado registrado como
+  amadurecimento — a diversidade útil é entre sensores, não entre
+  paradigmas de treinamento.* (FL≡GL também confirma que a escolha
+  FL/GL é de arquitetura de rede, não de capacidade de detecção.)
+
 ## Notas metodológicas
 
 - **`benign_cap`**: os 2,76 M benignos de treino foram subamostrados para
