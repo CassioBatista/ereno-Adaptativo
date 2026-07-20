@@ -275,7 +275,40 @@ difíceis (que só a seleção por-ataque acha). Conjunto adotado:
 `features/all_in_one_ereno_train_combined.json` (19 features). *Ressalva: a
 parte por-ataque usou importância por gain como proxy; a versão plena
 rodaria GRASP por ataque.* O masquerade segue o maior FP residual
-(0,62%) — base para a divisão-com-corroboração (trabalho seguinte).
+(0,62%) — base para a divisão-com-corroboração (§8).
+
+## 8. Divisão do masquerade + corroboração — o FP residual é sistemático
+
+Motivação: o FP residual do masquerade (0,62%, §7) poderia ser
+*idiossincrasia de treino* (decorrelacionável por corroboração) ou uma
+propriedade *intrínseca* da fronteira de decisão. Teste (`divisao_masquerade.py`,
+features combinado-19): dividir `masquerade_fake_fault` (o pior sensor) em
+2 e 3 sub-especialistas treinados em **metades/terços disjuntos** do ataque
++ fatias disjuntas de benigno, e medir a **sobreposição dos FP** (Jaccard) e
+a corroboração k≥2.
+
+| Divisão | recall(masq) | Jaccard dos FP | k≥2 FPR | Redução vs FPR individual |
+|---|---:|---:|---:|---:|
+| 1 (baseline) | 99,06% | — | — | — |
+| **2 subs** | 99,06% | **0,993** | 0,622% | **0%** |
+| 3 subs | 99,06% | 0,789 | 0,656% (k≥2) / 0,624% (k≥3) | 10% / 14% |
+
+**Achado (resultado negativo forte)**: dois detectores treinados em dados
+*disjuntos* marcam **os mesmíssimos benignos** (Jaccard 0,99) — os erros são
+quase perfeitamente **correlacionados**, não independentes. Corroboração
+(k≥2) não remove nada porque a premissa da regra k-de-n — independência dos
+erros — **não vale ao dividir uma única classe**. O recall também fica cravado
+(99,06% em todo K e todo k): os TPs são idênticos. Dividir o ataque não gera
+diversidade alguma.
+
+**Consequência para a tese**: (i) o FP do masquerade é um **piso intrínseco**
+fixado pelo *design* do ataque (imitar o normal), não um artefato de treino
+corrigível — fecha a porta para "mais especialistas de masquerade"; justifica
+manter **um** sensor por classe. (ii) O ganho do k-de-n (§6) vem da
+**heterogeneidade entre classes** (erros de ataques diferentes são
+independentes), não de replicar a mesma classe — a corroboração é uma alavanca
+*entre especialistas distintos*, não *dentro* de um. Isso delimita com precisão
+onde a fusão de decisão ajuda e onde não.
 
 ## Notas metodológicas
 
