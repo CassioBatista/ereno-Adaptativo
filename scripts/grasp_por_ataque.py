@@ -44,10 +44,13 @@ def main():
     sample      = int(_get("--sample", 60000))
     normal_cap  = int(_get("--normal-cap", 60000))
     no_improve  = int(_get("--no-improvement", 15))
+    lam         = float(_get("--lambda", 0.0))
     out_dir     = _get("--out-dir", os.path.join("features", "por_ataque"))
     tag         = _get("--tag", "grasp")
     only        = _get("--attacks", None)
     os.makedirs(out_dir, exist_ok=True)
+    config.FEATURE_PENALTY = lam
+    print(f"[grasp-atk] FEATURE_PENALTY (lambda) = {lam}")
 
     config.DATASET = f"{DATASET}.csv"
     config.FOLDS = 5
@@ -104,6 +107,7 @@ def main():
                    "features": feats, "n_features": len(feats), "f1_grasp_cv": f1,
                    "iterations": grasp.iteration_number, "evaluations": grasp.number_evaluation,
                    "no_improvement": no_improve, "sample": sample, "normal_cap": normal_cap,
+                   "feature_penalty": lam,
                    "seed": config.GRASP_SEED, "elapsed_s": round(dt, 1)}
         with open(os.path.join(out_dir, f"{tag}_{aname}.json"), "w") as fh:
             json.dump(payload, fh, indent=2)

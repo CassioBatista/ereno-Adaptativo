@@ -12,6 +12,10 @@ FOLDS: int = 5
 GRASP_SEED: int = 5
 EVALUATION_SEED: int = 7
 NUM_CLASSES: int = 2
+# Penalidade de cardinalidade no criterio de selecao GRASP: a busca otimiza
+# (metrica - FEATURE_PENALTY * n_features). 0.0 = comportamento original (F1 puro);
+# >0 torna o GRASP mais parcimonioso (feature so entra se agrega > penalidade).
+FEATURE_PENALTY: float = 0.0
 NORMALIZE: bool = False
 DEBUG_MODE: bool = False
 CSV: bool = True

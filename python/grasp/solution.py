@@ -2,6 +2,8 @@
 
 import copy
 
+import python.config as config
+
 
 class GraspSolution:
     """Holds the current feature selection state: selected features + RCL pool."""
@@ -69,6 +71,14 @@ class GraspSolution:
             case _:  # F1SCORE
                 s = self.evaluation.f1score   if self.evaluation  else 0.0
                 o = other.evaluation.f1score  if other.evaluation else 0.0
+
+        # Penalidade de cardinalidade: a busca otimiza (metrica - lambda*n_features),
+        # tornando o GRASP parcimonioso. FEATURE_PENALTY=0 preserva o comportamento
+        # original (F1 puro, com desempate por tamanho abaixo).
+        lam = getattr(config, "FEATURE_PENALTY", 0.0)
+        if lam:
+            s -= lam * self.get_num_selected_features()
+            o -= lam * other.get_num_selected_features()
 
         if s == o:
             return self.get_num_selected_features() < other.get_num_selected_features()
