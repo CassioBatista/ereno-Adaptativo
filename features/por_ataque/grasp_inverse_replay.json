@@ -1,0 +1,21 @@
+{
+  "dataset": "all_in_one_ereno_train",
+  "attack": "inverse_replay",
+  "attack_id": 2,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    6,
+    11,
+    57
+  ],
+  "n_features": 3,
+  "f1_grasp_cv": 100.0,
+  "iterations": 16,
+  "evaluations": 4513,
+  "no_improvement": 15,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "seed": 5,
+  "elapsed_s": 4572.8
+}

@@ -1,0 +1,23 @@
+{
+  "dataset": "all_in_one_ereno_train",
+  "attack": "masquerade_fake_fault",
+  "attack_id": 3,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    23,
+    41,
+    42,
+    43,
+    56
+  ],
+  "n_features": 5,
+  "f1_grasp_cv": 99.3853217803451,
+  "iterations": 16,
+  "evaluations": 6232,
+  "no_improvement": 15,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "seed": 5,
+  "elapsed_s": 4839.5
+}

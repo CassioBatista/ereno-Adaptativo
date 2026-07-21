@@ -1,0 +1,22 @@
+{
+  "dataset": "all_in_one_ereno_train",
+  "attack": "poisoned_high_rate",
+  "attack_id": 7,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    19,
+    45,
+    57,
+    58
+  ],
+  "n_features": 4,
+  "f1_grasp_cv": 100.0,
+  "iterations": 16,
+  "evaluations": 4992,
+  "no_improvement": 15,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "seed": 5,
+  "elapsed_s": 2391.5
+}

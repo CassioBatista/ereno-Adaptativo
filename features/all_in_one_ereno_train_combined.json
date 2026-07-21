@@ -16,6 +16,6 @@
     "vs_global15_fpr": 1.701, "vs_superset10_fpr": 1.567,
     "masq9_fpr": 0.618
   },
-  "nota": "Uniao da selecao global (GRASP/XGB) com a selecao por-ataque (proxy por gain>=3%). Efeito de interacao: as eletricas do global e as pistas-de-ataque do superset so rendem juntas. FPR cai pela metade vs global-15. A parte per-attack usou importancia por gain como proxy de wrapper; versao mais rigorosa rodaria GRASP por ataque.",
+  "nota": "Uniao da selecao global (GRASP/XGB) com a selecao por-ataque. Efeito de interacao: as eletricas do global e as pistas-de-ataque do superset so rendem juntas. FPR cai pela metade vs global-15. VALIDADO por GRASP rigoroso por-ataque (7 execucoes binarias, no-improvement 15, sample 60k): a uniao 100%-GRASP (combined_grasp-31) empata em tudo (F1 94.69, FPR 0.811, masq9 0.620) usando 12 features a mais, das quais este combinado-19 e subconjunto. Por parcimonia, combinado-19 e mantido com respaldo rigoroso. Artefatos em features/por_ataque/.",
   "seed": 42
 }

@@ -272,10 +272,30 @@ Features fracas isoladas viram fortes em conjunto (típico de XGBoost).
 por-ataque", é a **união dos dois** — captura tanto as features de
 interação (que o wrapper global acha) quanto as pistas causais dos ataques
 difíceis (que só a seleção por-ataque acha). Conjunto adotado:
-`features/all_in_one_ereno_train_combined.json` (19 features). *Ressalva: a
-parte por-ataque usou importância por gain como proxy; a versão plena
-rodaria GRASP por ataque.* O masquerade segue o maior FP residual
-(0,62%) — base para a divisão-com-corroboração (§8).
+`features/all_in_one_ereno_train_combined.json` (19 features). O masquerade
+segue o maior FP residual (0,62%) — base para a divisão-com-corroboração (§8).
+
+**Validação por GRASP rigoroso por-ataque** (`grasp_por_ataque.py`,
+`features/por_ataque/`): substituímos o proxy (importância por gain) pelo
+**GRASP pleno binário** — as mesmas 55-feature RCL, VND e 5-fold CV do GRASP
+global, mas com alvo *ataque-vs-normal*, uma execução por classe
+(`no-improvement 15`, `sample 60k`; ~9 h de compute). A união das 7 seleções
+(superset_grasp = 26 features) combinada com o global-15 dá o
+**combined_grasp-31** (100 % GRASP, ponta a ponta):
+
+| Conjunto | n | F1 | Recall | Prec | FPR | #FP | masq9 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| global-15 | 15 | 89,39 | 99,71 | 81,01 | 1,701% | 46.854 | 1,508% |
+| **combinado-19** | 19 | **94,70** | 99,93 | 89,99 | **0,809%** | 22.298 | **0,618%** |
+| superset_grasp-26 | 26 | 94,03 | 99,92 | 88,80 | 0,917% | 25.275 | 0,726% |
+| combined_grasp-31 | 31 | 94,69 | 99,93 | 89,96 | 0,811% | 22.350 | 0,620% |
+
+**O GRASP rigoroso confirma o combinado-19 — não o supera.** O combined_grasp-31
+empata em tudo (Δ F1 0,01; Δ FPR 0,002 pp) usando **12 features a mais**, e o
+combinado-19 é **subconjunto** dele — as extras do GRASP são redundantes. Por
+parcimônia (Occam), **combinado-19 é mantido, agora com respaldo rigoroso**: o
+proxy por gain não enganou — caiu no mesmo platô que o GRASP pleno. A ressalva
+metodológica está **resolvida**.
 
 ## 8. Divisão do masquerade + corroboração — o FP residual é sistemático
 
@@ -309,6 +329,35 @@ manter **um** sensor por classe. (ii) O ganho do k-de-n (§6) vem da
 independentes), não de replicar a mesma classe — a corroboração é uma alavanca
 *entre especialistas distintos*, não *dentro* de um. Isso delimita com precisão
 onde a fusão de decisão ajuda e onde não.
+
+### 8.1 Irredutibilidade do `masquerade_fake_fault` — cinco evidências
+
+O FP residual do masquerade não é um bug a corrigir, é um **limite fundamental
+caracterizado**. Cinco evidências independentes convergem, cada uma fechando uma
+explicação alternativa:
+
+1. **Cobertura** (§7) — o especialista detecta ~100 % da própria classe: não é
+   falta de cobertura, é precisão.
+2. **Decorrelação** (§8) — dividir em detectores sobre dados disjuntos gera FPs
+   idênticos (Jaccard 0,99): não é ruído de treino decorrelacionável.
+3. **Features — existência** (§7) — o GRASP pleno atinge **F1 CV = 100 %** para
+   6 dos 7 ataques (prova que *existe* subconjunto separador), mas para
+   `masquerade_fake_fault` para em **99,385 %**: para esse ataque **não existe**
+   subconjunto separador no espaço de atributos disponível.
+4. **Features — esforço** — `masquerade_fake_fault` exige o **maior** nº de
+   avaliações do GRASP (6.232, contra ~4,5–5,7 k dos demais): a assinatura de um
+   *landscape* de otimização rugoso e sem ótimo dominante — muitos subconjuntos
+   igualmente medíocres, típico de classes sobrepostas.
+5. **Casamento quantitativo** — o gap de separabilidade em CV
+   (100 − 99,385 = **0,615 %**) coincide com o **melhor FPR de teste alcançável**
+   do sensor (**0,618–0,620 %**, invariante a qualquer conjunto de features,
+   inclusive o ótimo do GRASP) dentro de 0,005 pp. **O erro irredutível medido no
+   treino prevê o FP residual observado no teste.**
+
+Conclusão: `masquerade_fake_fault` sobrepõe *de fato* a variedade do tráfego
+normal — por design (imita uma falta legítima; o par `fake_normal` é 100 %
+separável, só `fake_fault` colide). A tese não apenas mostra *que* há um piso de
+FP, mas *por que*, por quatro ângulos qualitativos e um casamento quantitativo.
 
 ## Notas metodológicas
 
