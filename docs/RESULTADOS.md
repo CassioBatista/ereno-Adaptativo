@@ -297,6 +297,42 @@ parcimônia (Occam), **combinado-19 é mantido, agora com respaldo rigoroso**: o
 proxy por gain não enganou — caiu no mesmo platô que o GRASP pleno. A ressalva
 metodológica está **resolvida**.
 
+### 7.1 Parcimônia por penalidade de cardinalidade — o conjunto FINAL adotado
+
+O GRASP puro (F1) infla: F1 é ~monótono no nº de features, então o wrapper
+acumula features de ganho marginal. Adicionamos uma **penalidade L0**
+(`config.FEATURE_PENALTY = λ`): a busca passa a otimizar **`F1 − λ·k`** (única
+mudança, em `is_better_than`; λ=0 preserva o original). Uma feature só entra se
+agrega **≥ λ pontos** de F1.
+
+**Escolha do λ pelo teste real** (não pela CV). A varredura post-hoc sobre o log
+do GRASP (`pareto_lambda_dados.py`; figura `results/pareto_features_ereno.png`)
+mostra que o inchaço estava nos ataques fáceis (≈1 feature basta; ver a fronteira
+de Pareto) e que só o masquerade precisa de muitas. Testando os combinados de
+λ=0,05/0,1/0,2 na fusão-OR real, **λ=0,05 vence** (0,1 e 0,2 recaem no platô do
+combinado-19): preserva as features extras do masquerade, que **não eram
+overfitting** — baixam o FP no teste.
+
+**Execução definitiva em λ=0,05** (busca direta, não post-hoc): 7 GRASP binários
+por-ataque (superset 21) + GRASP **global penalizado** (núcleo 15→**10**;
+early-stop no melhor-global). União = **combinado_def-24**, 100 % GRASP
+penalizado:
+
+| Conjunto | n | F1 | Recall | Prec | FPR | #FP | masq9 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| global-15 | 15 | 89,39 | 99,71 | 81,01 | 1,701% | 46.854 | 1,508% |
+| combinado-19 | 19 | 94,70 | 99,93 | 89,99 | 0,809% | 22.298 | 0,618% |
+| pen005 post-hoc | 24 | 95,00 | 99,93 | 90,54 | 0,760% | 20.928 | 0,568% |
+| **combinado_def-24** | 24 | **95,84** | **99,97** | **92,04** | **0,629%** | **17.333** | **0,438%** |
+
+**Vence tudo.** vs combinado-19: F1 +1,14; FPR −22 %; masq9 −29 %. E vs o
+post-hoc-24 (mesmo tamanho), a diferença vem do **núcleo global penalizado
+direto (10)** — não só menor que o global-15, **melhor** (as features 14/20/55
+que ele traz e o global-15 não tinha). **Conjunto adotado**:
+`features/all_in_one_ereno_train_combined.json` (24 features). Enquadramento: o
+GRASP é o mesmo; penalizar cardinalidade é **mudança de objetivo**
+(regularização L0), padrão em seleção de features — não parte nativa do GRASP.
+
 ## 8. Divisão do masquerade + corroboração — o FP residual é sistemático
 
 Motivação: o FP residual do masquerade (0,62%, §7) poderia ser
@@ -330,34 +366,40 @@ independentes), não de replicar a mesma classe — a corroboração é uma alav
 *entre especialistas distintos*, não *dentro* de um. Isso delimita com precisão
 onde a fusão de decisão ajuda e onde não.
 
-### 8.1 Irredutibilidade do `masquerade_fake_fault` — cinco evidências
+### 8.1 Irredutibilidade do `masquerade_fake_fault` — quatro evidências
 
 O FP residual do masquerade não é um bug a corrigir, é um **limite fundamental
-caracterizado**. Cinco evidências independentes convergem, cada uma fechando uma
+caracterizado**. Quatro evidências independentes convergem, cada uma fechando uma
 explicação alternativa:
 
 1. **Cobertura** (§7) — o especialista detecta ~100 % da própria classe: não é
    falta de cobertura, é precisão.
 2. **Decorrelação** (§8) — dividir em detectores sobre dados disjuntos gera FPs
    idênticos (Jaccard 0,99): não é ruído de treino decorrelacionável.
-3. **Features — existência** (§7) — o GRASP pleno atinge **F1 CV = 100 %** para
-   6 dos 7 ataques (prova que *existe* subconjunto separador), mas para
-   `masquerade_fake_fault` para em **99,385 %**: para esse ataque **não existe**
-   subconjunto separador no espaço de atributos disponível.
+3. **Features — existência** (§7) — o GRASP atinge **F1 CV = 100 %** para 6 dos 7
+   ataques (prova que *existe* subconjunto separador), mas `masquerade_fake_fault`
+   **nunca chega a 100 %** — mesmo a busca direta em λ=0,05, com 9 features, para
+   em 99,71 % (o proxy parava antes, em 99,385 %). Ou seja, **não existe**
+   subconjunto que o separe perfeitamente no espaço de atributos disponível.
 4. **Features — esforço** — `masquerade_fake_fault` exige o **maior** nº de
    avaliações do GRASP (6.232, contra ~4,5–5,7 k dos demais): a assinatura de um
    *landscape* de otimização rugoso e sem ótimo dominante — muitos subconjuntos
    igualmente medíocres, típico de classes sobrepostas.
-5. **Casamento quantitativo** — o gap de separabilidade em CV
-   (100 − 99,385 = **0,615 %**) coincide com o **melhor FPR de teste alcançável**
-   do sensor (**0,618–0,620 %**, invariante a qualquer conjunto de features,
-   inclusive o ótimo do GRASP) dentro de 0,005 pp. **O erro irredutível medido no
-   treino prevê o FP residual observado no teste.**
+
+**Ressalva (revisão honesta).** Uma versão anterior desta seção listava uma 5ª
+evidência — um "piso" de FP em ~0,62 % que casaria com o gap de CV. **Isso não se
+sustentou**: features melhores (o `combinado_def-24` do §7.1) reduziram o FP do
+sensor de 0,618 % para **0,438 %**. O resíduo do masquerade **não é um número
+fixo**; a coincidência 0,62 % ≈ gap-de-CV era específica das features do
+combinado-19, não fundamental. O que permanece: o FP do masquerade **não zera**
+(e não separa 100 %) sob nenhum conjunto testado, e ele é o pior sensor por todas
+as métricas acima.
 
 Conclusão: `masquerade_fake_fault` sobrepõe *de fato* a variedade do tráfego
 normal — por design (imita uma falta legítima; o par `fake_normal` é 100 %
-separável, só `fake_fault` colide). A tese não apenas mostra *que* há um piso de
-FP, mas *por que*, por quatro ângulos qualitativos e um casamento quantitativo.
+separável, só `fake_fault` colide). A tese mostra *que* há um resíduo de FP
+não-eliminável, e *por que*, por quatro ângulos independentes — sem depender de
+um valor de piso específico.
 
 ## Notas metodológicas
 

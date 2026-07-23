@@ -1,0 +1,9 @@
+{
+  "dataset": "all_in_one_ereno_train",
+  "grasp_method": "GR-G-VND penalizado (FEATURE_PENALTY=0.05), early-stop manual",
+  "features": [5, 14, 20, 41, 42, 44, 45, 55, 57, 58],
+  "n_features": 10,
+  "f1_grasp_cv": 99.834,
+  "nota": "melhor-global no encerramento (iter 10, ~6300 avals); busca ~3x lenta, contador zerado; nucleo estavel 15->10",
+  "feature_penalty": 0.05, "sample": 150000, "seed": 5
+}
