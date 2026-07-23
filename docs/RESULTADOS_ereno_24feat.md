@@ -46,6 +46,16 @@ ver `RESULTADOS.md §7.1`):
    único, vendo todos os ataques, calibra a fronteira mais apertada. O custo do
    distribuído é o *union bound* dos 10 sensores (FPs somam).
 
+> **Ressalva de métrica — por que não usamos acurácia.** O ERENO é fortemente
+> **desbalanceado** (~93 % do teste é tráfego normal), então a **acurácia infla**
+> e não reflete a qualidade da detecção: a acurácia é **99,39 %** no distribuído e
+> **99,89 %** no centralizado — números que *parecem* ótimos, mas escondem os
+> 17.881 falsos positivos do distribuído. Por isso o **F1** e o **FPR** (e o
+> recall) são as métricas de mérito reportadas neste documento; a acurácia é
+> deliberadamente omitida das tabelas para não induzir uma leitura otimista.
+> (A acurácia só é comparável com a coluna *Average Accuracy* de referências em
+> datasets balanceados, como MNIST/CIFAR do GLow.)
+
 ## 2. Ganho das features — combinado-24 vs xgb-15 (o `RESULTADOS.md §1`)
 
 | | Centralizado | Distribuído (FL≈GL) |
