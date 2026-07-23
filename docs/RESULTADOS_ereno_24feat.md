@@ -88,9 +88,57 @@ pois média não é idempotente); e a tabela dos parâmetros que **quebram** a
 igualdade (operador de agregação, `num_rounds` < diâmetro, topologia desconexa,
 especialistas não-determinísticos).
 
+## 4. Adaptabilidade — comutação de arquitetura + encolhimento de nós
+
+Dois experimentos de 80 rounds que exercitam a comutação FL↔GL em tempo de
+execução **e** a redução progressiva de nós ativos (10→5→3), sobre o
+combinado-24. Configs `conf/experiments/ereno_adapt_{fl_gl,gl_fl_shrink}_combined.yaml`;
+avaliação do modelo agregado no teste global a cada round
+(`ROUND;n;modo;f1;recall;fpr`). Curvas em
+`results/conv_ereno_adapt_combined_{metricas,difusao}.png`.
+
+- **exp 3 — FL→GL, encolhe sob GOSSIP:** `1-20 fed/10 → 21-40 gossip/10 →
+  41-60 gossip/5 → 61-80 gossip/3`.
+- **exp 4 — GL→FL, encolhe sob FEDERADO:** `1-20 gossip/10 → 21-40 fed/10 →
+  41-60 fed/5 → 61-80 fed/3`.
+
+### 4.1 Trajetórias (F1 por round)
+
+| Fase | exp 3 (encolhe sob GOSSIP) | exp 4 (encolhe sob FEDERADO) |
+|---|---:|---:|
+| início | 95,74 (FL, união instantânea) | 72,3 → **95,74** (rampa de difusão, satura round 8) |
+| comutação (r21) | 95,74 (FL→GL, transparente) | 95,74 (GL→FL, transparente) |
+| encolhe p/ 5 (r41) | **95,74** | **85,36** (recall 99,96→74,5) |
+| encolhe p/ 3 (r61) | **95,74** | **85,48** (recall 74,6 · Prec 100% · FPR 0,000%) |
+
+### 4.2 O achado central — gossip tolera perda de nós; federado não
+
+**Encolher a rede é transparente sob gossip (exp 3) e destrutivo sob federado
+(exp 4).**
+
+- **Gossip:** cada nó **carrega a rede inteira** na memória (a união difundida).
+  Perder nós não remove nenhum especialista → F1 **constante em 95,74** dos 80
+  rounds, mesmo caindo para 3 nós.
+- **Federado:** o modelo agregado é **reconstruído a cada round só dos clientes
+  ativos**. Ao cair para 5 e depois 3 nós, os especialistas dos ataques dos nós
+  removidos **somem** → recall despenca 99,96%→**74,6%** (com 3 nós sobram só os
+  ataques {1,5}: random_replay e injection). O FPR cai a 0 como efeito colateral
+  (o sensor ruidoso de masquerade também saiu), mas ao custo altíssimo de recall.
+
+Também confirmado: as **comutações FL→GL e GL→FL são transparentes** (round 21
+sem degrau nos dois), e a fase gossip inicial do exp 4 reproduz a **rampa de
+difusão** clássica (F1 72,3→95,74 até o round 8, boosters 3→19 saturando no
+round 9).
+
+**Consequência para a tese ("Adaptativo"):** diante de *churn* ou perda de nós,
+comutar para **gossip** é a decisão que **preserva a detecção** — federado é
+frágil a perda de nós (o servidor só agrega quem está presente); gossip é
+tolerante (a memória difundida sobrevive em cada nó). O par exp 3 × exp 4
+demonstra empiricamente esse diferencial.
+
 ## Pendentes (não incluídos aqui)
 
-- Métricas por-cliente e curva de convergência com combinado-24 (análogos a
-  `RESULTADOS.md §2–§3`).
-- Adaptativos com combinado-24: FL→GL e GL→FL com encolhimento de nós
-  (`conf/experiments/ereno_adapt_*_combined.yaml`).
+- Métricas por-cliente com combinado-24 (análogo a `RESULTADOS.md §2`).
+- Verificar que a concordância FL≡GL é literalmente 0 divergências (não
+  `100,00 %` arredondado).
+- Contraste empírico com operador `inplace` (média) → GL ≠ FL.
