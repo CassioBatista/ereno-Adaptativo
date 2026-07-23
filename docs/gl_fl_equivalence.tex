@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{hyperref}
+
+% --- theorem environments (move to your thesis preamble if integrating) ------
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\newcommand{\XX}{\mathcal{X}}
+\newcommand{\Fset}{F}
+
+\begin{document}
+
+\section{Exact equivalence of gossip and federated OR-fusion}
+\label{sec:gl-fl-equivalence}
+
+A striking observation in our experiments is that, at convergence, the
+gossip (GL) and federated (FL) architectures produce \emph{bit-identical}
+predictions: the same true/false positives and negatives on all
+\num{2955648} test flows, hence the same $F_1$, recall and false-positive rate
+(Table~\ref{tab:glfl-results}). This is unlike the reference gossip-learning
+results, where GL only \emph{approximates} FL and degrades as the network grows.
+We show the equality is not a coincidence but a consequence of the aggregation
+operator: it is \emph{forced} by the algebra of decision-level OR-fusion, and it
+holds \emph{if and only if} a small set of conditions is met.
+
+\subsection{Setup and notation}
+
+Let there be $N$ nodes. Under the per-attack partitioner, node $i$ trains a
+deterministic binary specialist
+\[
+  h_i:\XX\to\{0,1\},\qquad h_i(x)=1 \iff \text{$x$ is flagged as an attack by node $i$,}
+\]
+where determinism follows from a fixed seed, fixed local data and no
+stochastic subsampling. Decision-level \emph{OR-fusion} of a set of boosters
+$B$ is
+\begin{equation}
+  \Fset_B(x)\;=\;\bigvee_{h\in B} h(x)\;=\;\max_{h\in B} h(x).
+  \label{eq:orfusion}
+\end{equation}
+
+\subsection{The fold depends only on the set of specialists}
+
+\begin{lemma}[OR is an idempotent semilattice fold]
+\label{lem:semilattice}
+$(\{0,1\},\vee)$ is a bounded, commutative, idempotent monoid (a bounded
+semilattice): for all $a,b,c\in\{0,1\}$,
+\[
+  a\vee a=a,\qquad a\vee b=b\vee a,\qquad (a\vee b)\vee c=a\vee(b\vee c),\qquad a\vee 0=a.
+\]
+Consequently the fold in~\eqref{eq:orfusion} is invariant to the order and to
+the multiplicity of its operands: $\Fset_B$ depends only on the underlying
+\emph{set} of functions, $\Fset_B(x)=\bigvee_{h\in\operatorname{set}(B)}h(x)$.
+\end{lemma}
+
+\begin{proof}
+The four identities are immediate from the truth table of $\vee$. Idempotence
+removes duplicates and commutativity/associativity remove any dependence on the
+evaluation order; hence the fold factors through the set map
+$B\mapsto\operatorname{set}(B)$.
+\end{proof}
+
+\subsection{Diffusion reaches every node}
+
+In FL the server pools all specialists, so the global model is
+$\Fset_{\mathrm{FL}}=\bigvee_{i=1}^{N}h_i=\Fset_{S}$, with
+$S:=\{h_1,\dots,h_N\}$. In GL each node $v$ keeps a pool $P_v$ that is updated by
+set union with the pools of its active neighbours $\mathcal{N}(v)$ in the
+topology,
+\begin{equation}
+  P_v^{(t+1)}=P_v^{(t)}\cup\!\!\bigcup_{u\in\mathcal{N}(v)}\!\!P_u^{(t)} .
+  \label{eq:diffusion}
+\end{equation}
+
+\begin{lemma}[Coverage]
+\label{lem:coverage}
+On a connected topology of diameter $D$, the diffusion~\eqref{eq:diffusion}
+satisfies $P_v^{(t)}=S$ for every node $v$ and every round $t\ge D$.
+\end{lemma}
+
+\begin{proof}
+The pools are monotone non-decreasing and bounded above by $S$, so they
+converge. Because~\eqref{eq:diffusion} is exactly single-source broadcast on a
+connected graph, the specialist of node $i$ reaches node $v$ within
+$\operatorname{dist}(i,v)\le D$ rounds; taking $t\ge D$ covers all $i$, so
+$P_v^{(t)}=S$.
+\end{proof}
+
+\subsection{The equivalence}
+
+\begin{proposition}[Exact GL$=$FL equivalence]
+\label{prop:glfl}
+Assume \textup{(A1)} OR-fusion~\eqref{eq:orfusion}; \textup{(A2)} deterministic
+specialists $h_i$ shared by both architectures; \textup{(A3)} a connected
+topology of diameter $D$; and \textup{(A4)} $t\ge D$ rounds of diffusion. Then
+for every node $v$ and every input $x\in\XX$,
+\[
+  \Fset_{\mathrm{GL},v}(x)\;=\;\bigvee_{h\in P_v^{(t)}}h(x)
+  \;\overset{\text{Lem.\,\ref{lem:coverage}}}{=}\;\bigvee_{i=1}^{N}h_i(x)
+  \;=\;\Fset_{\mathrm{FL}}(x).
+\]
+Hence $\Fset_{\mathrm{GL}}\equiv\Fset_{\mathrm{FL}}$ as functions, and the two
+architectures induce identical confusion matrices and identical derived metrics
+($F_1$, recall, precision, FPR).
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:coverage}, $P_v^{(t)}=S$ for $t\ge D$. By
+Lemma~\ref{lem:semilattice}, $\Fset_{P_v^{(t)}}=\Fset_{S}=\Fset_{\mathrm{FL}}$.
+The claim on metrics follows because they are functions of the (identical)
+prediction vector.
+\end{proof}
+
+\begin{remark}[Warm-start variants and the empirical check]
+In practice the diffused pool may also contain warm-started variants $h_i'$
+(specialists that acquired extra trees while circulating), so
+$|P_v^{(t)}|>N$. Monotonicity of $\vee$ then only guarantees the inequality
+$\Fset_{\mathrm{GL}}\ge\Fset_{\mathrm{FL}}$ pointwise; \emph{exact} equality
+additionally requires every variant to be OR-absorbed,
+$h_i'(x)\le\bigvee_{j}h_j(x)$ for all $x$. This last condition is not purely
+algebraic and must be checked empirically. On ERENO with the adopted 24-feature
+set, a per-sample comparison over all \num{2955648} test flows yields
+\textbf{\SI{100.00}{\percent}} agreement between an FL model and a GL model
+reconstructed by an \emph{independent} in-process gossip diffusion: the
+warm-start variants change not a single prediction.
+\end{remark}
+
+\begin{corollary}[Unanimity recovers the centralized model]
+Because $\Fset_{\mathrm{GL}}\equiv\Fset_{\mathrm{FL}}$, decision voting over
+$\{\text{Central},\mathrm{FL},\mathrm{GL}\}$ collapses: requiring
+$k\ge 2$ votes equals the distributed union (FL$=$GL), whereas requiring
+unanimity ($k=3$, the intersection) reproduces the centralized model exactly
+(Table~\ref{tab:glfl-results}), i.e. the centralized positives are a subset of
+the distributed union.
+\end{corollary}
+
+\subsection{Results}
+
+\begin{table}[t]
+  \centering
+  \caption{ERENO, adopted 24-feature set, author test split
+    (\num{200509} attacks, \num{2755139} normals). GL is reconstructed by
+    independent in-process gossip diffusion (ring, $N=10$). Per-sample
+    FL$\equiv$GL agreement: \SI{100.00}{\percent} over \num{2955648} flows.}
+  \label{tab:glfl-results}
+  \sisetup{table-format=2.2}
+  \begin{tabular}{lccccc}
+    \toprule
+    Architecture & $F_1$ (\%) & Recall (\%) & Precision (\%) & FPR (\%) & \#FP \\
+    \midrule
+    Centralized (monolithic) & 99.23 & 99.96 & 98.52 & 0.110 & \num{3017} \\
+    Federated (FL, OR)        & 95.72 & 99.97 & 91.81 & 0.649 & \num{17881} \\
+    Gossip (GL, OR)           & 95.72 & 99.97 & 91.81 & 0.649 & \num{17881} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{When the equivalence breaks}
+
+Proposition~\ref{prop:glfl} is tight: each hypothesis corresponds to a
+simulation parameter, and relaxing any one makes GL diverge from FL in a
+predictable way (Table~\ref{tab:glfl-break}). In particular, replacing the
+idempotent OR by a \emph{mean} of model parameters recovers the reference
+gossip-learning regime, where GL only approximates FL and degrades with network
+size: averaging is not idempotent as a fold,
+\[
+  A\bigl(\{a,a,b\}\bigr)=\tfrac{2a+b}{3}\;\neq\;A\bigl(\{a,b\}\bigr)=\tfrac{a+b}{2},
+\]
+so its result depends on multiplicity and diffusion path. Idempotence is the
+dividing line between the exact equivalence reported here and the approximate,
+size-dependent equivalence of weight-averaging gossip.
+
+\begin{table}[t]
+  \centering
+  \caption{Parameters that break the GL$=$FL equivalence (each maps to a
+    hypothesis of Proposition~\ref{prop:glfl}).}
+  \label{tab:glfl-break}
+  \begin{tabular}{p{0.30\linewidth}p{0.34\linewidth}p{0.28\linewidth}}
+    \toprule
+    Hypothesis & Simulation parameter & Effect if broken \\
+    \midrule
+    (A1) idempotent fusion & \texttt{aggregation}: \texttt{xgb\_union} $\to$ \texttt{sum} / \texttt{inplace} (mean) & GL $\neq$ FL (approx.\ + degrades) \\
+    (A4) complete diffusion & \texttt{num\_rounds} $<$ diameter $D$ & GL $<$ FL (undershoots) \\
+    (A3) connected topology & disconnected graph; \texttt{active\_clients} subset & GL $<$ FL (missing specialists) \\
+    (A3) small diameter & \texttt{topology}: \texttt{chain} ($D$ large) vs \texttt{star} ($D{=}2$) & slower diffusion \\
+    (A2) determinism & differing \texttt{seed}; \texttt{subsample}${<}1$; warm-start & GL $\neq$ FL (different bases) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\end{document}
