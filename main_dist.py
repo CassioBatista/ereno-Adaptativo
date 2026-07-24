@@ -216,11 +216,12 @@ def _boosters_from_parameters(parameters) -> list[xgb.Booster]:
     return boosters
 
 
-def _predict_boosters(boosters: list[xgb.Booster], dtest: "xgb.DMatrix") -> np.ndarray:
-    """Predição binária: booster único direto; conjunto = união de decisões
-    (alarme se QUALQUER booster der prob >= 0.5)."""
-    probs = np.max([b.predict(dtest) for b in boosters], axis=0)
-    return (probs >= 0.5).astype(int)
+def _predict_boosters(boosters: list[xgb.Booster], dtest: "xgb.DMatrix",
+                      k: int = 1) -> np.ndarray:
+    """Predição binária por k-de-n: alarme se >= k boosters derem prob >= 0.5.
+    k=1 é a união OR (idempotente); k>=2 é corroboração (não-idempotente)."""
+    votes = np.sum([(b.predict(dtest) >= 0.5) for b in boosters], axis=0)
+    return (votes >= k).astype(int)
 
 
 def _read_class_names(path: str) -> list[str] | None:
@@ -263,7 +264,7 @@ def _print_per_client_table(client_models, specialists, X_te, y_te, arch: str) -
 
 
 def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray,
-                        eval_sample: int | None = None):
+                        eval_sample: int | None = None, k: int = 1):
     """Server-side per-round evaluation of the aggregated model (P5).
 
     Prints machine-readable lines for the convergence curve:
@@ -292,7 +293,7 @@ def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray,
         boosters = _boosters_from_parameters(parameters)
         if not boosters:
             return None
-        y_pred = _predict_boosters(boosters, dtest)
+        y_pred = _predict_boosters(boosters, dtest, k=k)
         r = evaluate_predictions(f"round-{server_round}", y_te, y_pred)
         fpr = 100.0 * r.FP / (r.FP + r.VN) if (r.FP + r.VN) else 0.0
         print(f"ROUND;{server_round};{mode};f1={r.f1score:.4f};"
@@ -455,6 +456,7 @@ def main(args: list[str] | None = None) -> None:
 
     # ── ④ Estratégias ─────────────────────────────────────────────────────────
     xgb_fusion  = sim_conf.get("xgb_fusion", "sum")   # sum | or
+    fusion_k    = int(sim_conf.get("xgb_fusion_k", 1))  # k-de-n: alarme se >=k boosters
     base_clf    = _build_base_clf(strategy_name, seed)
     fed_strategy = _build_fed_strategy(
         strategy_name, num_clients, len(features), base_clf, X_tr, y_tr, seed,
@@ -470,7 +472,7 @@ def main(args: list[str] | None = None) -> None:
         fed_strategy, glow_strategy, arch_manager,
         round_eval_fn=_make_round_eval_fn(
             strategy_name, X_te, y_te,
-            eval_sample=int(eval_sample) if eval_sample else None),
+            eval_sample=int(eval_sample) if eval_sample else None, k=fusion_k),
     )
 
     print(f"\n  ④ Strategy: {strategy_name}  |  ArchManager: {arch_manager.__class__.__name__}")
@@ -515,10 +517,10 @@ def main(args: list[str] | None = None) -> None:
             if not boosters:
                 print("  [AVISO] nenhum modelo global disponível — agregação falhou.")
             else:
-                y_pred = _predict_boosters(boosters, xgb.DMatrix(X_te))
+                y_pred = _predict_boosters(boosters, xgb.DMatrix(X_te), k=fusion_k)
                 result = evaluate_predictions(strategy_name, y_te, y_pred)
                 n_trees = sum(len(b.get_dump()) for b in boosters)
-                fusao = f"{len(boosters)} boosters/OR, " if len(boosters) > 1 else ""
+                fusao = f"{len(boosters)} boosters/k≥{fusion_k}, " if len(boosters) > 1 else ""
                 _print_result(
                     f"DISTRIBUÍDO [{strategy_name}] ({fusao}{n_trees} árvores)", result
                 )

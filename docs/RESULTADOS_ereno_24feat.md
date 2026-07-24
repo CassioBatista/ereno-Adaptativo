@@ -265,6 +265,76 @@ boosters; `results/kden_vary_clients.csv`).
 4. **N<7 é errático** (regime "multi-ataque" round-robin — ex.: N=4 sai bem, N=5/N=3
    pior) porque depende de *quais* ataques se emparelham no mesmo cliente.
 
+## 7. Adaptação com encolhimento fino de nós × k-de-n
+
+Cenário de *churn* progressivo: 90 rounds, começa com 10 nós, **encolhe 1 nó a
+cada 10 rounds** (10→9→8→…→3). Dois sentidos de adaptação e dois níveis de
+corroboração, totalizando 4 runs:
+
+- **FL→GL** — r1–10 federado (10 nós); comuta para gossip em r11 e encolhe daí
+  em diante. Config: `ereno_adapt_fl_gl_shrink1_k{1,2}.yaml`.
+- **GL→FL** — r1–10 gossip *from-scratch* (10 nós); comuta para federado em r11 e
+  encolhe daí em diante. Config: `ereno_adapt_gl_fl_shrink1_k{1,2}.yaml`.
+- **k≥1** = OR (união); **k≥2** = corroboração (≥2 especialistas votam ataque),
+  via `xgb_fusion_k` no pipeline (`main_dist._predict_boosters(k)`).
+
+Dados: `results/conv_adapt_shrink1.csv`. Figura:
+`results/conv_adapt_shrink1_metricas.png` (paineis F1/Recall/FPR × round),
+reprodutível por `scripts/plot_conv_adapt_shrink1.py`.
+
+### F1 nos pontos de fase
+
+| Fase (nós) | FL→GL k≥1 | GL→FL k≥1 | FL→GL k≥2 | GL→FL k≥2 |
+|---|---|---|---|---|
+| inicial r1 (10) | 95,74 | 72,28 (rampa) | 87,63 | 53,24 (rampa) |
+| fim fase inicial r10 (10) | 95,74 | 95,74 | 87,63 | **96,38** |
+| após comutar r20 (10) | 95,74 | 95,74 | 87,63 | 87,63 |
+| 8 nós (r40) | 95,74 | 90,76 | 87,63 | 86,75 |
+| 5 nós (r70) | 95,74 | 85,36 | 87,63 | 85,38 |
+| 3 nós (r90) | 95,74 | 85,38 | 87,63 | **53,24** |
+
+### Análise
+
+1. **FL→GL é transparente ao encolhimento (k≥1 e k≥2): F1 plano.** O federado
+   semeia a **união completa** dos especialistas no round 1; o gossip a herda e
+   cada sobrevivente já carrega todos os boosters → perder nós não perde
+   cobertura. Sustenta 95,74 (k≥1) / 87,63 (k≥2) do r1 ao r90.
+
+2. **GL→FL degrada em escada sob encolhimento federado.** Ao operar em federado,
+   cada nó que sai **remove seu especialista** da agregação → o recall cai em
+   degraus (100→92→83→75 % para k≥1). O encolhimento fino mostra *quais* saídas
+   doem: os degraus coincidem com a perda de nós que cobrem ataques únicos.
+
+3. **O sweet-spot GL-k≥2 (96,38, recall 100 %, bate o OR) é EXCLUSIVO do gossip
+   *from-scratch*.** Aparece só em GL→FL no r10 (fase gossip inicial) e
+   **desaparece ao comutar para federado** (cai a 87,63 em r11). Em FL→GL k≥2 o
+   F1 é plano em 87,63 — nunca atinge o sweet-spot. Motivo: a corroboração k≥2
+   exige um **pool redundante** (≈2N−1 boosters via variantes warm-start) para os
+   ataques pegarem ≥2 votos; só a **difusão gossip real** o constrói. O federado
+   (e o gossip *semeado* pelo FL) tem apenas 10 boosters → sem redundância → sem
+   sweet-spot. **A corroboração para reduzir FP é uma propriedade do gossip, não
+   da união.**
+
+4. **k≥2 + federado + poucos nós é catastrófico.** GL→FL k≥2 **despenca a 53,24**
+   (recall 36 %) em 3 nós: com só 3 boosters, exigir 2 votos deixa passar todo
+   ataque detectado por 1 único especialista — sobrevive apenas o de **sensor
+   redundante** (`random_replay`, 2 sensores → 2 votos naturais). É o mesmo piso
+   observado no GL-k≥2 com N pequeno (§6): corroboração sem pool = recall nulo.
+
+### Conclusão prática
+
+- **Robustez a churn** → comutar para **gossip** (FL→GL) preserva a detecção; ficar
+  em **federado** encolhendo (GL→FL) degrada progressivamente.
+- **Reduzir FP por corroboração (k≥2)** → só compensa **em gossip com pool cheio**
+  (o sweet-spot). Em federado, ou com poucos nós, o k≥2 destrói o recall.
+- Isso reforça a tese adaptativa: os dois regimes não são intercambiáveis — a
+  escolha FL/GL muda *qualitativamente* o comportamento sob perda de nós e sob
+  corroboração, não só a acurácia média.
+
+> **Ressalva de acurácia** (idem §1): F1/recall/FPR aqui são sobre o teste
+> completo; a acurácia global fica dominada pela classe benigna e não reflete a
+> degradação por-ataque que estas curvas evidenciam.
+
 ## Pendentes (não incluídos aqui)
 
 - Métricas por-cliente (tabela §2-style) com combinado-24.
