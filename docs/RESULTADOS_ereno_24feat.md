@@ -136,9 +136,61 @@ frágil a perda de nós (o servidor só agrega quem está presente); gossip é
 tolerante (a memória difundida sobrevive em cada nó). O par exp 3 × exp 4
 demonstra empiricamente esse diferencial.
 
+## 5. Especialista × IID — por que a partição por-ataque importa
+
+Comparação da **estratégia de partição** dos dados entre os nós, mantendo tudo
+mais igual (combinado-24, fusão OR, 20 rounds, teste do autor 2,9 M):
+
+- **`attack` (especialista):** cada nó recebe **1 classe de ataque + benigno** →
+  detector especialista.
+- **`iid` (generalista):** cada nó recebe uma **fatia IID de todos os ataques +
+  benigno** → detector generalista.
+
+Configs `ereno_{gossip,federado}_combined_iid.yaml`.
+
+| Arquitetura | Partição | Nós | F1 | Recall | Prec | FPR | #FP |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Centralizado (monolítico) | — | 1 | **99,23** | 99,96 | 98,52 | **0,110%** | 3.017 |
+| FL (OR) | `attack` | 10 | **95,72** | 99,97 | 91,81 | **0,649%** | 17.881 |
+| GL (OR) | `attack` | 10 | **95,72** | 99,97 | 91,81 | **0,649%** | 17.881 |
+| FL (OR) | `iid` | 10 | 79,36 | 99,53 | 65,99 | 3,733% | 102.845 |
+| GL (OR) | `iid` | 10 | 79,35 | 99,58 | 65,96 | 3,740% | 103.052 |
+
+### 5.1 Dois achados
+
+1. **GL = FL também no IID** (F1 79,35 vs 79,36; FPR 3,740 vs 3,733). A
+   equivalência **não depende da partição** — é a álgebra da união-OR (a
+   Proposição de `gl_fl_equivalence.tex` vale para qualquer conjunto de
+   detectores). Vale para especialistas *e* para generalistas.
+
+2. **IID é muito pior que especialista** no distribuído: F1 **79 vs 96**, FPR
+   **3,74 % vs 0,649 %** (~5,7× mais falsos alarmes), embora o recall seja
+   igualmente alto (~99,5 %). O centralizado monolítico é **idêntico** nos dois
+   (é um único modelo, independe da partição).
+
+### 5.2 Por que — o *union bound* dos falsos positivos
+
+- **Especialista:** cada nó só dispara no *seu* ataque → precisão ~100 %, quase
+  nenhum FP. A união OR **não acumula** FP → FPR baixo (0,649 %).
+- **Generalista (IID):** cada nó tem recall alto **e** gera ~0,4 % de FP; a união
+  OR de 10 generalistas **soma** esses FP (union bound):
+  $\text{FPR}_{\text{OR}} \approx 1-(1-0{,}004)^{10} \approx 3{,}9\%$, batendo com
+  os **3,74 %** medidos.
+
+### 5.3 Significância — a partição por-ataque é uma contribuição, não conveniência
+
+O particionamento especialista é o que **faz a fusão-OR funcionar** (mantém o FPR
+baixo, porque cada detector quase nunca dispara falsamente). **IID + OR é uma
+combinação ruim** (os FP dos generalistas se acumulam). Isso **contrasta com a
+literatura** de forma informativa: em Hegedűs/Jelasity (redes neurais, **média**
+de pesos, dados balanceados) o IID é favorável e gossip ≥ FL; aqui (**XGBoost,
+fusão-OR, IDS desbalanceado**) o GL ≈ FL **continua**, mas o **IID é inferior** —
+o design **especialista + OR** é o que torna o distribuído viável. A escolha da
+partição por-ataque, portanto, **justifica-se empiricamente**.
+
 ## Pendentes (não incluídos aqui)
 
-- Métricas por-cliente com combinado-24 (análogo a `RESULTADOS.md §2`).
+- Métricas por-cliente (tabela §2-style) com combinado-24.
 - Verificar que a concordância FL≡GL é literalmente 0 divergências (não
   `100,00 %` arredondado).
 - Contraste empírico com operador `inplace` (média) → GL ≠ FL.
