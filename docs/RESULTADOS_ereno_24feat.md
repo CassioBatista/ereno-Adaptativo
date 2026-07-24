@@ -11,6 +11,39 @@ ver `RESULTADOS.md §7.1`):
 (13 SV elétricas + 6 GOOSE + 5 temporais; nomes reais em `docs/FEATURE_MAP` /
 `GSVDatasetWriter.java` do ERENO.)
 
+## Síntese
+
+As sete seções abaixo produzem muitas medições, mas **todas derivam de um único
+eixo** — duas propriedades que determinam o comportamento do detector:
+
+1. **O operador de fusão é idempotente?** OR sim (semilattice); merge e k-de-n não.
+2. **A topologia replica a união dos especialistas em cada nó?** Gossip sim
+   (difusão); federado não (só agrega o round corrente).
+
+> **Tese que amarra os resultados:** a escolha adaptativa FL↔GL **não é
+> cosmética** — é governada pela álgebra do operador de fusão (idempotência) e
+> pela capacidade da topologia de replicar a união dos especialistas. Gossip + OR
+> entrega um detector **idempotente, transparente a churn e provadamente
+> equivalente ao federado**; a corroboração k-de-n para cortar falsos positivos é
+> uma propriedade que **o gossip oferece e o federado não**.
+
+| § | Conclusão | Deriva de |
+|---|---|---|
+| 2 | combinado-24 > xgb-15 | features fortes ⇒ absorção exata (pré-condição) |
+| 3 | **GL = FL exato** (0 divergências) | OR é **idempotente** |
+| 4 | churn: gossip transparente, federado destrutivo | gossip **replica a união** |
+| 5 | especialista ≫ IID (contribuição, não conveniência) | *union bound* dos FP |
+| 6 | OR robusto a N; merge explode; k-de-n com sweet-spot | **idempotência** é o divisor |
+| 7 | sweet-spot k≥2 é **exclusivo do gossip**; catastrófico em federado+poucos nós | corroboração exige o pool redundante que só a **difusão** cria |
+
+**Escopo (por que não há contradição):**
+- §3 (GL=FL exato) vale **com participação plena**; sob perda de nós (§4, §7) elas
+  divergem justamente porque o gossip mantém a união e o federado a perde.
+- §6 (sweet-spot precisa N≥8) e §7 (sweet-spot é gossip-exclusivo) são
+  complementares: pool grande **e** difundido.
+- §1 (FL=GL 95,72) reconcilia o antigo xgb-15 (GL≠FL 0,03 pp) — combinado-24 fecha
+  a absorção (§3).
+
 ## Configuração do experimento
 
 - **Dataset**: ERENO IEC-61850 (`all_in_one_ereno_train/test`), teste do autor
