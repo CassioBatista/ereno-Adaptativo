@@ -188,9 +188,85 @@ fusão-OR, IDS desbalanceado**) o GL ≈ FL **continua**, mas o **IID é inferio
 o design **especialista + OR** é o que torna o distribuído viável. A escolha da
 partição por-ataque, portanto, **justifica-se empiricamente**.
 
+## 6. Operadores de fusão e o k-de-n variando o número de clientes
+
+### 6.1 OR × k-de-n × merge — a idempotência é o divisor de águas
+
+A equivalência GL=FL (§3) vale **exatamente** para a fusão **OR** (união
+idempotente). Testando operadores **não-idempotentes** e medindo GL vs FL
+amostra-a-amostra (`scripts/{kden_gl_vs_fl,merge_gl_vs_fl}.py`, combinado-24,
+10 clientes):
+
+| Operador | Idempotente? | Concordância GL≡FL |
+|---|---|---|
+| **OR** (k≥1) | **sim** | **100,00 %** (0 divergências) |
+| k-de-n (k≥2) | não | 98,00 % (58.967 div.) |
+| k-de-n (k≥3) | não | 98,66 % (39.700 div.) |
+| Merge (concatena árvores, soma margens) | não | **2,08 %** (2,89 M div.) |
+
+Escada de FP do k-de-n (corroboração reduz FP, ao custo de recall): OR 17.881 FP
+→ k≥2 ~60 FP → k≥3 ~29 FP, mas recall 99,97 → 78,6 → 58,2 (`analise_fp_combined.py`).
+O merge é degenerado (FL-merge = veto, recall 30,7 %; GL-merge = explosão de
+árvores 100→1560, FPR 100 %). **Só o OR é idempotente ⇒ único com GL=FL exato**;
+qualquer corroboração (k-de-n) sai da idempotência (GL≠FL) e sacrifica recall.
+
+### 6.2 k-de-n variando clientes (N = 10 → 3)
+
+`scripts/kden_vary_clients.py` (combinado-24; pool difundido do gossip ≈ **2N−1**
+boosters; `results/kden_vary_clients.csv`).
+
+**k≥1 (OR) — FL = GL idênticos em todo N:**
+
+| N | pool FL/GL | F1 | Recall | Prec | FPR |
+|---:|:--:|---:|---:|---:|---:|
+| 10 | 10/19 | 95,72 | 99,97 | 91,81 | 0,649 |
+| 9 | 9/17 | 95,93 | 99,97 | 92,21 | 0,615 |
+| 8 | 8/15 | 96,02 | 99,97 | 92,37 | 0,601 |
+| 7 | 7/13 | 95,63 | 99,97 | 91,65 | 0,663 |
+| 6 | 6/11 | 95,62 | 99,40 | 92,12 | 0,619 |
+| 5 | 5/9 | 92,16 | 99,40 | 85,90 | 1,187 |
+| 4 | 4/7 | 96,66 | 99,88 | 93,64 | 0,494 |
+| 3 | 3/5 | 93,05 | 99,56 | 87,33 | 1,051 |
+
+**k≥2 (FL | GL):**
+
+| N | F1 FL/GL | Recall FL/GL | Prec FL/GL | FPR FL/GL |
+|---:|:--:|:--:|:--:|:--:|
+| 10 | 87,69 / **96,34** | 78,09 / **99,97** | 99,97 / 92,97 | 0,002 / 0,550 |
+| 9 | 87,69 / **96,35** | 78,09 / **99,97** | 100,0 / 92,99 | 0,000 / 0,549 |
+| 8 | 77,34 / **96,48** | 63,07 / **99,97** | 99,96 / 93,22 | 0,002 / 0,529 |
+| 7 | 75,40 / 94,81 | 60,53 / 97,44 | 99,96 / 92,33 | 0,002 / 0,589 |
+| 6 | 64,50 / 90,61 | 48,25 / 85,32 | 97,23 / 96,62 | 0,100 / 0,218 |
+| 5 | 66,10 / 86,05 | 49,38 / 85,77 | 99,95 / 86,33 | 0,002 / 0,988 |
+| 4 | 72,85 / 94,96 | 57,30 / 96,37 | 99,98 / 93,58 | 0,001 / 0,481 |
+| 3 | 58,61 / 80,64 | 42,23 / 68,84 | 95,73 / 97,34 | 0,137 / 0,137 |
+
+**k≥3 (FL | GL):**
+
+| N | F1 FL/GL | Recall FL/GL | Prec FL/GL | FPR FL/GL |
+|---:|:--:|:--:|:--:|:--:|
+| 10 | 73,67 / 87,69 | 58,32 / 78,09 | 100,0 / 99,97 | 0,000 / 0,002 |
+| 9 | 73,63 / 87,69 | 58,26 / 78,09 | 100,0 / 100,0 | 0,000 / 0,000 |
+| 8 | 69,69 / 77,34 | 53,48 / 63,07 | 100,0 / 99,96 | 0,000 / 0,002 |
+| 7 | 56,92 / 75,40 | 39,78 / 60,53 | 100,0 / 99,96 | 0,000 / 0,002 |
+| 6 | 41,66 / 64,50 | 26,31 / 48,25 | 100,0 / 97,23 | 0,000 / 0,100 |
+| 5 | 42,57 / 66,10 | 27,04 / 49,38 | 100,0 / 99,95 | 0,000 / 0,002 |
+| 4 | 40,49 / 72,85 | 25,39 / 57,30 | 100,0 / 99,98 | 0,000 / 0,001 |
+| 3 | 37,59 / 58,61 | 23,14 / 42,23 | 100,0 / 95,73 | 0,000 / 0,137 |
+
+**Análise cruzada (efeito do nº de clientes):**
+
+1. **OR (k≥1): FL = GL em todo N** — a equivalência é robusta ao nº de clientes.
+2. **O sweet-spot GL-k≥2** (F1 > OR, recall ~100 %, FPR menor) **só se sustenta com
+   N≥8**: precisa de pool grande o bastante (≈2N−1 ≥ 15 boosters) para os ataques
+   pegarem ≥2 votos. Com N≤7 o pool encolhe e o recall do GL-k≥2 começa a cair.
+3. **FL-k≥2/k≥3 sempre afunda o recall** (sem redundância para ataques singleton),
+   em todo N.
+4. **N<7 é errático** (regime "multi-ataque" round-robin — ex.: N=4 sai bem, N=5/N=3
+   pior) porque depende de *quais* ataques se emparelham no mesmo cliente.
+
 ## Pendentes (não incluídos aqui)
 
 - Métricas por-cliente (tabela §2-style) com combinado-24.
-- Verificar que a concordância FL≡GL é literalmente 0 divergências (não
+- Verificar que a concordância FL≡GL do OR é literalmente 0 divergências (não
   `100,00 %` arredondado).
-- Contraste empírico com operador `inplace` (média) → GL ≠ FL.
