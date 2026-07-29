@@ -315,16 +315,63 @@ Dados: `results/conv_adapt_shrink1.csv`. Figura:
 `results/conv_adapt_shrink1_metricas.png` (paineis F1/Recall/FPR × round),
 reprodutível por `scripts/plot_conv_adapt_shrink1.py`.
 
-### F1 nos pontos de fase
+### Fase inicial (r1–10, *from-scratch*, 10 nós)
 
-| Fase (nós) | FL→GL k≥1 | GL→FL k≥1 | FL→GL k≥2 | GL→FL k≥2 |
-|---|---|---|---|---|
-| inicial r1 (10) | 95,74 | 72,28 (rampa) | 87,63 | 53,24 (rampa) |
-| fim fase inicial r10 (10) | 95,74 | 95,74 | 87,63 | **96,38** |
-| após comutar r20 (10) | 95,74 | 95,74 | 87,63 | 87,63 |
-| 8 nós (r40) | 95,74 | 90,76 | 87,63 | 86,75 |
-| 5 nós (r70) | 95,74 | 85,36 | 87,63 | 85,38 |
-| 3 nós (r90) | 95,74 | 85,38 | 87,63 | **53,24** |
+Antes do encolhimento, a fase inicial fixa o ponto de partida:
+
+| Run | r1 | r10 (fim) | ao comutar (r11–20) |
+|---|---|---|---|
+| FL→GL k≥1 | 95,74 (FL instantâneo) | 95,74 | 95,74 |
+| GL→FL k≥1 | 72,28 (rampa gossip) | 95,74 | 95,74 |
+| FL→GL k≥2 | 87,63 | 87,63 | 87,63 |
+| GL→FL k≥2 | 53,24 (rampa) | **96,38** (sweet-spot) | 87,63 (cai ao comutar p/ FL) |
+
+### F1 por nº de nós (fase de encolhimento, pós-comutação)
+
+O F1 é constante dentro de cada bloco de 10 rounds; a tabela dá o valor em cada
+contagem de nós (r20 = 10 nós, r30 = 9, …, r90 = 3):
+
+| nós | FL→GL k≥1 | GL→FL k≥1 | FL→GL k≥2 | GL→FL k≥2 |
+|---:|:--:|:--:|:--:|:--:|
+| 10 | 95,74 | 95,74 | 87,63 | 87,63 |
+| 9 | 95,74 | 94,35 | 87,63 | 86,75 |
+| 8 | 95,74 | 90,76 | 87,63 | 86,75 |
+| 7 | 95,74 | 90,56 | 87,63 | 85,92 |
+| 6 | 95,74 | 85,93 | 87,63 | 85,38 |
+| 5 | 95,74 | 85,36 | 87,63 | 85,38 |
+| 4 | 95,74 | 85,38 | 87,63 | 85,38 |
+| 3 | 95,74 | 85,38 | 87,63 | **53,24** |
+
+### Recall por nº de nós (o que dirige o F1)
+
+| nós | FL→GL k≥1 | GL→FL k≥1 | FL→GL k≥2 | GL→FL k≥2 |
+|---:|:--:|:--:|:--:|:--:|
+| 10 | 99,96 | 99,96 | 78,01 | 78,01 |
+| 9 | 99,96 | 91,80 | 78,01 | 76,59 |
+| 8 | 99,96 | 83,13 | 78,01 | 76,59 |
+| 7 | 99,96 | 82,79 | 78,01 | 75,31 |
+| 6 | 99,96 | 75,37 | 78,01 | 74,48 |
+| 5 | 99,96 | 74,49 | 78,01 | 74,48 |
+| 4 | 99,96 | 74,48 | 78,01 | 74,48 |
+| 3 | 99,96 | 74,48 | 78,01 | **36,28** |
+
+*FPR (resumo):* FL→GL k≥1 constante **0,645 %** em todo N; GL→FL k≥1 **cai para ~0**
+conforme encolhe (menos especialistas disparando: 0,645 → 0,203 → 0,003 → 0,000);
+ambos os k≥2 ≈ 0.
+
+### Leitura da progressão completa (10 → 3 nós)
+
+- **FL→GL (k≥1 e k≥2): reta perfeita em todo N.** 95,74 (k≥1) e 87,63 (k≥2)
+  **constantes de 10 a 3 nós** — encolher em modo gossip é **totalmente
+  transparente** (a união herdada é replicada em todo sobrevivente).
+- **GL→FL k≥1: escada descendente monotônica.** 95,74 → 94,35 → 90,76 → 90,56 →
+  85,93 → 85,36 → 85,38 → 85,38; recall 99,96 → 74,48. **Estabiliza em ~85,4 a
+  partir de N=5** (os nós restantes ainda cobrem os ataques "núcleo" via
+  round-robin), e o FPR desce a ~0 (menos especialistas ativos).
+- **GL→FL k≥2: estável-e-despenca.** Fica em 85–87 de N=10 a N=4 (já no regime de
+  recall-baixo do federado-k≥2 desde a comutação) e **crateriza em N=3** (53,24;
+  recall 78 → 36) — 3 boosters não sustentam a corroboração ≥2, sobra só o ataque
+  de sensor redundante.
 
 ### Análise
 
