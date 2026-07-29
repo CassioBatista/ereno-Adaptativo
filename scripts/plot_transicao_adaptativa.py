@@ -49,13 +49,14 @@ def main():
     ax.text(5.5, 101, "fase inicial\n(from-scratch)",
             ha="center", va="top", fontsize=8, color="#7a786f")
 
-    # --- limites de encolhimento (tênues) + nº de nós ---
+    # --- limites de encolhimento (tênues) + nº de nós (na base, longe da comutação) ---
     for r in SHRINK:
         ax.axvline(r, color="#cfcdc4", lw=0.8, ls=":", zorder=1)
-    ax.text(50, 102.4, "nº de nós (encolhe 1 a cada 10 rounds)",
-            ha="center", fontsize=8, color="#9a988f")
+    ax.text(6, 46.3, "nº de nós:", ha="left", va="center",
+            fontsize=8, color="#9a988f")
     for xr, n in NODES.items():
-        ax.text(xr, 100.6, f"{n}", ha="center", fontsize=8, color="#9a988f")
+        ax.text(xr, 46.3, f"{n}", ha="center", va="center",
+                fontsize=8, color="#9a988f")
 
     # --- curvas ---
     for run, (lab, col, ls) in STYLE.items():
@@ -85,10 +86,10 @@ def main():
 
     ax.set_xlabel("round")
     ax.set_ylabel("F1-score (%)")
-    ax.set_ylim(45, 103)
+    ax.set_ylim(44, 103)
     ax.set_xlim(0.5, 90.5)
     ax.grid(alpha=0.22, zorder=0)
-    ax.legend(loc="lower left", ncol=2, fontsize=9)
+    ax.legend(loc="upper right", ncol=2, fontsize=9, framealpha=0.95)
     ax.set_title("IDS adaptativo: a COMUTAÇÃO de arquitetura (r11) e seu efeito "
                  "sob encolhimento", fontsize=12)
     fig.tight_layout()
