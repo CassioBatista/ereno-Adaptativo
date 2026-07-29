@@ -312,8 +312,10 @@ corroboração, totalizando 4 runs:
   via `xgb_fusion_k` no pipeline (`main_dist._predict_boosters(k)`).
 
 Dados: `results/conv_adapt_shrink1.csv`. Figuras:
+`results/transicao_adaptativa.png` (**ênfase na comutação de arquitetura** r11 +
+efeito sob encolhimento, `scripts/plot_transicao_adaptativa.py`);
 `results/conv_adapt_shrink1_metricas.png` (F1/Recall/FPR × **round**,
-`scripts/plot_conv_adapt_shrink1.py`) e `results/shrink_por_no.png`
+`scripts/plot_conv_adapt_shrink1.py`); `results/shrink_por_no.png`
 (F1 e Recall × **nº de nós**, `scripts/plot_shrink_por_no.py`).
 
 ### Fase inicial (r1–10, *from-scratch*, 10 nós)
