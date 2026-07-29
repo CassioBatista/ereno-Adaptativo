@@ -1,0 +1,26 @@
+{
+  "dataset": "all_in_one_cicids_v2",
+  "attack": "xss",
+  "attack_id": 6,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    1,
+    25,
+    29,
+    38,
+    64,
+    67,
+    68
+  ],
+  "n_features": 7,
+  "f1_grasp_cv": 98.9771833202203,
+  "iterations": 9,
+  "evaluations": 5914,
+  "no_improvement": 8,
+  "sample": 40000,
+  "normal_cap": 40000,
+  "feature_penalty": 0.0,
+  "seed": 5,
+  "elapsed_s": 16762.6
+}

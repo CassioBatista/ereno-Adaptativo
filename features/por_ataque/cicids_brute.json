@@ -1,0 +1,32 @@
+{
+  "dataset": "all_in_one_cicids_v2",
+  "attack": "brute",
+  "attack_id": 8,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    1,
+    9,
+    21,
+    25,
+    28,
+    37,
+    38,
+    46,
+    63,
+    67,
+    68,
+    69,
+    76
+  ],
+  "n_features": 13,
+  "f1_grasp_cv": 99.61977186311786,
+  "iterations": 9,
+  "evaluations": 5593,
+  "no_improvement": 8,
+  "sample": 40000,
+  "normal_cap": 40000,
+  "feature_penalty": 0.0,
+  "seed": 5,
+  "elapsed_s": 5768.4
+}

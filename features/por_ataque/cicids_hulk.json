@@ -1,0 +1,27 @@
+{
+  "dataset": "all_in_one_cicids_v2",
+  "attack": "hulk",
+  "attack_id": 4,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    1,
+    6,
+    20,
+    35,
+    38,
+    44,
+    55,
+    67
+  ],
+  "n_features": 8,
+  "f1_grasp_cv": 99.97799521762728,
+  "iterations": 9,
+  "evaluations": 6669,
+  "no_improvement": 8,
+  "sample": 40000,
+  "normal_cap": 40000,
+  "feature_penalty": 0.0,
+  "seed": 5,
+  "elapsed_s": 6543.5
+}
