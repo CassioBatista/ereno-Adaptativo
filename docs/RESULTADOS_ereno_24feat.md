@@ -311,9 +311,10 @@ corroboração, totalizando 4 runs:
 - **k≥1** = OR (união); **k≥2** = corroboração (≥2 especialistas votam ataque),
   via `xgb_fusion_k` no pipeline (`main_dist._predict_boosters(k)`).
 
-Dados: `results/conv_adapt_shrink1.csv`. Figura:
-`results/conv_adapt_shrink1_metricas.png` (paineis F1/Recall/FPR × round),
-reprodutível por `scripts/plot_conv_adapt_shrink1.py`.
+Dados: `results/conv_adapt_shrink1.csv`. Figuras:
+`results/conv_adapt_shrink1_metricas.png` (F1/Recall/FPR × **round**,
+`scripts/plot_conv_adapt_shrink1.py`) e `results/shrink_por_no.png`
+(F1 e Recall × **nº de nós**, `scripts/plot_shrink_por_no.py`).
 
 ### Fase inicial (r1–10, *from-scratch*, 10 nós)
 
