@@ -62,15 +62,31 @@ Observação: **features 1 e 67 aparecem em TODOS os 8 ataques** (núcleo
 universal); 68 na maioria. Os ataques do CICIDS separam **trivialmente**
 (99,8–100 % de f1 com 4–13 features).
 
-### 0.2 GRASP global penalizado λ=0,05 (⏳ pendente — rodando)
+### 0.2 GRASP global penalizado λ=0,05 (✅ concluído)
 
 `scripts/grasp_global_penalizado_cicids.py --lambda 0.05 --sample 150000`.
-Núcleo global parcimonioso, a ser unido ao superset por-ataque.
+Núcleo global parcimonioso (regularização L0 de cardinalidade):
 
-### 0.3 Conjunto combinado adotado (⏳ pendente)
+**7 features:** `[1, 19, 25, 35, 40, 67, 68]`
 
-`combinado = superset (29) ∪ núcleo penalizado` →
+Note que **1, 67, 68** (o núcleo universal do por-ataque) reaparecem aqui — o
+penalizado acrescenta apenas **19, 25, 35, 40** de novo.
+
+### 0.3 Conjunto combinado adotado (✅ concluído)
+
+`combinado = superset por-ataque (29) ∪ núcleo penalizado (7)` →
 `features/all_in_one_cicids_combined.json` (via `scripts/combinar_cicids.py`).
+
+**Conjunto CICIDS adotado — 31 features:**
+
+```
+[1, 2, 6, 9, 14, 19, 20, 21, 25, 28, 29, 35, 37, 38, 39, 40,
+ 43, 44, 46, 53, 55, 63, 64, 65, 66, 67, 68, 69, 70, 75, 76]
+```
+
+O penalizado só somou **19 e 40** ao superset (as demais já estavam). Comparável
+em espírito ao **combinado-24 do ERENO** (aqui 31 de 78 features). Tempo total do
+GRASP (phase A): ~2,2 dias (estágio 1 por-ataque + estágio 2 global penalizado).
 
 ---
 
