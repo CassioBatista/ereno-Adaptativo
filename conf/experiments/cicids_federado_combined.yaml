@@ -1,0 +1,26 @@
+# CICIDS2017 phase B — FEDERADO OR (§1/§3)
+# Uso: python ereno.py distributed GR-G-VND 6 all_in_one_cicids_v2 --conf conf/experiments/cicids_federado_combined.yaml --clients 10
+run_name: cicids_federado_combined
+seed: 42
+grasp:
+  features_file: features/all_in_one_cicids_combined.json
+dataset:
+  name: all_in_one_cicids_v2
+  partitioner: attack
+  benign_cap: 500000
+  partitioner_arg: null
+topology:
+  type: ring
+  num_nodes: 10
+simulation:
+  num_rounds: 20
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 1
+  eval_sample: 200000
+architecture:
+  manager: fixed
+  default_mode: federated
+  aggregation: xgb_union
+  schedule:
+    - {from: 1, to: 20, mode: federated}

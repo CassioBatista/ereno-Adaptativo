@@ -1,0 +1,33 @@
+# CICIDS2017 phase B — §7 FL->GL fine-shrink k>=2
+run_name: cicids_adapt_fl_gl_shrink1_k2
+seed: 42
+grasp:
+  features_file: features/all_in_one_cicids_combined.json
+dataset:
+  name: all_in_one_cicids_v2
+  partitioner: attack
+  benign_cap: 500000
+  partitioner_arg: null
+topology:
+  type: ring
+  num_nodes: 10
+simulation:
+  num_rounds: 90
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 2
+  eval_sample: 200000
+architecture:
+  manager: fixed
+  default_mode: federated
+  aggregation: xgb_union
+  schedule:
+    - {from: 1,  to: 10, mode: federated, active_clients: [0,1,2,3,4,5,6,7,8,9]}
+    - {from: 11, to: 20, mode: gossip,    active_clients: [0,1,2,3,4,5,6,7,8,9]}
+    - {from: 21, to: 30, mode: gossip,    active_clients: [0,1,2,3,4,5,6,7,8]}
+    - {from: 31, to: 40, mode: gossip,    active_clients: [0,1,2,3,4,5,6,7]}
+    - {from: 41, to: 50, mode: gossip,    active_clients: [0,1,2,3,4,5,6]}
+    - {from: 51, to: 60, mode: gossip,    active_clients: [0,1,2,3,4,5]}
+    - {from: 61, to: 70, mode: gossip,    active_clients: [0,1,2,3,4]}
+    - {from: 71, to: 80, mode: gossip,    active_clients: [0,1,2,3]}
+    - {from: 81, to: 90, mode: gossip,    active_clients: [0,1,2]}
