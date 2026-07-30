@@ -418,6 +418,52 @@ ambos os k≥2 ≈ 0.
 > completo; a acurácia global fica dominada pela classe benigna e não reflete a
 > degradação por-ataque que estas curvas evidenciam.
 
+## 8. k≥2 viável no FL→GL com especialistas redundantes (resiliência)
+
+Motivação: no §7, o **FL→GL k≥2 fica plano em 87,63 (recall 78 %)** — o k≥2 sem
+redundância veta ataques de especialista único. Como o eixo do trabalho é
+**resiliência** (FL normal → GL na perda de nós), testou-se **redundância por
+projeto**: implantar **≥2 sensores por classe de ataque** para dar quórum ao k≥2.
+
+O particionador `attack` com `num_clients > nº_ataques` cria sensores redundantes
+(fatias disjuntas da classe). Com **14 nós para as 7 classes do ERENO → 2 sensores
+cada**. Config `ereno_federado_combined_k2_n14.yaml` (FL estático) e
+`ereno_adapt_fl_gl_k2_redund.yaml` (FL k≥2 14 nós → GL k≥2, encolhe 14→3).
+
+### 8.1 FL estático — a redundância recupera o recall
+
+| Config | nós | sensores/ataque | F1 | Recall | FPR | #FP |
+|---|---:|:--:|---:|---:|---:|---:|
+| FL k≥2 (§6) | 10 | 1 | 87,69 | **78,09** | 0,002 | 49 |
+| FL OR | 10 | 1 | 95,72 | 99,97 | 0,649 | 17.881 |
+| **FL k≥2 redundante** | 14 | **2** | **95,98** | **99,96** | 0,606 | 16.708 |
+| FL OR | 14 | 2 | 95,45 | 99,97 | 0,691 | 19.028 |
+
+**O recall recupera de 78 % → 99,96 %.** Com 2 boosters por ataque, todo ataque
+real pega **≥2 votos** → o k≥2 não veta mais. E o **k≥2 redundante (95,98) bate o
+OR (95,45)** com recall igual e **menos FP** — o efeito *sweet-spot*, agora obtido
+por **topologia de implantação** em vez de difusão gossip.
+
+### 8.2 FL k≥2 (14 nós) → GL k≥2, encolhendo 14→3 — **plano**
+
+`results/resiliencia_k2_redund.png` (`scripts/plot_resiliencia_k2_redund.py`;
+dados em `results/redund_k2_test.csv`). Trajetória por-round: **F1 = 96,07 em
+todos os 90 rounds** (teste completo 95,98 / recall 99,96 / FPR 0,606).
+
+**Totalmente resiliente ao churn — F1 plano de 14 a 3 nós.** Mecanismo: a fase
+federada **semeia a união dos 14 boosters redundantes em TODOS os nós**; ao
+encolher, cada sobrevivente ainda carrega os 14 boosters → o **quórum k≥2
+(2 sensores/ataque) é preservado mesmo com 3 nós**. Perder nós não remove boosters
+do pool (mesma transparência do FL→GL do §7, agora com pool redundante).
+
+### 8.3 Conclusão (decisão de projeto)
+
+> Implantar **especialistas redundantes (≥2 por classe de ataque)** habilita a
+> **corroboração k≥2 no próprio FL** — recuperando recall (~100 %) e reduzindo FP
+> vs OR. A **semeadura FL→GL preserva o pool redundante**, tornando o detector
+> k≥2 **resiliente à perda de nós (plano 14→3)**. Assim o k≥2 — desejável por
+> cortar FP — é viável no eixo de resiliência **sem** o custo de recall do §7.
+
 ## Pendentes (não incluídos aqui)
 
 - Métricas por-cliente (tabela §2-style) com combinado-24.
