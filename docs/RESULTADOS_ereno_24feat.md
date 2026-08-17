@@ -243,7 +243,12 @@ O merge é degenerado (FL-merge = veto, recall 30,7 %; GL-merge = explosão de
 árvores 100→1560, FPR 100 %). **Só o OR é idempotente ⇒ único com GL=FL exato**;
 qualquer corroboração (k-de-n) sai da idempotência (GL≠FL) e sacrifica recall.
 
-### 6.2 k-de-n variando clientes (N = 10 → 3)
+### 6.2 k-de-n × TAMANHO da rede (N = 10 → 3) — varredura por RE-DIFUSÃO
+
+> ⚠️ **Escopo:** varredura de **tamanho**, não redução de nós. `kden_vary_clients.py`
+> **re-particiona e re-difunde do zero a cada N** → o pool GL = 2N−1 **encolhe**
+> (19→5), e por isso o GL-k≥2 cai. Para a redução de nós de fato (com **retenção**
+> do pool GL), ver **§6.3**.
 
 `scripts/kden_vary_clients.py` (combinado-24; pool difundido do gossip ≈ **2N−1**
 boosters; `results/kden_vary_clients.csv`).
@@ -296,7 +301,54 @@ boosters; `results/kden_vary_clients.csv`).
 3. **FL-k≥2/k≥3 sempre afunda o recall** (sem redundância para ataques singleton),
    em todo N.
 4. **N<7 é errático** (regime "multi-ataque" round-robin — ex.: N=4 sai bem, N=5/N=3
-   pior) porque depende de *quais* ataques se emparelham no mesmo cliente.
+   pior) porque depende de *quais* ataques se emparelham no mesmo cliente. ⚠️ Isto é
+   da **re-difusão**; sob **retenção** (§6.3) o GL mantém os 19 boosters e o k≥2 fica
+   **invariante** em 96,34.
+
+### 6.3 REDUÇÃO de nós com retenção (N = 10 → 3) — FL encolhe × GL mantém
+
+Redução de nós **de fato** (`scripts/reducao_nos.py`, `scripts/reducao_nos_dyn.py`;
+`results/reducao_nos.csv`, `results/reducao_nos_dyn.csv`): parte de N=10, difunde o
+pool GL (19 boosters), e **derruba nós 10→3**. O FL re-agrega só os presentes → pool
+**encolhe** 10→3; o GL **mantém** os 19 boosters nos sobreviventes. Só configuramos a
+queda de nós (`active_clients`); a retenção (GL) e o encolhimento (FL) são
+**emergentes** da arquitetura.
+
+A versão **dinâmica** (`reducao_nos_dyn.py`) derruba os nós de verdade
+(`topology.set_status(down)`) e os sobreviventes **re-gossipam** a cada queda, medindo
+o pool REAL do nó 0: `GL pool(real)=19` **em todo N** (até 3 nós). Idêntica à estática
+⇒ retenção **real, não assumida**. **Todas** as métricas vêm de simulação.
+
+**k≥1 (OR):**
+
+| N | boost FL/GL | F1 FL/GL | Recall FL/GL | FPR FL/GL |
+|---:|:--:|:--:|:--:|:--:|
+| 10 | 10/19 | 95,72 / **95,72** | 99,97 / **99,97** | 0,649 / 0,649 |
+| 9 | 9/19 | 94,33 / **95,72** | 91,75 / **99,97** | 0,203 / 0,649 |
+| 8 | 8/19 | 90,73 / **95,72** | 83,06 / **99,97** | 0,003 / 0,649 |
+| 7 | 7/19 | 90,54 / **95,72** | 82,74 / **99,97** | 0,003 / 0,649 |
+| 6 | 6/19 | 86,00 / **95,72** | 75,48 / **99,97** | 0,003 / 0,649 |
+| 5 | 5/19 | 85,46 / **95,72** | 74,65 / **99,97** | 0,003 / 0,649 |
+| 4 | 4/19 | 85,48 / **95,72** | 74,64 / **99,97** | 0,000 / 0,649 |
+| 3 | 3/19 | 85,48 / **95,72** | 74,64 / **99,97** | 0,000 / 0,649 |
+
+**k≥2:**
+
+| N | boost FL/GL | F1 FL/GL | Recall FL/GL | FPR FL/GL |
+|---:|:--:|:--:|:--:|:--:|
+| 10 | 10/19 | 87,69 / **96,34** | 78,09 / **99,97** | 0,002 / 0,550 |
+| 9 | 9/19 | 86,79 / **96,34** | 76,67 / **99,97** | 0,000 / 0,550 |
+| 8 | 8/19 | 86,79 / **96,34** | 76,67 / **99,97** | 0,000 / 0,550 |
+| 7 | 7/19 | 85,99 / **96,34** | 75,42 / **99,97** | 0,000 / 0,550 |
+| 6 | 6/19 | 85,48 / **96,34** | 74,64 / **99,97** | 0,000 / 0,550 |
+| 5 | 5/19 | 85,48 / **96,34** | 74,64 / **99,97** | 0,000 / 0,550 |
+| 4 | 4/19 | 85,48 / **96,34** | 74,64 / **99,97** | 0,000 / 0,550 |
+| 3 | 3/19 | 53,85 / **96,34** | 36,85 / **99,97** | 0,000 / 0,550 |
+
+**Conclusão:** sob **redução de nós**, o **FL degrada** (OR 95,72→85,48; k≥2
+87,69→53,85) porque perde especialistas; o **GL é invariante** (OR 95,72; k≥2 96,34;
+recall 99,97) porque **retém** a união de 19 boosters. É o contraponto da §6.2
+(re-difusão), que mostra *por que* a retenção importa.
 
 ## 7. Adaptação com encolhimento fino de nós × k-de-n
 
