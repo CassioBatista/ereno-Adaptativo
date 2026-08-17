@@ -1,32 +1,40 @@
 #!/usr/bin/env python3
-"""Enfase na COMUTACAO de arquitetura do IDS adaptativo (FL<->GL em r11).
+"""IDS adaptativo: comutacao de arquitetura (r11) sob encolhimento 10->3 nos.
+Versao por-round, legivel (ingles, fontes grandes, sem titulo interno).
 
-Le results/conv_adapt_shrink1.csv e gera results/transicao_adaptativa.png:
-F1 x round com o momento da comutacao destacado (a alteracao adaptativa),
-mais o contraste transparente (FL->GL) vs disruptivo (GL->FL) e o encolhimento.
+Le results/conv_adapt_shrink1.csv (4 runs: FL->GL e GL->FL, k=1 e k>=2) e gera
+results/transicao_adaptativa.{png,pdf}. Contador de nos ATIVOS no topo: 10->3
+(1 no a cada 10 rounds). Sem titulo -> vai no \\caption{} do LaTeX.
 
-Uso: python scripts/plot_transicao_adaptativa.py
+Uso: python3 scripts/plot_transicao_adaptativa.py
 """
 import csv
 import os
 
 import matplotlib
-
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSV = os.path.join(HERE, "results", "conv_adapt_shrink1.csv")
-OUT = os.path.join(HERE, "results", "transicao_adaptativa.png")
+OUT = os.path.join(HERE, "results", "transicao_adaptativa")
 
+plt.rcParams.update({
+    "font.size": 14, "axes.labelsize": 16.5, "axes.titlesize": 15.5,
+    "xtick.labelsize": 13.5, "ytick.labelsize": 13.5, "legend.fontsize": 12.5,
+})
+
+BLUE, ORANGE, RED = "#2a78d6", "#eb6834", "#d84a3a"
+# run -> (rotulo, cor, estilo, largura)  | solido = FL->GL (transparente)
 STYLE = {
-    "flgl_k1": ("FL->GL  k>=1", "#2a78d6", "-"),
-    "glfl_k1": ("GL->FL  k>=1", "#2a78d6", "--"),
-    "flgl_k2": ("FL->GL  k>=2", "#eb6834", "-"),
-    "glfl_k2": ("GL->FL  k>=2", "#eb6834", "--"),
+    "flgl_k1": ("FL$\\to$GL,  k$\\geq$1",  BLUE,   "-",  3.2),
+    "flgl_k2": ("FL$\\to$GL,  k$\\geq$2",  ORANGE, "-",  3.2),
+    "glfl_k1": ("GL$\\to$FL,  k$\\geq$1",  BLUE,   "--", 2.0),
+    "glfl_k2": ("GL$\\to$FL,  k$\\geq$2",  ORANGE, "--", 2.0),
 }
 SWITCH = 10.5
 SHRINK = [20.5, 30.5, 40.5, 50.5, 60.5, 70.5, 80.5]
+# encolhimento de 1 no a cada 10 rounds: 10 -> 3 nos (rotulo no meio de cada faixa)
 NODES = {15: 10, 25: 9, 35: 8, 45: 7, 55: 6, 65: 5, 75: 4, 85: 3}
 
 
@@ -42,59 +50,54 @@ def load():
 def main():
     data = load()
     x = list(range(1, 91))
-    fig, ax = plt.subplots(figsize=(13, 6.5))
+    fig, ax = plt.subplots(figsize=(12.4, 6.4))
 
-    # --- fase inicial (from-scratch) sombreada ---
+    # fase inicial (from-scratch) sombreada
     ax.axvspan(0.5, SWITCH, color="#ecebe6", alpha=0.7, zorder=0)
-    ax.text(5.5, 101, "fase inicial\n(from-scratch)",
-            ha="center", va="top", fontsize=8, color="#7a786f")
+    ax.text(5.5, 98.6, "cold\nstart", ha="center", va="center",
+            fontsize=11, color="#8a8880", style="italic")
 
-    # --- limites de encolhimento (tênues) + nº de nós (na base, longe da comutação) ---
+    # limites de encolhimento + contador de nos ATIVOS no topo (10 -> 3)
     for r in SHRINK:
-        ax.axvline(r, color="#cfcdc4", lw=0.8, ls=":", zorder=1)
-    ax.text(6, 46.3, "nº de nós:", ha="left", va="center",
-            fontsize=8, color="#9a988f")
+        ax.axvline(r, color="#d3d1c8", lw=0.9, ls=":", zorder=1)
+    ax.text(1.0, 102.4, "active nodes:", ha="left", va="center",
+            fontsize=11.5, color="#8a8880")
     for xr, n in NODES.items():
-        ax.text(xr, 46.3, f"{n}", ha="center", va="center",
-                fontsize=8, color="#9a988f")
+        ax.text(xr, 102.4, f"{n}", ha="center", va="center",
+                fontsize=11.5, color="#8a8880")
 
-    # --- curvas ---
-    for run, (lab, col, ls) in STYLE.items():
-        ax.plot(x, data[run], color=col, ls=ls, lw=2.2, label=lab, zorder=3)
+    # curvas
+    for run, (lab, col, ls, lw) in STYLE.items():
+        ax.plot(x, data[run], color=col, ls=ls, lw=lw, label=lab, zorder=3,
+                solid_capstyle="round")
 
-    # --- ENFASE: a comutacao de arquitetura (a alteracao adaptativa) ---
-    ax.axvspan(SWITCH - 0.5, SWITCH + 0.5, color="#d84a3a", alpha=0.18, zorder=2)
-    ax.axvline(SWITCH, color="#d84a3a", lw=2.6, zorder=4)
-    ax.annotate("COMUTAÇÃO DE ARQUITETURA (r11)\nFL ↔ GL — a adaptação",
-                xy=(SWITCH, 62), xytext=(21, 60),
-                fontsize=11, fontweight="bold", color="#b5301f",
-                arrowprops=dict(arrowstyle="->", color="#b5301f", lw=1.6))
+    # ENFASE: a comutacao de arquitetura (r11)
+    ax.axvline(SWITCH, color=RED, lw=2.4, zorder=4, alpha=0.9)
+    ax.annotate("architecture switch (r11)", xy=(SWITCH, 66), xytext=(23, 63),
+                fontsize=13, fontweight="bold", color="#b5301f",
+                arrowprops=dict(arrowstyle="->", color="#b5301f", lw=1.8))
 
-    # contraste no ponto da comutacao
-    ax.annotate("FL→GL: comutação TRANSPARENTE\n(F1 mantém 95,74)",
-                xy=(12, 95.74), xytext=(30, 98.7), fontsize=9, color="#185fa5",
-                arrowprops=dict(arrowstyle="->", color="#185fa5", lw=1.2))
-    ax.annotate("GL→FL k≥2: sweet-spot 96,38…", xy=(10, 96.38), xytext=(2, 90),
-                fontsize=9, color="#993c1d",
-                arrowprops=dict(arrowstyle="->", color="#993c1d", lw=1.2))
-    ax.annotate("…DESPENCA a 87,63\nao comutar p/ federado", xy=(11.3, 87.63),
-                xytext=(15, 74), fontsize=9, color="#993c1d",
-                arrowprops=dict(arrowstyle="->", color="#993c1d", lw=1.2))
-    ax.annotate("k≥2 + federado + 3 nós\n= crater (53,24)", xy=(85, 53.24),
-                xytext=(60, 60), fontsize=9, color="#993c1d",
-                arrowprops=dict(arrowstyle="->", color="#993c1d", lw=1.2))
+    # contraste (2 anotacoes, sem sobreposicao)
+    ax.annotate("FL$\\to$GL: transparent switch\nF1 stays flat as nodes drop 10$\\to$3",
+                xy=(50, 95.74), xytext=(40, 82.5), fontsize=12.5, color="#185fa5",
+                ha="center", fontweight="bold",
+                arrowprops=dict(arrowstyle="->", color="#185fa5", lw=1.6))
+    ax.annotate("GL$\\to$FL: cold start, then\ndegrades under node loss",
+                xy=(85, 53.24), xytext=(66, 66), fontsize=12.5, color="#993c1d",
+                ha="center", fontweight="bold",
+                arrowprops=dict(arrowstyle="->", color="#993c1d", lw=1.6))
 
     ax.set_xlabel("round")
     ax.set_ylabel("F1-score (%)")
-    ax.set_ylim(44, 103)
+    ax.set_ylim(44, 104)
     ax.set_xlim(0.5, 90.5)
     ax.grid(alpha=0.22, zorder=0)
-    ax.legend(loc="upper right", ncol=2, fontsize=9, framealpha=0.95)
-    ax.set_title("IDS adaptativo: a COMUTAÇÃO de arquitetura (r11) e seu efeito "
-                 "sob encolhimento", fontsize=12)
+    ax.legend(loc="lower left", ncol=2, framealpha=0.96, edgecolor="#b8b6ad")
+    # sem titulo interno -> vai no \caption{} do LaTeX
     fig.tight_layout()
-    fig.savefig(OUT, dpi=130)
-    print("wrote", OUT)
+    fig.savefig(OUT + ".png", dpi=200, bbox_inches="tight")
+    fig.savefig(OUT + ".pdf", bbox_inches="tight")
+    print("wrote", OUT + ".png / .pdf")
 
 
 if __name__ == "__main__":

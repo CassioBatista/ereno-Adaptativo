@@ -7,3 +7,6 @@ __pycache__/
 all_in_one_cicids_v2.csv
 all_in_one_ereno_train.csv
 all_in_one_ereno_test.csv
+
+# Logs de experimentos (regeneraveis) — ficam locais
+results/*.log
