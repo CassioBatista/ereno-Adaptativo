@@ -1,4 +1,4 @@
-# Arquitetura ERENO-Adaptive v2 — IDS federado autônomo e auto-curativo
+# Arquitetura ERENO-Adaptive v2 — IDS federado autônomo e auto-autorrecuperativo
 
 > Documento de **projeto** da v2 (branch `ereno-adaptive-v2`). Consolida as decisões
 > de arquitetura para automatizar o chaveamento FL↔GL, distribuir o controle e
