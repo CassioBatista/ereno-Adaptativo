@@ -1,0 +1,95 @@
+{
+  "artifact": "ReSIDS -- Resilient runtime-switchable Federated-Gossip IDS for IEC 61850",
+  "zenodo_doi": "10.5281/zenodo.22084923",
+  "git": {
+    "commit": "9e9076e",
+    "branch": "ereno-adaptive-v2",
+    "pipeline_frozen_commit": "0677320",
+    "pipeline_frozen_date": "2026-07-16",
+    "note": "All result files backing the paper are dated on or after 2026-07-17, i.e. after the corrected pipeline (content-dedup union, held-out test, equal data budgets) was frozen. Commit/tag re-stamped at the v1.1 submission release."
+  },
+  "hardware": "12th-gen Intel Core i7-1255U, 12 threads, 10 GB RAM; WSL2/Ubuntu",
+  "environment": {
+    "python": "3.14.4",
+    "lock": "requirements.lock.txt",
+    "key_packages": {
+      "xgboost": "3.3.0",
+      "flwr": "1.32.0",
+      "ray": "2.55.1",
+      "scikit-learn": "1.9.0",
+      "numpy": "2.5.0",
+      "scipy": "1.18.0",
+      "matplotlib": "3.11.0",
+      "pyyaml": "6.0.3"
+    }
+  },
+  "seeds": { "data": 42, "grasp": 5, "evaluation": 7 },
+  "feature_manifest": {
+    "path": "features/all_in_one_ereno_train_combined.json",
+    "sha256": "2ab6c037c67fc18a7c54d6e16805249868e97dd17a3b95bb2ebc4c16a8be3956",
+    "n_features": 24,
+    "feature_penalty_lambda": 0.05
+  },
+  "inputs": [
+    { "path": "all_in_one_ereno_train.csv", "bytes": 1748176548,
+      "sha256": "0ad1bef524aa47def9ead2038a53afff5fbe9f40b15a29cdee3fcff2d5bd1fca",
+      "note": "1.7 GB; hashed with --strict" },
+    { "path": "all_in_one_ereno_test.csv", "bytes": 1735656671,
+      "sha256": "a8e7f0dd135392285d10f46f316501cc301f2c3e65094e4dcf628bf0735bb256",
+      "note": "1.7 GB; hashed with --strict" },
+    { "path": "features/all_in_one_ereno_train_combined.json", "bytes": 0,
+      "sha256": "2ab6c037c67fc18a7c54d6e16805249868e97dd17a3b95bb2ebc4c16a8be3956" }
+  ],
+  "min_run": {
+    "command": "python reproduce.py",
+    "strict_command": "python reproduce.py --strict",
+    "description": "Trains the 10 specialists (seed 42) on the persisted GRASP-24 manifest and evaluates the full held-out ERENO test set. No GRASP re-run, no distributed simulation.",
+    "outputs": ["results/reproduce_table.csv", "results/reproduce_confusion.txt", "results/reproduce_figure.png"]
+  },
+  "expected_min_run": {
+    "1": { "f1": 95.72, "recall": 99.97, "precision": 91.81, "fpr": 0.649,
+           "n_fp": 17881, "mcc": 0.9549,
+           "confusion": { "tp": 200444, "fp": 17881, "fn": 65, "tn": 2737258 } },
+    "2": { "f1": 87.69, "recall": 78.09, "precision": 99.97, "fpr": 0.002,
+           "n_fp": 49 }
+  },
+  "heavy_stages": [
+    { "stage": "dataset_assembly", "command": "see scripts/build_ereno_dataset.py",
+      "cost": "~1.7 GB output", "in_min_run": false },
+    { "stage": "grasp_feature_selection", "command": "python ereno.py grasp GR-G-VND 6 all_in_one_ereno_train --sample 150000",
+      "cost": "~3.5 h per run (12622 s, 8776 evaluations)", "in_min_run": false }
+  ],
+  "provenance": [
+    { "artifact": "operational metrics + confusion (tab:operational, tab:per-class)",
+      "result_file": "results/operational_metrics.csv",
+      "sha256": "ae43804f1591510f9353e2a476b4d0515ae9deac61e7a69999e1b012afea6e35",
+      "producer": "scripts/operational_metrics.py", "frozen": true },
+    { "artifact": "factorial matrix + Holm contrasts + 5-seed robustness (tab:factorial, tab:contrasts, tab:seed-robustness)",
+      "result_file": "results/factorial_holm.csv",
+      "sha256": "41d53c7831439ec7b220d6de17b3cbedc555bf57b9b57324e8ab48f9ee2546e9",
+      "producer": "scripts/factorial_holm.py", "frozen": true },
+    { "artifact": "inference latency (Section reproducibility/scalability)",
+      "result_file": "results/inference_latency.csv",
+      "sha256": "7c75aa9ffd7c7b19e81acc9421898c5680503c03fb32a2a65d325d098659cbe6",
+      "producer": "scripts/inference_latency.py", "frozen": true },
+    { "artifact": "feature-set ablation all-58 vs GRASP-24 (tab:feature-selection, panel a)",
+      "result_file": "results/feature_ladder.csv",
+      "sha256": "e53a56be0fe608e0b6af234241cb54c4746ec08d043db4fd2454d5968f9340c5",
+      "producer": "scripts/feature_ladder.py", "frozen": true },
+    { "artifact": "lambda sensitivity, 5-seed mean+/-CI (tab:feature-selection, panel b)",
+      "result_file": "results/lambda_multiseed.csv",
+      "sha256": "dcd820745d0f172386fee48fb3f2d1eef8a79b4b95f8a80e617446aeadc9d5e0",
+      "producer": "scripts/lambda_multiseed.py (combined sets reconstructed from the real per-attack GRASP log: per-attack union at lambda U fixed global-15)",
+      "frozen": true },
+    { "artifact": "runtime switching FL<->GL (Tab. 9/10, Fig. 3)",
+      "result_file": "results/conv_adapt_shrink1.csv",
+      "sha256": "19840e386cb4cc5794ca9c08f88ed17371cff32e20605825864e9feb5beb236f",
+      "mtime": "2026-08-17", "frozen": true,
+      "note": "post-dates pipeline freeze (2026-07-16): generated under content-dedup union" },
+    { "artifact": "node-loss / retention resilience",
+      "result_file": "results/ereno_nodeloss_c10.log",
+      "sha256": "28a33107b3c79b29af5ab4a9de2bb9e091ae2cdafbaa7f83e1cddfc11cf306ff",
+      "mtime": "2026-07-17", "frozen": true,
+      "note": "post-dates pipeline freeze (2026-07-16)" }
+  ]
+}

@@ -1,0 +1,6 @@
+metric,us_per_sample
+feature_extraction,0.1943
+inference_batched,2.5832
+inference_single_mean,3229.9945
+inference_single_median,2834.1850
+inference_single_p95,6320.3723
