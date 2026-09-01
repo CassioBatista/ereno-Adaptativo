@@ -79,7 +79,7 @@ def main():
 
     # contraste (2 anotacoes, sem sobreposicao)
     ax.annotate("FL$\\to$GL: transparent switch\nF1 stays flat as nodes drop 10$\\to$3",
-                xy=(50, 95.74), xytext=(40, 82.5), fontsize=12.5, color="#185fa5",
+                xy=(50, 95.74), xytext=(42, 73), fontsize=12.5, color="#185fa5",
                 ha="center", fontweight="bold",
                 arrowprops=dict(arrowstyle="->", color="#185fa5", lw=1.6))
     ax.annotate("GL$\\to$FL: cold start, then\ndegrades under node loss",

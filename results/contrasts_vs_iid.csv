@@ -1,0 +1,4 @@
+contrast,effect,p_raw,p_holm,significance
+"C1: specialist>IID (OR, F1)",16.2245,3.171169e-08,9.513507e-08,***
+"C2: k>=2 cuts FPR (specialist)",0.6160,3.284471e-06,3.284471e-06,***
+"C3: specialist>IID (k>=2, F1)",7.6182,1.192882e-07,2.385765e-07,***
