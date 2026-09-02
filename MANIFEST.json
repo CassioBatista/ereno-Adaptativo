@@ -109,6 +109,12 @@
       "sha256": "38c8b9712de68e80287c42498dfd97a0c6a19b469d817f24c58d8a8c2a3d76dc",
       "producer": "scripts/masquerade_fault_variant.py (drop electrical view; protocol&temporal with validation-selected tau*)",
       "note": "confirms fake_fault is systematic: no view combination reaches low FP at high recall (protocol/temporal FPs are correlated)",
+      "frozen": true },
+    { "artifact": "tree-budget sensitivity justifying num_boost_round=10 (Section methodology)",
+      "result_file": "results/tree_budget_sensitivity.csv",
+      "sha256": "210707e3c97f5f467072e3c48ab37fa49cf7e56d1a165ae0b41968102474c0d6",
+      "producer": "scripts/tree_budget_sensitivity.py (distributed N=10 with num_boost_round in {5,10,20}; centralized single XGBoost with trees in {50,100,200})",
+      "note": "nbr=5 and nbr=10 are identical (specialist saturates by ~5 trees; k>=1 F1 95.72/#FP 17881 = deployed headline, k>=2 87.69/49); nbr=20 gains only +0.62 F1; centralized trees=100 reproduces the paper baseline (F1 99.23/#FP 3017). 10 boosters x 10 trees = 100 aggregated trees = centralized-100.",
       "frozen": true }
   ]
 }
