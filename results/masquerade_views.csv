@@ -1,0 +1,15 @@
+class,view,FP,recall
+masquerade_fake_fault,electrical,1190845,50.2965
+masquerade_fake_fault,protocol,275475,97.4070
+masquerade_fake_fault,temporal,139763,100.0000
+masquerade_fake_fault,AND(>=3),4654,48.1395
+masquerade_fake_fault,MAJ(>=2),225690,99.5640
+masquerade_fake_fault,_intersection3,4654,
+masquerade_fake_fault,_union3,1375739,
+masquerade_fake_normal,electrical,138104,99.5465
+masquerade_fake_normal,protocol,125072,100.0000
+masquerade_fake_normal,temporal,139483,100.0000
+masquerade_fake_normal,AND(>=3),0,99.5465
+masquerade_fake_normal,MAJ(>=2),123064,100.0000
+masquerade_fake_normal,_intersection3,0,
+masquerade_fake_normal,_union3,279595,

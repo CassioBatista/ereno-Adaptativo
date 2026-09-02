@@ -1,0 +1,29 @@
+{
+  "_source": "ERENO IEC-61850 dataset ARFF header (kaggle.com/datasets/sequincozes/ereno-iec61850-ids); 58 numeric features F1..F58, 1-based, after discarding the 11 nominal attributes (ethDst, ethSrc, ethType, gooseAppid, TPID, gocbRef, datSet, goID, test, ndsCom, protocol).",
+  "_note": "F# is the 1-based index used by filter_features and the paper's Table 3. F1/F38/F39 are absolute-time markers excluded at feature selection (ERENO_TEMPO_ABSOLUTO).",
+  "names": {
+    "1": "Time", "2": "isbA", "3": "isbB", "4": "isbC", "5": "ismA", "6": "ismB",
+    "7": "ismC", "8": "vsbA", "9": "vsbB", "10": "vsbC", "11": "vsmA", "12": "vsmB",
+    "13": "vsmC", "14": "isbARmsValue", "15": "isbBRmsValue", "16": "isbCRmsValue",
+    "17": "ismARmsValue", "18": "ismBRmsValue", "19": "ismCRmsValue", "20": "vsbARmsValue",
+    "21": "vsbBRmsValue", "22": "vsbCRmsValue", "23": "vsmARmsValue", "24": "vsmBRmsValue",
+    "25": "vsmCRmsValue", "26": "isbATrapAreaSum", "27": "isbBTrapAreaSum",
+    "28": "isbCTrapAreaSum", "29": "ismATrapAreaSum", "30": "ismBTrapAreaSum",
+    "31": "ismCTrapAreaSum", "32": "vsbATrapAreaSum", "33": "vsbBTrapAreaSum",
+    "34": "vsbCTrapAreaSum", "35": "vsmATrapAreaSum", "36": "vsmBTrapAreaSum",
+    "37": "vsmCTrapAreaSum", "38": "t", "39": "GooseTimestamp", "40": "SqNum",
+    "41": "StNum", "42": "cbStatus", "43": "frameLen", "44": "gooseTimeAllowedtoLive",
+    "45": "gooseLen", "46": "confRev", "47": "numDatSetEntries", "48": "APDUSize",
+    "49": "stDiff", "50": "sqDiff", "51": "gooseLengthDiff", "52": "cbStatusDiff",
+    "53": "apduSizeDiff", "54": "frameLengthDiff", "55": "timestampDiff", "56": "tDiff",
+    "57": "timeFromLastChange", "58": "delay"
+  },
+  "families": {
+    "absolute_time_excluded": [1, 38, 39],
+    "electrical_instantaneous": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    "electrical_rms": [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+    "electrical_trap_area": [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
+    "protocol_counter": [40, 41, 42, 43, 44, 45, 46, 47, 48],
+    "derived_diff_temporal": [49, 50, 51, 52, 53, 54, 55, 56, 57, 58]
+  }
+}

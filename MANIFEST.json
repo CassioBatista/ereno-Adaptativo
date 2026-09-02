@@ -97,6 +97,18 @@
       "result_file": "results/ereno_nodeloss_c10.log",
       "sha256": "28a33107b3c79b29af5ab4a9de2bb9e091ae2cdafbaa7f83e1cddfc11cf306ff",
       "mtime": "2026-07-17", "frozen": true,
-      "note": "post-dates pipeline freeze (2026-07-16)" }
+      "note": "post-dates pipeline freeze (2026-07-16)" },
+    { "artifact": "counselor multi-view masquerade proof-of-concept (future work, v2)",
+      "result_file": "results/masquerade_views.csv",
+      "sha256": "eaccd81486491cffbce6925db778c769e92717285d7d99380090847376806379",
+      "producer": "scripts/masquerade_views.py (single-view specialists per feature family; FP-independence + AND/majority arbitration)",
+      "note": "supports the v2 counselor claim: fake_normal FP->0 at unchanged recall (independent errors); fake_fault stays systematic",
+      "frozen": true },
+    { "artifact": "counselor reliability-aware variant for fake_fault (future work, v2)",
+      "result_file": "results/masquerade_fault_variant.csv",
+      "sha256": "38c8b9712de68e80287c42498dfd97a0c6a19b469d817f24c58d8a8c2a3d76dc",
+      "producer": "scripts/masquerade_fault_variant.py (drop electrical view; protocol&temporal with validation-selected tau*)",
+      "note": "confirms fake_fault is systematic: no view combination reaches low FP at high recall (protocol/temporal FPs are correlated)",
+      "frozen": true }
   ]
 }
