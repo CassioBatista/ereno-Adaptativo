@@ -210,6 +210,45 @@ Comparar o **Adaptativo** contra **Oráculo** (switch perfeito/instantâneo — 
 - **Future work com salvaguarda:** Nível 2 (resposta ativa no grid) com
   human-in-the-loop.
 
+## 11.1 Fundamentação externa — peer sampling tolerante a bizantinos (AUPE)
+
+A tese de **Mukam (2026)** [`mukam2026byzantine`] sobre *Byzantine-resilient peer
+sampling* dá a maquinaria concreta para os componentes que já projetamos aqui. O
+domínio dela é amostragem de pares por **IDs**; o nosso é difusão de **boosters** —
+a transferência é por **analogia** (mesmo mecanismo, design/avaliação novos no
+contexto GOOSE/SV; **não** herdamos as garantias numéricas dela, ex. "26% de
+tolerância", que são do peer sampling).
+
+| Mecanismo do AUPE | Onde entra na v2 |
+|---|---|
+| **Set Cleaner** — *tracking* (frequência de cada fonte) + *debiasing* (reduz peso de fontes super-representadas; Alg. 1, `p_j = min/Φ_j`) | Endurece o pool difundido do GL: um nó comprometido floodando seu booster poluído é **penalizado por super-representação** antes do voto — vira driver da "concordância-de-modelo" (§5). |
+| **Agregação colaborativa de reputação** — nós confiáveis fazem *merge* comutativo/associativo (average; *max* p/ sketches) dos componentes de tracking via gossip | O **sinal de confiança unificado** (§5) deixa de ser só local: os **conselheiros** gossip-agregam reputação por-booster → **k-de-n ponderado por confiabilidade** em vez de voto plano. Fecha o FP do masquerade de forma distribuída. |
+| **Bias factor** — métrica que captura super-representação de IDs adversariais vs. corretos (supera erro agregado) | Métrica-alvo p/ *poisoning*: um booster com taxa de **disparo-em-benigno anômala** relativa ao pool é sinal melhor que "acurácia agregada" p/ flagar booster ruim (alimenta `LocalAudit`, §3). |
+| **BitMatcher + BMDecay** — contagem adaptativa econômica; *decay* (halving) p/ streams infinitos; *merge* (casa fingerprints, toma max) | IDS roda **indefinidamente** → contadores de stream saturam. Relevante às famílias que **são** estatística de stream (protocol-counter F40–48, temporal). BMDecay mantém frescor em streams de 10M com ~12% da memória; conecta ao parágrafo de **staleness/retenção** (contribuições difundidas devem decair). |
+
+**Dependências/ressalvas:** o *collaborative debiasing* do AUPE usa **TEE + remote
+attestation** (handshake de nós confiáveis). Citamos como **opção** para o handshake
+dos conselheiros — **não** como requisito de hardware. É escopo de **v2**, não
+retrofit da v1: introduz um **modelo de ameaça novo** (bizantino), que a v1 não trata.
+
+**Bullet pronto p/ o future-work do artigo (LaTeX):**
+
+```latex
+\item \textbf{Byzantine-resilient gossip fusion (v2).} The current gossip
+mode assumes honest peers; a compromised node could poison the diffused
+pool, and the union/OR fusion amplifies a single malicious booster into a
+false-positive flood. Adapting Byzantine-resilient peer-sampling machinery
+\cite{mukam2026byzantine}---a frequency-tracking \emph{Set Cleaner} that
+down-weights over-represented sources, and collaborative, gossip-aggregated
+reputation among trusted counselors (optionally attested)---would turn the
+flat $k$-of-$n$ vote into a reliability-weighted one, extending ReSIDS's
+resilience from churn to adversarial nodes. Memory-bounded sketches with
+controlled decay (BitMatcher/BMDecay) further address the unbounded-stream
+nature of the protocol-counter and temporal features on constrained IEDs.
+```
+
+BibTeX em [`docs/refs_v2.bib`](refs_v2.bib).
+
 ## 12. Enquadramento (uma frase)
 
 > ERENO-Adaptive v2 é um **IDS federado autônomo e auto-curativo** (*self-healing /
