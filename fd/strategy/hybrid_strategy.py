@@ -241,12 +241,14 @@ class HybridStrategy(Strategy):
                 self._monitor.node_failure(
                     server_round, failed,
                     detail=f"{len(failures)} client failure(s) in aggregate_fit")
-        # feed the distributed control plane its local detection signal
-        self.arch_manager.observe(server_round, self._reported_nodes(results))
+        # aggregate THIS round with the mode it was configured/run in...
         _, strategy = self._active(server_round)
         params, metrics = strategy.aggregate_fit(server_round, results, failures)
         if params is not None:
             self.final_parameters = params
+        # ...THEN feed the control plane its local detection signal, so any
+        # commit takes effect on the NEXT round (1-round detection latency).
+        self.arch_manager.observe(server_round, self._reported_nodes(results))
         return params, metrics
 
     def configure_evaluate(
@@ -277,7 +279,10 @@ class HybridStrategy(Strategy):
     ) -> tuple[float, dict[str, Scalar]] | None:
         mode, strategy = self._active(server_round)
         if self.round_eval_fn is not None and server_round > 0:
-            return self.round_eval_fn(server_round, mode, parameters)
+            # label with the mode the round was actually run in (configure_fit),
+            # not any post-aggregation commit that only takes effect next round
+            run_mode = self._prev_mode or mode
+            return self.round_eval_fn(server_round, run_mode, parameters)
         return strategy.evaluate(server_round, parameters)
 
     # ── convenience accessors ─────────────────────────────────────────────────
