@@ -176,6 +176,35 @@ tolerado).
   automático; emite recomendação + evidência a um **operador** (human-in-the-loop).
   Racional: falso positivo num IEC-61850 crítico pode desestabilizar a proteção.
 
+## 7.4 `DistributedArchManager` — troca distribuída e automática (implementado)
+
+O controle **não mora no servidor** (§2): a v2 substitui o schedule estático por
+[`DistributedArchManager`](../fd/arch_manager.py) — controle replicado por-nó,
+disparado por **detecção local de falha**, sem schedule e sem política central.
+
+- **Modelagem:** N controladores por-nó (`_NodeController`) dentro do manager;
+  cada um mantém sua visão local de pares vivos e **se auto-protege** (FL→GL) no
+  instante em que um par que julgava vivo fica silencioso — *fail-fast*, sem quórum.
+- **Commit global por quórum:** a troca de modo efetiva vira commit quando
+  `≥ q` nós votam; `q = ⌊N_ativo/2⌋+1` (§6). Para crash/node-loss todos observam
+  o mesmo silêncio → votam unânimes → commit imediato. A estrutura por-nó/quórum
+  é a base do caso Byzantine (v3).
+- **Recover carefully (§7.2):** GL→FL só com **participação plena** estável por
+  `dwell_rounds` **e** fora do `cooldown_rounds` (anti-flapping).
+- **Detecção vs ground truth:** as faltas do ambiente (`faults` na conf) são
+  *ground truth* usado só para a participação (`get_active_clients`); o controle
+  **detecta pela observação** de quem reportou (`observe(round, reported_nodes)`),
+  nunca lendo o schedule de faltas. Latência de 1 round (detecta no fim do round
+  *r*, comuta no *r+1*).
+- **Fiação:** [`HybridStrategy`](../fd/strategy/hybrid_strategy.py) chama
+  `observe()` em `aggregate_fit` (quem reportou = quem está vivo) e, na troca,
+  lê `consume_switch_reason()` para anotar o **motivo real** (`node_failure` /
+  `recovery`) no evento do monitor — não mais inferido.
+
+Config em [`conf/base.yaml`](../conf/base.yaml) (`manager: distributed`,
+`initial_mode`, `quorum`, `dwell_rounds`, `cooldown_rounds`, `faults`).
+Self-test da máquina de estados: [`scripts/distarch_selftest.py`](../scripts/distarch_selftest.py).
+
 ## 8.1 Monitor externo (observabilidade, read-only)
 
 Um **elemento externo (monitor)** observa a federação **sem influenciá-la**

@@ -193,8 +193,11 @@ class HybridStrategy(Strategy):
         if self._prev_mode is not None and mode != self._prev_mode:
             parameters = self._transfer_model(self._prev_mode, mode, parameters)
             print(f"[Hybrid] mode switch: {self._prev_mode} → {mode} at round {server_round}")
+            reason_info = self.arch_manager.consume_switch_reason()
             self._monitor.architecture_change(
-                server_round, self._prev_mode, mode, active_nodes=active)
+                server_round, self._prev_mode, mode,
+                reason=(reason_info or {}).get("reason"),
+                active_nodes=active)
 
         self._prev_mode   = mode
         self._last_params = parameters
@@ -219,6 +222,12 @@ class HybridStrategy(Strategy):
                 failed.add(resolve_node_index(f[0].cid, all_cids, self.cid_map, n))
         return sorted(failed)
 
+    def _reported_nodes(self, results: FitResults) -> set[int]:
+        """Logical node indices that reported a result this round (who is up)."""
+        all_cids = [p.cid for p, _ in results]
+        n = max(len(all_cids), len(self.cid_map)) or 1
+        return {resolve_node_index(p.cid, all_cids, self.cid_map, n) for p, _ in results}
+
     def aggregate_fit(
         self,
         server_round: int,
@@ -232,6 +241,8 @@ class HybridStrategy(Strategy):
                 self._monitor.node_failure(
                     server_round, failed,
                     detail=f"{len(failures)} client failure(s) in aggregate_fit")
+        # feed the distributed control plane its local detection signal
+        self.arch_manager.observe(server_round, self._reported_nodes(results))
         _, strategy = self._active(server_round)
         params, metrics = strategy.aggregate_fit(server_round, results, failures)
         if params is not None:

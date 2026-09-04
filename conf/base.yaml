@@ -32,8 +32,19 @@ simulation:
 # ── Architecture Manager ───────────────────────────────────────────────────────
 # Define qual modo (federated ou gossip) será usado em cada round.
 architecture:
-  manager: fixed          # fixed | api (futuro)
+  manager: fixed          # fixed | distributed
   default_mode: federated
+  # --- v2: troca DISTRIBUÍDA e AUTOMÁTICA (descomente e use manager: distributed) ---
+  # Sem schedule: cada nó detecta falha localmente e se auto-protege (FL->GL,
+  # fail-fast); a troca global vira commit por quórum; recovery (GL->FL) é
+  # cuidadoso (participação plena estável por dwell_rounds + cooldown).
+  # initial_mode: federated       # base eficiente; GL é o fallback
+  # quorum:                        # vazio = maioria dos nós ativos (⌊n/2⌋+1)
+  # dwell_rounds: 3                # rounds cheios estáveis antes de recuperar p/ FL
+  # cooldown_rounds: 2             # anti-flapping entre commits
+  # faults:                        # GROUND TRUTH do ambiente (não lido pelo controle)
+  #   - {round: 6,  nodes: [3]}         # nó 3 cai no round 6  -> detectado -> FL->GL
+  #   - {round: 12, nodes: [3], up: true}  # nó 3 volta        -> detectado -> GL->FL
   # Agregação dos rounds gossip: inplace (média ponderada) | score | xgb.
   # Com strategy xgb_* use 'xgb' — boosters não podem ser promediados.
   aggregation: xgb

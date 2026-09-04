@@ -382,10 +382,12 @@ def main(args: list[str] | None = None) -> None:
     # schedule for gossip, resolve a topologia pedida (senão o modo misto
     # cairia na star implícita do federated e a fase gossip rodaria na
     # topologia errada).
-    arch_manager = load_arch_manager(conf)
+    arch_manager = load_arch_manager(conf, num_nodes=num_clients)
     initial_mode = arch_manager.get_mode(1)
+    from fd.arch_manager import DistributedArchManager
     uses_gossip = (
-        getattr(arch_manager, "default_mode", None) == "gossip"
+        isinstance(arch_manager, DistributedArchManager)   # GL is the fallback
+        or getattr(arch_manager, "default_mode", None) == "gossip"
         or any(e.get("mode") == "gossip"
                for e in getattr(arch_manager, "schedule", []))
     )
