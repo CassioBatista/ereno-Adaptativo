@@ -1,0 +1,55 @@
+# ERENO — v2 ADAPTATIVA @ 14 nós, ponto de operação k>=2 (a história forte).
+# 14 nós = 2 especialistas por ataque (7 ataques). Pares: (0,1)(2,3)...(12,13).
+# k>=2: um ataque só é detectado se >=2 boosters concordam -> FPR baixa, recall
+# cheia SÓ com redundância. Perder 1 sensor de um par derruba aquele ataque de
+# 2->1 voto: em FL ele some do k>=2; em GL (pool difundido/retido >=2/ataque) o
+# k>=2 se mantém.  <-- é isto que o experimento testa.
+#
+# Faltas (ground truth do ambiente; o controle apenas detecta):
+#   round 10  nó 1 cai  (1 sensor do MAIOR ataque)  -> detecta -> FL->GL @11
+#   round 16  nó 3 cai  (1 sensor do 2º maior)      -> segue GL
+#   round 22  nó 5 cai  (1 sensor do 3º maior)      -> segue GL
+#   (sem recuperação: fica em GL até o fim)
+# Uso: ~/venv-ereno314/bin/python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
+#        --conf conf/experiments/ereno_dist_adapt_n14_k2.yaml --clients 14
+
+run_name: ereno-dist-adapt-n14-k2-c14
+seed: 42
+
+grasp:
+  features_file: features/all_in_one_ereno_train_combined.json
+
+dataset:
+  name: all_in_one_ereno_train
+  test_file: all_in_one_ereno_test
+  partitioner: attack
+  benign_cap: 500000
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 14
+
+simulation:
+  num_rounds: 36
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 2               # ponto de operação k>=2
+  eval_sample: 500000
+
+architecture:
+  manager: distributed
+  initial_mode: federated
+  aggregation: xgb_union
+  quorum:
+  dwell_rounds: 3
+  cooldown_rounds: 2
+  faults:
+    - {round: 10, nodes: [1]}
+    - {round: 16, nodes: [3]}
+    - {round: 22, nodes: [5]}
+
+monitor:
+  enabled: true
+  serve: false
+  trail: results/monitor_events_dist_n14_k2.jsonl
