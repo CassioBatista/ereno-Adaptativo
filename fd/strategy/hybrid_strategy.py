@@ -65,6 +65,12 @@ class HybridStrategy(Strategy):
         self._prev_mode:  str | None = None
         self._last_params: Parameters | None = None
         self.final_parameters: Parameters | None = None
+        # running content-deduped union of every booster ever aggregated. Because
+        # specialists are deterministic (fixed seed/data) it converges to one
+        # booster per node and does NOT grow. Used to seed GL at an FL->GL switch
+        # so a node that failed just before the switch still has its booster in
+        # the pool (models "survivors carry the network"; doc P4/§2). xgb only.
+        self._retained_union: Parameters | None = None
         # proxy cid -> partition id, learned from client metrics and shared
         # with the gossip strategy (proxy cids are opaque under flwr sim)
         self.cid_map: dict[str, int] = {}
@@ -163,13 +169,25 @@ class HybridStrategy(Strategy):
             glow = self._strategies["gossip"]
             if hasattr(glow, "pool_parameters"):
                 # semeia TODOS os nós da topologia com o modelo global —
-                # iterar o pool (vazio na primeira comutação) era um no-op
+                # iterar o pool (vazio na primeira comutação) era um no-op.
+                # Para xgb, semeia da UNIÃO RETIDA (não do agregado do round, que
+                # pode já ter perdido o booster do nó que acabou de cair): assim
+                # um nó que falha logo antes da troca ainda tem seu especialista
+                # no pool difundido (doc P4/§2, "sobreviventes carregam a rede").
+                seed = parameters
+                if str(getattr(glow, "aggregation", "")).startswith("xgb") \
+                        and self._retained_union is not None:
+                    seed = self._retained_union
+                    print(f"[Hybrid] federated→gossip: seeding from RETAINED union "
+                          f"({len(seed.tensors)} boosters) instead of round aggregate "
+                          f"({len(parameters.tensors)})")
                 nodes = (glow.topology.all_nodes()
                          if hasattr(glow, "topology") else list(glow.pool_parameters))
                 for node_id in nodes:
-                    glow.pool_parameters[node_id] = parameters
+                    glow.pool_parameters[node_id] = seed
                 print(f"[Hybrid] federated→gossip: global model seeded to "
                       f"{len(nodes)} nodes")
+                parameters = seed
 
         return parameters
 
@@ -246,6 +264,10 @@ class HybridStrategy(Strategy):
         params, metrics = strategy.aggregate_fit(server_round, results, failures)
         if params is not None:
             self.final_parameters = params
+            # accumulate the retained union (xgb only; deterministic -> bounded)
+            glow = self._strategies["gossip"]
+            if str(getattr(glow, "aggregation", "")).startswith("xgb"):
+                self._retained_union = dedup_union([self._retained_union, params])
         # ...THEN feed the control plane its local detection signal, so any
         # commit takes effect on the NEXT round (1-round detection latency).
         self.arch_manager.observe(server_round, self._reported_nodes(results))
