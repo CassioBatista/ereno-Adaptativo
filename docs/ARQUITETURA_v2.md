@@ -205,6 +205,46 @@ Config em [`conf/base.yaml`](../conf/base.yaml) (`manager: distributed`,
 `initial_mode`, `quorum`, `dwell_rounds`, `cooldown_rounds`, `faults`).
 Self-test da máquina de estados: [`scripts/distarch_selftest.py`](../scripts/distarch_selftest.py).
 
+## 7.5 Semeadura do GL pela união retida (fecha o gap de timing da troca)
+
+A troca FL→GL é reativa: a **perda que dispara** a troca acontece *antes* da
+detecção (latência irredutível de 1 round). Se o GL fosse semeado do **agregado
+do round** — que já perdeu o booster do nó recém-caído —, aquele especialista
+sumiria do pool e, sob **k≥2**, seu ataque nunca voltaria a ter 2 votos: a troca
+protegeria perdas *futuras*, mas não a que a disparou.
+
+Correção ([`hybrid_strategy.py`](../fd/strategy/hybrid_strategy.py), commit
+`3568eae`): o `HybridStrategy` mantém uma **união retida** (`dedup_union`
+acumulado de todo booster já agregado) e semeia o GL a partir dela. Como os
+especialistas são **determinísticos** (seed/dados fixos), o content-dedup colapsa
+as cópias → a união converge para **um booster por nó** e **não cresce**. Assim,
+um nó que cai logo antes da troca **ainda tem seu especialista no pool difundido**
+— é o modelo fiel de **P4/§2** ("sobreviventes carregam a rede"), agora também na
+direção FL→GL (não só no handover GL→FL).
+
+**Evidência (14 nós, k≥2; derruba 1 sensor dos 3 maiores ataques @10/16/22):**
+
+| fase | Estático (piso) | Adaptativo s/ fix | Adaptativo c/ fix |
+|---|---|---|---|
+| 1–9 (íntegro) | 96.02 | 96.02 | 96.02 |
+| 10 (−nó1, FL) | 94.69 | 94.69 | 94.69 |
+| 11–36 (GL) | — | 94.69 | **96.02** |
+| baseline FL 16→36 | **86.33** | — | — |
+| recall final | 82.21 | 97.32 | **99.96** |
+
+O round 10 (94.69) é a **latência irredutível**: a falha ocorre antes de ser
+detectada. De 11 em diante o fix recupera **totalmente** (recall 99.96), inclusive
+a perda que disparou a troca. Ressalva de escopo: reter o booster de um nó morto
+indefinidamente é questão de **staleness/decay** (v3, BitMatcher/BMDecay [`mukam2026byzantine`]);
+no horizonte do v2 o especialista permanece válido. Confs
+[`ereno_dist_adapt_n14_k2.yaml`](../conf/experiments/ereno_dist_adapt_n14_k2.yaml) /
+[`_static_n14_k2`](../conf/experiments/ereno_dist_static_n14_k2.yaml); figura das
+três curvas via [`scripts/plot_dist_adapt.py`](../scripts/plot_dist_adapt.py).
+
+> **Nota:** a *análise* deste gap de timing e o fix da união retida são material
+> de um **novo artigo** em desenvolvimento; os artefatos pré-fix (`results/*_prefix.*`)
+> estão preservados propositalmente.
+
 ## 8.1 Monitor externo (observabilidade, read-only)
 
 Um **elemento externo (monitor)** observa a federação **sem influenciá-la**
