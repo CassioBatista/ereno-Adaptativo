@@ -1,0 +1,57 @@
+# ERENO — v2 ADAPTATIVA: troca FL<->GL DISTRIBUÍDA e AUTOMÁTICA (DistributedArchManager).
+# 40 rounds, features combinado_def-24 (GRASP penalizado L0.05), 10 nós.
+# SEM schedule de modo: o modo é decidido pela DETECÇÃO LOCAL de falha + quórum.
+#
+# Linha do tempo (faults = ground truth do AMBIENTE; o controle apenas detecta):
+#   round  1- 9  FEDERATED, 10 nós (base eficiente, saudável)
+#   round 10     nó 7 cai   -> round 10 roda FL degradado (1 round de latência)
+#                            -> observe(10) detecta -> COMMIT gossip (fail-fast)
+#   round 11-23  GOSSIP     (node-loss é TRANSPARENTE sob gossip: cada nó tem a união)
+#   round 16     nó 4 cai   -> segue GOSSIP (transparente, 8 nós)
+#   round 24     nós 4 e 7 voltam -> participação plena
+#   round ~26    dwell (3 rounds cheios) + cooldown OK -> COMMIT federated (recover)
+#   round 27-40  FEDERATED  (eficiência restaurada)
+# Hipótese v2: o adaptativo mantém F1 ~plano (troca p/ GL sob falha) e volta ao
+# FL eficiente quando saudável — vs o baseline estático (ereno_dist_static_baseline).
+# Uso: ~/venv-ereno314/bin/python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
+#        --conf conf/experiments/ereno_dist_adapt_combined.yaml --clients 10
+
+run_name: ereno-dist-adapt-combined-c10
+seed: 42
+
+grasp:
+  features_file: features/all_in_one_ereno_train_combined.json
+
+dataset:
+  name: all_in_one_ereno_train
+  test_file: all_in_one_ereno_test
+  partitioner: attack
+  benign_cap: 500000
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 10
+
+simulation:
+  num_rounds: 40
+  strategy: xgb_bagging
+  xgb_fusion: or
+  eval_sample: 500000
+
+architecture:
+  manager: distributed          # troca distribuída e automática (v2)
+  initial_mode: federated       # base eficiente; GL é o fallback sob falha
+  aggregation: xgb_union
+  quorum:                       # vazio = maioria dos nós ativos ⌊n/2⌋+1
+  dwell_rounds: 3               # rounds cheios estáveis antes de recuperar p/ FL
+  cooldown_rounds: 2            # anti-flapping entre commits
+  faults:                       # GROUND TRUTH do ambiente (não lido pelo controle)
+    - {round: 10, nodes: [7]}
+    - {round: 16, nodes: [4]}
+    - {round: 24, nodes: [4, 7], up: true}
+
+monitor:
+  enabled: true
+  serve: false                  # trilha JSONL basta p/ batch; flip p/ true p/ REST ao vivo
+  trail: results/monitor_events_dist_adapt.jsonl
