@@ -14,6 +14,7 @@ from flwr.server.criterion import Criterion
 from flwr.server.strategy import Strategy
 
 from fd.arch_manager import ArchitectureManager
+from fd.monitor import NullMonitor
 from fd.strategy.glow_strategy import resolve_node_index, learn_cid_map, dedup_union
 
 
@@ -44,6 +45,9 @@ class HybridStrategy(Strategy):
     round_eval_fn : optional callback (round, mode, parameters) -> (loss, metrics) | None,
                     called server-side after each round with the aggregated
                     parameters (per-round convergence metrics)
+    monitor       : optional MonitorRecorder (fd.monitor) notified on every
+                    architecture change and node failure; defaults to NullMonitor
+                    (no overhead). The monitor only observes (read-only).
     """
 
     def __init__(
@@ -52,10 +56,12 @@ class HybridStrategy(Strategy):
         glow_strategy: Strategy,
         arch_manager:  ArchitectureManager,
         round_eval_fn=None,
+        monitor=None,
     ) -> None:
         self._strategies  = {"federated": fed_strategy, "gossip": glow_strategy}
         self.arch_manager = arch_manager
         self.round_eval_fn = round_eval_fn
+        self._monitor = monitor if monitor is not None else NullMonitor()
         self._prev_mode:  str | None = None
         self._last_params: Parameters | None = None
         self.final_parameters: Parameters | None = None
@@ -181,16 +187,37 @@ class HybridStrategy(Strategy):
     ) -> list[tuple[ClientProxy, any]]:
         mode, strategy = self._active(server_round)
         self.arch_manager.notify_round_start(server_round, mode)
+        active = self.arch_manager.get_active_clients(server_round)
+        self._monitor.round_start(server_round, mode, active)
 
         if self._prev_mode is not None and mode != self._prev_mode:
             parameters = self._transfer_model(self._prev_mode, mode, parameters)
             print(f"[Hybrid] mode switch: {self._prev_mode} → {mode} at round {server_round}")
+            self._monitor.architecture_change(
+                server_round, self._prev_mode, mode, active_nodes=active)
 
         self._prev_mode   = mode
         self._last_params = parameters
         self._sync_participation(strategy, self.arch_manager.get_active_clients(server_round))
         filtered_manager  = self._filter_manager(client_manager, server_round)
         return strategy.configure_fit(server_round, parameters, filtered_manager)
+
+    def _resolve_failed_nodes(self, results: FitResults, failures: FitFailures) -> list[int]:
+        """Identify which logical node indices failed this round.
+
+        Two sources: (i) explicit Flower failures (proxy raised/returned an
+        error), and (ii) active nodes that did not report a result (silent
+        drop). Proxy cids are resolved to node indices via the shared cid_map.
+        """
+        all_cids = [p.cid for p, _ in results]
+        all_cids += [f[0].cid for f in failures if isinstance(f, tuple)]
+        n = max(len(all_cids), len(self.cid_map)) or 1
+
+        failed: set[int] = set()
+        for f in failures:
+            if isinstance(f, tuple):          # (ClientProxy, Exception)
+                failed.add(resolve_node_index(f[0].cid, all_cids, self.cid_map, n))
+        return sorted(failed)
 
     def aggregate_fit(
         self,
@@ -199,6 +226,12 @@ class HybridStrategy(Strategy):
         failures:     FitFailures,
     ) -> tuple[Parameters | None, dict[str, Scalar]]:
         learn_cid_map(self.cid_map, results)
+        if failures:
+            failed = self._resolve_failed_nodes(results, failures)
+            if failed:
+                self._monitor.node_failure(
+                    server_round, failed,
+                    detail=f"{len(failures)} client failure(s) in aggregate_fit")
         _, strategy = self._active(server_round)
         params, metrics = strategy.aggregate_fit(server_round, results, failures)
         if params is not None:

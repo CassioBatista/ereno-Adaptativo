@@ -176,6 +176,39 @@ tolerado).
   automático; emite recomendação + evidência a um **operador** (human-in-the-loop).
   Racional: falso positivo num IEC-61850 crítico pode desestabilizar a proteção.
 
+## 8.1 Monitor externo (observabilidade, read-only)
+
+Um **elemento externo (monitor)** observa a federação **sem influenciá-la**
+(estritamente Nível-1). Implementado em [`fd/monitor.py`](../fd/monitor.py),
+fiado no [`HybridStrategy`](../fd/strategy/hybrid_strategy.py) (param `monitor`)
+e construído da conf (`build_monitor`). Opt-in (desabilitado por padrão → `NullMonitor`,
+custo zero). Decisões: **pull** (o monitor consulta; sem webhook, sem supor o
+monitor alcançável) + **trilha de auditoria JSONL persistida** (seq monotônico,
+contínuo entre runs — replay-friendly). Stdlib apenas (`http.server`).
+
+**Eventos** (exatamente os dois pedidos):
+
+| type | Quando | Campos-chave |
+|---|---|---|
+| `architecture_change` | troca FL↔GL ([`hybrid_strategy.py`](../fd/strategy/hybrid_strategy.py), `configure_fit`) | `from_mode`, `to_mode`, `reason`, `recent_failed_nodes` |
+| `node_failure` | falha de cliente (`aggregate_fit`) | **`failed_nodes`** (índice do nó, via `cid_map`/`resolve_node_index`) |
+
+O `architecture_change` **não** afirma causalidade com a falha — carrega
+`failed_nodes` da janela como contexto; a fonte autoritativa de "qual nó falhou"
+é o evento `node_failure` separado.
+
+**Endpoints REST (GET, o monitor faz polling):**
+
+```
+/health              -> {"status":"ok"}
+/status              -> modo corrente, round, active/failed nodes, last_seq
+/events?since=<seq>  -> eventos novos (polling incremental)
+/events?type=&limit= -> filtros opcionais
+```
+
+Config (ver [`conf/base.yaml`](../conf/base.yaml)): `monitor.{enabled,host,port,serve,trail}`.
+Self-test ponta a ponta: [`scripts/monitor_selftest.py`](../scripts/monitor_selftest.py).
+
 ## 9. Simulação e métricas (verificação)
 
 Duas camadas: **ambiente** (injeta eventos com ground-truth: crash, Byzantine,

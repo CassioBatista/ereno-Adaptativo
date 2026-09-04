@@ -55,6 +55,7 @@ from fd.model             import serialize_model
 from fd.evaluate          import evaluate_predictions, evaluate_model
 from fd.topology          import resolve_topology, Topology
 from fd.arch_manager      import load_arch_manager
+from fd.monitor           import build_monitor
 from fd.strategy.ensemble     import EnsembleStrategy
 from fd.strategy.federated_nb import FederatedNBStrategy
 from fd.strategy.xgb_bagging  import XgbBaggingStrategy
@@ -468,11 +469,13 @@ def main(args: list[str] | None = None) -> None:
         initial_parameters = fed_strategy.initialize_parameters(None),
     )
     eval_sample = sim_conf.get("eval_sample")
+    monitor = build_monitor(conf)
     hybrid = HybridStrategy(
         fed_strategy, glow_strategy, arch_manager,
         round_eval_fn=_make_round_eval_fn(
             strategy_name, X_te, y_te,
             eval_sample=int(eval_sample) if eval_sample else None, k=fusion_k),
+        monitor=monitor,
     )
 
     print(f"\n  ④ Strategy: {strategy_name}  |  ArchManager: {arch_manager.__class__.__name__}")
@@ -500,6 +503,7 @@ def main(args: list[str] | None = None) -> None:
         client_app    = client_app,
         num_supernodes= num_clients,
     )
+    monitor.stop()
 
     # ── resultado final (P1) ──────────────────────────────────────────────────
     print(f"\n{'='*60}")

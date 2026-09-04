@@ -43,3 +43,14 @@ architecture:
   schedule:
     - {from: 1,  to: 10, mode: federated, active_clients: [0, 1, 2]}
     - {from: 11, to: 20, mode: gossip,    active_clients: [0, 1, 2]}
+
+# Monitor externo (observabilidade, read-only). Opt-in: desabilitado por padrão.
+# Quando enabled, o processo expõe um endpoint REST que o monitor CONSULTA (pull)
+# e persiste uma trilha de auditoria JSONL (seq monotônico, contínuo entre runs).
+# Eventos: architecture_change (troca FL<->GL) e node_failure (nó identificado).
+monitor:
+  enabled: false
+  host: 127.0.0.1
+  port: 8722
+  serve: true                              # sobe o endpoint REST (pull)
+  trail: results/monitor_events.jsonl      # trilha de auditoria persistida
