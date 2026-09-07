@@ -111,6 +111,18 @@ seguintes, como vizinho de outros heads, esse conhecimento se propaga —
 em anel de N, cobertura completa em ~N−2 agregações (validado em
 sintético para o operador B).
 
+## Nota — nosso gossip ≠ "Gossip Learning" por média de pesos
+
+Estudos de FL descentralizado (ex.: Legheraba, ver
+[`related_gossip_learning.md`](related_gossip_learning.md)) mostram o **"Gossip
+Learning"** plano **falhando em convergir** a 100 nós. Esse "Gossip Learning" é a
+**média estocástica de pesos em random walk** (Ormándi/Hegedűs): mistura lenta em
+redes grandes. **O nosso gossip não é isso** — é **difusão união/OR de boosters
+inteiros**, um *fold* de semilattice **idempotente** → converge em **~N rounds**
+(rampa satura ~round 8–9 para N=10), **GL = FL exato** sob OR, transparente a
+node-loss. A não-convergência daquele operador é propriedade da média de pesos,
+não do nosso. (Blindagem para revisor; detalhes em `related_gossip_learning.md`.)
+
 ## Pendências de quantificação
 
 - Crescimento do modelo no operador A (teto de árvores? poda?);

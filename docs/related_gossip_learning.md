@@ -44,6 +44,31 @@ Duas contribuições:
 3. **Especificidade de domínio** — especialistas por-ataque, fusão em nível de
    decisão, o problema do masquerade FP: ausentes numa tese de FL genérico.
 
+### Convergência do gossip: união/OR ≠ média de pesos (frase de blindagem)
+
+As tabelas da tese (acurácia; ciclos-para-acurácia, 100 nós; msgs/ciclo) mostram
+que o **"Gossip Learning"** plano **não converge** a 100 nós (N/A para 0.85/0.90/
+0.95 em 1000 ciclos), enquanto o Epidemic converge ao custo de **10× a
+comunicação** (1000 vs 100 msg/ciclo) e o HEAL recupera as duas coisas via
+hierarquia. **Isso não atinge o ReSIDS**, e vale uma frase explícita no texto para
+o revisor não transferir o problema:
+
+> O "Gossip Learning" cuja convergência é lenta/ausente nesses estudos é a média
+> estocástica de pesos em *random walk* (Ormándi/Hegedűs): cada nó promedia com um
+> par aleatório por ciclo, e a mistura é lenta em redes grandes. O gossip do ReSIDS
+> **não** é média de pesos — é **difusão união/OR de boosters inteiros**, um *fold*
+> de semilattice **idempotente**. Por isso ele **converge em ~N rounds** (a rampa de
+> difusão satura por volta do round 8–9 para N=10), satisfaz **GL = FL exato** sob
+> OR (não há mistura a convergir), e é transparente a node-loss. A dificuldade de
+> convergência do gossip por média de pesos é uma propriedade daquele operador, não
+> do nosso.
+
+Ressalva honesta (eixo de comunicação): o ReSIDS difunde **boosters inteiros**
+(payload maior que gradientes); `results/escalabilidade.csv` traz `GL_comm_bytes`
+crescendo com N. Qualquer afirmação de *eficiência de comunicação* exige reportar
+esse custo — e é aí (não na convergência, que já temos) que a **hierarquia do HEAL**
+entra como candidato v3 para escalar/reduzir comms (dialoga com a erosão em N=100).
+
 ### O que aproveitar (candidatos a v3, não v1/v2)
 
 - **Elevator (hubs emergentes)** poderia substituir o head round-robin em
