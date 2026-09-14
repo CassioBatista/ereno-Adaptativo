@@ -65,3 +65,20 @@ class PeerFailureDetector:
         """Every up node (except j) considers j down."""
         others = [i for i in self.topo.all_nodes() if i in alive and i != target_j]
         return bool(others) and all(self.knows_down(i, target_j) for i in others)
+
+    # ── agreement quorum (crash regime) ────────────────────────────────────────
+
+    def agreement_count(self, target_j: int, alive: set[int]) -> int:
+        """How many up nodes (except j) currently consider j down.
+
+        This is the *agreement* quorum reachable via diffusion (nodes that heard and
+        accept the suspicion), distinct from the *independent-observer* count, which
+        is capped at degree(j) in a sparse overlay. Robustness against a single
+        flaky/lying observer comes from min_witnesses (<= degree(j)), NOT from this
+        agreement count (agreers cannot re-verify j)."""
+        return sum(1 for i in self.topo.all_nodes()
+                   if i in alive and i != target_j and self.knows_down(i, target_j))
+
+    def agreement_quorum(self, target_j: int, alive: set[int], q: int) -> bool:
+        """True once >= q up nodes agree j is down (gate before a global commit)."""
+        return self.agreement_count(target_j, alive) >= q

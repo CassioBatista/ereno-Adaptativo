@@ -10,6 +10,12 @@ So the piggyback digest per gossip message is 2*ceil(N/8) B (unsigned), or
 compared to the measured GL booster traffic (results/escalabilidade.csv). Also
 reports the two decentralized latencies: mode-quorum convergence and peer-failure
 network agreement (timeout + diffusion). Out: results/vote_comm.csv + .png/.pdf
+
+Digest note: the suspicion bitmap here is one ceil(N/8) B down-set, which suffices
+for min_witnesses=1 (crash-trusted). With min_witnesses>=2 (attribution needed to
+count distinct observers) it becomes one suspector bitmap PER concurrently-suspected
+target -> F*ceil(N/8) B; modelled here with F=1 (typically few nodes down at once),
+so the overhead is the same order and still <1% of GL traffic.
 """
 import csv
 import math
