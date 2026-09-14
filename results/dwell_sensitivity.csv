@@ -1,0 +1,13 @@
+scenario,dwell,recovery_round,n_switches,flap
+A_clean,1,24,2,no
+A_clean,2,25,2,no
+A_clean,3,26,2,no
+A_clean,4,27,2,no
+A_clean,5,28,2,no
+A_clean,8,31,2,no
+B_unstable,1,20,3,yes
+B_unstable,2,21,3,yes
+B_unstable,3,-,1,no
+B_unstable,4,-,1,no
+B_unstable,5,-,1,no
+B_unstable,8,-,1,no
