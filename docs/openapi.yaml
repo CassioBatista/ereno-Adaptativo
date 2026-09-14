@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: ReSIDS Monitor API (REST pull)
+  version: "1.0.0"
+  description: >
+    Read-only observability API of the ReSIDS adaptation plane (fd/monitor.py).
+    An external monitor POLLS these endpoints. The same events are also pushed to
+    an IoT hub over CoAP (see docs/API.md, section "CoAP push"). This spec covers
+    only the REST/HTTP pull surface.
+servers:
+  - url: http://{host}:{port}
+    variables:
+      host: { default: "127.0.0.1" }
+      port: { default: "8722" }
+paths:
+  /health:
+    get:
+      summary: Liveness probe
+      responses:
+        "200":
+          description: Service is up
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, enum: [ok] }
+                required: [status]
+              example: { status: ok }
+  /status:
+    get:
+      summary: Current federation state
+      responses:
+        "200":
+          description: Current mode, round, active/failed nodes, and last event seq
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Status" }
+  /events:
+    get:
+      summary: Adaptation events (incremental)
+      parameters:
+        - name: since
+          in: query
+          description: Return only events with seq greater than this value.
+          schema: { type: integer, default: 0, minimum: 0 }
+        - name: limit
+          in: query
+          description: Maximum number of events to return.
+          schema: { type: integer, minimum: 1 }
+        - name: type
+          in: query
+          description: Filter by event type.
+          schema: { type: string, enum: [architecture_change, node_failure] }
+      responses:
+        "200":
+          description: Array of events with seq greater than `since`
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Event" }
+components:
+  schemas:
+    Event:
+      description: See schemas/event.schema.json for the authoritative definition.
+      type: object
+      required: [seq, ts, type, round]
+      properties:
+        seq:          { type: integer, minimum: 1 }
+        ts:           { type: string, format: date-time }
+        type:         { type: string, enum: [architecture_change, node_failure] }
+        round:        { type: integer, minimum: 0 }
+        from_mode:    { type: string, enum: [federated, gossip], nullable: true }
+        to_mode:      { type: string, enum: [federated, gossip], nullable: true }
+        reason:       { type: string, enum: [node_failure, recovery, scheduled], nullable: true }
+        failed_nodes: { type: array, items: { type: integer, minimum: 0 } }
+        active_nodes: { type: array, items: { type: integer, minimum: 0 }, nullable: true }
+        detail:       { type: string, nullable: true }
+    Status:
+      type: object
+      properties:
+        current_mode: { type: string, enum: [federated, gossip], nullable: true }
+        round:        { type: integer, minimum: 0 }
+        active_nodes: { type: array, items: { type: integer, minimum: 0 }, nullable: true }
+        failed_nodes: { type: array, items: { type: integer, minimum: 0 } }
+        last_seq:     { type: integer, minimum: 0 }

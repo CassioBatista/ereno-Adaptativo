@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CassioBatista/ereno-Adaptativo/schemas/event.schema.json",
+  "title": "ReSIDS adaptation event",
+  "description": "One observability event emitted by the ReSIDS adaptation plane. Served as an element of GET /events (REST pull) and pushed to the monitor as CoAP telemetry (values object).",
+  "type": "object",
+  "required": ["seq", "ts", "type", "round"],
+  "additionalProperties": false,
+  "properties": {
+    "seq": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Monotonic, unique event sequence number (continues across runs)."
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event timestamp, ISO-8601 UTC with microseconds (REST). When pushed as CoAP/ThingsBoard telemetry it is converted to epoch milliseconds in the enclosing envelope."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["architecture_change", "node_failure"],
+      "description": "Event kind."
+    },
+    "round": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Federation round in which the event occurred."
+    },
+    "from_mode": {
+      "type": ["string", "null"],
+      "enum": ["federated", "gossip", null],
+      "description": "Previous aggregation mode (architecture_change only; null otherwise)."
+    },
+    "to_mode": {
+      "type": ["string", "null"],
+      "enum": ["federated", "gossip", null],
+      "description": "New aggregation mode (architecture_change only; null otherwise)."
+    },
+    "reason": {
+      "type": ["string", "null"],
+      "enum": ["node_failure", "recovery", "scheduled", null],
+      "description": "Cause of the event. For architecture_change: node_failure | recovery | scheduled. For node_failure: node_failure."
+    },
+    "failed_nodes": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 0 },
+      "description": "Logical node indices identified as failing (authoritative on node_failure; context on architecture_change)."
+    },
+    "active_nodes": {
+      "type": ["array", "null"],
+      "items": { "type": "integer", "minimum": 0 },
+      "description": "Node indices participating this round, or null when all are active."
+    },
+    "detail": {
+      "type": ["string", "null"],
+      "description": "Optional free-text detail."
+    }
+  },
+  "examples": [
+    {
+      "seq": 1, "ts": "2026-09-04T11:18:11.704654+00:00",
+      "type": "node_failure", "round": 10, "from_mode": null, "to_mode": null,
+      "reason": "node_failure", "failed_nodes": [7], "active_nodes": [0,1,2,3,4,5,6,8,9],
+      "detail": "1 client failure(s) in aggregate_fit"
+    },
+    {
+      "seq": 2, "ts": "2026-09-04T11:18:12.100000+00:00",
+      "type": "architecture_change", "round": 11, "from_mode": "federated",
+      "to_mode": "gossip", "reason": "node_failure", "failed_nodes": [7],
+      "active_nodes": [0,1,2,3,4,5,6,8,9], "detail": null
+    }
+  ]
+}
