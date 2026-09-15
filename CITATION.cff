@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it using these metadata."
-title: "ereno-Adaptativo (ReSIDS): a Resilient, runtime-Switchable Federated–Gossip IDS"
+title: "ReSIDS — a Resilient, Adaptive, runtime-Switchable Federated–Gossip IDS for IEC 61850 Power Systems"
 abstract: >-
   ReSIDS / ereno-Adaptativo is an intrusion-detection pipeline that unifies
   centralized, federated and gossip learning in a single run with round-by-round
