@@ -1,0 +1,61 @@
+# ERENO — v2 ADAPTATIVA @ 14 nós, k>=2, DETECÇÃO DESCENTRALIZADA + RECOVERY GL->FL.
+#
+# Igual a ereno_dist_adapt_n14_k2_decentralized.yaml, mas com um nó que VOLTA
+# (up: true) para exercitar a recuperação GL->FL "recover-carefully": após a
+# participação plena ser restaurada e ficar estável por dwell_rounds (+cooldown),
+# o voto federado difunde até o quórum e o modo volta a FL. Tanto a ida (FL->GL)
+# quanto a volta (GL->FL) têm LATÊNCIA endógena de difusão descentralizada.
+#
+# Linha do tempo esperada (dry-run do manager, ring N=14, T=2, dwell=3):
+#   round 10  nó 1 cai            -> detecção local + difusão -> FL->GL @~21
+#   round 34  nó 1 volta (up)     -> participação plena estável -> dwell -> voto
+#                                    federado difunde -> GL->FL @~41
+#   F1: 96.02 (r1-9) -> 94.69 (r10-20, FL degradado) -> 96.02 (r21+, GL união
+#   retida) -> 96.02 (r41+, FL recuperado). A recuperação GL->FL é TRANSPARENTE
+#   (F1 permanece 96.02): a volta ao FL não custa F1 — esta é a mensagem.
+# Uso: ~/venv-ereno314/bin/python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
+#        --conf conf/experiments/ereno_dist_adapt_n14_k2_decentralized_recovery.yaml --clients 14
+
+run_name: ereno-dist-adapt-n14-k2-decentralized-recovery-c14
+seed: 42
+
+grasp:
+  features_file: features/all_in_one_ereno_train_combined.json
+
+dataset:
+  name: all_in_one_ereno_train
+  test_file: all_in_one_ereno_test
+  partitioner: attack
+  benign_cap: 500000
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 14
+
+simulation:
+  num_rounds: 52               # recovery GL->FL ~round 41; tail p/ mostrar FL de volta
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 2
+  eval_sample: 500000
+
+architecture:
+  manager: distributed
+  initial_mode: federated
+  aggregation: xgb_union
+  quorum:
+  dwell_rounds: 3
+  cooldown_rounds: 2
+  decentralized: true
+  topology: ring
+  peer_timeout: 2
+  min_witnesses: 1
+  faults:
+    - {round: 10, nodes: [1]}            # nó 1 cai
+    - {round: 34, nodes: [1], up: true}  # nó 1 volta -> recovery GL->FL
+
+monitor:
+  enabled: true
+  serve: false
+  trail: results/monitor_events_dist_n14_k2_decentralized_recovery.jsonl
