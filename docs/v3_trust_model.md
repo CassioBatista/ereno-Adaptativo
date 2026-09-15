@@ -70,6 +70,23 @@ instantaneous boolean/quorum (drives the FL↔GL switch), not a score.
   down-weighted by the very system it is attacking. Distinct from drivers 1–2, which
   only see liveness and model quality, not malicious *behaviour*.
 
+## Switch triggers (v2 vs v3)
+
+The trust model adds a **new FL→GL trigger** beyond node loss:
+
+| Direction | Trigger | Regime | Status |
+|---|---|---|---|
+| FL→GL (fast) | **node crash / timeout** (a peer went silent) | availability (driver 1) | **v2 done** (fail-fast, decentralized) |
+| FL→GL (fast) | **Byzantine central server** (the FL aggregator is compromised / its aggregate fails audit) | model-concordance (driver 2) | **v3** |
+| GL→FL (careful) | full participation restored + dwell + cooldown; GL state carried by the **retained union** | availability | **v2 done** |
+
+Rationale for the Byzantine-server trigger: **FL has a single point of trust — the
+server.** If the aggregator is Byzantine, the safe move is to abandon FL for GL (which
+has no central server). Detection = driver 2: the server's aggregate is rejected when it
+fails the TrustedUnion admission / LocalAudit re-score, which flips the mode to GL. This
+is the security counterpart of the v2 crash trigger: v2 flees an *absent* node, v3 flees
+a *lying* server.
+
 ## Fusion `f(...)`
 
 - Start simple and monotone: `trust(j) = clip( w1·avail(j) + w2·concord(j) + w3·ids(j) )`,

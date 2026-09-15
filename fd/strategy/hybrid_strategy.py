@@ -212,6 +212,16 @@ class HybridStrategy(Strategy):
             parameters = self._transfer_model(self._prev_mode, mode, parameters)
             print(f"[Hybrid] mode switch: {self._prev_mode} → {mode} at round {server_round}")
             reason_info = self.arch_manager.consume_switch_reason()
+            # Nodes dropped silently (removed from participation) raise no Flower
+            # failure, so the decentralized detector's knowledge of WHICH nodes
+            # failed must be forwarded to the monitor explicitly — otherwise the
+            # architecture_change event reports failed_nodes=[] (v2 requires "qual
+            # nó apresenta falha"). node_failure() populates the monitor's window.
+            failed = (reason_info or {}).get("failed_nodes") or []
+            if failed:
+                self._monitor.node_failure(
+                    server_round, failed,
+                    detail="decentralized detection quorum at FL→GL switch")
             self._monitor.architecture_change(
                 server_round, self._prev_mode, mode,
                 reason=(reason_info or {}).get("reason"),

@@ -1,0 +1,767 @@
+
+============================================================
+  ① GRASP bypassado — features/all_in_one_ereno_train_combined.json (GRASP penalizado por cardinalidade (FEATURE_PENALTY=0.05): superset per-ataque direto UNIAO nucleo global penalizado direto, f1_cv=None)
+  Features selecionadas (24): [2, 4, 5, 14, 15, 17, 19, 20, 21, 23, 25, 27, 35, 40, 41, 42, 44, 45, 46, 50, 54, 55, 57, 58]
+
+  ② Topologia: Topology(name='ring', num_nodes=14)
+[benign_cap] classe normal limitada a 500,000 (de 2,759,425); ataques preservados
+[attack] 14 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2, 2: 2, 7: 2, 4: 2, 3: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 35715 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 35715 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 35715 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 35715 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 35714 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 35714 benignas
+[attack] cliente 6: classes de ataque [2] (13017 amostras) + 35714 benignas
+[attack] cliente 7: classes de ataque [2] (13016 amostras) + 35714 benignas
+[attack] cliente 8: classes de ataque [7] (9287 amostras) + 35714 benignas
+[attack] cliente 9: classes de ataque [7] (9287 amostras) + 35714 benignas
+[attack] cliente 10: classes de ataque [4] (8710 amostras) + 35714 benignas
+[attack] cliente 11: classes de ataque [4] (8709 amostras) + 35714 benignas
+[attack] cliente 12: classes de ataque [3] (8644 amostras) + 35714 benignas
+[attack] cliente 13: classes de ataque [3] (8643 amostras) + 35714 benignas
+
+  ③ Particionamento: attack  num_clients=14
+  test set pré-definido: all_in_one_ereno_test.csv (2,955,648 amostras)
+[round-eval] subamostra estratificada do teste: 500,000
+
+  ④ Strategy: xgb_bagging  |  ArchManager: DistributedArchManager
+     num_rounds=40
+
+============================================================
+  ⑥ run_simulation — 40 rounds  |  14 supernodes
+============================================================
+[93mWARNING [0m:   DEPRECATED FEATURE: Passing either `server`, `config`, `strategy` or `client_manager` directly to the ServerApp constructor is deprecated.
+
+            Check the following `FEATURE UPDATE` warning message for the preferred
+            new mechanism to use this feature in Flower.
+        
+[93mWARNING [0m:   FEATURE UPDATE: Pass `ServerApp` arguments wrapped in a `flwr.compat.server.ServerAppComponents` object that gets returned by a function passed as the `server_fn` argument to the `ServerApp` constructor. For example: 
+            ------------------------------------------------------------
+        
+
+        def server_fn(context: Context):
+            server_config = ServerConfig(num_rounds=3)
+            strategy = FedAvg()
+            return ServerAppComponents(
+                strategy=strategy,
+                server_config=server_config,
+        )
+
+        app = ServerApp(server_fn=server_fn)
+
+            ------------------------------------------------------------
+        
+[93mWARNING [0m:   DEPRECATED FEATURE: The `run_simulation` function is deprecated and will be removed in a future version of Flower. Please use `flwr run` in the CLI instead to run your simulation. Refer to the Flower Tutorials for more details: https://flower.ai/docs/framework/tutorial-quickstart-pytorch.html
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      Starting Flower ServerApp, config: num_rounds=40, no round_timeout
+[92mINFO [0m:      
+[92mINFO [0m:      [INIT]
+[92mINFO [0m:      Requesting initial parameters from one random client
+/home/cassi/venv-ereno314/lib/python3.14/site-packages/ray/_private/worker.py:2051: FutureWarning: Tip: In future versions of Ray, Ray will no longer override accelerator visible devices env var if num_gpus=0 or num_gpus=None (default). To enable this behavior and turn off this error message, set RAY_ACCEL_ENV_VAR_OVERRIDE_ON_ZERO=0
+  warnings.warn(
+[36m(ClientAppActor pid=1698)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.
+[92mINFO [0m:      Received initial parameters from one random client
+[92mINFO [0m:      Starting evaluation of initial global parameters
+[92mINFO [0m:      Evaluation returned no results (`None`)
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 1]
+[DistArch] round=1  mode=federated  q=8
+[92mINFO [0m:      configure_fit: strategy sampled 14 clients (out of 14)
+[36m(ClientAppActor pid=1698)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.
+[36m(ClientAppActor pid=1698)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.
+[36m(ClientAppActor pid=1698)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.
+[36m(ClientAppActor pid=1698)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.
+[36m(ClientAppActor pid=1698)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.
+[36m(ClientAppActor pid=1698)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.
+[36m(ClientAppActor pid=1698)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.
+[92mINFO [0m:      aggregate_fit: received 14 results and 0 failures
+ROUND;1;federated;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (1, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 7.308414704000029)
+[92mINFO [0m:      configure_evaluate: strategy sampled 14 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 8x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#log-deduplication for more options.)[0m
+[92mINFO [0m:      aggregate_evaluate: received 14 results and 0 failures
+[93mWARNING [0m:   No evaluate_metrics_aggregation_fn provided
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 2]
+[DistArch] round=2  mode=federated  q=8
+[92mINFO [0m:      configure_fit: strategy sampled 14 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 20x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 14 results and 0 failures
+ROUND;2;federated;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (2, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 17.966427855999996)
+[92mINFO [0m:      configure_evaluate: strategy sampled 14 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 14 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 3]
+[DistArch] round=3  mode=federated  q=8
+[92mINFO [0m:      configure_fit: strategy sampled 14 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 14 results and 0 failures
+ROUND;3;federated;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (3, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 21.111927260000016)
+[92mINFO [0m:      configure_evaluate: strategy sampled 14 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 36x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 14 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 4]
+[DistArch] round=4  mode=federated  q=8
+[92mINFO [0m:      configure_fit: strategy sampled 14 clients (out of 14)
+[36m(ClientAppActor pid=1710)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 12x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 14 results and 0 failures
+ROUND;4;federated;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (4, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 33.28759591800008)
+[92mINFO [0m:      configure_evaluate: strategy sampled 14 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 14 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 5]
+[DistArch] round=5  mode=federated  q=8
+[92mINFO [0m:      configure_fit: strategy sampled 14 clients (out of 14)
+[36m(ClientAppActor pid=1710)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 42x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 14 results and 0 failures
+ROUND;5;federated;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (5, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 36.01850012700004)
+[92mINFO [0m:      configure_evaluate: strategy sampled 14 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 14 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 6]
+[DistArch] round=6  mode=federated  q=8
+[92mINFO [0m:      configure_fit: strategy sampled 14 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 14 results and 0 failures
+ROUND;6;federated;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (6, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 38.761105038000096)
+[92mINFO [0m:      configure_evaluate: strategy sampled 14 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 14 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 7]
+[DistArch] round=7  mode=federated  q=8
+[92mINFO [0m:      configure_fit: strategy sampled 14 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 50x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 14 results and 0 failures
+ROUND;7;federated;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (7, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 41.30005657600009)
+[92mINFO [0m:      configure_evaluate: strategy sampled 14 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 14 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 8]
+[DistArch] round=8  mode=federated  q=8
+[92mINFO [0m:      configure_fit: strategy sampled 14 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 14 results and 0 failures
+ROUND;8;federated;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (8, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 43.995691061)
+[92mINFO [0m:      configure_evaluate: strategy sampled 14 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 14 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 9]
+[DistArch] round=9  mode=federated  q=8
+[92mINFO [0m:      configure_fit: strategy sampled 14 clients (out of 14)
+[36m(ClientAppActor pid=1710)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 56x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 14 results and 0 failures
+ROUND;9;federated;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (9, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 46.928636907000055)
+[92mINFO [0m:      configure_evaluate: strategy sampled 14 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 14 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 10]
+[DistArch] round=10  mode=federated  q=7  active=[0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 13 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 13 results and 0 failures
+ROUND;10;federated;f1=94.6879;recall=97.3231;fpr=0.5999
+[92mINFO [0m:      fit progress: (10, 0.00740799999999997, {'f1': 94.68793024323085, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 49.28907834500001)
+[92mINFO [0m:      configure_evaluate: strategy sampled 13 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 13 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 11]
+[DistArch] round=11  mode=federated  q=7  active=[0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 13 clients (out of 14)
+[36m(ClientAppActor pid=1710)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 54x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 13 results and 0 failures
+ROUND;11;federated;f1=94.6879;recall=97.3231;fpr=0.5999
+[92mINFO [0m:      fit progress: (11, 0.00740799999999997, {'f1': 94.68793024323085, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 51.563406321)
+[92mINFO [0m:      configure_evaluate: strategy sampled 13 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 13 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 12]
+[DistArch] round=12  mode=federated  q=7  active=[0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 13 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 13 results and 0 failures
+ROUND;12;federated;f1=94.6879;recall=97.3231;fpr=0.5999
+[92mINFO [0m:      fit progress: (12, 0.00740799999999997, {'f1': 94.68793024323085, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 54.03716493400009)
+[92mINFO [0m:      configure_evaluate: strategy sampled 13 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 13 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 13]
+[DistArch] round=13  mode=federated  q=7  active=[0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 13 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 13 results and 0 failures
+ROUND;13;federated;f1=94.6879;recall=97.3231;fpr=0.5999
+[92mINFO [0m:      fit progress: (13, 0.00740799999999997, {'f1': 94.68793024323085, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 56.38525161200005)
+[92mINFO [0m:      configure_evaluate: strategy sampled 13 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 59x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 13 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 14]
+[DistArch] round=14  mode=federated  q=7  active=[0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 13 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 13 results and 0 failures
+ROUND;14;federated;f1=94.6879;recall=97.3231;fpr=0.5999
+[92mINFO [0m:      fit progress: (14, 0.00740799999999997, {'f1': 94.68793024323085, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 58.57464529900005)
+[92mINFO [0m:      configure_evaluate: strategy sampled 13 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 13 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 15]
+[DistArch] round=15  mode=federated  q=7  active=[0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 13 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 13 results and 0 failures
+ROUND;15;federated;f1=94.6879;recall=97.3231;fpr=0.5999
+[92mINFO [0m:      fit progress: (15, 0.00740799999999997, {'f1': 94.68793024323085, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 61.01949323600002)
+[92mINFO [0m:      configure_evaluate: strategy sampled 13 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 13 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 16]
+[DistArch] round=16  mode=federated  q=7  active=[0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 12 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 65x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 12 results and 0 failures
+ROUND;16;federated;f1=86.3335;recall=82.2140;fpr=0.5999
+[92mINFO [0m:      fit progress: (16, 0.01765799999999995, {'f1': 86.33345200687275, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 63.12031808800009)
+[92mINFO [0m:      configure_evaluate: strategy sampled 12 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 12 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 17]
+[DistArch] round=17  mode=federated  q=7  active=[0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 12 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 12 results and 0 failures
+ROUND;17;federated;f1=86.3335;recall=82.2140;fpr=0.5999
+[92mINFO [0m:      fit progress: (17, 0.01765799999999995, {'f1': 86.33345200687275, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 64.8871975190001)
+[92mINFO [0m:      configure_evaluate: strategy sampled 12 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 12 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 18]
+[DistArch] round=18  mode=federated  q=7  active=[0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 12 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 12 results and 0 failures
+ROUND;18;federated;f1=86.3335;recall=82.2140;fpr=0.5999
+[92mINFO [0m:      fit progress: (18, 0.01765799999999995, {'f1': 86.33345200687275, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 66.77596148700002)
+[92mINFO [0m:      configure_evaluate: strategy sampled 12 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 12 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 19]
+[DistArch] round=19  mode=federated  q=7  active=[0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 12 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 66x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 12 results and 0 failures
+ROUND;19;federated;f1=86.3335;recall=82.2140;fpr=0.5999
+[92mINFO [0m:      fit progress: (19, 0.01765799999999995, {'f1': 86.33345200687275, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 68.72287406400005)
+[92mINFO [0m:      configure_evaluate: strategy sampled 12 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 12 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 20]
+[DistArch] round=20  mode=federated  q=7  active=[0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 12 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 12 results and 0 failures
+ROUND;20;federated;f1=86.3335;recall=82.2140;fpr=0.5999
+[92mINFO [0m:      fit progress: (20, 0.01765799999999995, {'f1': 86.33345200687275, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 70.81101846900003)
+[92mINFO [0m:      configure_evaluate: strategy sampled 12 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 12 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 21]
+[DistArch] round=21  mode=federated  q=7  active=[0, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 12 clients (out of 14)
+[36m(ClientAppActor pid=1699)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 60x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 12 results and 0 failures
+ROUND;21;federated;f1=86.3335;recall=82.2140;fpr=0.5999
+[92mINFO [0m:      fit progress: (21, 0.01765799999999995, {'f1': 86.33345200687275, 'fpr': 0.5998970133882595, 'mode': 'federated'}, 73.0380028940001)
+[92mINFO [0m:      configure_evaluate: strategy sampled 12 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 12 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 22]
+[DistArch] round=22  mode=federated  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+ROUND;22;federated;f1=86.3415;recall=82.2140;fpr=0.5986
+[92mINFO [0m:      fit progress: (22, 0.01764600000000005, {'f1': 86.34147096614394, 'fpr': 0.5986096807415036, 'mode': 'federated'}, 74.87092174700001)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 23]
+[DistArch] round=23  mode=federated  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+ROUND;23;federated;f1=86.3415;recall=82.2140;fpr=0.5986
+[92mINFO [0m:      fit progress: (23, 0.01764600000000005, {'f1': 86.34147096614394, 'fpr': 0.5986096807415036, 'mode': 'federated'}, 76.55559113300001)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 24]
+[DistArch] round=24  mode=federated  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 62x across cluster][0m
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+ROUND;24;federated;f1=86.3415;recall=82.2140;fpr=0.5986
+[92mINFO [0m:      fit progress: (24, 0.01764600000000005, {'f1': 86.34147096614394, 'fpr': 0.5986096807415036, 'mode': 'federated'}, 78.22344770200004)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 25]
+[DistArch] round=25  mode=federated  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+ROUND;25;federated;f1=86.3415;recall=82.2140;fpr=0.5986
+[92mINFO [0m:      fit progress: (25, 0.01764600000000005, {'f1': 86.34147096614394, 'fpr': 0.5986096807415036, 'mode': 'federated'}, 79.91406911000001)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 26]
+[DistArch] round=26  mode=federated  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+ROUND;26;federated;f1=86.3415;recall=82.2140;fpr=0.5986
+[92mINFO [0m:      fit progress: (26, 0.01764600000000005, {'f1': 86.34147096614394, 'fpr': 0.5986096807415036, 'mode': 'federated'}, 81.68382532100009)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 61x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 27]
+[DistArch] round=27  mode=federated  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+ROUND;27;federated;f1=86.3415;recall=82.2140;fpr=0.5986
+[92mINFO [0m:      fit progress: (27, 0.01764600000000005, {'f1': 86.34147096614394, 'fpr': 0.5986096807415036, 'mode': 'federated'}, 83.72715323800003)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 28]
+[DistArch] round=28  mode=federated  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+ROUND;28;federated;f1=86.3415;recall=82.2140;fpr=0.5986
+[92mINFO [0m:      fit progress: (28, 0.01764600000000005, {'f1': 86.34147096614394, 'fpr': 0.5986096807415036, 'mode': 'federated'}, 85.41983036600004)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 29]
+[DistArch] round=29  mode=federated  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+ROUND;29;federated;f1=86.3415;recall=82.2140;fpr=0.5986
+[92mINFO [0m:      fit progress: (29, 0.01764600000000005, {'f1': 86.34147096614394, 'fpr': 0.5986096807415036, 'mode': 'federated'}, 87.35118121100004)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 60x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 30]
+[DistArch] round=30  mode=federated  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+ROUND;30;federated;f1=86.3415;recall=82.2140;fpr=0.5986
+[92mINFO [0m:      fit progress: (30, 0.01764600000000005, {'f1': 86.34147096614394, 'fpr': 0.5986096807415036, 'mode': 'federated'}, 89.21417996500008)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 31]
+[DistArch] round=31  mode=federated  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+[DistArch] COMMIT gossip @round=31  reason=node_failure  nodes=[1, 3, 5]
+ROUND;31;federated;f1=86.3415;recall=82.2140;fpr=0.5986
+[92mINFO [0m:      fit progress: (31, 0.01764600000000005, {'f1': 86.34147096614394, 'fpr': 0.5986096807415036, 'mode': 'federated'}, 90.99461255000006)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 32]
+[DistArch] round=32  mode=gossip  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[Hybrid] federated→gossip: seeding from RETAINED union (14 boosters) instead of round aggregate (11)
+[Hybrid] federated→gossip: global model seeded to 14 nodes
+[Hybrid] mode switch: federated → gossip at round 32
+[Monitor] architecture_change seq=1 federated->gossip round=32 reason=node_failure failed=[]
+[GLow] round=32  head=12  neighbours=[11, 13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+[GLow] união do head: 14 boosters
+ROUND;32;gossip;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (32, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'gossip'}, 92.778022555)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 66x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 33]
+[DistArch] round=33  mode=gossip  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[GLow] round=33  head=13  neighbours=[12, 0]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+[GLow] união do head: 14 boosters
+ROUND;33;gossip;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (33, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'gossip'}, 94.76958634000005)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 34]
+[DistArch] round=34  mode=gossip  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[GLow] round=34  head=0  neighbours=[13]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+[GLow] união do head: 14 boosters
+ROUND;34;gossip;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (34, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'gossip'}, 97.09096324100005)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[36m(ClientAppActor pid=1715)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 54x across cluster][0m[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 35]
+[DistArch] round=35  mode=gossip  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[GLow] round=35  head=2  neighbours=[]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+[GLow] união do head: 14 boosters
+ROUND;35;gossip;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (35, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'gossip'}, 100.258450294)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 36]
+[DistArch] round=36  mode=gossip  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[GLow] round=36  head=4  neighbours=[]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+[GLow] união do head: 14 boosters
+ROUND;36;gossip;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (36, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'gossip'}, 102.1269316800001)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 37]
+[DistArch] round=37  mode=gossip  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[GLow] round=37  head=6  neighbours=[7]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+[GLow] união do head: 14 boosters
+ROUND;37;gossip;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (37, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'gossip'}, 103.95744920700008)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[36m(ClientAppActor pid=1710)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 56x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 38]
+[DistArch] round=38  mode=gossip  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[GLow] round=38  head=7  neighbours=[6, 8]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+[GLow] união do head: 14 boosters
+ROUND;38;gossip;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (38, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'gossip'}, 105.81374026700007)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 39]
+[DistArch] round=39  mode=gossip  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[GLow] round=39  head=8  neighbours=[7, 9]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+[GLow] união do head: 14 boosters
+ROUND;39;gossip;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (39, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'gossip'}, 107.56309576700005)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 40]
+[DistArch] round=40  mode=gossip  q=6  active=[0, 2, 4, 6, 7, 8, 9, 10, 11, 12, 13]
+[GLow] round=40  head=9  neighbours=[8, 10]
+[92mINFO [0m:      configure_fit: strategy sampled 11 clients (out of 14)
+[92mINFO [0m:      aggregate_fit: received 11 results and 0 failures
+[GLow] união do head: 14 boosters
+ROUND;40;gossip;f1=96.0240;recall=99.9646;fpr=0.5999
+[92mINFO [0m:      fit progress: (40, 0.005615999999999954, {'f1': 96.02401449932034, 'fpr': 0.5998970133882595, 'mode': 'gossip'}, 109.32606128700002)
+[92mINFO [0m:      configure_evaluate: strategy sampled 11 clients (out of 14)
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 66x across cluster][0m
+[92mINFO [0m:      aggregate_evaluate: received 11 results and 0 failures
+[92mINFO [0m:      
+[92mINFO [0m:      [SUMMARY]
+[92mINFO [0m:      Run finished 40 round(s) in 109.85s
+[92mINFO [0m:      	History (loss, distributed):
+[92mINFO [0m:      		round 1: 1.0
+[92mINFO [0m:      		round 2: 1.0
+[92mINFO [0m:      		round 3: 1.0
+[92mINFO [0m:      		round 4: 1.0
+[92mINFO [0m:      		round 5: 1.0
+[92mINFO [0m:      		round 6: 1.0
+[92mINFO [0m:      		round 7: 1.0
+[92mINFO [0m:      		round 8: 1.0
+[92mINFO [0m:      		round 9: 1.0
+[92mINFO [0m:      		round 10: 1.0
+[92mINFO [0m:      		round 11: 1.0
+[92mINFO [0m:      		round 12: 1.0
+[92mINFO [0m:      		round 13: 1.0
+[92mINFO [0m:      		round 14: 1.0
+[92mINFO [0m:      		round 15: 1.0
+[92mINFO [0m:      		round 16: 1.0
+[92mINFO [0m:      		round 17: 1.0
+[92mINFO [0m:      		round 18: 1.0
+[92mINFO [0m:      		round 19: 1.0
+[92mINFO [0m:      		round 20: 1.0
+[92mINFO [0m:      		round 21: 1.0
+[92mINFO [0m:      		round 22: 1.0
+[92mINFO [0m:      		round 23: 1.0
+[92mINFO [0m:      		round 24: 1.0
+[92mINFO [0m:      		round 25: 1.0
+[92mINFO [0m:      		round 26: 1.0
+[92mINFO [0m:      		round 27: 1.0
+[92mINFO [0m:      		round 28: 1.0
+[92mINFO [0m:      		round 29: 1.0
+[92mINFO [0m:      		round 30: 1.0
+[92mINFO [0m:      		round 31: 1.0
+[92mINFO [0m:      		round 32: 1.0
+[92mINFO [0m:      		round 33: 1.0
+[92mINFO [0m:      		round 34: 1.0
+[92mINFO [0m:      		round 35: 1.0
+[92mINFO [0m:      		round 36: 1.0
+[92mINFO [0m:      		round 37: 1.0
+[92mINFO [0m:      		round 38: 1.0
+[92mINFO [0m:      		round 39: 1.0
+[92mINFO [0m:      		round 40: 1.0
+[92mINFO [0m:      	History (loss, centralized):
+[92mINFO [0m:      		round 1: 0.005615999999999954
+[92mINFO [0m:      		round 2: 0.005615999999999954
+[92mINFO [0m:      		round 3: 0.005615999999999954
+[92mINFO [0m:      		round 4: 0.005615999999999954
+[92mINFO [0m:      		round 5: 0.005615999999999954
+[92mINFO [0m:      		round 6: 0.005615999999999954
+[92mINFO [0m:      		round 7: 0.005615999999999954
+[92mINFO [0m:      		round 8: 0.005615999999999954
+[92mINFO [0m:      		round 9: 0.005615999999999954
+[92mINFO [0m:      		round 10: 0.00740799999999997
+[92mINFO [0m:      		round 11: 0.00740799999999997
+[92mINFO [0m:      		round 12: 0.00740799999999997
+[92mINFO [0m:      		round 13: 0.00740799999999997
+[92mINFO [0m:      		round 14: 0.00740799999999997
+[92mINFO [0m:      		round 15: 0.00740799999999997
+[92mINFO [0m:      		round 16: 0.01765799999999995
+[92mINFO [0m:      		round 17: 0.01765799999999995
+[92mINFO [0m:      		round 18: 0.01765799999999995
+[92mINFO [0m:      		round 19: 0.01765799999999995
+[92mINFO [0m:      		round 20: 0.01765799999999995
+[92mINFO [0m:      		round 21: 0.01765799999999995
+[92mINFO [0m:      		round 22: 0.01764600000000005
+[92mINFO [0m:      		round 23: 0.01764600000000005
+[92mINFO [0m:      		round 24: 0.01764600000000005
+[92mINFO [0m:      		round 25: 0.01764600000000005
+[92mINFO [0m:      		round 26: 0.01764600000000005
+[92mINFO [0m:      		round 27: 0.01764600000000005
+[92mINFO [0m:      		round 28: 0.01764600000000005
+[92mINFO [0m:      		round 29: 0.01764600000000005
+[92mINFO [0m:      		round 30: 0.01764600000000005
+[92mINFO [0m:      		round 31: 0.01764600000000005
+[92mINFO [0m:      		round 32: 0.005615999999999954
+[92mINFO [0m:      		round 33: 0.005615999999999954
+[92mINFO [0m:      		round 34: 0.005615999999999954
+[92mINFO [0m:      		round 35: 0.005615999999999954
+[92mINFO [0m:      		round 36: 0.005615999999999954
+[92mINFO [0m:      		round 37: 0.005615999999999954
+[92mINFO [0m:      		round 38: 0.005615999999999954
+[92mINFO [0m:      		round 39: 0.005615999999999954
+[92mINFO [0m:      		round 40: 0.005615999999999954
+[92mINFO [0m:      	History (metrics, distributed, fit):
+[92mINFO [0m:      	{'head_accuracy': [(32, 0.0),
+[92mINFO [0m:      	                   (33, 0.0),
+[92mINFO [0m:      	                   (34, 0.0),
+[92mINFO [0m:      	                   (35, 0.0),
+[92mINFO [0m:      	                   (36, 0.0),
+[92mINFO [0m:      	                   (37, 0.0),
+[92mINFO [0m:      	                   (38, 0.0),
+[92mINFO [0m:      	                   (39, 0.0),
+[92mINFO [0m:      	                   (40, 0.0)],
+[92mINFO [0m:      	 'head_cid': [(32, 12.0),
+[92mINFO [0m:      	              (33, 13.0),
+[92mINFO [0m:      	              (34, 0.0),
+[92mINFO [0m:      	              (35, 2.0),
+[92mINFO [0m:      	              (36, 4.0),
+[92mINFO [0m:      	              (37, 6.0),
+[92mINFO [0m:      	              (38, 7.0),
+[92mINFO [0m:      	              (39, 8.0),
+[92mINFO [0m:      	              (40, 9.0)]}
+[92mINFO [0m:      	History (metrics, distributed, evaluate):
+[92mINFO [0m:      	{'round': [(31, 31.0),
+[92mINFO [0m:      	           (32, 32.0),
+[92mINFO [0m:      	           (33, 33.0),
+[92mINFO [0m:      	           (34, 34.0),
+[92mINFO [0m:      	           (35, 35.0),
+[92mINFO [0m:      	           (36, 36.0),
+[92mINFO [0m:      	           (37, 37.0),
+[92mINFO [0m:      	           (38, 38.0),
+[92mINFO [0m:      	           (39, 39.0),
+[92mINFO [0m:      	           (40, 40.0)]}
+[92mINFO [0m:      	History (metrics, centralized):
+[92mINFO [0m:      	{'f1': [(1, 96.02401449932034),
+[92mINFO [0m:      	        (2, 96.02401449932034),
+[92mINFO [0m:      	        (3, 96.02401449932034),
+[92mINFO [0m:      	        (4, 96.02401449932034),
+[92mINFO [0m:      	        (5, 96.02401449932034),
+[92mINFO [0m:      	        (6, 96.02401449932034),
+[92mINFO [0m:      	        (7, 96.02401449932034),
+[92mINFO [0m:      	        (8, 96.02401449932034),
+[92mINFO [0m:      	        (9, 96.02401449932034),
+[92mINFO [0m:      	        (10, 94.68793024323085),
+[92mINFO [0m:      	        (11, 94.68793024323085),
+[92mINFO [0m:      	        (12, 94.68793024323085),
+[92mINFO [0m:      	        (13, 94.68793024323085),
+[92mINFO [0m:      	        (14, 94.68793024323085),
+[92mINFO [0m:      	        (15, 94.68793024323085),
+[92mINFO [0m:      	        (16, 86.33345200687275),
+[92mINFO [0m:      	        (17, 86.33345200687275),
+[92mINFO [0m:      	        (18, 86.33345200687275),
+[92mINFO [0m:      	        (19, 86.33345200687275),
+[92mINFO [0m:      	        (20, 86.33345200687275),
+[92mINFO [0m:      	        (21, 86.33345200687275),
+[92mINFO [0m:      	        (22, 86.34147096614394),
+[92mINFO [0m:      	        (23, 86.34147096614394),
+[92mINFO [0m:      	        (24, 86.34147096614394),
+[92mINFO [0m:      	        (25, 86.34147096614394),
+[92mINFO [0m:      	        (26, 86.34147096614394),
+[92mINFO [0m:      	        (27, 86.34147096614394),
+[92mINFO [0m:      	        (28, 86.34147096614394),
+[92mINFO [0m:      	        (29, 86.34147096614394),
+[92mINFO [0m:      	        (30, 86.34147096614394),
+[92mINFO [0m:      	        (31, 86.34147096614394),
+[92mINFO [0m:      	        (32, 96.02401449932034),
+[92mINFO [0m:      	        (33, 96.02401449932034),
+[92mINFO [0m:      	        (34, 96.02401449932034),
+[92mINFO [0m:      	        (35, 96.02401449932034),
+[92mINFO [0m:      	        (36, 96.02401449932034),
+[92mINFO [0m:      	        (37, 96.02401449932034),
+[92mINFO [0m:      	        (38, 96.02401449932034),
+[92mINFO [0m:      	        (39, 96.02401449932034),
+[92mINFO [0m:      	        (40, 96.02401449932034)],
+[92mINFO [0m:      	 'fpr': [(1, 0.5998970133882595),
+[92mINFO [0m:      	         (2, 0.5998970133882595),
+[92mINFO [0m:      	         (3, 0.5998970133882595),
+[92mINFO [0m:      	         (4, 0.5998970133882595),
+[92mINFO [0m:      	         (5, 0.5998970133882595),
+[92mINFO [0m:      	         (6, 0.5998970133882595),
+[92mINFO [0m:      	         (7, 0.5998970133882595),
+[92mINFO [0m:      	         (8, 0.5998970133882595),
+[92mINFO [0m:      	         (9, 0.5998970133882595),
+[92mINFO [0m:      	         (10, 0.5998970133882595),
+[92mINFO [0m:      	         (11, 0.5998970133882595),
+[92mINFO [0m:      	         (12, 0.5998970133882595),
+[92mINFO [0m:      	         (13, 0.5998970133882595),
+[92mINFO [0m:      	         (14, 0.5998970133882595),
+[92mINFO [0m:      	         (15, 0.5998970133882595),
+[92mINFO [0m:      	         (16, 0.5998970133882595),
+[92mINFO [0m:      	         (17, 0.5998970133882595),
+[92mINFO [0m:      	         (18, 0.5998970133882595),
+[92mINFO [0m:      	         (19, 0.5998970133882595),
+[92mINFO [0m:      	         (20, 0.5998970133882595),
+[92mINFO [0m:      	         (21, 0.5998970133882595),
+[92mINFO [0m:      	         (22, 0.5986096807415036),
+[92mINFO [0m:      	         (23, 0.5986096807415036),
+[92mINFO [0m:      	         (24, 0.5986096807415036),
+[92mINFO [0m:      	         (25, 0.5986096807415036),
+[92mINFO [0m:      	         (26, 0.5986096807415036),
+[92mINFO [0m:      	         (27, 0.5986096807415036),
+[92mINFO [0m:      	         (28, 0.5986096807415036),
+[92mINFO [0m:      	         (29, 0.5986096807415036),
+[92mINFO [0m:      	         (30, 0.5986096807415036),
+[92mINFO [0m:      	         (31, 0.5986096807415036),
+[92mINFO [0m:      	         (32, 0.5998970133882595),
+[92mINFO [0m:      	         (33, 0.5998970133882595),
+[92mINFO [0m:      	         (34, 0.5998970133882595),
+[92mINFO [0m:      	         (35, 0.5998970133882595),
+[92mINFO [0m:      	         (36, 0.5998970133882595),
+[92mINFO [0m:      	         (37, 0.5998970133882595),
+[92mINFO [0m:      	         (38, 0.5998970133882595),
+[92mINFO [0m:      	         (39, 0.5998970133882595),
+[92mINFO [0m:      	         (40, 0.5998970133882595)],
+[92mINFO [0m:      	 'mode': [(1, 'federated'),
+[92mINFO [0m:      	          (2, 'federated'),
+[92mINFO [0m:      	          (3, 'federated'),
+[92mINFO [0m:      	          (4, 'federated'),
+[92mINFO [0m:      	          (5, 'federated'),
+[92mINFO [0m:      	          (6, 'federated'),
+[92mINFO [0m:      	          (7, 'federated'),
+[92mINFO [0m:      	          (8, 'federated'),
+[92mINFO [0m:      	          (9, 'federated'),
+[92mINFO [0m:      	          (10, 'federated'),
+[92mINFO [0m:      	          (11, 'federated'),
+[92mINFO [0m:      	          (12, 'federated'),
+[92mINFO [0m:      	          (13, 'federated'),
+[92mINFO [0m:      	          (14, 'federated'),
+[92mINFO [0m:      	          (15, 'federated'),
+[92mINFO [0m:      	          (16, 'federated'),
+[92mINFO [0m:      	          (17, 'federated'),
+[92mINFO [0m:      	          (18, 'federated'),
+[92mINFO [0m:      	          (19, 'federated'),
+[92mINFO [0m:      	          (20, 'federated'),
+[92mINFO [0m:      	          (21, 'federated'),
+[92mINFO [0m:      	          (22, 'federated'),
+[92mINFO [0m:      	          (23, 'federated'),
+[92mINFO [0m:      	          (24, 'federated'),
+[92mINFO [0m:      	          (25, 'federated'),
+[92mINFO [0m:      	          (26, 'federated'),
+[92mINFO [0m:      	          (27, 'federated'),
+[92mINFO [0m:      	          (28, 'federated'),
+[92mINFO [0m:      	          (29, 'federated'),
+[92mINFO [0m:      	          (30, 'federated'),
+[92mINFO [0m:      	          (31, 'federated'),
+[92mINFO [0m:      	          (32, 'gossip'),
+[92mINFO [0m:      	          (33, 'gossip'),
+[92mINFO [0m:      	          (34, 'gossip'),
+[92mINFO [0m:      	          (35, 'gossip'),
+[92mINFO [0m:      	          (36, 'gossip'),
+[92mINFO [0m:      	          (37, 'gossip'),
+[92mINFO [0m:      	          (38, 'gossip'),
+[92mINFO [0m:      	          (39, 'gossip'),
+[92mINFO [0m:      	          (40, 'gossip')]}
+[92mINFO [0m:      
+[36m(ClientAppActor pid=1700)[0m [93mWARNING [0m:   Manually terminating ClientAppActor
+[36m(ClientAppActor pid=1698)[0m [93mWARNING [0m:   Deprecation Warning: The `client_fn` function must return an instance of `Client`, but an instance of `NumpyClient` was returned. Please use `NumPyClient.to_client()` method to convert it to `Client`.[32m [repeated 10x across cluster][0m
+[36m(ClientAppActor pid=1698)[0m [93mWARNING [0m:   Manually terminating ClientAppActor[32m [repeated 5x across cluster][0m
+
+============================================================
+  Avaliação final — teste global (20%, mesmas features)
+============================================================
+
+  [DISTRIBUÍDO [xgb_bagging] (14 boosters/k≥2, 140 árvores)]
+    F1       : 95.9823%
+    Accuracy : 99.4323%
+    Precision: 92.3056%
+    Recall   : 99.9641%
+    FPR      : 0.6064%   (falsos alarmes / benignos)
+    VP=200437  VN=2738431  FP=16708  FN=72
+
+  [MONOLÍTICO — XGBoost (mesmas features/split)]
+    F1       : 99.5732%
+    Accuracy : 99.9418%
+    Precision: 99.1529%
+    Recall   : 99.9970%
+    FPR      : 0.0622%   (falsos alarmes / benignos)
+    VP=200503  VN=2753426  FP=1713  FN=6
+
+============================================================
+  Diferença  (distribuído − monolítico)
+============================================================
+  F1-score : -3.5908 pp
+  Accuracy : -0.5096 pp
+  Recall   : -0.0329 pp
+  Precision: -6.8473 pp
+  FPR      : +0.5443 pp
+
+========================================================================
+  Métricas por cliente — GOSSIP (modelo local × teste global)
+========================================================================
+  cli classe-especialista           F1  Recall    Prec     FPR  #bst
+    0 random_replay              95.45   99.97   91.33    0.69    14
+    1 random_replay              95.45   99.97   91.33    0.69    14
+    2 injection                  95.45   99.97   91.33    0.69    14
+    3 injection                  95.45   99.97   91.33    0.69    14
+    4 high_StNum                 95.45   99.97   91.33    0.69    14
+    5 high_StNum                 95.45   99.97   91.33    0.69    14
+    6 inverse_replay             95.45   99.97   91.33    0.69    14
+    7 inverse_replay             95.45   99.97   91.33    0.69    14
+    8 poisoned_high_rate         95.45   99.97   91.33    0.69    14
+    9 poisoned_high_rate         95.45   99.97   91.33    0.69    14
+   10 masquerade_fake_normal     95.45   99.97   91.33    0.69    14
+   11 masquerade_fake_normal     95.45   99.97   91.33    0.69    14
+   12 masquerade_fake_fault      95.45   99.97   91.33    0.69    14
+   13 masquerade_fake_fault      95.45   99.97   91.33    0.69    14
