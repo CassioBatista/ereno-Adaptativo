@@ -2,19 +2,21 @@
 #
 # Igual a ereno_dist_adapt_n14_k2.yaml, MAS o DistributedArchManager roda o
 # caminho descentralizado: cada nó dá timeout local nos vizinhos silenciosos
-# (peer_timeout) e as suspeitas/votos DIFUNDEM pela topologia GLow. O commit
-# FL->GL só dispara quando um quórum descentralizado é atingido -> a troca
-# reflete a LATÊNCIA de difusão real (endógena), não um tally central instantâneo.
+# (peer_timeout). A descida FL->GL é FAIL-FAST: comita assim que a queda é
+# corroborada localmente por min_witnesses vizinhos (~T rounds), SEM consenso de
+# rede (crash confiável não precisa de quórum; auto-proteção é por-nó). O quórum
+# de rede fica reservado à recuperação GL->FL e ao regime Byzantine (v3).
 # O digest de controle (2 bitmaps = voto+suspeita) viaja no FitIns real do GLow.
 #
-# Contraste esperado vs. a versão central (ereno_dist_adapt_n14_k2.yaml):
-#   central:        FL->GL @round 11 (1 round após a falta @10).
-#   descentralizado: FL->GL ~round 27 (10 + ~17 de timeout+difusão em ring N=14),
-#                    consistente com a curva latency-aware (B2) e com o self-test
-#                    scripts/distarch_decentralized_selftest.py (banda [15,21]).
+# Contraste vs. a versão central (ereno_dist_adapt_n14_k2.yaml):
+#   central:         FL->GL @round 11 (tally central instantâneo).
+#   descentralizado: FL->GL ~round 11 também (fail-fast: T=2 após a falta @10),
+#                    mas por DETECÇÃO LOCAL corroborada, sem tally central.
+# (Nós 1,3,5 nunca voltam -> permanece em GL; unanimidade de saúde local bloqueia
+#  recovery parcial, sem flap. Ver ereno_..._recovery.yaml para GL->FL.)
 #
 # Faltas (ground truth do ambiente; o controle só DETECTA via observação):
-#   round 10  nó 1 cai (1 sensor do MAIOR ataque) -> detecta local -> difunde -> FL->GL
+#   round 10  nó 1 cai (1 sensor do MAIOR ataque) -> timeout local -> FL->GL (fail-fast)
 #   round 16  nó 3 cai / round 22 nó 5 cai        -> segue GL
 # Uso: ~/venv-ereno314/bin/python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
 #        --conf conf/experiments/ereno_dist_adapt_n14_k2_decentralized.yaml --clients 14

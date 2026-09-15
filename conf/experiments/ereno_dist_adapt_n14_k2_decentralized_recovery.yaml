@@ -6,13 +6,23 @@
 # o voto federado difunde até o quórum e o modo volta a FL. Tanto a ida (FL->GL)
 # quanto a volta (GL->FL) têm LATÊNCIA endógena de difusão descentralizada.
 #
+# Assimetria (fail-fast down / careful up), ambas DESCENTRALIZADAS:
+#  * FL->GL FAIL-FAST: comita ~T rounds após a queda (corroboração local por
+#    min_witnesses), sem consenso de rede -> rápido.
+#  * GL->FL CAREFUL: cada nó vota "minha vizinhança está completa" (observação
+#    LOCAL direta); recovery só na UNANIMIDADE (q=N) = overlay íntegro = membership
+#    plena restaurada. Um nó caído PARTICIONA o anel (nós mortos não repassam
+#    gossip), então "ninguém caiu" não é aprendível por difusão; a unanimidade de
+#    saúde local contorna isso (o vizinho do nó caído não vota -> membership
+#    parcial nunca atinge N votos -> SEM flap). Por isso a subida é mais lenta.
+#
 # Linha do tempo esperada (dry-run do manager, ring N=14, T=2, dwell=3):
-#   round 10  nó 1 cai            -> detecção local + difusão -> FL->GL @~21
-#   round 34  nó 1 volta (up)     -> participação plena estável -> dwell -> voto
-#                                    federado difunde -> GL->FL @~41
-#   F1: 96.02 (r1-9) -> 94.69 (r10-20, FL degradado) -> 96.02 (r21+, GL união
-#   retida) -> 96.02 (r41+, FL recuperado). A recuperação GL->FL é TRANSPARENTE
-#   (F1 permanece 96.02): a volta ao FL não custa F1 — esta é a mensagem.
+#   round 10  nó 1 cai            -> timeout local -> FL->GL @~11 (fail-fast)
+#   round 34  nó 1 volta (up)     -> vizinhança completa + dwell local + voto de
+#                                    saúde difunde à unanimidade -> GL->FL @~44
+#   F1: 96.02 (r1-9) -> 94.69 (r10, FL degradado) -> 96.02 (r12+, GL união retida)
+#   -> 96.02 (r45+, FL recuperado). A recuperação GL->FL é TRANSPARENTE (F1
+#   permanece 96.02): a volta ao FL não custa F1 — esta é a mensagem.
 # Uso: ~/venv-ereno314/bin/python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
 #        --conf conf/experiments/ereno_dist_adapt_n14_k2_decentralized_recovery.yaml --clients 14
 
@@ -34,7 +44,7 @@ topology:
   num_nodes: 14
 
 simulation:
-  num_rounds: 52               # recovery GL->FL ~round 41; tail p/ mostrar FL de volta
+  num_rounds: 58               # recovery GL->FL ~round 48 (decentralizada); tail FL
   strategy: xgb_bagging
   xgb_fusion: or
   xgb_fusion_k: 2

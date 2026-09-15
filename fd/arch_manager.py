@@ -214,6 +214,7 @@ class DistributedArchManager(ArchitectureManager):
         self._min_witnesses = max(1, int(min_witnesses))
         self._detector = self._vote = None
         self.ctrl_bytes     = 0                   # cumulative control-plane bytes (Gap 2)
+        self._node_stable   = {i: 0 for i in range(n_nodes)}  # per-node local dwell (recovery)
         if topology is not None:
             from fd.peer_failure import PeerFailureDetector
             from fd.vote_diffusion import VoteDiffusion
@@ -328,31 +329,45 @@ class DistributedArchManager(ArchitectureManager):
         down = set(range(self.n_nodes)) - alive
 
         if self._committed_mode == "federated":
-            # fail-fast: a node that LOCALLY knows of a down peer votes gossip;
-            # the vote diffuses -> commit when a node hears a DECENTRALIZED quorum
-            for i in alive:
-                if any(self._detector.knows_down(i, j) for j in down):
-                    self._vote.cast(i)
-            self._vote.step(round)
-            if cooldown_ok and self._vote_quorum(alive, q):
-                # report the peers currently down (the failure that triggered the
-                # switch may have occurred several rounds earlier — before diffusion
-                # reached quorum — so newly_down at commit time can be empty)
+            # FAIL-FAST (no network consensus): commit to gossip as soon as a
+            # down peer is LOCALLY corroborated by min_witnesses independent
+            # observers (<= degree(j)) — knows_down() already encodes that gate.
+            # A trusted crash needs no quorum: self-protection is per-node and the
+            # global switch fires on first corroborated detection (latency ~= T).
+            # The NETWORK quorum is reserved for careful GL->FL recovery and for
+            # the Byzantine regime (v3), where detections can be false.
+            if cooldown_ok and any(self._detector.knows_down(i, j)
+                                   for j in down for i in alive):
+                # report the peers currently down (the failure may have occurred a
+                # couple rounds earlier, so newly_down at commit can be empty)
                 self._commit("gossip", round, "node_failure", sorted(down))
                 self._reset_vote()
-        else:  # gossip -> federated recovery: full participation, stable, quorum
-            if len(alive) == self.n_nodes and not newly_down:
-                self._stable += 1
-            else:
-                self._stable = 0
-                self._reset_vote()                   # lost full participation
-            if self._stable >= self._dwell:
-                for i in alive:                      # everyone back -> vote federated
-                    self._vote.cast(i)
-                self._vote.step(round)
-                if cooldown_ok and self._vote_quorum(alive, q):
-                    self._commit("federated", round, "recovery", [])
-                    self._reset_vote()
+        else:  # gossip -> federated recovery — FULLY DECENTRALIZED (sound)
+            # No global "len(alive)==N" check. Each node votes on its OWN DIRECT
+            # observation ("my neighbourhood is fully alive"), and recovery commits
+            # only on UNANIMITY (q = N): every node must assert local health, which
+            # holds iff the whole overlay is intact (full membership restored).
+            #   Why unanimity, not a majority: a crashed node PARTITIONS the ring
+            #   (dead nodes don't relay gossip), so "nobody is down" can't be learned
+            #   by diffusion — a far node's ignorance is indistinguishable from
+            #   health. Unanimity of LOCAL health sidesteps this: a down node's
+            #   neighbours have an incomplete neighbourhood and withhold their vote,
+            #   so a partial membership can NEVER reach N votes -> no false recovery.
+            # Per-node LOCAL dwell: each node counts its own neighbourhood stable.
+            if newly_down:
+                self._reset_vote()                       # a fresh drop cancels recovery
+            for i in self._topo.all_nodes():
+                healthy = i in alive and all(nb in alive
+                                             for nb in self._topo.neighbors(i))
+                self._node_stable[i] = self._node_stable[i] + 1 if healthy else 0
+            for i in alive:
+                if self._node_stable[i] >= self._dwell:
+                    self._vote.cast(i)                   # i asserts: my neighbourhood is whole
+            self._vote.step(round)
+            # recover only when ALL N nodes have asserted local health (unanimity)
+            if cooldown_ok and self._vote_quorum(alive, self.n_nodes):
+                self._commit("federated", round, "recovery", [])
+                self._reset_vote()
 
     def _vote_quorum(self, alive: set[int], q: int) -> bool:
         """Decentralized quorum: some up node has heard >= q distinct votes."""

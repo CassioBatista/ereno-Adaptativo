@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Self-test of the DECENTRALIZED detection path in DistributedArchManager (Gap 1+2).
 
-Unlike the central-oracle path (distarch_selftest.py), here the FL->GL commit is
-NOT instantaneous on the round of failure: it must wait for the local per-neighbour
-timeout (T) PLUS the GLow diffusion of suspicions/votes to a quorum -> a realistic,
-endogenous LATENCY. This test drives the manager over a fault schedule and checks:
+Unlike the central-oracle path (distarch_selftest.py), the decisions here are
+decentralized. The two directions are ASYMMETRIC by design:
+  * FL->GL is FAIL-FAST: commit as soon as a down peer is locally corroborated by
+    min_witnesses observers (~T rounds), NO network consensus on the way down;
+  * GL->FL is CAREFUL: per-node local dwell + a diffused recovery vote to quorum.
+This test drives the manager over a fault schedule and checks:
 
-  (1) the switch is DELAYED past the failure round by ~ (T + diffusion), not @failure;
-  (2) the endogenous switch latency MATCHES the standalone peer_failure model
-      (fd/peer_failure.py) -> the live decision reproduces the B2 latency model;
+  (1) FL->GL fires ~T rounds after the failure (fail-fast), not instantly and not
+      after a network quorum;
+  (2) the fail-fast latency is strictly BELOW the network-consensus latency
+      (contrast with the peer_failure model's quorum/net-know times);
   (3) the control-plane digest (Gap 2) is accounted per round (ctrl_bytes grows,
       digest_hex non-empty) and stays tiny;
   (4) recovery (GL->FL) still respects dwell + full participation.
@@ -71,23 +74,24 @@ def run(recover_at=None):
 print(f"ring N={N}, node {DOWN} fails @round {FAIL_AT}, T={T}, "
       f"neighbours={build_topology('ring', N).neighbors(DOWN)}")
 
-# (1)+(2) FL->GL switch is delayed and reproduces the model within its bounds
+# (1)+(2) FL->GL is FAIL-FAST: fires ~T rounds after the failure (local
+# corroboration by min_witnesses), NOT after a network quorum diffusion.
 mgr, timeline, digest_seen = run()
 switch_round = next((i + 1 for i, m in enumerate(timeline) if m == "gossip"), None)
 q = (N - 1) // 2 + 1                              # quorum among the 13 active nodes
-Lq, Lnet = model_bounds(N, T, DOWN, FAIL_AT, q)
+Lq, Lnet = model_bounds(N, T, DOWN, FAIL_AT, q)  # network-consensus latencies (for contrast)
 Llive = None if switch_round is None else switch_round - FAIL_AT
-print(f"[decentralized] switch committed for round {switch_round} (q={q})  "
-      f"live latency={Llive}  model bounds: quorum_know={Lq} <= L <= net_know={Lnet}")
+print(f"[fail-fast] switch committed for round {switch_round}  live latency={Llive}  "
+      f"(vs network-quorum_know={Lq}, net_know={Lnet} — fail-fast must beat these)")
 # determinism: a second identical run gives the same endogenous latency
 _, timeline2, _ = run()
 switch2 = next((i + 1 for i, m in enumerate(timeline2) if m == "gossip"), None)
 check(switch_round is not None, "FL->GL commit does happen")
-check(switch_round is not None and switch_round > FAIL_AT + 1,
-      "switch is DELAYED past the failure (endogenous latency, not instantaneous)")
+check(Llive is not None and 1 <= Llive <= T + 2,
+      f"FL->GL is fail-fast: fires ~T={T} rounds after failure (latency {Llive}), not instant")
 check(switch2 == switch_round, "endogenous latency is deterministic (reproducible)")
-check(Llive is not None and Lq is not None and Lnet is not None and Lq <= Llive <= Lnet,
-      f"live vote-quorum latency ({Llive}) within model bounds [{Lq}, {Lnet}]")
+check(Llive is not None and Lq is not None and Llive < Lq,
+      f"fail-fast latency ({Llive}) < network-quorum latency ({Lq}) — no consensus on the way down")
 
 # (3) control-plane digest accounted (Gap 2), tiny
 per_round = mgr.ctrl_bytes / ROUNDS
@@ -110,6 +114,27 @@ print(f"[recovery] entered GL for round {None if gl_start is None else gl_start 
 check(gl_start is not None, "recovery run does enter GL first")
 check(rec is not None and rec > (gl_start + 1),
       "GL->FL recovery commit happens after node returns + dwell")
+
+# (5) NO FALSE RECOVERY (flap): with several nodes down (that partition the ring)
+# and NEVER returning, recovery must NOT fire — unanimity of local health is
+# unreachable while any node is missing, so the mode stays gossip.
+def run_cascade(nrounds=60):
+    mgr = DistributedArchManager(
+        n_nodes=N, initial_mode="federated", dwell_rounds=3, cooldown_rounds=2,
+        topology=build_topology("ring", N), peer_timeout=T, min_witnesses=1)
+    modes = []
+    for r in range(1, nrounds + 1):
+        alive = set(range(N)) - {d for d, fr in ((3, 10), (7, 16), (11, 22)) if r >= fr}
+        mgr.observe(r, alive)
+        modes.append(mgr.get_mode(r + 1))
+    return modes
+casc = run_cascade()
+casc_switch = next((i + 1 for i, m in enumerate(casc) if m == "gossip"), None)
+false_recovery = casc_switch is not None and any(m == "federated" for m in casc[casc_switch:])
+print(f"[no-flap] cascade FL->GL @{casc_switch}; any false GL->FL afterwards? {false_recovery}")
+check(casc_switch is not None, "cascade enters GL (fail-fast)")
+check(not false_recovery,
+      "NO false recovery while nodes stay down (unanimity blocks partial membership)")
 
 print("\n" + ("DISTARCH DECENTRALIZED SELFTEST OK" if ok else
               "DISTARCH DECENTRALIZED SELFTEST FAILED"))
