@@ -1,5 +1,8 @@
 # ereno-Adaptativo
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22772409.svg)](https://doi.org/10.5281/zenodo.22772409)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Pipeline adaptativo de detecção de intrusão (IDS) que combina **aprendizado centralizado, federado e gossip** em uma única execução, com **comutação de modo round a round**. Evolução do ERENO-FD-SF incluindo Gossip Learning baseado em implementação do framework Glow e construído sobre [Flower](https://flower.ai/) 1.31, scikit-learn e XGBoost.
 
 A ideia central: em vez de escolher *a priori* entre treinar de forma federada (coordenação por servidor central) ou por gossip (troca de modelos entre vizinhos numa topologia), um **Architecture Manager** decide o modo de cada round. Isso permite simular cenários reais onde a infraestrutura muda durante o treinamento — por exemplo, perda do servidor central forçando os nós a continuar por gossip, ou nós que entram e saem da rede.
@@ -166,5 +169,11 @@ Distribuído sob a licença **MIT** — ver [LICENSE](LICENSE).
 ## Como citar
 
 Se usar este software, cite-o conforme [CITATION.cff](CITATION.cff). Cada release
-é arquivada no Zenodo com um DOI (o badge/DOI da versão será adicionado aqui após
-o arquivamento). Histórico de versões em [CHANGELOG.md](CHANGELOG.md).
+é arquivada no Zenodo com um DOI:
+
+- **v2.0.0** — [10.5281/zenodo.22772409](https://doi.org/10.5281/zenodo.22772409)
+
+Histórico de versões em [CHANGELOG.md](CHANGELOG.md).
+
+> Nota: o DOI acima é o desta versão. Se você criar o *concept DOI* (all-versions,
+> que sempre aponta para a última release) no Zenodo, troque o badge por ele.
