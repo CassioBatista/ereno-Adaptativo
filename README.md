@@ -33,7 +33,7 @@ O dataset filtrado é dividido entre os clientes com um dos particionadores: `ii
 
 Três componentes cooperam dentro de uma única `run_simulation()` do Flower:
 
-- **`ArchitectureManager`** ([fd/arch_manager.py](fd/arch_manager.py)) — responde "qual o modo do round R?" e, opcionalmente, "quais clientes estão ativos?". A implementação atual (`FixedArchManager`) lê um cronograma estático do YAML de configuração; uma variante controlada por REST API (`ApiArchManager`) está planejada.
+- **`ArchitectureManager`** ([fd/arch_manager.py](fd/arch_manager.py)) — responde "qual o modo do round R?" e, opcionalmente, "quais clientes estão ativos?". `FixedArchManager` lê um cronograma estático do YAML; **na v2, `DistributedArchManager` decide o modo automaticamente** por detecção descentralizada de falhas (ver [Novidades na v2](#novidades-na-v2)).
 
 - **`HybridStrategy`** ([fd/strategy/hybrid_strategy.py](fd/strategy/hybrid_strategy.py)) — meta-estratégia do Flower que delega `configure_fit`/`aggregate_fit` para a sub-estratégia do modo ativo. Na **transição de modo**, `_transfer_model()` preserva a continuidade do treinamento:
   - *federated → gossip*: o modelo global vira o ponto de partida local de todos os nós;
@@ -48,6 +48,34 @@ As topologias de gossip ficam em [conf/topologies/](conf/topologies/): `ring`, `
 ### Avaliação
 
 Ao final, o modelo distribuído é avaliado num conjunto de teste global e comparado com um **baseline centralizado treinado com as mesmas features**, reportando F1-score, accuracy, precision, recall e a matriz de confusão — ou seja, o pipeline mede diretamente o custo (ou ganho) de distribuir o treinamento.
+
+## Novidades na v2
+
+A v2 transforma a comutação de **cronograma estático** em **distribuída e automática**, dirigida por **detecção descentralizada de falhas** sobre o substrato de gossip GLow, e adiciona observabilidade externa. (A detecção/trust byzantina fica para a v3 — ver [docs/v3_trust_model.md](docs/v3_trust_model.md).)
+
+- **`DistributedArchManager`** ([fd/arch_manager.py](fd/arch_manager.py)) — comutação FL↔GL **automática**, sem cronograma. Cada nó detecta falhas localmente; o cronograma `faults` é apenas *ground truth* do ambiente que os controladores **detectam**, nunca leem.
+- **Detecção descentralizada** sobre o GLow:
+  - [fd/peer_failure.py](fd/peer_failure.py) — timeout local por vizinho + difusão de suspeitas (`min_witnesses`, agreement-quorum);
+  - [fd/vote_diffusion.py](fd/vote_diffusion.py) — votos de modo reusam a difusão head-election do GLow (quórum descentralizado, sem tally central);
+  - **FL→GL fail-fast** (comita na corroboração local por `min_witnesses`, **sem consenso de rede**) vs **GL→FL careful** (dwell local por nó + **unanimidade de saúde local**, sã sob partição do overlay por nós mortos). O digest de controle (bitmaps de voto + suspeita) viaja nas mensagens `FitIns` reais do `GlowStrategy`.
+- **Semeadura por união retida** na transição FL→GL — um nó que cai pouco antes da troca ainda tem seu booster no pool GL, recuperando o F1 ao nível saudável.
+- **Monitor externo** ([fd/monitor.py](fd/monitor.py)) — REST *pull* (`/events`, `/status`, `/health`) + trilha de auditoria JSONL; eventos `architecture_change` e `node_failure` (qual nó falhou). Docs da API JSON/CoAP: [docs/API.md](docs/API.md), [docs/openapi.yaml](docs/openapi.yaml).
+- **Curvas endógenas ao vivo** ([scripts/plot_endogenous_live.py](scripts/plot_endogenous_live.py)) — o round da troca FL↔GL é produzido pela detecção descentralizada no mesmo run que mede o F1 (descida fail-fast, subida careful). Self-tests: `scripts/distarch_decentralized_selftest.py`, `scripts/peer_failure_selftest.py`, `scripts/vote_diffusion_selftest.py`.
+
+Config da v2 (ver [conf/experiments/](conf/experiments/) `*_decentralized*.yaml`):
+
+```yaml
+architecture:
+  manager: distributed
+  decentralized: true      # detecção descentralizada (fail-fast / unanimidade)
+  topology: ring
+  peer_timeout: 2
+  min_witnesses: 1         # 1 = crash-trusted (v2); Byzantine (>=2) -> v3
+  dwell_rounds: 3
+  cooldown_rounds: 2
+```
+
+Detalhes em [docs/ARQUITETURA_v2.md](docs/ARQUITETURA_v2.md) e [docs/B1_live_run_gap.md](docs/B1_live_run_gap.md).
 
 ## Uso
 
@@ -114,6 +142,9 @@ Datasets de trabalho: **CICIDS2017** (regenerado dos originais — `all_in_one_c
 | [docs/PREPARACAO_DADOS.md](docs/PREPARACAO_DADOS.md) | pipeline de dados completo: preparação dos datasets, seleção de features (GRASP) e particionamento |
 | [docs/DATASETS.md](docs/DATASETS.md) | proveniência, hashes de verificação e receitas de regeneração |
 | [docs/PLANO_VALIDACAO.md](docs/PLANO_VALIDACAO.md) | plano de validação e testes: matriz de experimentos, métricas e sanity checks |
+| [docs/ARQUITETURA_v2.md](docs/ARQUITETURA_v2.md) | **v2**: comutação distribuída/automática, semeadura por união retida, monitor externo |
+| [docs/B1_live_run_gap.md](docs/B1_live_run_gap.md) | **v2**: detecção descentralizada ao vivo (fail-fast / unanimidade) e limites (Gap 3/4) |
+| [docs/v3_trust_model.md](docs/v3_trust_model.md) | **v3**: modelo de confiança unificado de 3 drivers (availability, concordância, veredito do IDS) |
 
 ## Instalação
 
@@ -127,3 +158,13 @@ Solução desenvolvida em Python 3.14.
 
 - Beutel, D. J., Topal, T., Mathur, A., Qiu, X., Fernandez-Marques, J., Gao, Y., ... & Lane, N. D. (2020). Flower: A friendly federated learning research framework. *arXiv preprint* arXiv:2007.14390.
 - Belenguer, A., Pascual, J. A., & Navaridas, J. (2026). GLow — A Novel, Flower-Based Simulated Gossip Learning Strategy. *Journal of Parallel and Distributed Computing*, 105272.
+
+## Licença
+
+Distribuído sob a licença **MIT** — ver [LICENSE](LICENSE).
+
+## Como citar
+
+Se usar este software, cite-o conforme [CITATION.cff](CITATION.cff). Cada release
+é arquivada no Zenodo com um DOI (o badge/DOI da versão será adicionado aqui após
+o arquivamento). Histórico de versões em [CHANGELOG.md](CHANGELOG.md).

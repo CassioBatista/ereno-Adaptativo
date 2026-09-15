@@ -1,0 +1,27 @@
+{
+  "title": "ereno-Adaptativo (ReSIDS): a Resilient, runtime-Switchable Federated–Gossip IDS",
+  "description": "<p>ReSIDS / ereno-Adaptativo is an intrusion-detection pipeline that unifies centralized, federated and gossip learning in a single run with round-by-round mode switching, built on Flower, scikit-learn and XGBoost.</p><p><strong>Version 2</strong> adds: a distributed, automatic FL&harr;GL switch driven by <em>decentralized</em> failure detection (fail-fast FL&rarr;GL on local corroboration by min_witnesses, with no network consensus; careful, unanimity-based GL&rarr;FL recovery); an outbound observability monitor (pull REST + JSONL audit trail, with a CoAP mapping for external IoT hubs); and a control plane (mode votes + peer suspicions) piggybacked on the GLow gossip substrate, whose FL&rarr;GL switch latency is reproduced by live end-to-end runs. Byzantine trust (valued votes, reputation, a 3-driver trust model) is scoped for v3.</p>",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "version": "2.0.0",
+  "keywords": [
+    "intrusion detection",
+    "federated learning",
+    "gossip learning",
+    "IEC 61850",
+    "XGBoost",
+    "resilience",
+    "runtime mode switching",
+    "ERENO",
+    "CICIDS-2017"
+  ],
+  "creators": [
+    { "name": "Batista, Cassio Luis", "orcid": "0000-0002-0278-2232" },
+    { "name": "Coelho, Paulo" },
+    { "name": "Quincozes, Silvio E." },
+    { "name": "Pasquini, Rafael" },
+    { "name": "Arantes, Luciana" },
+    { "name": "Sens, Pierre", "orcid": "0000-0003-4523-3791" }
+  ]
+}

@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+title: "ereno-Adaptativo (ReSIDS): a Resilient, runtime-Switchable Federated–Gossip IDS"
+abstract: >-
+  ReSIDS / ereno-Adaptativo is an intrusion-detection pipeline that unifies
+  centralized, federated and gossip learning in a single run with round-by-round
+  mode switching, built on Flower, scikit-learn and XGBoost. Version 2 adds a
+  distributed, automatic FL<->GL switch driven by decentralized failure detection
+  (fail-fast on local corroboration; careful, unanimity-based recovery), an
+  outbound observability monitor (REST + CoAP), and a control plane (mode votes +
+  peer suspicions) piggybacked on the GLow gossip substrate.
+type: software
+version: 2.0.0
+date-released: 2026-09-15
+license: MIT
+repository-code: "https://github.com/CassioBatista/ereno-Adaptativo"
+keywords:
+  - intrusion detection
+  - federated learning
+  - gossip learning
+  - IEC 61850
+  - XGBoost
+  - resilience
+  - runtime mode switching
+  - ERENO
+  - CICIDS-2017
+authors:
+  - given-names: "Cassio Luis"
+    family-names: Batista
+    orcid: "https://orcid.org/0000-0002-0278-2232"
+  - given-names: Paulo
+    family-names: Coelho
+  - given-names: "Silvio E."
+    family-names: Quincozes
+  - given-names: Rafael
+    family-names: Pasquini
+  - given-names: Luciana
+    family-names: Arantes
+  - given-names: Pierre
+    family-names: Sens
+    orcid: "https://orcid.org/0000-0003-4523-3791"
