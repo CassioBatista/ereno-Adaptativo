@@ -109,7 +109,7 @@ ttl = ("Endogenous latency-aware end-to-end (LIVE decentralized run):\n"
        "every FL$\\leftrightarrow$GL switch fired from decentralized detection "
        "($N{=}14$, $k\\geq2$, ring)")
 ax.set_title(ttl, fontsize=11.5)
-ax.grid(True, alpha=0.3); ax.legend(loc="lower left", fontsize=9.5)
+ax.grid(True, alpha=0.3); ax.legend(loc="lower right", fontsize=9.5)
 fig.tight_layout()
 fig.savefig(out + ".png", dpi=175)
 fig.savefig(out + ".pdf")
