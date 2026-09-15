@@ -1,7 +1,30 @@
 # B1 — Live single-run gap (decentralized detection over the live pipeline)
 
-**Status:** design note. B2 (composition) is what we ship for Paper 2; B1 is the
-fuller "single live run" and is scoped here, not implemented.
+**Status:** Gaps 1+2 **IMPLEMENTED** (2026-09-15); Gaps 3+4 remain. B2 (composition)
+still ships for Paper 2; the live path now produces the switch timing endogenously.
+
+## Update 2026-09-15 — Gaps 1+2 done
+
+`DistributedArchManager` gained an optional `topology=` (+ `peer_timeout`,
+`min_witnesses`). When present it runs the **decentralized path**: each node times
+out its silent neighbours locally (`PeerFailureDetector`) and suspicions + mode
+votes **diffuse** over the GLow substrate (`VoteDiffusion`); the FL→GL commit fires
+only when a **decentralized vote-quorum** is reached — so the switch reflects the
+real diffusion **latency**, not an instantaneous central tally (Gap 1). The
+control-plane digest (vote bitmap ++ suspicion bitmap = 2·⌈N/8⌉ B) rides the **real
+`GlowStrategy` FitIns** messages via `ctrl_digest_hex`, and `ctrl_bytes` accounts it
+per round (Gap 2). Topology absent → legacy central-oracle path (unchanged).
+
+**Validation (`scripts/distarch_decentralized_selftest.py`, all pass):** for a ring
+N=14, node fails @round 10, T=2 → the live commit fires for **round 27** (latency 17),
+**within the peer_failure model bounds [quorum_know=15, net_know=21]** and **matching
+the B2 latency-aware curve's switch@27** — i.e. the live decision reproduces the
+composed latency. Deterministic across runs; digest tiny (4 B/msg, ~7.6 B/round).
+Config to run the live sim: `conf/experiments/ereno_dist_adapt_n14_k2_decentralized.yaml`
+(`architecture.decentralized: true`). Legacy `scripts/distarch_selftest.py` still passes.
+
+**Still open:** Gap 3 (per-node mode divergence — Flower one-strategy/round) and Gap 4
+(per-node F1 in the mixed window, entangled with Gap 3). See below.
 
 ## What B1 means
 
@@ -64,8 +87,8 @@ some already on the GL union) → per-node evaluation, not one global `evaluate`
 |--------------------------|-------|------------------------------------------------|
 | Node loss over time      | done  | —                                              |
 | Per-round F1             | done  | per-node eval in the mixed window (Gap 4)      |
-| Peer detection + vote    | modeled + self-tested | wire in place of the central oracle (Gap 1) |
-| Digest on gossip         | —     | attach to `GlowStrategy` boosters (Gap 2)      |
+| Peer detection + vote    | **wired (Gap 1 done)** | — (drives the commit with endogenous latency) |
+| Digest on gossip         | **wired (Gap 2 done)** | — (rides FitIns; `ctrl_bytes` accounted)  |
 | Per-node divergent mode  | —     | hits Flower's 1-strategy/round limit (Gap 3)   |
 
 **Minimal viable path:** Gaps 1+2+4 are incremental and feasible within Flower (swap

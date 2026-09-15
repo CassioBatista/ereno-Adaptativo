@@ -220,6 +220,11 @@ class HybridStrategy(Strategy):
         self._prev_mode   = mode
         self._last_params = parameters
         self._sync_participation(strategy, self.arch_manager.get_active_clients(server_round))
+        # Gap 2: piggyback the decentralized control-plane digest (vote+suspicion
+        # bitmaps) on the real GLow FitIns messages, when the manager exposes one.
+        glow = self._strategies["gossip"]
+        if hasattr(glow, "ctrl_digest_hex") and hasattr(self.arch_manager, "digest_hex"):
+            glow.ctrl_digest_hex = self.arch_manager.digest_hex()
         filtered_manager  = self._filter_manager(client_manager, server_round)
         return strategy.configure_fit(server_round, parameters, filtered_manager)
 

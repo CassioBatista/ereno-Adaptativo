@@ -18,6 +18,12 @@ the control plane resilient and is the basis for the Byzantine case (v3).
 
 from __future__ import annotations
 
+import math
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from fd.topology import Topology
+
 
 class ArchitectureManager:
     """Abstract base — answers get_mode(round) and get_active_clients(round)."""
@@ -162,6 +168,16 @@ class DistributedArchManager(ArchitectureManager):
                      uses to actually drop/restore nodes, so the controllers
                      have something to detect. Detection is from observation,
                      never from this schedule.
+    topology       : OPTIONAL agent graph (ring/chain/star/...). When given, the
+                     manager runs the DECENTRALIZED detection path (Gap 1): each
+                     node times out its silent neighbours locally and suspicions
+                     + mode votes DIFFUSE over the GLow substrate, so the switch
+                     commit reflects the real diffusion LATENCY instead of an
+                     instantaneous central tally. Absent -> legacy central path.
+    peer_timeout   : rounds of silence before a neighbour is locally suspected
+                     (decentralized path only).
+    min_witnesses  : independent suspectors required to accept a peer down
+                     (decentralized path only; 1 = crash-trusted, v2).
     """
 
     def __init__(
@@ -172,6 +188,9 @@ class DistributedArchManager(ArchitectureManager):
         dwell_rounds: int = 3,
         cooldown_rounds: int = 2,
         faults: list[dict] | None = None,
+        topology: "Topology | None" = None,
+        peer_timeout: int = 2,
+        min_witnesses: int = 1,
     ) -> None:
         if initial_mode not in ("federated", "gossip"):
             raise ValueError(f"initial_mode inválido: '{initial_mode}'.")
@@ -188,6 +207,19 @@ class DistributedArchManager(ArchitectureManager):
         self._last_switch    = -10 ** 9
         self._stable         = 0
         self._pending_reason: dict | None = None
+
+        # -- decentralized control plane (Gap 1) --------------------------------
+        self._topo          = topology
+        self._peer_timeout  = max(1, int(peer_timeout))
+        self._min_witnesses = max(1, int(min_witnesses))
+        self._detector = self._vote = None
+        self.ctrl_bytes     = 0                   # cumulative control-plane bytes (Gap 2)
+        if topology is not None:
+            from fd.peer_failure import PeerFailureDetector
+            from fd.vote_diffusion import VoteDiffusion
+            self._detector = PeerFailureDetector(
+                topology, timeout=self._peer_timeout, min_witnesses=self._min_witnesses)
+            self._vote = VoteDiffusion(topology)
 
     # -- environment ground truth (participation), NOT used by control logic --
 
@@ -232,7 +264,14 @@ class DistributedArchManager(ArchitectureManager):
         print(f"[DistArch] COMMIT {mode} @round={round}  reason={reason}  nodes={sorted(nodes)}")
 
     def observe(self, round: int, reported_nodes: set[int]) -> None:
-        reported = set(reported_nodes)
+        if self._detector is not None:                 # Gap 1: decentralized path
+            self._observe_decentralized(round, set(reported_nodes))
+        else:
+            self._observe_central(round, set(reported_nodes))
+
+    # -- legacy central-oracle path (topology is None) -------------------------
+
+    def _observe_central(self, round: int, reported: set[int]) -> None:
         newly_down = self._believed_alive - reported
         self._believed_alive = set(reported)
 
@@ -260,6 +299,91 @@ class DistributedArchManager(ArchitectureManager):
             if self._stable >= self._dwell and votes_fl >= q and cooldown_ok:
                 self._commit("federated", round, "recovery", [])
 
+    # -- decentralized path (Gap 1): local timeout + GLow diffusion ------------
+
+    def _observe_decentralized(self, round: int, alive: set[int]) -> None:
+        """Detection/decision emerge from local timeouts + diffusion, not a
+        global tally. `alive` is the environment's participation ground truth
+        (who answered the aggregator); the CONTROL decision, however, only fires
+        once suspicions/votes have DIFFUSED to a quorum -> realistic latency."""
+        newly_down = self._believed_alive - alive
+        self._believed_alive = set(alive)
+
+        # topology up/down status mirrors participation (heads/diffusion skip down)
+        for n in self._topo.all_nodes():
+            self._topo.set_status(n, n in alive)
+
+        # (1) local per-neighbour timeout + GLow diffusion of suspicions
+        self._detector.observe_and_step(round, alive)
+
+        # (2) control-plane digest rides EVERY GLow message this round (Gap 2):
+        #     vote bitmap + suspicion bitmap = 2*ceil(N/8) B per neighbour->head
+        active = [n for n in self._topo.all_nodes() if n in alive]
+        if active:
+            head = active[(round - 1) % len(active)]
+            self.ctrl_bytes += len(self._topo.up_neighbors(head)) * self._digest_size()
+
+        q = self._quorum(sorted(alive))
+        cooldown_ok = (round - self._last_switch) >= self._cooldown
+        down = set(range(self.n_nodes)) - alive
+
+        if self._committed_mode == "federated":
+            # fail-fast: a node that LOCALLY knows of a down peer votes gossip;
+            # the vote diffuses -> commit when a node hears a DECENTRALIZED quorum
+            for i in alive:
+                if any(self._detector.knows_down(i, j) for j in down):
+                    self._vote.cast(i)
+            self._vote.step(round)
+            if cooldown_ok and self._vote_quorum(alive, q):
+                # report the peers currently down (the failure that triggered the
+                # switch may have occurred several rounds earlier — before diffusion
+                # reached quorum — so newly_down at commit time can be empty)
+                self._commit("gossip", round, "node_failure", sorted(down))
+                self._reset_vote()
+        else:  # gossip -> federated recovery: full participation, stable, quorum
+            if len(alive) == self.n_nodes and not newly_down:
+                self._stable += 1
+            else:
+                self._stable = 0
+                self._reset_vote()                   # lost full participation
+            if self._stable >= self._dwell:
+                for i in alive:                      # everyone back -> vote federated
+                    self._vote.cast(i)
+                self._vote.step(round)
+                if cooldown_ok and self._vote_quorum(alive, q):
+                    self._commit("federated", round, "recovery", [])
+                    self._reset_vote()
+
+    def _vote_quorum(self, alive: set[int], q: int) -> bool:
+        """Decentralized quorum: some up node has heard >= q distinct votes."""
+        return any(self._vote.count(i) >= q for i in alive)
+
+    def _reset_vote(self) -> None:
+        from fd.vote_diffusion import VoteDiffusion
+        self._vote = VoteDiffusion(self._topo)
+
+    def _digest_size(self) -> int:
+        """Control-plane digest per GLow message: vote bitmap + suspicion bitmap."""
+        return 2 * math.ceil(self.n_nodes / 8)
+
+    def _bitmap(self, ids: set[int]) -> bytes:
+        b = bytearray(math.ceil(self.n_nodes / 8))
+        for i in ids:
+            if 0 <= i < self.n_nodes:
+                b[i // 8] |= 1 << (i % 8)
+        return bytes(b)
+
+    def digest_hex(self) -> str:
+        """Current control-plane digest (vote bitmap ++ suspicion bitmap) as hex,
+        for piggybacking on the real GLow FitIns messages (Gap 2)."""
+        if self._detector is None or self._vote is None:
+            return ""
+        voters = {i for i in range(self.n_nodes) if i in self._vote.heard.get(i, ())}
+        suspected = {j for j in range(self.n_nodes)
+                     if any(self._detector.knows_down(i, j)
+                            for i in self._believed_alive)}
+        return (self._bitmap(voters) + self._bitmap(suspected)).hex()
+
     def consume_switch_reason(self) -> dict | None:
         reason, self._pending_reason = self._pending_reason, None
         return reason
@@ -284,6 +408,11 @@ def load_arch_manager(conf: dict, num_nodes: int | None = None) -> ArchitectureM
           faults:                   # environment ground truth (optional)
             - {round: 6,  nodes: [3]}
             - {round: 12, nodes: [3], up: true}
+          # decentralized detection (Gap 1) — realistic diffusion latency:
+          decentralized: true       # off -> legacy central-oracle tally
+          topology: ring            # ring | chain | star (graph substrate)
+          peer_timeout: 2
+          min_witnesses: 1
     """
     arch_conf = conf.get("architecture", {})
     kind      = arch_conf.get("manager", "fixed")
@@ -299,6 +428,10 @@ def load_arch_manager(conf: dict, num_nodes: int | None = None) -> ArchitectureM
         if not n:
             raise ValueError("DistributedArchManager requer num_nodes (passe ao factory "
                              "ou defina architecture.n_nodes no conf).")
+        topology = None
+        if arch_conf.get("decentralized"):
+            from fd.topology import build_topology
+            topology = build_topology(arch_conf.get("topology", "ring"), int(n))
         return DistributedArchManager(
             n_nodes         = int(n),
             initial_mode    = arch_conf.get("initial_mode", arch_conf.get("default_mode", "federated")),
@@ -306,6 +439,9 @@ def load_arch_manager(conf: dict, num_nodes: int | None = None) -> ArchitectureM
             dwell_rounds    = int(arch_conf.get("dwell_rounds", 3)),
             cooldown_rounds = int(arch_conf.get("cooldown_rounds", 2)),
             faults          = arch_conf.get("faults"),
+            topology        = topology,
+            peer_timeout    = int(arch_conf.get("peer_timeout", 2)),
+            min_witnesses   = int(arch_conf.get("min_witnesses", 1)),
         )
 
     if kind == "api":

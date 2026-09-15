@@ -1,0 +1,66 @@
+# ERENO — v2 ADAPTATIVA @ 14 nós, k>=2, DETECÇÃO DESCENTRALIZADA (Gaps 1+2).
+#
+# Igual a ereno_dist_adapt_n14_k2.yaml, MAS o DistributedArchManager roda o
+# caminho descentralizado: cada nó dá timeout local nos vizinhos silenciosos
+# (peer_timeout) e as suspeitas/votos DIFUNDEM pela topologia GLow. O commit
+# FL->GL só dispara quando um quórum descentralizado é atingido -> a troca
+# reflete a LATÊNCIA de difusão real (endógena), não um tally central instantâneo.
+# O digest de controle (2 bitmaps = voto+suspeita) viaja no FitIns real do GLow.
+#
+# Contraste esperado vs. a versão central (ereno_dist_adapt_n14_k2.yaml):
+#   central:        FL->GL @round 11 (1 round após a falta @10).
+#   descentralizado: FL->GL ~round 27 (10 + ~17 de timeout+difusão em ring N=14),
+#                    consistente com a curva latency-aware (B2) e com o self-test
+#                    scripts/distarch_decentralized_selftest.py (banda [15,21]).
+#
+# Faltas (ground truth do ambiente; o controle só DETECTA via observação):
+#   round 10  nó 1 cai (1 sensor do MAIOR ataque) -> detecta local -> difunde -> FL->GL
+#   round 16  nó 3 cai / round 22 nó 5 cai        -> segue GL
+# Uso: ~/venv-ereno314/bin/python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
+#        --conf conf/experiments/ereno_dist_adapt_n14_k2_decentralized.yaml --clients 14
+
+run_name: ereno-dist-adapt-n14-k2-decentralized-c14
+seed: 42
+
+grasp:
+  features_file: features/all_in_one_ereno_train_combined.json
+
+dataset:
+  name: all_in_one_ereno_train
+  test_file: all_in_one_ereno_test
+  partitioner: attack
+  benign_cap: 500000
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 14
+
+simulation:
+  num_rounds: 40                # +4 vs central: a troca endógena ocorre ~round 27
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 2               # ponto de operação k>=2
+  eval_sample: 500000
+
+architecture:
+  manager: distributed
+  initial_mode: federated
+  aggregation: xgb_union
+  quorum:
+  dwell_rounds: 3
+  cooldown_rounds: 2
+  # -- detecção descentralizada (Gaps 1+2) --
+  decentralized: true
+  topology: ring               # substrato de difusão (mesmo grafo do GLow)
+  peer_timeout: 2              # rounds de silêncio p/ suspeita local de um vizinho
+  min_witnesses: 1            # 1 = crash-trusted (v2); Byzantine (>=2) fica p/ v3
+  faults:
+    - {round: 10, nodes: [1]}
+    - {round: 16, nodes: [3]}
+    - {round: 22, nodes: [5]}
+
+monitor:
+  enabled: true
+  serve: false
+  trail: results/monitor_events_dist_n14_k2_decentralized.jsonl

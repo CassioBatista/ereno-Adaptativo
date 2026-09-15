@@ -108,6 +108,10 @@ class GlowStrategy(Strategy):
         # proxy cid -> partition/node index, learned from client metrics
         # (may be replaced by a shared dict from HybridStrategy)
         self.cid_map: dict[str, int] = {}
+        # control-plane digest (vote+suspicion bitmaps) piggybacked on the GLow
+        # gossip messages (Gap 2); set each round by HybridStrategy from the
+        # DistributedArchManager. Empty -> no control plane riding.
+        self.ctrl_digest_hex: str = ""
 
     def _node_index(self, cid: str, all_cids: list[str]) -> int:
         return resolve_node_index(cid, all_cids, self.cid_map, self.topology.num_nodes)
@@ -152,6 +156,8 @@ class GlowStrategy(Strategy):
                 "round":       str(server_round),
                 "aggregation": self.aggregation,
             }
+            if self.ctrl_digest_hex:            # Gap 2: control plane rides the msg
+                config["ctrl_digest"] = self.ctrl_digest_hex
             instructions.append((proxy, FitIns(node_params, config)))
 
         return instructions
