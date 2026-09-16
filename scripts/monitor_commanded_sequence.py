@@ -63,16 +63,16 @@ req("POST /telemetry   ·   architecture_change {FL→GL, reason: node_failure (
 b_bot = y - 0.05; alts.append((b_top, b_bot, "alt  [deadline expires — no command]", "#b2182b"))
 
 bottom = y - 0.25
-fig, ax = plt.subplots(figsize=(12.2, 0.9 - bottom))
+fig, ax = plt.subplots(figsize=(13.6, 0.9 - bottom))
 ax.set_xlim(0, 12); ax.set_ylim(bottom, 1.7); ax.axis("off")
 
 # participant boxes + lifelines
 for x, label, st in [(XL, "ReSIDS\n(adaptive IDS)", RES),
                      (XR, "Monitor\n(IoT Hub / ThingsBoard + operator/policy)", MON)]:
-    ax.add_patch(FancyBboxPatch((x - 1.9, 1.02), 3.8, 0.55,
+    ax.add_patch(FancyBboxPatch((x - 2.35, 1.02), 4.7, 0.55,
                  boxstyle="round,pad=0.02,rounding_size=0.12",
                  fc=st["fc"], ec=st["ec"], lw=1.6))
-    ax.text(x, 1.29, label, ha="center", va="center", fontsize=10, fontweight="bold",
+    ax.text(x, 1.29, label, ha="center", va="center", fontsize=11.5, fontweight="bold",
             color=st["ec"])
     ax.plot([x, x], [1.02, bottom + 0.1], ls=(0, (4, 4)), color="0.6", lw=1)
 
@@ -84,9 +84,9 @@ for yt, yb, label, col in alts:
                  boxstyle="round,pad=0.01,rounding_size=0.04",
                  fc=col, ec=col, zorder=1))
     ax.text(XL - 1.85, yt + 0.13, label.split("[")[0].strip(), ha="left", va="center",
-            fontsize=8, color="white", fontweight="bold", zorder=2)
+            fontsize=10, color="white", fontweight="bold", zorder=2)
     ax.text(XL + 1.75, yt + 0.13, "[" + label.split("[", 1)[1], ha="left", va="center",
-            fontsize=8, color=col, style="italic", zorder=2)
+            fontsize=10, color=col, style="italic", zorder=2)
 
 def draw_arrow(x0, x1, yy, text, color, style):
     ls = (0, (5, 3)) if style == "ack" else "-"
@@ -95,7 +95,7 @@ def draw_arrow(x0, x1, yy, text, color, style):
                 arrowprops=dict(arrowstyle="-|>", color=color, lw=lw, ls=ls))
     it = style == "ack"
     ax.text((XL+XR)/2, yy + 0.10, text, ha="center", va="bottom",
-            fontsize=7.8 if it else 8.5, color=color if it else "0.1",
+            fontsize=9.8 if it else 10.5, color=color if it else "0.1",
             style="italic" if it else "normal")
 
 for op in ops:
@@ -104,16 +104,16 @@ for op in ops:
         draw_arrow(x0, x1, yy, text, color, style)
     elif op[0] == "note_over":
         _, x, yy, text = op
-        ax.text(x, yy + 0.1, text, ha="center", va="center", fontsize=7.8, color="0.4",
+        ax.text(x, yy + 0.1, text, ha="center", va="center", fontsize=9.5, color="0.4",
                 style="italic",
                 bbox=dict(boxstyle="round,pad=0.25", fc="#f7f7f2", ec="0.75", lw=0.8))
     elif op[0] == "note_center":
         _, x, yy, text = op
-        ax.text(x, yy + 0.1, text, ha="center", va="center", fontsize=8, color="0.5",
+        ax.text(x, yy + 0.1, text, ha="center", va="center", fontsize=10, color="0.5",
                 style="italic")
 
 ax.set_title("Monitor-commanded FL→GL switch, with deadline fallback (architecture)",
-             fontsize=12.5, fontweight="bold")
+             fontsize=14.5, fontweight="bold")
 fig.tight_layout()
 os.makedirs("results", exist_ok=True)
 fig.savefig("results/monitor_commanded_sequence.png", dpi=165)

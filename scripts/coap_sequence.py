@@ -49,51 +49,51 @@ for kind, *rest in rows:
     y -= 0.12
 bottom = y - 0.2
 
-fig, ax = plt.subplots(figsize=(11.2, 0.9 - bottom))
+fig, ax = plt.subplots(figsize=(12.6, 0.9 - bottom))
 ax.set_xlim(0, 11); ax.set_ylim(bottom, 1.7)
 ax.axis("off")
 
 # participant boxes + lifelines
 for x, label, st in [(XL, "ReSIDS\n(adaptive IDS)", RES),
                      (XR, "Monitor\n(IoT Hub / ThingsBoard)", MON)]:
-    ax.add_patch(FancyBboxPatch((x - 1.75, 1.02), 3.5, 0.55,
+    ax.add_patch(FancyBboxPatch((x - 2.15, 1.02), 4.3, 0.55,
                  boxstyle="round,pad=0.02,rounding_size=0.12",
                  fc=st["fc"], ec=st["ec"], lw=1.6))
-    ax.text(x, 1.29, label, ha="center", va="center", fontsize=10.5, fontweight="bold",
+    ax.text(x, 1.29, label, ha="center", va="center", fontsize=12.5, fontweight="bold",
             color=st["ec"])
     ax.plot([x, x], [1.02, bottom + 0.1], ls=(0, (4, 4)), color="0.6", lw=1)
 
 def req(y, text):
     ax.annotate("", xy=(XR, y), xytext=(XL, y),
                 arrowprops=dict(arrowstyle="-|>", color="0.1", lw=1.8))
-    ax.text((XL + XR) / 2, y + 0.12, text, ha="center", va="bottom", fontsize=8.6)
+    ax.text((XL + XR) / 2, y + 0.12, text, ha="center", va="bottom", fontsize=11)
 
 def ack(y, text):
     ax.annotate("", xy=(XL, y), xytext=(XR, y),
                 arrowprops=dict(arrowstyle="-|>", color="0.45", lw=1.2, ls=(0, (5, 3))))
-    ax.text((XL + XR) / 2, y + 0.10, text, ha="center", va="bottom", fontsize=7.8,
+    ax.text((XL + XR) / 2, y + 0.10, text, ha="center", va="bottom", fontsize=9.8,
             color="0.4", style="italic")
 
 for kind, a, b, rest in ys:
     if kind == "banner":
-        ax.add_patch(FancyBboxPatch(((XL + XR) / 2 - 2.55, a - 0.02), 5.1, 0.34,
+        ax.add_patch(FancyBboxPatch(((XL + XR) / 2 - 3.1, a - 0.02), 6.2, 0.34,
                      boxstyle="round,pad=0.02,rounding_size=0.06",
                      fc="#f2f2f2", ec="0.7", lw=0.9))
         ax.text((XL + XR) / 2, a + 0.15, rest[0], ha="center", va="center",
-                fontsize=8.2, color="0.35")
+                fontsize=10, color="0.35")
     elif kind == "note":
         ax.text((XL + XR) / 2, a + 0.1, rest[0], ha="center", va="center",
-                fontsize=8.2, color="0.5", style="italic")
+                fontsize=10, color="0.5", style="italic")
     else:
         text, ackt, sidenote = rest
         req(a, text)
         ack(b, ackt)
         if sidenote:
-            ax.text(XR + 0.15, b - 0.02, sidenote, ha="right", va="top", fontsize=7.2,
+            ax.text(XR + 0.15, b - 0.02, sidenote, ha="right", va="top", fontsize=9,
                     color="#8a5a00", style="italic", wrap=True,
                     bbox=dict(boxstyle="round,pad=0.25", fc="#fff8ec", ec="#e0c27a", lw=0.8))
 
-ax.set_title("ReSIDS ↔ Monitor event interface (CoAP)", fontsize=13, fontweight="bold")
+ax.set_title("ReSIDS ↔ Monitor event interface (CoAP)", fontsize=15, fontweight="bold")
 fig.tight_layout()
 os.makedirs("results", exist_ok=True)
 fig.savefig("results/coap_sequence.png", dpi=170)
