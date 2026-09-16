@@ -185,10 +185,10 @@ def main():
         R = [r["round"] for r in rows]
         fig, ax = plt.subplots(figsize=(9.6, 5.3))
         ax.axvspan(1, INJECT_ROUND, color="0.85", alpha=0.5)
-        ax.annotate("zero-day\n(no expert:\ncross-firing only)", (1.4, 60),
-                    fontsize=8, color="0.4", va="center")
+        ax.annotate(f"zero-day baseline\n(no expert:\ncross-firing ~{C[(0,0)][0]:.1f}%)",
+                    (1.4, 55), fontsize=8, color="0.4", va="center")
         ax.axvline(INJECT_ROUND, color="0.4", ls=":", lw=1)
-        ax.annotate(f"expert ready\n@node 0, r{INJECT_ROUND}", (INJECT_ROUND + 0.2, 30),
+        ax.annotate(f"novel expert ready\n@node 0, r{INJECT_ROUND}", (INJECT_ROUND + 0.2, 30),
                     fontsize=8.3, color="0.35")
         if two_source:
             ax.axvline(SECOND_ROUND, color="#6a3d9a", ls=":", lw=1)
