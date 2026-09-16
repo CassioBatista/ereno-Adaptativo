@@ -9,8 +9,9 @@ Observability / notification interface of the ReSIDS adaptation plane
    ThingsBoard) as CoAP telemetry/attributes.
 
 Authoritative payload schema: [`schemas/event.schema.json`](../schemas/event.schema.json).
-Version: **1.0.0**. Events emitted: `architecture_change` (FL↔GL switch) and
-`node_failure` (a node identified as failing).
+Version: **1.1.0**. Events emitted: `architecture_change` (FL↔GL switch),
+`node_failure` (a node identified as failing), and `intrusion_detected` (an attack
+alarm — **notification only**, see §4).
 
 ---
 
@@ -20,12 +21,18 @@ Version: **1.0.0**. Events emitted: `architecture_change` (FL↔GL switch) and
 |---|---|---|---|
 | `seq` | int | monotonic, ≥1 | unique; continues across runs |
 | `ts` | string / int | ISO-8601 UTC (REST) · epoch-ms (CoAP) | timestamp |
-| `type` | enum | `architecture_change`, `node_failure` | event kind |
+| `type` | enum | `architecture_change`, `node_failure`, `intrusion_detected` | event kind |
 | `round` | int | ≥0 | federation round |
 | `from_mode` / `to_mode` | enum \| null | `federated`, `gossip` | architecture_change only |
 | `reason` | enum \| null | `node_failure`, `recovery`, `scheduled` | cause |
 | `failed_nodes` | int[] | node indices | authoritative on `node_failure` |
 | `active_nodes` | int[] \| null | node indices | null = all active |
+| `attack` | string \| null | attack class/type | `intrusion_detected` only |
+| `k_votes` | int \| null | k in k-of-n | corroboration strength (`intrusion_detected`) |
+| `n_flags` | int \| null | ≥0 | flagged samples/flows in the window (`intrusion_detected`) |
+| `detector_nodes` | int[] | node indices | which specialists fired (`intrusion_detected`) |
+| `source_node` | int \| null | node index | attributed emitter; **null when unavailable (typical v2)** |
+| `confidence` | number \| null | score | optional (`intrusion_detected`) |
 | `detail` | string \| null | free text | optional |
 
 **Current state** (served by `/status`, pushed as CoAP attributes):
@@ -88,6 +95,15 @@ coap-client -m post coap://iothub.magenta.at/api/v1/$TOKEN/telemetry \
 → 2.01 Created
 ```
 
+**Example (intrusion alarm as telemetry — notification only)**
+```
+coap-client -m post coap://iothub.magenta.at/api/v1/$TOKEN/telemetry \
+  -e '{"ts":1757800020000,
+       "values":{"type":"intrusion_detected","round":14,"attack":"injection",
+                 "k_votes":2,"n_flags":37,"detector_nodes":"[3,4]","source_node":null}}'
+→ 2.01 Created
+```
+
 **Example (state as attributes)**
 ```
 POST /api/v1/$TOKEN/attributes
@@ -105,6 +121,15 @@ Status codes: `2.01 Created`, `2.04 Changed`, `4.00 Bad Request`,
 - **When emitted:** `architecture_change` on every committed FL↔GL switch;
   `node_failure` when a node is detected as failing. Detection latency is one round
   (detected at the end of round *r*, switch takes effect at *r+1*).
+- **`intrusion_detected`:** emitted when the fused (k-of-n) detector raises an attack
+  alarm, **aggregated per round/window** (one alarm per attack type per round, with
+  `n_flags` as the volume) — not one message per sample, to avoid flooding.
+  `k_votes` is the k-of-n corroboration strength; `source_node` is the attributed
+  emitter when known (GOOSE/SV source) and **null otherwise (typical in v2)**.
+  This is a **notification** for the operator/monitor — ReSIDS does **NOT** isolate,
+  quarantine, or otherwise actuate on it (see below). Attribution and any
+  containment action are external / operator decisions (a Byzantine-aware,
+  trust-driven containment loop is deferred to v3, see `docs/v3_trust_model.md`).
 - **Delivery:** CoAP CON is retried on loss; the local JSONL audit trail
   (`EventStore`) is the durable fallback if the monitor is unreachable.
 - **Ordering / idempotency:** `seq` is monotonic; consumers should de-duplicate by
@@ -134,10 +159,12 @@ monitor:
 
 ## 6. Versioning
 
-API version follows this document (**1.0.0**). Breaking changes to the event model
+API version follows this document (**1.1.0**). Breaking changes to the event model
 or endpoints bump the major version; additive fields bump the minor. The `type`
 and `reason` enums may gain values in minor versions — consumers must ignore
-unknown enum values gracefully.
+unknown enum values gracefully. **v1.1.0** added the `intrusion_detected` event
+type and its fields (`attack`, `k_votes`, `n_flags`, `detector_nodes`,
+`source_node`, `confidence`) — additive, backward-compatible.
 
 ## 7. Files
 

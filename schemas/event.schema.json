@@ -19,7 +19,7 @@
     },
     "type": {
       "type": "string",
-      "enum": ["architecture_change", "node_failure"],
+      "enum": ["architecture_change", "node_failure", "intrusion_detected"],
       "description": "Event kind."
     },
     "round": {
@@ -52,6 +52,34 @@
       "items": { "type": "integer", "minimum": 0 },
       "description": "Node indices participating this round, or null when all are active."
     },
+    "attack": {
+      "type": ["string", "null"],
+      "description": "intrusion_detected only: detected attack class/type (e.g. 'injection', 'masquerade_fake_fault'); null otherwise."
+    },
+    "k_votes": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "intrusion_detected only: number of concurring specialists (the k in k-of-n) that raised the alarm — the corroboration strength."
+    },
+    "n_flags": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "intrusion_detected only: number of samples/flows flagged in this round/window (alarm volume)."
+    },
+    "detector_nodes": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 0 },
+      "description": "intrusion_detected only: node/specialist indices that fired."
+    },
+    "source_node": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "intrusion_detected only: attributed emitter node (e.g. from the GOOSE/SV source), or null when attribution is unavailable (typical in v2)."
+    },
+    "confidence": {
+      "type": ["number", "null"],
+      "description": "intrusion_detected only: optional aggregate confidence/score."
+    },
     "detail": {
       "type": ["string", "null"],
       "description": "Optional free-text detail."
@@ -69,6 +97,13 @@
       "type": "architecture_change", "round": 11, "from_mode": "federated",
       "to_mode": "gossip", "reason": "node_failure", "failed_nodes": [7],
       "active_nodes": [0,1,2,3,4,5,6,8,9], "detail": null
+    },
+    {
+      "seq": 3, "ts": "2026-09-04T11:18:20.000000+00:00",
+      "type": "intrusion_detected", "round": 14, "attack": "injection",
+      "k_votes": 2, "n_flags": 37, "detector_nodes": [3,4], "source_node": null,
+      "confidence": null, "active_nodes": [0,1,2,3,4,5,6,8,9],
+      "detail": "notification only; containment is operator-gated"
     }
   ]
 }

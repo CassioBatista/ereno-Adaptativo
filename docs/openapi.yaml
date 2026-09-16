@@ -51,7 +51,7 @@ paths:
         - name: type
           in: query
           description: Filter by event type.
-          schema: { type: string, enum: [architecture_change, node_failure] }
+          schema: { type: string, enum: [architecture_change, node_failure, intrusion_detected] }
       responses:
         "200":
           description: Array of events with seq greater than `since`
@@ -69,13 +69,19 @@ components:
       properties:
         seq:          { type: integer, minimum: 1 }
         ts:           { type: string, format: date-time }
-        type:         { type: string, enum: [architecture_change, node_failure] }
+        type:         { type: string, enum: [architecture_change, node_failure, intrusion_detected] }
         round:        { type: integer, minimum: 0 }
         from_mode:    { type: string, enum: [federated, gossip], nullable: true }
         to_mode:      { type: string, enum: [federated, gossip], nullable: true }
         reason:       { type: string, enum: [node_failure, recovery, scheduled], nullable: true }
         failed_nodes: { type: array, items: { type: integer, minimum: 0 } }
         active_nodes: { type: array, items: { type: integer, minimum: 0 }, nullable: true }
+        attack:         { type: string, nullable: true, description: "intrusion_detected only" }
+        k_votes:        { type: integer, minimum: 1, nullable: true, description: "k-of-n corroboration (intrusion_detected)" }
+        n_flags:        { type: integer, minimum: 0, nullable: true, description: "flagged samples/flows (intrusion_detected)" }
+        detector_nodes: { type: array, items: { type: integer, minimum: 0 }, description: "specialists that fired (intrusion_detected)" }
+        source_node:    { type: integer, minimum: 0, nullable: true, description: "attributed emitter; null when unavailable" }
+        confidence:     { type: number, nullable: true, description: "optional score (intrusion_detected)" }
         detail:       { type: string, nullable: true }
     Status:
       type: object

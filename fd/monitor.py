@@ -238,6 +238,33 @@ class MonitorRecorder:
               f"nodes={failed_nodes}")
         return ev
 
+    def intrusion_detected(self, round: int, attack: str, k_votes: int | None = None,
+                           n_flags: int | None = None,
+                           detector_nodes: list[int] | None = None,
+                           source_node: int | None = None,
+                           confidence: float | None = None,
+                           detail: str | None = None) -> dict:
+        """Emit an intrusion alarm (aggregated per round/window).
+
+        NOTIFICATION ONLY: ReSIDS reports the detection to the external monitor; it
+        does NOT isolate/quarantine the node. `k_votes` (k-of-n corroboration) and
+        `source_node` (attributed emitter, null when unavailable) are inputs for the
+        operator/monitor to decide on containment — never actuated here (Level-2,
+        operator-gated). Attribution (source_node) is typically null in v2."""
+        ev = self._store.append({
+            "type": "intrusion_detected", "round": round,
+            "from_mode": None, "to_mode": None, "reason": None,
+            "attack": attack, "k_votes": k_votes, "n_flags": n_flags,
+            "detector_nodes": sorted(set(detector_nodes or [])),
+            "source_node": source_node, "confidence": confidence,
+            "active_nodes": self._state.get("active_nodes"),
+            "detail": detail,
+        })
+        print(f"[Monitor] intrusion_detected seq={ev['seq']} round={round} "
+              f"attack={attack} k={k_votes} n_flags={n_flags} "
+              f"source={source_node} (notify-only)")
+        return ev
+
     def stop(self) -> None:
         if self._server is not None:
             self._server.stop()
@@ -251,6 +278,7 @@ class NullMonitor:
     def round_start(self, *a, **k):          pass
     def architecture_change(self, *a, **k):  return None
     def node_failure(self, *a, **k):         return None
+    def intrusion_detected(self, *a, **k):   return None
     def stop(self):                          pass
 
 
