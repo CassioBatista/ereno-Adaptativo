@@ -1,0 +1,13 @@
+[conv] carregando treino...
+[conv] KNOWN (6): [1, 5, 6, 2, 7, 4]  |  NOVEL (held out): 3
+[conv] treinando 12 especialistas base (ataques conhecidos)...
+[conv] treinando 2 especialistas dedicados do ataque novo (3) em shards disjuntos...
+[conv] carregando teste completo...
+[conv] teste: 2,955,648 | novel(3)=17,200
+[conv] baselines novel-recall  none(zero-day)=(3.808139534883721, 3.808139534883721)  nov0=(99.63953488372093, 3.808139534883721)  nov6=(99.63953488372093, 3.808139534883721)  both=(99.63953488372093, 99.63953488372093)
+
+[1src] zero-day k1 baseline=3.81  ceiling k1=99.64
+[1src] FL-k1 conv @r11  GL-k1 conv @r22
+[1src] FL-k2 max=3.81  GL-k2 max=3.81 (single source)
+[2src] k2 ceiling(both)=99.64  FL-k2 conv @r16  GL-k2 conv @r28
+[conv] ok -> results/new_attack_convergence_{1src,2src}.{csv,png,pdf}
