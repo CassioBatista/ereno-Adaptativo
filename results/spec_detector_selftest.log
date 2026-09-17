@@ -1,0 +1,26 @@
+[spectest] carregando treino (benigno p/ fit)...
+[spectest] regras aprendidas:
+    col39 (F40): [1,4998]
+    col40 (F41): [16,4954]
+    col41 (F42): {0,1}
+    col43 (F44): {11000}
+    col54 (F55): [0.004,1000]
+    col56 (F57): [0,1000]
+[spectest] carregando teste...
+
+[spectest] benign FPR = 0.518%
+[spectest]            random_replay: recall= 97.72%
+[spectest]           inverse_replay: recall= 46.75%
+[spectest]    masquerade_fake_fault: recall=  2.60%
+[spectest]   masquerade_fake_normal: recall=  0.00%
+[spectest]                injection: recall=100.00%
+[spectest]               high_StNum: recall=100.00%
+[spectest]       poisoned_high_rate: recall= 99.56%
+  OK  benign FPR low (0.52% <= 1.5%)
+  OK  injection ~100% (100.0)
+  OK  high_StNum ~100% (100.0)
+  OK  poisoned_high_rate caught by RATE F55 (99.6)
+  OK  random_replay caught (value+rate) (97.7)
+  OK  masquerade_fake_normal irreducible/low (0.0)
+
+SPEC DETECTOR SELFTEST OK
