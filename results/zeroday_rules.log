@@ -1,0 +1,21 @@
+[rules] carregando treino (benigno p/ aprender as regras)...
+[rules] === especificação aprendida do BENIGNO (zero exemplo de ataque) ===
+                 F40 SqNum: value ∈ [1, 4998]  (robust range)
+                 F41 StNum: value ∈ [16, 4954]  (robust range)
+              F42 cbStatus: value ∈ {0, 1}  (allowed-set)
+                   F44 TTL: value ∈ {11000}  (allowed-set)
+    F57 timeFromLastChange: value ∈ [0, 1000]  (robust range)
+
+[rules] carregando teste...
+
+[rules] benign FPR = 0.518%  (union of all rules)
+[rules] --- per-attack held-out recall (zero examples) ---
+[rules]            random_replay: recall= 82.05%  (n= 39000)  by[F57=82%]
+[rules]           inverse_replay: recall=  0.00%  (n= 30319)  by[]
+[rules]    masquerade_fake_fault: recall=  2.60%  (n= 17200)  by[F41=3%]  <-- masquerade (hard)
+[rules]   masquerade_fake_normal: recall=  0.00%  (n= 17420)  by[]  <-- masquerade (hard)
+[rules]                injection: recall=100.00%  (n= 39000)  by[F44=100%, F41=51%]
+[rules]               high_StNum: recall=100.00%  (n= 39000)  by[F41=100%, F44=100%]
+[rules]       poisoned_high_rate: recall=  1.30%  (n= 18570)  by[F41=1%]
+
+[rules] ok -> results/zeroday_rules.{csv,png,pdf}

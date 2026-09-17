@@ -1,0 +1,8 @@
+attack,n,recall_pct,why,fpr_pct
+random_replay,39000,82.05128205128204,F57=82%,0.518
+inverse_replay,30319,0.0,,0.518
+masquerade_fake_fault,17200,2.5988372093023253,F41=3%,0.518
+masquerade_fake_normal,17420,0.0,,0.518
+injection,39000,100.0,"F44=100%, F41=51%",0.518
+high_StNum,39000,100.0,"F41=100%, F44=100%",0.518
+poisoned_high_rate,18570,1.303177167474421,F41=1%,0.518

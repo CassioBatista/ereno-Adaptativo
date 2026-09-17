@@ -67,6 +67,40 @@ legitimate traffic; masquerade is the hard case for every method (few-shot ICL r
 ~85% only *after* seeing examples). Open-set recognition [scheirer2013openset] frames
 this "none-of-the-known / reject" decision.
 
+## Experiment 3 (explicit rules): a deterministic protocol-VALUE specification
+
+`scripts/zeroday_rules.py` — instead of a learned IsolationForest, one **explicit,
+auditable rule per protocol field, learned from benign only** (zero attack examples):
+allowed-set for near-constant fields, robust range otherwise. A packet is flagged if it
+violates any rule. Learned specification:
+
+```
+TTL (F44) ∈ {11000}       StNum (F41) ∈ [16, 4954]     SqNum (F40) ∈ [1, 4998]
+cbStatus (F42) ∈ {0, 1}   timeFromLastChange (F57) ∈ [0, 1000]
+```
+
+Per-attack held-out recall at **benign FPR = 0.52%** (deterministic, zero examples):
+
+| attack | recall | caught by / why not |
+|---|---|---|
+| injection | **100%** | TTL≠11000 (+ StNum) |
+| high_StNum | **100%** | StNum out of range (+ TTL) |
+| random_replay | **82%** | stale timeFromLastChange |
+| masquerade_fake_fault | 3% | mimics legitimate values |
+| poisoned_high_rate | 1% | **RATE attack — needs inter-packet rate, not field values** |
+| inverse_replay | 0% | **valid values in wrong ORDER — needs StNum/SqNum sequence state** |
+| masquerade_fake_normal | 0% | irreducible (mimics normal) |
+
+The explicit **value** rules are cleaner and stronger than the learned IF on the clear
+value-violators (injection/high_StNum 100%, replay 82%) at a lower **0.52% FP**, and are
+fully interpretable. Crucially, they also **precisely reveal the limits of per-packet
+value rules**: `poisoned_high_rate` is a **rate** attack (temporal, needs inter-packet
+rate rules) and `inverse_replay` violates **order** (needs StNum/SqNum monotonicity /
+stateful spec), not field values — so both slip past value rules. A complete protocol
+specification therefore needs three rule families: **value** (done here), **rate**
+(inter-packet timing), and **sequence/state** (StNum/SqNum monotonicity). Masquerade
+remains irreducible for all.
+
 ## Two-tier architecture (proposal)
 
 `scripts/architecture_two_tier.py` — Tier 1 (supervised specialists, k-of-n, FL⇄GL,
@@ -80,11 +114,12 @@ alarm **graduates** to a specialist once labelled, then diffuses via FL/GL.
   = 0%). ReSIDS's core contribution remains resilient, runtime-switchable detection of
   **known** attacks; the Tier-2 protocol-anomaly adds coverage for **protocol-violating**
   novelties.
-- **Explicit rule-based specification** (future): the inspection shows TTL is a constant
-  invariant (11000) — a deterministic rule ("TTL must equal 11000", "StNum within the
-  legitimate range") would likely push the invariant-violating attacks to ~100% at ~0%
-  FP, cleaner than the learned IsolationForest. (A naive robust-z envelope mis-calibrated
-  on constant fields — MAD≈0 — so explicit rules, not a z-envelope, are the way.)
+- **Explicit rule-based specification** (DONE — Experiment 3, `scripts/zeroday_rules.py`):
+  value rules learned from benign catch the value-violators (injection/high_StNum 100%,
+  stale-timing replay 82%) at **0.52% FP**, deterministic and interpretable. Remaining
+  future work is the other two rule families the value rules revealed as necessary:
+  **rate** rules (inter-packet timing → poisoned_high_rate) and **sequence/state** rules
+  (StNum/SqNum monotonicity → inverse_replay).
 - **Few-shot / ICL** [manzoor2025zeroday] complements this for the *observed-novelty*
   regime (after the first sightings) — pairs naturally with the graduation loop.
 
