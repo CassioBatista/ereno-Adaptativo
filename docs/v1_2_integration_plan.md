@@ -55,11 +55,19 @@ v1.x lineage**. Two options for v1.2:
 
 ## Phased plan
 
-1. **Phase 1 — detector + test:** `fd/spec_detector.py` + `scripts/spec_detector_selftest.py`
-   (offline, reuses the sweep numbers as regression). *Independent of the live pipeline.*
-2. **Phase 2 — client + fusion:** hook into `XgbClient` + `main_dist.py` eval; per-round
-   novelty metric. Verify it runs identically in an FL run and a GL run (same numbers).
-3. **Phase 3 (optional) — notification:** option (A) log-only, or (B) backport monitor.
+1. **Phase 1 — detector + test: DONE.** `fd/spec_detector.py` + `scripts/spec_detector_selftest.py`
+   (data-backed regression, all pass: FPR 0.52%, injection/high_StNum 100%, poisoned 99.56%).
+2. **Phase 2 — fusion in the live eval: DONE.** `main_dist.py` `_make_round_eval_fn` computes
+   `novel = spec_flag & ~known` and emits `ROUND-T2;<round>;<mode>;spec_fpr=..;novel_on_missed=..`;
+   opt-in via `detection.tier2.enabled`. **Verified** on `conf/experiments/ereno_tier2_demo.yaml`
+   (FL rounds 1-6, GL 7-12): the ROUND-T2 line appears in BOTH modes with identical
+   `spec_fpr=0.4972%` every round → confirms Tier-2 is mode-independent (no held-out attack
+   in the demo, so `novel_on_missed=0`). *(The eval binarizes labels; a held-out-attack config
+   with multi-class eval is the zero-day demonstration — see scripts/zeroday_*.py for efficacy.)*
+   The client-side hook (learning the spec at each `XgbClient`) is unnecessary because the
+   detector is monolithic/replicated — fitting once on benign at eval is equivalent.
+3. **Phase 3 (optional) — notification:** option (A) log-only (ROUND-T2 line, current), or
+   (B) backport the v2 monitor for CoAP `intrusion_detected`.
 4. **Phase 4 — release:** merge `paper1-revision` → tag **v1.2**; update `CHANGELOG` /
    `CITATION` on the v1.x line; keep VALUE+RATE, mark SEQUENCE/graduation as future work.
 

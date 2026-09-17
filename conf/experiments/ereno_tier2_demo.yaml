@@ -1,0 +1,44 @@
+# ERENO — DEMO da integração do Tier-2 (zero-day) em FL e GL (v1.2 Phase 2).
+# Roda FL (rounds 1-6) e depois GL (7-12); com detection.tier2.enabled o eval imprime
+# uma linha ROUND-T2;<round>;<mode>;spec_fpr=..;novel_on_missed=.. em AMBOS os modos,
+# provando que o Tier-2 (monolitico/replicado) roda identico em FL e GL, sem tocar a
+# maquina de agregacao. (A eficacia zero-day e medida a parte em scripts/zeroday_*.py.)
+# Uso: ~/venv-ereno314/bin/python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
+#        --conf conf/experiments/ereno_tier2_demo.yaml --clients 10
+
+run_name: ereno-tier2-demo-c10
+seed: 42
+
+grasp:
+  features_file: features/all_in_one_ereno_train_combined.json
+
+dataset:
+  name: all_in_one_ereno_train
+  test_file: all_in_one_ereno_test
+  partitioner: attack
+  benign_cap: 500000
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 10
+
+simulation:
+  num_rounds: 12
+  strategy: xgb_bagging
+  xgb_fusion: or
+  eval_sample: 200000
+
+architecture:
+  manager: fixed
+  default_mode: federated
+  aggregation: xgb_union
+  schedule:
+    - {from: 1, to: 6,  mode: federated}
+    - {from: 7, to: 12, mode: gossip}
+
+detection:
+  tier2:
+    enabled: true          # Tier-2 zero-day (protocol spec, benign-only, monolithic)
+    # q_lo: 0.0005
+    # q_hi: 0.9995

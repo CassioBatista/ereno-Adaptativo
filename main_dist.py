@@ -264,7 +264,8 @@ def _print_per_client_table(client_models, specialists, X_te, y_te, arch: str) -
 
 
 def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray,
-                        eval_sample: int | None = None, k: int = 1):
+                        eval_sample: int | None = None, k: int = 1,
+                        spec_detector=None):
     """Server-side per-round evaluation of the aggregated model (P5).
 
     Prints machine-readable lines for the convergence curve:
@@ -288,6 +289,12 @@ def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray,
         print(f"[round-eval] subamostra estratificada do teste: {eval_sample:,}")
 
     dtest = xgb.DMatrix(X_te)
+    # Tier-2 (zero-day) is monolithic/replicated: its per-sample flag depends only on
+    # X_te (benign-learned spec), so it is computed ONCE and is identical every round
+    # and in BOTH FL and GL modes (mode-independent by construction).
+    spec_flag = spec_detector.flag(X_te) if spec_detector is not None else None
+    is_ben = (y_te == 0)
+    is_atk = (y_te == 1)
 
     def eval_fn(server_round: int, mode: str, parameters):
         boosters = _boosters_from_parameters(parameters)
@@ -298,6 +305,13 @@ def _make_round_eval_fn(strategy_name: str, X_te: np.ndarray, y_te: np.ndarray,
         fpr = 100.0 * r.FP / (r.FP + r.VN) if (r.FP + r.VN) else 0.0
         print(f"ROUND;{server_round};{mode};f1={r.f1score:.4f};"
               f"recall={r.recall:.4f};fpr={fpr:.4f}")
+        if spec_flag is not None:
+            # Tier-2 candidate = protocol-spec violation AND unclaimed by Tier-1 (k-of-n)
+            novel = spec_flag & (y_pred == 0)
+            spec_fpr = 100.0 * float(novel[is_ben].mean()) if is_ben.any() else 0.0
+            novel_missed = 100.0 * float(novel[is_atk].mean()) if is_atk.any() else 0.0
+            print(f"ROUND-T2;{server_round};{mode};spec_fpr={spec_fpr:.4f};"
+                  f"novel_on_missed={novel_missed:.4f}")
         return 1.0 - r.accuracy / 100.0, {"f1": r.f1score, "fpr": fpr, "mode": mode}
 
     return eval_fn
@@ -468,11 +482,27 @@ def main(args: list[str] | None = None) -> None:
         initial_parameters = fed_strategy.initialize_parameters(None),
     )
     eval_sample = sim_conf.get("eval_sample")
+    # ── Tier-2 zero-day detector (protocol spec, benign-only). Monolithic/replicated
+    #    → runs identically in FL and GL; no arch_manager/strategy changes. Opt-in. ──
+    spec_detector = None
+    tier2_conf = conf.get("detection", {}).get("tier2", {})
+    if _is_xgb and tier2_conf.get("enabled"):
+        from fd.spec_detector import SpecDetector, fields_from_feature_list
+        fields = fields_from_feature_list(features)   # F-nums -> columns in the filtered vector
+        benign = X_tr[y_tr == 0]
+        spec_detector = SpecDetector(
+            fields,
+            q_lo=float(tier2_conf.get("q_lo", 0.0005)),
+            q_hi=float(tier2_conf.get("q_hi", 0.9995)),
+        ).fit(benign)
+        print(f"  Tier-2 SpecDetector (zero-day, monolithic): fields={fields}  "
+              f"benign_fit_n={len(benign):,}")
     hybrid = HybridStrategy(
         fed_strategy, glow_strategy, arch_manager,
         round_eval_fn=_make_round_eval_fn(
             strategy_name, X_te, y_te,
-            eval_sample=int(eval_sample) if eval_sample else None, k=fusion_k),
+            eval_sample=int(eval_sample) if eval_sample else None, k=fusion_k,
+            spec_detector=spec_detector),
     )
 
     print(f"\n  ④ Strategy: {strategy_name}  |  ArchManager: {arch_manager.__class__.__name__}")
