@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata."
+title: "ReSIDS — a Resilient, Adaptive, runtime-Switchable Federated–Gossip IDS for IEC 61850 Power Systems"
+abstract: >-
+  ReSIDS / ereno-Adaptativo is an intrusion-detection pipeline that unifies
+  centralized, federated and gossip learning in a single run with round-by-round
+  mode switching, built on Flower, scikit-learn and XGBoost. This is the v1.x
+  (Paper 1 / JPDC) lineage: per-attack XGBoost specialists with k-of-n decision
+  fusion, runtime FL<->GL switching (a scheduled FixedArchManager; OR-fusion makes
+  gossip and federated exactly equivalent), GRASP feature selection, and node-loss
+  resilience. Version 1.2 adds a two-tier design: alongside the Tier-1 specialists,
+  a Tier-2 protocol-specification detector learned from benign traffic only (zero
+  attack examples) flags novel attacks that violate IEC 61850 invariants; Tier 2 is
+  monolithic/replicated and therefore mode-independent (identical under FL and GL).
+type: software
+version: 1.2.0
+date-released: 2026-09-17
+license: MIT
+repository-code: "https://github.com/CassioBatista/ereno-Adaptativo"
+keywords:
+  - intrusion detection
+  - federated learning
+  - gossip learning
+  - IEC 61850
+  - XGBoost
+  - zero-day detection
+  - specification-based detection
+  - runtime mode switching
+  - ERENO
+  - CICIDS-2017
+authors:
+  - given-names: "Cassio Luis"
+    family-names: Batista
+    orcid: "https://orcid.org/0000-0002-0278-2232"
+  - given-names: Paulo
+    family-names: Coelho
+  - given-names: "Silvio E."
+    family-names: Quincozes
+  - given-names: Rafael
+    family-names: Pasquini
+  - given-names: Luciana
+    family-names: Arantes
+  - given-names: Pierre
+    family-names: Sens
+    orcid: "https://orcid.org/0000-0003-4523-3791"
