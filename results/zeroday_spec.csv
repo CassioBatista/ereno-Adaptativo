@@ -1,0 +1,8 @@
+attack,n,envelope_recall_pct,iso_proto_recall_pct,env_fpr_pct,iso_fpr_pct,xfire_floor_pct
+random_replay,39000,45.32,9.14,10.31,1.00,3.81
+inverse_replay,30319,70.85,9.51,10.31,1.00,3.81
+masquerade_fake_fault,17200,100.00,21.50,10.31,1.00,3.81
+masquerade_fake_normal,17420,0.00,0.00,10.31,1.00,3.81
+injection,39000,100.00,45.48,10.31,1.00,3.81
+high_StNum,39000,100.00,50.22,10.31,1.00,3.81
+poisoned_high_rate,18570,100.00,100.00,10.31,1.00,3.81
