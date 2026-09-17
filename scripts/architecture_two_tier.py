@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
-"""ReSIDS two-tier detection architecture (Paper 1 revision figure).
+"""ReSIDS two-tier detection architecture (Paper 1 revision figure, v1.2).
 
-Extends the existing 3-stage diagram (attack specialists -> FL/GL aggregation ->
-k-of-n) with a parallel Tier 2: a benign-only anomaly detector for zero-day attacks
-(no specialist). A novel alarm graduates to a specialist once labelled.
+Extends the 3-stage diagram (attack specialists -> FL/GL aggregation -> k-of-n)
+with the parallel **Tier 2 as actually implemented in v1.2**: a protocol
+SPECIFICATION detector (fd/spec_detector.py) learned from BENIGN only. It flags a
+sample when any protocol field falls outside its learned spec (VALUE + RATE rule
+families) -> a zero-day alarm when the sample is also unclaimed by any Tier-1
+specialist. Tier 2 models the shared benign baseline, so it is MONOLITHIC /
+REPLICATED -> mode-independent (identical under FL and GL, nothing to aggregate).
+Generic anomaly (Isolation Forest / autoencoder) was tried first and FAILED on the
+GRASP features (Exp1) -> the specification detector is what carries the signal.
+Graduation (novel -> labelled -> new specialist) is future work.
 Out: results/architecture_two_tier.{png,pdf}
 """
 import os
@@ -48,11 +55,13 @@ ax.text(0.4, 9.05, "Tier 1 — attack specialists (supervised)", ha="left", font
         color="0.3", style="italic")
 for i, lab in enumerate(["B₁\nattack 1", "B₂\nattack 2", "B₃\nattack 3", "… B_N\nattack N"]):
     box(0.4 + i * 1.55, 8.15, 1.4, 0.75, GREY, lab, tfs=10.5)
-# Tier 2: anomaly
-ax.text(7.5, 9.05, "Tier 2 — zero-day detector (unsupervised)", ha="left", fontsize=10,
+# Tier 2: specification (benign-only)
+ax.text(7.5, 9.05, "Tier 2 — zero-day detector (specification)", ha="left", fontsize=10,
         color="0.3", style="italic")
-box(7.5, 8.05, 4.6, 0.95, LAV, "Anomaly model  A",
-    "Isolation Forest / autoencoder  ·  trained on BENIGN only", tfs=12, sfs=8.8)
+box(7.5, 8.05, 4.6, 0.95, LAV, "SpecDetector  A",
+    "protocol rules VALUE + RATE  ·  learned from BENIGN only", tfs=12, sfs=8.8)
+ax.text(9.8, 7.78, "TTL∈{11000} · StNum/SqNum range · cbStatus∈{0,1} · F55 rate",
+        ha="center", va="center", fontsize=7.6, color="#6a3d9a", style="italic")
 
 # ── Stage 2 ──────────────────────────────────────────────────────────────────
 stage(0.2, 7.35, "2 · Aggregation & scoring")
@@ -65,10 +74,11 @@ box(4.0, 5.75, 2.6, 0.95, GREEN, "Gossip", "peers diffuse boosters", tfs=11, sfs
 ax.annotate("⇄", (3.55, 6.35), ha="center", va="center", fontsize=20, color="#c0392b")
 ax.text(3.55, 5.95, "runtime", ha="center", va="center", fontsize=8, color="#c0392b")
 box(1.6, 4.35, 4.0, 0.8, GREY, "Booster pool", "content-dedup union {B₁ … B_M}", tfs=11, sfs=8.8)
-# Tier 2: novelty score
-box(7.5, 5.9, 4.6, 0.8, LAV, "novelty score  s(x) ≥ τ", tfs=11.5)
-box(7.5, 4.75, 4.6, 0.75, LAV, "k-of-n over peers' anomaly verdicts",
-    "(corroboration — optional)", tfs=10, sfs=8.5)
+# Tier 2: rule violation + monolithic/replicated property
+box(7.5, 5.9, 4.6, 0.8, LAV, "rule violation",
+    "any protocol field outside its benign spec", tfs=11.5, sfs=8.5)
+box(7.5, 4.75, 4.6, 0.75, LAV, "monolithic / replicated",
+    "mode-independent — FL ≡ GL, no aggregation", tfs=10.5, sfs=8.5)
 
 # ── Stage 3 ──────────────────────────────────────────────────────────────────
 stage(0.2, 3.55, "3 · Decision — two-tier")
@@ -77,8 +87,8 @@ ax.text(4.8, 2.92, "Decision", ha="center", va="center", fontsize=12.5, fontweig
         color=ORANGE["ec"])
 ax.text(4.8, 2.42, "known attack:  votes ≥ k   →  ALARM (attack type)", ha="center",
         va="center", fontsize=10.5, color="0.15")
-ax.text(4.8, 2.02, "zero-day:  anomalous  AND  unclaimed by any specialist  →  ALARM (novel)",
-        ha="center", va="center", fontsize=10.5, color="#6a3d9a", fontweight="bold")
+ax.text(4.8, 2.02, "zero-day:  violates spec  AND  unclaimed by any specialist  →  ALARM (novel)",
+        ha="center", va="center", fontsize=10.3, color="#6a3d9a", fontweight="bold")
 ax.text(0.62, 2.5, "sample x", ha="right", va="center", fontsize=9.5, color="0.4")
 arrow(0.62, 2.5, 0.7, 2.5, color="0.4")
 ax.text(10.6, 2.5, "ALARM", ha="center", va="center", fontsize=13, fontweight="bold",
@@ -89,27 +99,28 @@ arrow(8.9, 2.5, 9.9, 2.5, color="#c0392b", lw=2.4)
 arrow(3.6, 8.1, 3.6, 6.95)                          # specialists -> aggregation
 arrow(3.6, 5.55, 3.6, 5.17)                         # FL/GL -> pool
 arrow(3.6, 4.33, 3.6, 3.27)                         # pool -> decision
-arrow(9.8, 8.03, 9.8, 6.72)                         # anomaly -> novelty
-arrow(9.8, 5.88, 9.8, 5.52)                         # novelty -> corroboration
+arrow(9.8, 8.03, 9.8, 6.72)                         # SpecDetector -> rule violation
+arrow(9.8, 5.88, 9.8, 5.52)                         # rule violation -> monolithic note
 arrow(9.8, 4.73, 6.2, 3.05, color="#6a3d9a")        # Tier2 -> decision (novel)
 
-# graduation loop: novel alarm -> (label) -> new specialist
+# graduation loop (future): novel alarm -> (label) -> new specialist
 grad = FancyArrowPatch((8.9, 2.0), (6.3, 8.4), connectionstyle="arc3,rad=-0.32",
                        arrowstyle="-|>", mutation_scale=16, color="#6a3d9a",
                        lw=1.6, ls=(0, (6, 3)))
 ax.add_patch(grad)
-ax.text(6.75, 3.95, "graduation: novel → (operator labels) → new specialist B_{N+1}",
+ax.text(6.75, 3.95, "graduation (future): novel → operator labels → new specialist B_{N+1}",
         ha="left", va="center", fontsize=8.6, color="#6a3d9a", style="italic")
 
-ax.text(6.2, 0.95,
+ax.text(6.2, 1.02,
         "Tier 1 (supervised, known attacks; FL = GL under OR, runtime switch)  +  "
-        "Tier 2 (unsupervised, benign-only, zero-day).",
-        ha="center", va="center", fontsize=9.2, color="0.45", style="italic")
-ax.text(6.2, 0.6,
-        "A novel alarm graduates to a specialist once labelled, then diffuses via FL/GL.",
-        ha="center", va="center", fontsize=9.2, color="0.45", style="italic")
+        "Tier 2 (specification, benign-only, monolithic/replicated → mode-independent).",
+        ha="center", va="center", fontsize=9.0, color="0.45", style="italic")
+ax.text(6.2, 0.66,
+        "Efficacy @≈0.57% FP: injection/high_StNum/poisoned 100%, random_replay 98%, "
+        "inverse_replay 57% (partial), masquerade irreducible.",
+        ha="center", va="center", fontsize=9.0, color="0.45", style="italic")
 
-ax.set_title("ReSIDS — two-tier detection: known attacks (k-of-n) + zero-day (anomaly)",
+ax.set_title("ReSIDS — two-tier detection: known attacks (k-of-n) + zero-day (protocol spec)",
              fontsize=13.5, fontweight="bold")
 fig.tight_layout()
 os.makedirs("results", exist_ok=True)
