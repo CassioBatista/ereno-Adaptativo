@@ -1,0 +1,26 @@
+[final] carregando treino (benigno)...
+[final] === especificação final (VALUE + RATE + SEQUENCE), aprendida do benigno ===
+  [   VALUE] F40: [1, 4998]
+  [   VALUE] F41: [16, 4954]
+  [   VALUE] F42: {0, 1}
+  [   VALUE] F44: {11000}
+  [   VALUE] F57: [0, 1000]
+  [    RATE] F55: [0.004, 1000]
+  [    RATE] F56: {0, 0.48972, 0.48972, 0.48972, 0.48972, 0.48972}
+  [SEQUENCE] F49: {0, 1}
+  [SEQUENCE] F50: [-3852, 1]
+  [SEQUENCE] F52: {0, 1}
+
+[final] carregando teste...
+
+[final] benign FPR = 0.571%  (VALUE+RATE+SEQUENCE)
+[final] --- per-attack recall + dominant family ---
+[final]            random_replay: recall= 97.79%  [VALUE=82 RATE=89 SEQ=11]
+[final]           inverse_replay: recall= 57.34%  [VALUE=0 RATE=51 SEQ=27]
+[final]    masquerade_fake_fault: recall=  6.30%  [VALUE=3 RATE=4 SEQ=1]  <-- masquerade (hard)
+[final]   masquerade_fake_normal: recall=  4.42%  [VALUE=0 RATE=0 SEQ=4]  <-- masquerade (hard)
+[final]                injection: recall=100.00%  [VALUE=100 RATE=0 SEQ=13]
+[final]               high_StNum: recall=100.00%  [VALUE=100 RATE=6 SEQ=9]
+[final]       poisoned_high_rate: recall= 99.56%  [VALUE=1 RATE=100 SEQ=0]
+
+[final] ok -> results/zeroday_rules_final.{csv,png,pdf}

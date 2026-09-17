@@ -101,6 +101,50 @@ specification therefore needs three rule families: **value** (done here), **rate
 (inter-packet timing), and **sequence/state** (StNum/SqNum monotonicity). Masquerade
 remains irreducible for all.
 
+## Experiment 4: rate + sequence rule families (VALUE + RATE + SEQUENCE)
+
+`scripts/zeroday_rules_full.py` discovers that ERENO encodes the **rate** signal in a
+benign-invariant feature (**F55**: violated by the high-rate attack 99.6%, 0% benign FP)
+and only a **partial order** signal (F49/F50/F52). `scripts/zeroday_rules_final.py` adds
+those as named families to the specification (all benign-only, zero attack examples):
+
+```
+VALUE     F40 SqNum∈[1,4998], F41 StNum∈[16,4954], F42 cbStatus∈{0,1},
+          F44 TTL∈{11000}, F57 timeFromLastChange∈[0,1000]
+RATE      F55∈[0.004,1000], F56  (inter-packet / timing)
+SEQUENCE  F49, F50∈[-3852,1], F52  (partial order signal)
+```
+
+Per-attack held-out recall at **benign FPR = 0.57%**, with the dominant family:
+
+| attack | recall | family |
+|---|---|---|
+| injection | **100%** | VALUE (TTL) |
+| high_StNum | **100%** | VALUE (StNum) |
+| poisoned_high_rate | **100%** | **RATE (F55)** — solved |
+| random_replay | **98%** | VALUE + RATE |
+| inverse_replay | **57%** | partial (RATE+SEQ) |
+| masquerade_fake_fault | 6% | irreducible |
+| masquerade_fake_normal | 4% | irreducible |
+
+**Rate is solved** (poisoned 100%; random_replay lifted to 98%). **Order is only partial**
+(inverse_replay 57%): ERENO's per-sample features do not fully encode the sequence
+violation — the residual needs **stateful StNum/SqNum monotonicity over an ordered
+per-source stream**, which the aggregated dataset does not support. Masquerade stays
+irreducible. All at 0.57% FP, deterministic and interpretable, zero attack examples.
+
+## Where Tier 2 lives (monolithic, not FL/GL)
+
+Tier 1 specialists are **partitioned** (one attack per node) and therefore need FL
+(server unites) or GL (peers diffuse) to give every node the union — that is what the
+FL⇄GL switch is for. **Tier 2 models the benign baseline, which is common to all nodes**,
+so every node learns the **same complete specification** locally (the benign ranges are
+global constants, e.g. TTL∈{11000}). There is nothing to partition or aggregate: Tier 2
+is **monolithic per node and replicated** across nodes, **independent of FL/GL**
+("trivially federated"). Its k-of-n corroboration is over identical detectors observing
+the traffic, not over distinct specialists. Hence in the architecture figure the Tier-2
+lane feeds the decision directly, bypassing the FL⇄GL block.
+
 ## Two-tier architecture (proposal)
 
 `scripts/architecture_two_tier.py` — Tier 1 (supervised specialists, k-of-n, FL⇄GL,

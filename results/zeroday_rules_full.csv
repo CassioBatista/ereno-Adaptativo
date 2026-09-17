@@ -1,0 +1,8 @@
+attack,n,recall_pct,fpr_pct
+random_replay,39000,98.1128205128205,2.527
+inverse_replay,30319,57.34028167155909,2.527
+masquerade_fake_fault,17200,6.912790697674419,2.527
+masquerade_fake_normal,17420,22.54305396096441,2.527
+injection,39000,100.0,2.527
+high_StNum,39000,100.0,2.527
+poisoned_high_rate,18570,99.55842757135164,2.527

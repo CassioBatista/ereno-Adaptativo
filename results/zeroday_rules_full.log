@@ -1,0 +1,25 @@
+[full] carregando treino (benigno p/ regras em TODAS as features)...
+[full] carregando teste...
+
+[full] benign FPR (union over ALL 58 features) = 2.527%
+[full] --- per-attack recall (union over all features) ---
+[full]            random_replay: recall= 98.11%  (n=39000)
+[full]           inverse_replay: recall= 57.34%  (n=30319)
+[full]    masquerade_fake_fault: recall=  6.91%  (n=17200)
+[full]   masquerade_fake_normal: recall= 22.54%  (n=17420)
+[full]                injection: recall=100.00%  (n=39000)
+[full]               high_StNum: recall=100.00%  (n=39000)
+[full]       poisoned_high_rate: recall= 99.56%  (n=18570)
+
+[full] === features that catch poisoned_high_rate (attack% / benignFP%) ===
+[full]                      F55: attack= 99.55%  benignFP= 0.00%
+[full]                      F56: attack= 79.61%  benignFP= 0.00%
+
+[full] === features that catch inverse_replay (attack% / benignFP%) ===
+[full]                      F55: attack= 46.75%  benignFP= 0.00%
+[full]                      F50: attack= 17.88%  benignFP= 0.05%
+[full]                      F56: attack= 17.62%  benignFP= 0.00%
+[full]                      F49: attack= 17.62%  benignFP= 0.00%
+[full]                      F52: attack=  4.58%  benignFP= 0.00%
+
+[full] ok -> results/zeroday_rules_full.{csv,png,pdf}
