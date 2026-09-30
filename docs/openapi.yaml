@@ -1,12 +1,23 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: ReSIDS Monitor API (REST pull)
-  version: "1.0.0"
+  version: "1.3.0"
   description: >
     Read-only observability API of the ReSIDS adaptation plane (fd/monitor.py).
-    An external monitor POLLS these endpoints. The same events are also pushed to
-    an IoT hub over CoAP (see docs/API.md, section "CoAP push"). This spec covers
-    only the REST/HTTP pull surface.
+    An external monitor POLLS these endpoints. The same events are also pushed to an IoT
+    hub over CoAP (see docs/API.md, "CoAP push"); this spec covers the REST/HTTP pull
+    surface only.
+
+
+    The Event payload is NOT redefined here: it is $ref'd from
+    ../schemas/event.schema.json, which is the single authoritative definition. OpenAPI
+    3.1 is used precisely because it is fully JSON Schema 2020-12 compatible, so the two
+    cannot drift apart (they already did once, over `detector_nodes`).
+
+
+    Behavioural contract: events are returned ordered by `seq` ascending; `since` is
+    EXCLUSIVE (`seq > since`); the monitor must poll with the highest CONTIGUOUS seq it
+    has received, never the highest seen (docs/API.md §2).
 servers:
   - url: http://{host}:{port}
     variables:
@@ -23,71 +34,103 @@ paths:
             application/json:
               schema:
                 type: object
+                required: [status]
                 properties:
                   status: { type: string, enum: [ok] }
-                required: [status]
               example: { status: ok }
   /status:
     get:
-      summary: Current federation state
+      summary: Current state, API version and retention window
+      description: >
+        Read at monitor start-up, or after a long outage, to resync state without
+        replaying the event history. It is NOT the periodic probe: a periodic
+        `GET /events?since=<contiguous>` already proves liveness and reconciles in one
+        round trip.
       responses:
         "200":
-          description: Current mode, round, active/failed nodes, and last event seq
+          description: Current mode, round, membership, API version and retention bounds
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Status" }
   /events:
     get:
-      summary: Adaptation events (incremental)
+      summary: Adaptation events (incremental, ordered by seq)
+      description: >
+        Returns events with `seq > since`, in ascending `seq` order. Retention is
+        bounded: only events with `seq >= retained_from_seq` (see /status) are still
+        available; asking for older ones is an error rather than a silent truncation.
       parameters:
         - name: since
           in: query
-          description: Return only events with seq greater than this value.
+          description: Exclusive lower bound. Pass the highest CONTIGUOUS seq received.
           schema: { type: integer, default: 0, minimum: 0 }
         - name: limit
           in: query
-          description: Maximum number of events to return.
-          schema: { type: integer, minimum: 1 }
+          description: >
+            Maximum events to return. When the result is truncated by `limit`, more are
+            available: poll again with `since` set to the last `seq` returned.
+          schema: { type: integer, minimum: 1, maximum: 10000 }
         - name: type
           in: query
           description: Filter by event type.
-          schema: { type: string, enum: [architecture_change, node_failure, intrusion_detected] }
+          schema:
+            type: string
+            enum: [architecture_change, node_failure, node_recovery, node_isolated, intrusion_detected]
       responses:
         "200":
-          description: Array of events with seq greater than `since`
+          description: Events with seq greater than `since`, ascending. Empty array means nothing new.
           content:
             application/json:
               schema:
                 type: array
                 items: { $ref: "#/components/schemas/Event" }
+        "400":
+          description: Malformed parameter (non-integer `since`/`limit`, unknown `type`)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "410":
+          description: >
+            `since` predates the retention window: the events in between are gone from
+            this surface. The consumer must resync from /status (and, if a complete trail
+            is required, from the JSONL audit file).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
 components:
   schemas:
     Event:
-      description: See schemas/event.schema.json for the authoritative definition.
-      type: object
-      required: [seq, ts, type, round]
-      properties:
-        seq:          { type: integer, minimum: 1 }
-        ts:           { type: string, format: date-time }
-        type:         { type: string, enum: [architecture_change, node_failure, intrusion_detected] }
-        round:        { type: integer, minimum: 0 }
-        from_mode:    { type: string, enum: [federated, gossip], nullable: true }
-        to_mode:      { type: string, enum: [federated, gossip], nullable: true }
-        reason:       { type: string, enum: [node_failure, recovery, scheduled], nullable: true }
-        failed_nodes: { type: array, items: { type: integer, minimum: 0 } }
-        active_nodes: { type: array, items: { type: integer, minimum: 0 }, nullable: true }
-        attack:         { type: string, nullable: true, description: "intrusion_detected only" }
-        k_votes:        { type: integer, minimum: 1, nullable: true, description: "k-of-n corroboration (intrusion_detected)" }
-        n_flags:        { type: integer, minimum: 0, nullable: true, description: "flagged samples/flows (intrusion_detected)" }
-        detector_nodes: { type: array, items: { type: integer, minimum: 0 }, description: "specialists that fired (intrusion_detected)" }
-        source_node:    { type: integer, minimum: 0, nullable: true, description: "attributed emitter; null when unavailable" }
-        confidence:     { type: number, nullable: true, description: "optional score (intrusion_detected)" }
-        detail:       { type: string, nullable: true }
+      $ref: "../schemas/event.schema.json"
     Status:
       type: object
+      required: [current_mode, round, last_seq, api_version]
       properties:
-        current_mode: { type: string, enum: [federated, gossip], nullable: true }
-        round:        { type: integer, minimum: 0 }
-        active_nodes: { type: array, items: { type: integer, minimum: 0 }, nullable: true }
-        failed_nodes: { type: array, items: { type: integer, minimum: 0 } }
-        last_seq:     { type: integer, minimum: 0 }
+        api_version:
+          type: string
+          description: API version this endpoint implements, for in-band discovery.
+          examples: ["1.3.0"]
+        current_mode: { type: [string, "null"], enum: [federated, gossip, null] }
+        round: { type: integer, minimum: 0 }
+        active_nodes:
+          type: [array, "null"]
+          items: { type: integer, minimum: 0 }
+          description: Node indices participating; null means all are active.
+        failed_nodes:
+          type: array
+          items: { type: integer, minimum: 0 }
+        last_seq:
+          type: integer
+          minimum: 0
+          description: Highest seq emitted so far. Compare with your contiguous seq to detect gaps.
+        retained_from_seq:
+          type: integer
+          minimum: 1
+          description: >
+            Oldest seq still served by /events. A `since` below this yields 410 instead of
+            a silently short answer.
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+        detail: { type: [string, "null"] }
