@@ -21,6 +21,32 @@ command. This moves the monitor from observer to **control authority (actuator)*
 | `autonomous` (v2, default) | the node itself (fail-fast) | read-only |
 | **`monitor_commanded`** (this) | the monitor / operator | **actuator** |
 
+## Authority rule: what stays autonomous, and what does not
+
+This document is about **FL→GL on node inactivity** — and that is the **only** action
+the system ever takes autonomously. Everything else is monitor-governed, including the
+**GL→FL return**:
+
+| Situation | Authority | Needs a deadline fallback? |
+|---|---|---|
+| **node inactive while in FL → GL** | **node, fail-fast** (or commanded, per this doc) | **yes** — see below |
+| further node loss while in GL | monitor | no |
+| node with attributed intrusion | monitor | no |
+| **GL → FL return** | **monitor** | **no** |
+
+The asymmetry is deliberate: **autonomy is granted only in the direction that fails
+safe.** Staying in FL with a dead server is dangerous, so FL→GL must be able to proceed
+without the monitor — hence the mandatory deadline D. Staying in GL is merely slower
+(Θ(N) dissemination) while detection is unaffected (recall stays 100% from 14 down to
+3 nodes), so **GL→FL deliberately has no fallback**: if the monitor is unreachable, the
+system rests in the degraded-but-safe state.
+
+Returning to FL means **re-accepting the hub** — the single point of failure and of
+trust that GL exists to survive. That is a trust decision, and it belongs to the
+operator rather than to a heuristic. Consequently the v2 recovery gates (per-node dwell
+plus unanimity of local health) stop being an autonomous commit rule and become
+**evidence reported to the monitor**: "membership full for N rounds".
+
 ## Control flow
 
 1. A node detects a **peer timeout** (T rounds silent) — same detector as v2.
@@ -100,7 +126,17 @@ architecture:
 
 ## Relation to the rest of ReSIDS
 - Detection reuses the v2 timeout detector (`fd/peer_failure.py`).
-- The `intrusion_detected` / `node_failure` / `architecture_change` events reuse the
-  monitor API (`docs/API.md`); this adds the `set_mode` **command** and the
-  `switch_pending` state.
+- The `intrusion_detected` / `node_failure` / `node_recovery` / `node_isolated` /
+  `architecture_change` events reuse the monitor API (`docs/API.md`, schema ≥ 1.3.0);
+  this adds the `set_mode` **command** and the `switch_pending` state. Every event
+  carries `decided_by` (`autonomous` | `monitor` | `operator`), so the trail never
+  leaves the authority ambiguous.
+- **Intrusion never drives an autonomous transition.** An attributed, corroborated
+  intrusion is reported; removing the node (`node_isolated`, `reason: intrusion`) is
+  **commanded by the monitor**, and any mode change that follows is commanded too. This
+  keeps the notification-only stance of `intrusion_detected` intact, and depends on the
+  attribution (`source_node`) that is **null in v2** — so this driver is a v3 premise,
+  not v2 behaviour.
+- The wider authority rule is stated in
+  [`decentralized_monitoring.md`](decentralized_monitoring.md) §1.1.
 - Byzantine-aware trust of the *commander* (a lying monitor) is v3.
