@@ -1,0 +1,298 @@
+# Round-by-round — results/events_intrusion.jsonl
+# 1 round = 1.0 s = ~4,673 samples at 0.214 ms each
+# 288 events in 282 rounds; the timeline spans 282 rounds, so 0 (0.0%) carry no event
+# types: {'intrusion_detected': 282, 'node_isolated': 5, 'architecture_change': 1}
+# decided_by: {None: 282, 'monitor': 6}
+
+  seq  round mode       n_act decided_by  type                 payload
+------------------------------------------------------------------------------------------------------------------------------------------------------
+    1      0 federated     14             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 6, 7, 8, 9] source_node=11
+    2      1 federated     14             intrusion_detected   attack=random_replay          n_flags=1     k_votes=10  specialists=[0, 1, 6, 7, 8, 9, 10, 11, 12, 13] source_node=12
+    3      2 federated     14             intrusion_detected   attack=injection              n_flags=999   k_votes=10  specialists=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+    4      3 federated     14             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+    5      4 federated     14             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+    6      5 federated     14             intrusion_detected   attack=injection              n_flags=1     k_votes=2   specialists=[8, 9] source_node=11
+    7      6 federated     14             intrusion_detected   attack=injection              n_flags=999   k_votes=6   specialists=[2, 3, 4, 5, 8, 9] source_node=11
+    8      7 federated     14             intrusion_detected   attack=random_replay          n_flags=1     k_votes=8   specialists=[0, 1, 8, 9, 10, 11, 12, 13] source_node=12
+    9      8 federated     14             intrusion_detected   attack=injection              n_flags=999   k_votes=10  specialists=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+   10      8 federated     13 monitor     node_isolated        source_node=11 reason=intrusion attack=injection k_votes=10
+   11      9 federated     13             intrusion_detected   attack=inverse_replay         n_flags=1067  k_votes=7   specialists=[2, 3, 4, 5, 6, 7, 10, 12, 13] source_node=10
+   12     10 federated     13             intrusion_detected   attack=masquerade_fake_fault  n_flags=397   k_votes=2   specialists=[4, 5] source_node=9
+   13     11 federated     13             intrusion_detected   attack=inverse_replay         n_flags=780   k_votes=4   specialists=[2, 3, 4, 5, 6, 7] source_node=10
+   14     12 federated     13             intrusion_detected   attack=injection              n_flags=1     k_votes=2   specialists=[8, 9] source_node=11
+   15     13 federated     13             intrusion_detected   attack=injection              n_flags=999   k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+   16     14 federated     13             intrusion_detected   attack=inverse_replay         n_flags=1057  k_votes=4   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=10
+   17     15 federated     13             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+   18     16 federated     13             intrusion_detected   attack=random_replay          n_flags=1563  k_votes=7   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 10, 12, 13] source_node=12
+   19     17 federated     13             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+   20     18 federated     13             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   21     19 federated     13             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+   22     20 federated     13             intrusion_detected   attack=inverse_replay         n_flags=1138  k_votes=4   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=10
+   23     21 federated     13             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   24     21 federated     12 monitor     node_isolated        source_node=9 reason=intrusion attack=masquerade_fake_fault k_votes=6
+   25     21 gossip        12 monitor     architecture_change  federated -> gossip  reason=intrusion
+   26     22 gossip        12             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   27     23 gossip        12             intrusion_detected   attack=inverse_replay         n_flags=985   k_votes=4   specialists=[0, 1, 2, 3, 6, 7] source_node=10
+   28     23 gossip        11 monitor     node_isolated        source_node=10 reason=intrusion attack=inverse_replay k_votes=4
+   29     24 gossip        11             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   30     25 gossip        11             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+   31     26 gossip        11             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+   32     27 gossip        11             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+   33     28 gossip        11             intrusion_detected   attack=injection              n_flags=1039  k_votes=10  specialists=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+   34     29 gossip        11             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+   35     30 gossip        11             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   36     31 gossip        11             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+   37     32 gossip        11             intrusion_detected   attack=inverse_replay         n_flags=1     k_votes=10  specialists=[2, 3, 6, 7, 8, 9, 10, 11, 12, 13] source_node=10
+   38     33 gossip        11             intrusion_detected   attack=high_StNum             n_flags=999   k_votes=10  specialists=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=13
+   39     34 gossip        11             intrusion_detected   attack=inverse_replay         n_flags=985   k_votes=4   specialists=[0, 1, 2, 3, 6, 7] source_node=10
+   40     35 gossip        11             intrusion_detected   attack=random_replay          n_flags=146   k_votes=4   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=12
+   41     36 gossip        11             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   42     37 gossip        11             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+   43     38 gossip        11             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   44     39 gossip        11             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   45     39 gossip        10 monitor     node_isolated        source_node=12 reason=intrusion attack=random_replay k_votes=8
+   46     40 gossip        10             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   47     41 gossip        10             intrusion_detected   attack=injection              n_flags=1000  k_votes=6   specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+   48     42 gossip        10             intrusion_detected   attack=inverse_replay         n_flags=321   k_votes=4   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=10
+   49     43 gossip        10             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+   50     44 gossip        10             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   51     45 gossip        10             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   52     46 gossip        10             intrusion_detected   attack=masquerade_fake_fault  n_flags=445   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+   53     47 gossip        10             intrusion_detected   attack=random_replay          n_flags=999   k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   54     48 gossip        10             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+   55     48 gossip         9 monitor     node_isolated        source_node=8 reason=intrusion attack=masquerade_fake_normal k_votes=2
+   56     49 gossip         9             intrusion_detected   attack=injection              n_flags=2020  k_votes=6   specialists=[2, 3, 4, 5, 6, 7, 8, 9, 12, 13] source_node=11
+   57     50 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=655   k_votes=4   specialists=[2, 3, 4, 5, 6, 7, 12, 13] source_node=10
+   58     51 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+   59     52 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=6   specialists=[2, 3, 4, 5, 8, 9] source_node=11
+   60     53 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=3   specialists=[6, 7, 10] source_node=8
+   61     54 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=6   specialists=[2, 3, 4, 5, 8, 9] source_node=11
+   62     55 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   63     56 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   64     57 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   65     58 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1062  k_votes=4   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=10
+   66     59 gossip         9             intrusion_detected   attack=random_replay          n_flags=1494  k_votes=4   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=12
+   67     60 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   68     61 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+   69     62 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+   70     63 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=523   k_votes=6   specialists=[0, 1, 4, 5, 6, 7, 12, 13] source_node=9
+   71     64 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+   72     65 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+   73     66 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+   74     67 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+   75     68 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 6, 7, 8, 9] source_node=11
+   76     69 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   77     70 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=385   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+   78     71 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   79     72 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   80     73 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=467   k_votes=4   specialists=[4, 5, 6, 7, 12, 13] source_node=9
+   81     74 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   82     75 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1     k_votes=10  specialists=[2, 3, 6, 7, 8, 9, 10, 11, 12, 13] source_node=10
+   83     76 gossip         9             intrusion_detected   attack=high_StNum             n_flags=999   k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=13
+   84     77 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=568   k_votes=6   specialists=[0, 1, 4, 5, 6, 7, 12, 13] source_node=9
+   85     78 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=1     k_votes=4   specialists=[4, 5, 8, 9] source_node=9
+   86     79 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=4   specialists=[2, 3, 4, 5, 8, 9] source_node=11
+   87     80 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+   88     81 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=350   k_votes=6   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=10
+   89     82 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   90     83 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+   91     84 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=4   specialists=[6, 7, 12, 13] source_node=8
+   92     85 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   93     86 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=445   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+   94     87 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   95     88 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+   96     89 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+   97     90 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+   98     91 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=400   k_votes=2   specialists=[2, 3, 4, 5, 6, 7] source_node=10
+   99     92 gossip         9             intrusion_detected   attack=random_replay          n_flags=993   k_votes=6   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=12
+  100     93 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  101     94 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=1     k_votes=4   specialists=[4, 5, 8, 9] source_node=9
+  102     95 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  103     96 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  104     97 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  105     98 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  106     99 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=962   k_votes=4   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=10
+  107    100 gossip         9             intrusion_detected   attack=injection              n_flags=1     k_votes=2   specialists=[8, 9] source_node=11
+  108    101 gossip         9             intrusion_detected   attack=injection              n_flags=998   k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  109    102 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  110    103 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  111    104 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  112    105 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  113    106 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  114    107 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  115    108 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1002  k_votes=2   specialists=[2, 3, 4, 5, 6, 7] source_node=10
+  116    109 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1002  k_votes=6   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=10
+  117    110 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  118    111 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  119    112 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  120    113 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  121    114 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1     k_votes=10  specialists=[2, 3, 4, 5, 8, 9, 10, 11, 12, 13] source_node=10
+  122    115 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  123    116 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  124    117 gossip         9             intrusion_detected   attack=poisoned_high_rate     n_flags=1020  k_votes=6   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=7
+  125    118 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  126    119 gossip         9             intrusion_detected   attack=injection              n_flags=1     k_votes=2   specialists=[8, 9] source_node=11
+  127    120 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  128    121 gossip         9             intrusion_detected   attack=random_replay          n_flags=1038  k_votes=6   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=12
+  129    122 gossip         9             intrusion_detected   attack=injection              n_flags=1002  k_votes=10  specialists=[2, 3, 4, 5, 8, 9, 10, 11, 12, 13] source_node=11
+  130    123 gossip         9             intrusion_detected   attack=injection              n_flags=998   k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  131    124 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=2002  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=10
+  132    125 gossip         9             intrusion_detected   attack=random_replay          n_flags=1011  k_votes=4   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=12
+  133    126 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1038  k_votes=4   specialists=[2, 3, 4, 5, 6, 7, 12, 13] source_node=10
+  134    127 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=445   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  135    128 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  136    129 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  137    130 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=445   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  138    131 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1065  k_votes=4   specialists=[2, 3, 4, 5, 6, 7] source_node=10
+  139    132 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  140    133 gossip         9             intrusion_detected   attack=injection              n_flags=2     k_votes=2   specialists=[8, 9] source_node=11
+  141    134 gossip         9             intrusion_detected   attack=injection              n_flags=998   k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  142    135 gossip         9             intrusion_detected   attack=injection              n_flags=1038  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  143    136 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  144    137 gossip         9             intrusion_detected   attack=random_replay          n_flags=1029  k_votes=6   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  145    138 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  146    139 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1     k_votes=10  specialists=[2, 3, 6, 7, 8, 9, 10, 11, 12, 13] source_node=10
+  147    140 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  148    141 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  149    142 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  150    143 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=8   specialists=[0, 1, 4, 5, 10, 11, 12, 13] source_node=9
+  151    144 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1     k_votes=10  specialists=[2, 3, 4, 5, 8, 9, 10, 11, 12, 13] source_node=10
+  152    145 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  153    146 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1     k_votes=10  specialists=[2, 3, 6, 7, 8, 9, 10, 11, 12, 13] source_node=10
+  154    147 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  155    148 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=6   specialists=[2, 3, 4, 5, 8, 9] source_node=11
+  156    149 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=932   k_votes=4   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=10
+  157    150 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  158    151 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  159    152 gossip         9             intrusion_detected   attack=high_StNum             n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=13
+  160    153 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  161    154 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=444   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  162    155 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  163    156 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  164    157 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  165    158 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=694   k_votes=6   specialists=[2, 3, 4, 5, 6, 7, 12, 13] source_node=8
+  166    159 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  167    160 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  168    161 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  169    162 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  170    163 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=8   specialists=[0, 1, 4, 5, 10, 11, 12, 13] source_node=9
+  171    164 gossip         9             intrusion_detected   attack=random_replay          n_flags=1065  k_votes=6   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=12
+  172    165 gossip         9             intrusion_detected   attack=injection              n_flags=1047  k_votes=6   specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  173    166 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=398   k_votes=2   specialists=[4, 5] source_node=9
+  174    167 gossip         9             intrusion_detected   attack=random_replay          n_flags=1447  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  175    168 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  176    169 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  177    170 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=893   k_votes=4   specialists=[4, 5, 6, 7, 12, 13] source_node=8
+  178    171 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  179    172 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  180    173 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  181    174 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1011  k_votes=4   specialists=[2, 3, 4, 5, 6, 7, 12, 13] source_node=10
+  182    175 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  183    176 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[2, 3, 4, 5, 8, 9] source_node=11
+  184    177 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  185    178 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  186    179 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  187    180 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  188    181 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1065  k_votes=4   specialists=[2, 3, 4, 5, 6, 7] source_node=10
+  189    182 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  190    183 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  191    184 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  192    185 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  193    186 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1     k_votes=10  specialists=[2, 3, 4, 5, 8, 9, 10, 11, 12, 13] source_node=10
+  194    187 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  195    188 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  196    189 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  197    190 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  198    191 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  199    192 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  200    193 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  201    194 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  202    195 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  203    196 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  204    197 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  205    198 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  206    199 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  207    200 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  208    201 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 6, 7, 8, 9] source_node=11
+  209    202 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  210    203 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=493   k_votes=4   specialists=[4, 5, 6, 7, 12, 13] source_node=9
+  211    204 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=398   k_votes=2   specialists=[4, 5] source_node=9
+  212    205 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  213    206 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  214    207 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1     k_votes=10  specialists=[2, 3, 4, 5, 8, 9, 10, 11, 12, 13] source_node=10
+  215    208 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  216    209 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  217    210 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  218    211 gossip         9             intrusion_detected   attack=injection              n_flags=1     k_votes=2   specialists=[8, 9] source_node=11
+  219    212 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  220    213 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  221    214 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=398   k_votes=2   specialists=[4, 5] source_node=9
+  222    215 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  223    216 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  224    217 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  225    218 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=447   k_votes=2   specialists=[6, 7] source_node=8
+  226    219 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  227    220 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  228    221 gossip         9             intrusion_detected   attack=injection              n_flags=1     k_votes=2   specialists=[8, 9] source_node=11
+  229    222 gossip         9             intrusion_detected   attack=injection              n_flags=999   k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  230    223 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  231    224 gossip         9             intrusion_detected   attack=injection              n_flags=1029  k_votes=4   specialists=[4, 5, 6, 7, 8, 9, 12, 13] source_node=11
+  232    225 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  233    226 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=476   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  234    227 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  235    228 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+  236    229 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=93    k_votes=4   specialists=[0, 1, 2, 3, 4, 5, 6, 7] source_node=8
+  237    230 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=477   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  238    231 gossip         9             intrusion_detected   attack=poisoned_high_rate     n_flags=1477  k_votes=10  specialists=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=7
+  239    232 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  240    233 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  241    234 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  242    235 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  243    236 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=105   k_votes=2   specialists=[2, 3, 4, 5, 6, 7] source_node=9
+  244    237 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=477   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  245    238 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1812  k_votes=10  specialists=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=10
+  246    239 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  247    240 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=9   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 10, 12, 13] source_node=12
+  248    241 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  249    242 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+  250    243 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  251    244 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+  252    245 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+  253    246 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+  254    247 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=5   specialists=[4, 5, 10, 12, 13] source_node=9
+  255    248 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  256    249 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=447   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  257    250 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  258    251 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 6, 7, 8, 9] source_node=11
+  259    252 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+  260    253 gossip         9             intrusion_detected   attack=random_replay          n_flags=1019  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  261    254 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=447   k_votes=6   specialists=[4, 5, 10, 11, 12, 13] source_node=9
+  262    255 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=444   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  263    256 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=546   k_votes=4   specialists=[4, 5, 6, 7, 12, 13] source_node=9
+  264    257 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=447   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  265    258 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  266    259 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1020  k_votes=6   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=10
+  267    260 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  268    261 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  269    262 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  270    263 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=447   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  271    264 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  272    265 gossip         9             intrusion_detected   attack=random_replay          n_flags=161   k_votes=4   specialists=[0, 1, 2, 3, 6, 7] source_node=12
+  273    266 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=4   specialists=[4, 5, 8, 9] source_node=11
+  274    267 gossip         9             intrusion_detected   attack=inverse_replay         n_flags=1074  k_votes=6   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=10
+  275    268 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  276    269 gossip         9             intrusion_detected   attack=random_replay          n_flags=984   k_votes=4   specialists=[0, 1, 2, 3, 6, 7] source_node=12
+  277    270 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=477   k_votes=8   specialists=[0, 1, 4, 5, 10, 11, 12, 13] source_node=9
+  278    271 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+  279    272 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=6   specialists=[4, 5, 8, 9, 12, 13] source_node=11
+  280    273 gossip         9             intrusion_detected   attack=random_replay          n_flags=1458  k_votes=6   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  281    274 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=447   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  282    275 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=446   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  283    276 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+  284    277 gossip         9             intrusion_detected   attack=masquerade_fake_normal n_flags=446   k_votes=2   specialists=[6, 7] source_node=8
+  285    278 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=477   k_votes=6   specialists=[0, 1, 4, 5, 12, 13] source_node=9
+  286    279 gossip         9             intrusion_detected   attack=masquerade_fake_fault  n_flags=447   k_votes=4   specialists=[4, 5, 12, 13] source_node=9
+  287    280 gossip         9             intrusion_detected   attack=random_replay          n_flags=1000  k_votes=8   specialists=[0, 1, 2, 3, 4, 5, 6, 7, 12, 13] source_node=12
+  288    281 gossip         9             intrusion_detected   attack=injection              n_flags=1000  k_votes=10  specialists=[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] source_node=11
+------------------------------------------------------------------------------------------------------------------------------------------------------
+# 288 event lines written

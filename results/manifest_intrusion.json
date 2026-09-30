@@ -1,0 +1,108 @@
+{
+  "generated_at": "2026-09-30T12:50:30+00:00",
+  "scenario": {
+    "file": "conf/scenarios/intrusion.yaml",
+    "bytes": 1707,
+    "sha256": "4a0889d76b44b5bd491b8cbddca1dc3703692792e1958fbfe5e7c957d7fdaddc",
+    "name": "intrusion"
+  },
+  "generator": {
+    "file": "scripts/scenario_events.py",
+    "bytes": 16873,
+    "sha256": "ea37e31d229bfbd4937f52a683bf0ff2343f3c8adba9ed7024c90390ca8fcbef",
+    "git": {
+      "commit": "5d8c5a8",
+      "dirty": true,
+      "note": "working tree has uncommitted changes — the commit alone does NOT identify this generator"
+    }
+  },
+  "schemas": {
+    "event": {
+      "file": "schemas/event.schema.json",
+      "bytes": 8908,
+      "sha256": "edba3438c1ea4f95a9a1b7732813f501703e68ea08c7c1b7b5b5ab94d2c1c9f6"
+    },
+    "scenario": {
+      "file": "schemas/scenario.schema.json",
+      "bytes": 6291,
+      "sha256": "5df8dd6c0eb38846cb37ef68028c7278dd387d3c0629f630bae1be9d96384493"
+    },
+    "api_version": "1.3.0"
+  },
+  "inputs": {
+    "train": {
+      "file": "all_in_one_ereno_train.csv",
+      "bytes": 1748176548,
+      "sha256": "0ad1bef524aa47def9ead2038a53afff5fbe9f40b15a29cdee3fcff2d5bd1fca"
+    },
+    "test": {
+      "file": "all_in_one_ereno_test.csv",
+      "bytes": 1735656671,
+      "sha256": "a8e7f0dd135392285d10f46f316501cc301f2c3e65094e4dcf628bf0735bb256"
+    },
+    "features_file": {
+      "file": "features/all_in_one_ereno_train_combined.json",
+      "bytes": 1390,
+      "sha256": "2ab6c037c67fc18a7c54d6e16805249868e97dd17a3b95bb2ebc4c16a8be3956"
+    }
+  },
+  "model": {
+    "seed": 42,
+    "num_boost_round": 10,
+    "max_depth": 4,
+    "eta": 0.1,
+    "features": [
+      2,
+      4,
+      5,
+      14,
+      15,
+      17,
+      19,
+      20,
+      21,
+      23,
+      25,
+      27,
+      35,
+      40,
+      41,
+      42,
+      44,
+      45,
+      46,
+      50,
+      54,
+      55,
+      57,
+      58
+    ],
+    "n_features": 24,
+    "features_file": "features/all_in_one_ereno_train_combined.json",
+    "specialists": 14,
+    "benign_cap": 500000,
+    "fusion_k": 2
+  },
+  "stream": {
+    "selector": "with_attack",
+    "window_seconds": 1.0,
+    "windows": 282,
+    "sim_epoch": "2026-01-01T00:00:00Z",
+    "timing": {
+      "detect_lag": 2,
+      "dwell": 3,
+      "cmd_latency": 3
+    }
+  },
+  "output": {
+    "file": "results/events_intrusion.jsonl",
+    "bytes": 168446,
+    "sha256": "61628967bc77376fa43c11f3a4914ca6c7c72cf95037da0317d7d12877a5950a",
+    "events": 288,
+    "types": {
+      "intrusion_detected": 282,
+      "node_isolated": 5,
+      "architecture_change": 1
+    }
+  }
+}
