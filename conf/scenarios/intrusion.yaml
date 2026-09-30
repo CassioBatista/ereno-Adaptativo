@@ -1,0 +1,49 @@
+# Driver 2: ATTRIBUTED INTRUSION. Attack traffic; a node whose emitted traffic is
+# repeatedly and corroboratedly flagged is ISOLATED — but the IDS never isolates: it
+# reports, the monitor decides and commands. Intrusion never drives the autonomous
+# transition; any mode change here is monitor-commanded.
+#
+# HONEST SCOPE: `source_node` attribution does NOT exist in v2 (always null). The
+# `attribution` map below is synthetic, a v3 premise used to exercise this driver.
+name: intrusion
+description: >-
+  Attack traffic with synthetic attribution. Corroborated alarms accumulate against the
+  attributed emitter; after isolate_after of them the monitor commands node_isolated
+  (reason: intrusion), and after command_switch_after isolations it commands FL->GL.
+stream: with_attack
+window_seconds: 1.0
+nodes: 14
+fusion_k: 2
+
+data:
+  train: all_in_one_ereno_train
+  test: all_in_one_ereno_test
+  benign_cap: 500000
+model:
+  features_file: features/all_in_one_ereno_train_combined.json
+  seed: 42
+  num_boost_round: 10
+  max_depth: 4
+  eta: 0.1
+sim_epoch: "2026-01-01T00:00:00Z"
+
+timing:
+  detect_lag: 2
+  dwell: 3
+  cmd_latency: 3
+
+attribution:            # SYNTHETIC (v3 premise), attack class -> emitter node
+  injection: 11
+  masquerade_fake_fault: 9
+  masquerade_fake_normal: 8
+  random_replay: 12
+  inverse_replay: 10
+  high_StNum: 13
+  poisoned_high_rate: 7
+
+isolation:
+  escalate_flags: 10      # n_flags for an alarm to count as evidence
+  isolate_after: 5        # corroborated alarms against one node -> monitor isolates it
+  command_switch_after: 2 # isolations -> monitor commands FL->GL (never autonomous)
+
+schedule: []              # no inactivity in this scenario: the driver is intrusion

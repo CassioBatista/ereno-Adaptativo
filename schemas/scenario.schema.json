@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CassioBatista/ereno-Adaptativo/schemas/scenario.schema.json",
+  "title": "ReSIDS event-stream scenario",
+  "description": "Declarative description of a test scenario: which slice of the traffic stream to replay, the timing constants of the switching policy, and the scheduled membership changes. Replaces hard-coded schedules so a third party can reproduce an event stream from data + this file alone. The schedule is validated against the number of windows the selected stream actually has. Data and model bindings are pinned here too, so that data + this file + the emitted manifest reproduce a stream byte-for-byte.",
+  "type": "object",
+  "required": [
+    "name",
+    "stream",
+    "window_seconds",
+    "nodes",
+    "schedule"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Scenario id; names the output files."
+    },
+    "description": {
+      "type": "string"
+    },
+    "stream": {
+      "type": "string",
+      "enum": [
+        "benign_only",
+        "with_attack",
+        "all"
+      ],
+      "description": "Which windows of the test stream to replay. 'benign_only' contains no attack sample, so every alarm in it is a false positive."
+    },
+    "window_seconds": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Round length; one round = one traffic window."
+    },
+    "nodes": {
+      "type": "integer",
+      "minimum": 2,
+      "description": "N, the logical index space (static)."
+    },
+    "fusion_k": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 2,
+      "description": "k in the k-of-n decision fusion."
+    },
+    "timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "detect_lag": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Rounds from an inactivity event to the AUTONOMOUS fail-fast FL->GL. The only autonomous action."
+        },
+        "dwell": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Rounds of full membership required before GL->FL is even proposed (evidence for the monitor)."
+        },
+        "cmd_latency": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Rounds the monitor takes to issue a command. GL->FL is monitor-commanded and has NO autonomous fallback."
+        }
+      }
+    },
+    "attribution": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "description": "attack class -> emitter node. SYNTHETIC: source_node attribution does not exist in v2 (it is null); this is a v3 premise used to exercise the intrusion-driven driver."
+    },
+    "isolation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "escalate_flags": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "n_flags for an alarm to count as evidence against its source node."
+        },
+        "isolate_after": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Corroborated alarms attributed to one node before the MONITOR commands isolation."
+        },
+        "command_switch_after": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Isolations after which the monitor commands FL->GL. Intrusion never triggers the autonomous switch."
+        }
+      }
+    },
+    "schedule": {
+      "type": "array",
+      "description": "Membership changes, in rounds of this scenario's stream. Validated: every round must exist in the stream, and the up/down state machine must be consistent.",
+      "items": {
+        "type": "object",
+        "required": [
+          "round",
+          "event",
+          "node"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "round": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "event": {
+            "type": "string",
+            "enum": [
+              "node_failure",
+              "node_recovery"
+            ]
+          },
+          "node": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Input binding. Pinned here so the scenario, not the script, determines what is replayed.",
+      "properties": {
+        "train": {
+          "type": "string",
+          "description": "training CSV stem (default all_in_one_ereno_train)"
+        },
+        "test": {
+          "type": "string",
+          "description": "test CSV stem (default all_in_one_ereno_test)"
+        },
+        "benign_cap": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "subsample of the majority benign class (default 500000)"
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Everything that changes the trained specialists, hence the alarms. Pinned for reproducibility.",
+      "properties": {
+        "features_file": {
+          "type": "string",
+          "description": "path to a features JSON carrying a 'features' list of 1-based F-numbers (e.g. features/all_in_one_ereno_train_combined.json)"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": "explicit feature list; overrides features_file"
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "num_boost_round": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_depth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "eta": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "sim_epoch": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC anchor for the relative simulation time. SYNTHETIC: in deployment window_start/window_end come from the GOOSE/SV frame timestamps."
+    }
+  }
+}

@@ -4,7 +4,12 @@
   "title": "ReSIDS adaptation event",
   "description": "One observability event emitted by the ReSIDS adaptation plane. Served as an element of GET /events (REST pull) and pushed to the monitor as CoAP telemetry (values object).",
   "type": "object",
-  "required": ["seq", "ts", "type", "round"],
+  "required": [
+    "seq",
+    "ts",
+    "type",
+    "round"
+  ],
   "additionalProperties": false,
   "properties": {
     "seq": {
@@ -19,7 +24,13 @@
     },
     "type": {
       "type": "string",
-      "enum": ["architecture_change", "node_failure", "intrusion_detected"],
+      "enum": [
+        "architecture_change",
+        "node_failure",
+        "node_recovery",
+        "node_isolated",
+        "intrusion_detected"
+      ],
       "description": "Event kind."
     },
     "round": {
@@ -28,82 +39,307 @@
       "description": "Federation round in which the event occurred."
     },
     "from_mode": {
-      "type": ["string", "null"],
-      "enum": ["federated", "gossip", null],
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "federated",
+        "gossip",
+        null
+      ],
       "description": "Previous aggregation mode (architecture_change only; null otherwise)."
     },
     "to_mode": {
-      "type": ["string", "null"],
-      "enum": ["federated", "gossip", null],
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "federated",
+        "gossip",
+        null
+      ],
       "description": "New aggregation mode (architecture_change only; null otherwise)."
     },
     "reason": {
-      "type": ["string", "null"],
-      "enum": ["node_failure", "recovery", "scheduled", null],
-      "description": "Cause of the event. For architecture_change: node_failure | recovery | scheduled. For node_failure: node_failure."
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "node_failure",
+        "recovery",
+        "scheduled",
+        "intrusion"
+      ],
+      "description": "Cause of the event. architecture_change: node_failure | recovery | scheduled | intrusion. node_failure: node_failure. node_recovery: recovery. node_isolated: intrusion. Only 'node_failure' while in federated mode is acted on autonomously (fail-fast FL->GL); every other cause is monitor-governed."
     },
     "failed_nodes": {
       "type": "array",
-      "items": { "type": "integer", "minimum": 0 },
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
       "description": "Logical node indices identified as failing (authoritative on node_failure; context on architecture_change)."
     },
     "active_nodes": {
-      "type": ["array", "null"],
-      "items": { "type": "integer", "minimum": 0 },
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
       "description": "Node indices participating this round, or null when all are active."
     },
     "attack": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "intrusion_detected only: detected attack class/type (e.g. 'injection', 'masquerade_fake_fault'); null otherwise."
     },
     "k_votes": {
-      "type": ["integer", "null"],
+      "type": [
+        "integer",
+        "null"
+      ],
       "minimum": 1,
       "description": "intrusion_detected only: number of concurring specialists (the k in k-of-n) that raised the alarm — the corroboration strength."
     },
     "n_flags": {
-      "type": ["integer", "null"],
+      "type": [
+        "integer",
+        "null"
+      ],
       "minimum": 0,
       "description": "intrusion_detected only: number of samples/flows flagged in this round/window (alarm volume)."
     },
-    "detector_nodes": {
-      "type": "array",
-      "items": { "type": "integer", "minimum": 0 },
-      "description": "intrusion_detected only: node/specialist indices that fired."
-    },
     "source_node": {
-      "type": ["integer", "null"],
+      "type": [
+        "integer",
+        "null"
+      ],
       "minimum": 0,
       "description": "intrusion_detected only: attributed emitter node (e.g. from the GOOSE/SV source), or null when attribution is unavailable (typical in v2)."
     },
     "confidence": {
-      "type": ["number", "null"],
+      "type": [
+        "number",
+        "null"
+      ],
       "description": "intrusion_detected only: optional aggregate confidence/score."
     },
     "detail": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Optional free-text detail."
+    },
+    "detector_specialists": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "description": "intrusion_detected only: indices of the SPECIALISTS (boosters) in the local pool that fired. Not nodes: every node holds the same diffused union and reaches the same verdict, so what varies is which specialists fired."
+    },
+    "recovered_nodes": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "description": "node_recovery only: logical node indices that came back."
+    },
+    "mode": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "federated",
+        "gossip",
+        null
+      ],
+      "description": "Aggregation mode in effect for this event, so the monitor never infers state."
+    },
+    "n_active": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "Number of active nodes when the event was emitted (len(active_nodes))."
+    },
+    "window_start": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "Start of the evaluated traffic window, from the GOOSE/SV frame timestamps (synthetic epoch under simulation). Distinct from ts, which is the emission instant."
+    },
+    "window_end": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "End of the traffic window, exclusive."
+    },
+    "window_samples": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "Samples scored in the window - the denominator for n_flags."
+    },
+    "decided_by": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "autonomous",
+        "monitor",
+        "operator",
+        null
+      ],
+      "description": "Who took the ACTION. Present only on events that ARE an action: architecture_change and node_isolated. Pure observations (node_failure, node_recovery, intrusion_detected) carry no decision and omit it. autonomous is reserved for the single autonomous action in the system - the fail-fast FL->GL triggered by node inactivity; every other action (further losses in GL, intrusion-driven isolation, the GL->FL return) is monitor or operator."
     }
   },
   "examples": [
     {
-      "seq": 1, "ts": "2026-09-04T11:18:11.704654+00:00",
-      "type": "node_failure", "round": 10, "from_mode": null, "to_mode": null,
-      "reason": "node_failure", "failed_nodes": [7], "active_nodes": [0,1,2,3,4,5,6,8,9],
+      "seq": 1,
+      "ts": "2026-09-04T11:18:11.704654+00:00",
+      "type": "node_failure",
+      "round": 10,
+      "from_mode": null,
+      "to_mode": null,
+      "reason": "node_failure",
+      "failed_nodes": [
+        7
+      ],
+      "active_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9
+      ],
       "detail": "1 client failure(s) in aggregate_fit"
     },
     {
-      "seq": 2, "ts": "2026-09-04T11:18:12.100000+00:00",
-      "type": "architecture_change", "round": 11, "from_mode": "federated",
-      "to_mode": "gossip", "reason": "node_failure", "failed_nodes": [7],
-      "active_nodes": [0,1,2,3,4,5,6,8,9], "detail": null
+      "seq": 2,
+      "ts": "2026-09-04T11:18:12.100000+00:00",
+      "type": "architecture_change",
+      "round": 11,
+      "from_mode": "federated",
+      "to_mode": "gossip",
+      "reason": "node_failure",
+      "failed_nodes": [
+        7
+      ],
+      "active_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9
+      ],
+      "detail": null
     },
     {
-      "seq": 3, "ts": "2026-09-04T11:18:20.000000+00:00",
-      "type": "intrusion_detected", "round": 14, "attack": "injection",
-      "k_votes": 2, "n_flags": 37, "detector_nodes": [3,4], "source_node": null,
-      "confidence": null, "active_nodes": [0,1,2,3,4,5,6,8,9],
-      "detail": "notification only; containment is operator-gated"
+      "seq": 3,
+      "ts": "2026-09-04T11:18:20.000000+00:00",
+      "type": "intrusion_detected",
+      "round": 14,
+      "attack": "injection",
+      "k_votes": 2,
+      "n_flags": 37,
+      "source_node": null,
+      "confidence": null,
+      "active_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        9
+      ],
+      "detail": "notification only; containment is operator-gated",
+      "detector_specialists": [
+        3,
+        4
+      ]
+    },
+    {
+      "seq": 441,
+      "ts": "2026-01-01T01:06:54.000420+00:00",
+      "type": "node_recovery",
+      "round": 4000,
+      "mode": "gossip",
+      "reason": "recovery",
+      "recovered_nodes": [
+        3
+      ],
+      "active_nodes": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "n_active": 4,
+      "window_start": "2026-01-01T01:06:53.000420+00:00",
+      "window_end": "2026-01-01T01:06:54.000420+00:00"
+    },
+    {
+      "seq": 512,
+      "ts": "2026-01-01T02:10:03.000000+00:00",
+      "type": "node_isolated",
+      "round": 1820,
+      "mode": "gossip",
+      "reason": "intrusion",
+      "decided_by": "monitor",
+      "failed_nodes": [
+        9
+      ],
+      "source_node": 9,
+      "attack": "masquerade_fake_fault",
+      "k_votes": 4,
+      "active_nodes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+        11,
+        12,
+        13
+      ],
+      "n_active": 13,
+      "detail": "monitor-commanded isolation after corroborated alarms attributed to node 9"
     }
   ]
 }
