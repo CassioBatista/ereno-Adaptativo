@@ -1,0 +1,40 @@
+FALSE-POSITIVE BASELINE — stream A (benign-only traffic, no attacks present)
+
+benign-only windows      : 724
+windows that fired       : 252  (34.8%)
+windows silent           : 472  (65.2%)
+
+n_flags (alarm volume) per fired window
+                      FALSE (stream A)     TRUE (stream B)
+  count                      252.0              282.0
+  min                         19.0                1.0
+  median                      56.0              973.0
+  mean                        61.0              721.3
+  p90                        101.0             1002.0
+  max                        274.0             2020.0
+
+k_votes (corroboration) per fired window
+  median                       2.0                6.0
+  max                          4.0               10.0
+
+Threshold sweep: escalate only when n_flags >= T
+   T    A: false alarms kept   B: true alarms kept   suppressed FP
+    1          252 (100.0%)          282 (100.0%)            0
+    2          252 (100.0%)          264 ( 93.6%)            0
+    3          252 (100.0%)          263 ( 93.3%)            0
+    5          252 (100.0%)          263 ( 93.3%)            0
+   10          252 (100.0%)          263 ( 93.3%)            0
+   20          245 ( 97.2%)          263 ( 93.3%)            7
+   50          141 ( 56.0%)          263 ( 93.3%)          111
+  100           40 ( 15.9%)          262 ( 92.9%)          212
+  200            2 (  0.8%)          259 ( 91.8%)          250
+  500            0 (  0.0%)          150 ( 53.2%)          252
+
+overlapping n_flags range: [19, 274]  -> 252 false (100%) and 4 true (1%) alarms fall inside it
+threshold that removes EVERY false alarm here: T = 275 (max false volume 274) -> keeps 259/282 (91.8%) of the true ones
+true alarms that NO volume threshold can save: 23 (their volume is below the worst false positive)
+
+CAVEAT: these numbers are specific to this window size (1 s ~ 4.7k samples) and
+to this traffic. With ~0.6% FPR, a full window is expected to produce ~28 false
+flags, which is the scale seen here (median 56). Larger windows raise the false
+volume and push the threshold up; shorter windows lower both.
