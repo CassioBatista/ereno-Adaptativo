@@ -10,3 +10,6 @@ all_in_one_ereno_test.csv
 
 # Logs de experimentos (regeneraveis) — ficam locais
 results/*.log
+
+# Cache de hashes de entrada (chaveado por size+mtime) — local
+results/.input_hashes.json

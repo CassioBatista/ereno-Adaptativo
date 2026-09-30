@@ -1,0 +1,26 @@
+[mv] carregando train...
+[mv] carregando teste...
+
+[mv] masquerade_fake_fault: train atk=17,287 ben=200,000 | test atk=17,200
+    view electrical FP=1,190,845  recall= 50.30%  (feat=36)
+    view protocol   FP=275,475  recall= 97.41%  (feat=9)
+    view temporal   FP=139,763  recall=100.00%  (feat=10)
+  --- masquerade_fake_fault: FP-correlation ---
+    individual FP: electrical=1,190,845, protocol=275,475, temporal=139,763
+    shared by ALL 3 (intersection) = 4,654  |  union = 1,375,739
+    pairwise Jaccard: elec-prot=0.07, elec-temp=0.01, prot-temp=0.46
+    AND (>=3 agree): FP=4,654 recall=48.14%  |  >=2: FP=225,690 recall=99.56%
+    => AND reduces FP to 4,654 (best single view 139,763); INDEPENDENT (helps)
+
+[mv] masquerade_fake_normal: train atk=17,419 ben=200,000 | test atk=17,420
+    view electrical FP=138,104  recall= 99.55%  (feat=36)
+    view protocol   FP=125,072  recall=100.00%  (feat=9)
+    view temporal   FP=139,483  recall=100.00%  (feat=10)
+  --- masquerade_fake_normal: FP-correlation ---
+    individual FP: electrical=138,104, protocol=125,072, temporal=139,483
+    shared by ALL 3 (intersection) = 0  |  union = 279,595
+    pairwise Jaccard: elec-prot=0.00, elec-temp=0.75, prot-temp=0.02
+    AND (>=3 agree): FP=0 recall=99.55%  |  >=2: FP=123,064 recall=100.00%
+    => AND reduces FP to 0 (best single view 125,072); INDEPENDENT (helps)
+
+[mv] CSV -> results/masquerade_views.csv

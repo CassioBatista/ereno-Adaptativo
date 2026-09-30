@@ -1,0 +1,27 @@
+[fv] load train...
+[fv] load test...
+[fv] view electrical trained (feat=36)
+[fv] view protocol trained (feat=9)
+[fv] view temporal trained (feat=10)
+[fv] validation-selected tau* (protocol&temporal) = 0.65 (F1_val=80.52)
+
+===== fake_fault reliability-aware fusions (full test) =====
+fusion                                  F1   recall         #FP
+temporal@0.5                         19.59   100.00     141,193
+protocol&temporal@0.5                20.30    97.41     131,104
+protocol&temporal@tau*(0.65)         21.07    89.86     114,085
+all3&@0.5                            63.25    54.63       3,116
+
+--- sensitivity: protocol&temporal, tau sweep (test) ---
+  tau=0.50  F1= 20.30  recall= 97.41  #FP=131,104
+  tau=0.55  F1= 20.65  recall= 95.73  #FP=125,782
+  tau=0.60  F1= 20.65  recall= 95.73  #FP=125,782
+  tau=0.65  F1= 21.07  recall= 89.86  #FP=114,085
+  tau=0.70  F1= 22.88  recall= 57.47  #FP=59,303
+  tau=0.75  F1= 22.76  recall= 24.81  #FP=16,033
+  tau=0.80  F1=  0.85  recall=  0.42  #FP=0
+  tau=0.85  F1=  0.00  recall=  0.00  #FP=0
+  tau=0.90  F1=  0.00  recall=  0.00  #FP=0
+  tau=0.95  F1=  0.00  recall=  0.00  #FP=0
+
+[fv] CSV -> results/masquerade_fault_variant.csv

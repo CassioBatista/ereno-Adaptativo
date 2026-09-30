@@ -1,0 +1,2 @@
+{"seq": 1, "ts": "2026-09-04T11:18:11.704654+00:00", "type": "architecture_change", "round": 11, "from_mode": "federated", "to_mode": "gossip", "reason": "node_failure", "failed_nodes": [], "active_nodes": [0, 1, 2, 3, 4, 5, 6, 8, 9], "detail": null}
+{"seq": 2, "ts": "2026-09-04T11:18:42.677220+00:00", "type": "architecture_change", "round": 27, "from_mode": "gossip", "to_mode": "federated", "reason": "recovery", "failed_nodes": [], "active_nodes": null, "detail": null}

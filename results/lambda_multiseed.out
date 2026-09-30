@@ -1,0 +1,252 @@
+[lms] conjuntos: {0.0: 35, 0.05: 24, 0.1: 22, 0.2: 20}
+[lms] carregando train (uma vez)...
+[lms] carregando teste (uma vez)...
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.0 (35f) seed=42: OR F1=94.14 | k2 F1=87.72
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.0 (35f) seed=7: OR F1=95.13 | k2 F1=87.69
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.0 (35f) seed=13: OR F1=94.35 | k2 F1=87.73
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.0 (35f) seed=21: OR F1=94.59 | k2 F1=87.71
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.0 (35f) seed=99: OR F1=95.20 | k2 F1=87.68
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.05 (24f) seed=42: OR F1=94.86 | k2 F1=87.68
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.05 (24f) seed=7: OR F1=94.32 | k2 F1=87.76
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.05 (24f) seed=13: OR F1=94.35 | k2 F1=87.73
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.05 (24f) seed=21: OR F1=94.59 | k2 F1=87.71
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.05 (24f) seed=99: OR F1=95.17 | k2 F1=87.68
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.1 (22f) seed=42: OR F1=94.56 | k2 F1=87.68
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.1 (22f) seed=7: OR F1=94.02 | k2 F1=87.76
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.1 (22f) seed=13: OR F1=94.06 | k2 F1=87.73
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.1 (22f) seed=21: OR F1=94.27 | k2 F1=87.71
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.1 (22f) seed=99: OR F1=94.87 | k2 F1=87.68
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.2 (20f) seed=42: OR F1=92.50 | k2 F1=87.80
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.2 (20f) seed=7: OR F1=94.02 | k2 F1=87.76
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.2 (20f) seed=13: OR F1=94.06 | k2 F1=87.73
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.2 (20f) seed=21: OR F1=94.27 | k2 F1=87.71
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[lms] lambda=0.2 (20f) seed=99: OR F1=93.82 | k2 F1=87.81
+
+===== LAMBDA x F1 (mean +/- IC95 over 5 seeds, full test) =====
+ lambda #feat  |     OR F1 (mean+/-CI)          OR FPR  |     k2 F1 (mean+/-CI)
+    0.0    35  |    94.68 +/- 0.59       0.813 +/-0.094  |    87.71 +/- 0.03
+   0.05    24  |    94.66 +/- 0.45       0.817 +/-0.071  |    87.71 +/- 0.04
+    0.1    22  |    94.36 +/- 0.45       0.865 +/-0.073  |    87.71 +/- 0.04
+    0.2    20  |    93.73 +/- 0.88       0.968 +/-0.147  |    87.76 +/- 0.05
+
+[lms] CSV -> results/lambda_multiseed.csv

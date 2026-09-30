@@ -1,0 +1,60 @@
+ReSIDS reproduce -- commit 9e9076e -- Zenodo 10.5281/zenodo.22084923
+
+== input hashes (SHA-256) ==
+  all_in_one_ereno_train.csv               [skipped -- pass --strict to hash 1.75 GB]
+  all_in_one_ereno_test.csv                [skipped -- pass --strict to hash 1.74 GB]
+  features/all_in_one_ereno_train_combined.json 2ab6c037c67fc18a...  [ok]
+== feature set: 24 features from features/all_in_one_ereno_train_combined.json ==
+
+[reproduce] training 10 specialists (seed 42, min-run)...
+[benign_cap] classe normal limitada a 500,000 (de 2,759,425); ataques preservados
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+[reproduce] evaluating full held-out test...
+[fig] /home/cassi/ereno-Adaptativo/results/reproduce_figure.png
+
+=== k>=1 (tau=0.5) ===
+TP=200,444  FP=17,881  FN=65  TN=2,737,258
+F1=95.72 recall=99.97 precision=91.81 FPR=0.649% MCC=0.9549
+per-attack recall:
+  random_replay            100.00%
+  inverse_replay           100.00%
+  masquerade_fake_fault     99.63%
+  masquerade_fake_normal   100.00%
+  injection                100.00%
+  high_StNum               100.00%
+  poisoned_high_rate       100.00%
+
+=== k>=2 (tau=0.5) ===
+TP=156,587  FP=49  FN=43,922  TN=2,755,090
+F1=87.69 recall=78.09 precision=99.97 FPR=0.002% MCC=0.8766
+per-attack recall:
+  random_replay             99.99%
+  inverse_replay            67.24%
+  masquerade_fake_fault      3.70%
+  masquerade_fake_normal     0.00%
+  injection                100.00%
+  high_StNum               100.00%
+  poisoned_high_rate       100.00%
+
+
+[reproduce] table  -> results/reproduce_table.csv
+[reproduce] audit  -> results/reproduce_confusion.txt
+== acceptance check (vs MANIFEST.expected_min_run) ==
+  k>=1   f1: got 95.715 exp 95.720 (|d|=0.005) PASS
+  k>=1  fpr: got 0.649 exp 0.649 (|d|=0.000) PASS
+  k>=1  #FP: got 17,881 exp 17,881
+  k>=2   f1: got 87.688 exp 87.690 (|d|=0.002) PASS
+  k>=2  fpr: got 0.002 exp 0.002 (|d|=0.000) PASS
+  k>=2  #FP: got 49 exp 49
+
+==> REPRODUCE OK
