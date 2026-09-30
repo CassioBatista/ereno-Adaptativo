@@ -1,0 +1,18 @@
+failure trigger at round 600 | ping every 10 rounds | D=5 | cmd latency=3
+
+scenario                emitted delivered   lost    gaps recovered  missing   incid.
+1 clean                     557       557      0      58         0        0      515
+2 lossy link (20%)          557       432    125     156       125        0      515
+3 mgmt partition            557       552      5      59         5        0      515
+4 monitor-commanded         557       557      0      58         0        0      515
+
+scenario               switch@round  latency   decided by
+1 clean                         602        2   autonomous fail-fast
+2 lossy link (20%)              602        2   autonomous fail-fast
+3 mgmt partition                605        5   deadline fallback (autonomous)
+4 monitor-commanded             603        3   commanded
+
+1 clean                pings ok=499 failed=0
+2 lossy link (20%)     pings ok=499 failed=0
+3 mgmt partition       pings ok=494 failed=5
+4 monitor-commanded    pings ok=499 failed=0
