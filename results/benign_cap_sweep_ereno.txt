@@ -1,0 +1,33 @@
+ERENO benign_cap sweep — N=14 (2 specialists/attack), combined-24, seed 42
+test set identical across caps: all benign samples of the test split
+
+  cap  k>=1 FPR  k>=2 FPR  k>=3 FPR  k>=2 TPR  k>=3 TPR  k2/k1 FP  Jac same  Jac cross
+ 500k    0.686%    0.666%   0.0032%    0.9997    0.6054     0.971     0.901     0.0009
+   1M    0.636%    0.593%   0.0011%    0.9997    0.6054     0.931     0.946     0.0002
+  all    0.710%    0.621%   0.0018%    0.9997    0.6059     0.874     0.535     0.0001
+  k2/k1 FP = fraction of OR false positives that survive k>=2 (1.0 = k>=2 filters nothing)
+
+window level (k>=2, 1-s windows)
+  cap  benign alarming  worst benign n_flags  max benign k_votes  T=275 TP/FP  T=275|frac TP/FP
+ 500k     252/724                        274                   4   259/0           276/0       
+   1M     252/724                        260                   4   259/0           276/0       
+  all     252/724                        258                   3   259/0           276/0       
+
+per specialist FPR (%) by cap, pairs of the same attack side by side
+attack                      500k A    500k B      1M A      1M B     all A     all B
+random_replay                0.000     0.000     0.000     0.000     0.000     0.000
+inverse_replay               0.000     0.000     0.000     0.000     0.000     0.000
+masquerade_fake_fault        0.438     0.446     0.446     0.473     0.485     0.485
+masquerade_fake_normal       0.227     0.238     0.145     0.162     0.136     0.224
+injection                    0.000     0.000     0.000     0.000     0.000     0.000
+high_StNum                   0.004     0.003     0.002     0.002     0.000     0.003
+poisoned_high_rate           0.000     0.000     0.000     0.000     0.000     0.000
+
+own-class recall by cap (mean of the pair)
+  random_replay            500k=0.9999  1M=0.9999  all=0.9999
+  inverse_replay           500k=0.9595  1M=0.9595  all=0.9595
+  masquerade_fake_fault    500k=0.9953  1M=0.9953  all=0.9953
+  masquerade_fake_normal   500k=1.0000  1M=1.0000  all=0.9999
+  injection                500k=1.0000  1M=1.0000  all=1.0000
+  high_StNum               500k=1.0000  1M=1.0000  all=1.0000
+  poisoned_high_rate       500k=1.0000  1M=1.0000  all=1.0000
