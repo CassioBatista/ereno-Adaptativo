@@ -1,7 +1,6 @@
 % ============================================================================
 % ReSIDS v2.0 -- Monitoring and control interface
-% Section for the v2 paper. \input{} it; requires booktabs, and (for the listing)
-% either listings or minted. No other dependency.
+% Section for the v2 paper. \input{} it; requires booktabs only.
 %
 % Generated alongside docs/API.md, docs/COMMANDS.md and docs/MULTI_INSTANCE.md,
 % which remain the normative documents; this is the paper-facing summary.
@@ -176,8 +175,8 @@ neither performs nor claims, and the command result says so on every accepted is
 What the surface deliberately omits is as much a part of the specification as what it
 offers: no booster upload (a commander able to inject a model can poison detection), no
 runtime change of $k$ or of the decision thresholds (a silent way to blind the IDS), no
-label supply for graduation (a commander able to label can teach the system that an attack
-is benign), and no traffic blocking.
+supply of labels or training data (a commander able to label traffic can teach the system
+that an attack is benign), and no traffic blocking.
 
 \subsection{Deployment: fifteen instances}
 \label{sec:api-instances}

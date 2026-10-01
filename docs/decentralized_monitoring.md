@@ -101,9 +101,7 @@ observable event resource; CoAP client registering itself in the RD.
 | Identity map | index ↔ IED ↔ base URI | **RD + monitor only** | showing the operator which IED |
 
 Nodes emit **indices**; the monitor resolves them. Replicating a provisioned identity
-map across N nodes would create contradictory reports when one copy goes stale — unlike
-the Tier-2 benign spec, which is safely replicated because every node *derives* it from
-the same benign traffic.
+map across N nodes would create contradictory reports when one copy goes stale.
 
 ## 4. Message flows
 

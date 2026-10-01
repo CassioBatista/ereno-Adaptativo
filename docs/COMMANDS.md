@@ -309,7 +309,7 @@ The surface is small on purpose. Each of these was considered and excluded:
 | cancel / hold / extend the deadline D | equivalent to `D → ∞`: reintroduces the single point of failure GL exists to survive (§4.1) |
 | upload or replace a booster | the diffusion plane would become a command surface, and a commander able to inject a model is a commander able to poison detection |
 | change `k`, thresholds or the feature set at runtime | these are the detection integrity parameters; remote mutation turns a control channel into a way to blind the IDS silently |
-| supply labels for graduation | a commander able to label novel traffic can teach the system that an attack is benign. Operator labelling stays out of band ([`monitor_commanded_switch.md`](monitor_commanded_switch.md)) |
+| supply labels or training data | a commander able to label traffic can teach the system that an attack is benign. Training data stays out of band |
 | a third mode, or topology edits | the mode set is `{federated, gossip}`; overlay structure is not runtime policy |
 | acknowledge or suppress alarms | alarm triage belongs to the monitor's own state, not to the agent's. Suppression at the agent would silently drop evidence from the trail |
 | block traffic / quarantine | ReSIDS does not touch the process bus (§4.4). Claiming it through this API would be a false promise with safety consequences |
