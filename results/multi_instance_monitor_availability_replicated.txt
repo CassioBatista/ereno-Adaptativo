@@ -1,0 +1,81 @@
+
+=== per-instance reconciliation ===
+instance  alive  events  contiguous  gap  mode       n_act
+srv       True         3           3 -    federated  14   
+c00       True       260         260 -    federated  14   
+c01       True       260         260 -    federated  14   
+c02       True       260         260 -    federated  14   
+c03       True       260         260 -    federated  14   
+c04       True       260         260 -    federated  14   
+c05       True       260         260 -    federated  14   
+c06       True       260         260 -    federated  14   
+c07       True       260         260 -    federated  14   
+c08       True       260         260 -    federated  14   
+c09       True       260         260 -    federated  14   
+c10       True       260         260 -    federated  14   
+c11       True       205         205 -    federated  14   
+c12       True       141         141 -    federated  14   
+c13       True        89          89 -    federated  14   
+
+gaps: NONE (each instance reconciled on its OWN contiguous seq)
+federation mode at end: federated
+server instance: 3 events; active in FL
+
+=== how many client instances reported the same window ===
+  11 instances:    54 windows
+  12 instances:    62 windows
+  13 instances:    49 windows
+  14 instances:    87 windows
+  windows seen: 252
+
+=== divergence (minority against the majority of reporting instances) ===
+  none — every instance that reported a window agreed on the label and the membership view
+
+=== control plane seen (by instance) ===
+  c00   architecture_change    2
+  c00   node_failure           3
+  c00   node_recovery          3
+  c01   architecture_change    2
+  c01   node_failure           3
+  c01   node_recovery          3
+  c02   architecture_change    2
+  c02   node_failure           3
+  c02   node_recovery          3
+  c03   architecture_change    2
+  c03   node_failure           3
+  c03   node_recovery          3
+  c04   architecture_change    2
+  c04   node_failure           3
+  c04   node_recovery          3
+  c05   architecture_change    2
+  c05   node_failure           3
+  c05   node_recovery          3
+  c06   architecture_change    2
+  c06   node_failure           3
+  c06   node_recovery          3
+  c07   architecture_change    2
+  c07   node_failure           3
+  c07   node_recovery          3
+  c08   architecture_change    2
+  c08   node_failure           3
+  c08   node_recovery          3
+  c09   architecture_change    2
+  c09   node_failure           3
+  c09   node_recovery          3
+  c10   architecture_change    2
+  c10   node_failure           3
+  c10   node_recovery          3
+  c11   architecture_change    2
+  c11   node_failure           2
+  c11   node_recovery          3
+  c12   architecture_change    2
+  c12   node_failure           1
+  c12   node_recovery          2
+  c13   architecture_change    1
+  c13   node_recovery          1
+  srv   architecture_change    2
+  srv   node_failure           1
+
+=== command fan-out, were the monitor to act now ===
+  set_mode -> gossip         reachable 15/15  unanimity=not required  may_proceed=True
+  set_mode -> federated      reachable 15/15  unanimity=required  may_proceed=True

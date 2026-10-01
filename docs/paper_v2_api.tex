@@ -1,0 +1,343 @@
+% ============================================================================
+% ReSIDS v2.0 -- Monitoring and control interface
+% Section for the v2 paper. \input{} it; requires booktabs, and (for the listing)
+% either listings or minted. No other dependency.
+%
+% Generated alongside docs/API.md, docs/COMMANDS.md and docs/MULTI_INSTANCE.md,
+% which remain the normative documents; this is the paper-facing summary.
+% ============================================================================
+
+\section{Monitoring and control interface}
+\label{sec:api}
+
+A runtime-switchable IDS is only operable if the switching is observable and, where it
+must be, authorised. This section specifies the interface through which an external
+monitor observes ReSIDS and acts on it. We state it as a contract rather than as an
+implementation, and we separate what is implemented from what is specified
+(Section~\ref{sec:api-status}), because the distinction matters to anyone building against
+it.
+
+\subsection{Design principle: authority before protocol}
+\label{sec:api-authority}
+
+The interface follows from a single architectural decision: \emph{autonomy is granted only
+in the direction that fails safe}. Table~\ref{tab:authority} lists the four situations in
+which the system changes shape. Exactly one of them is autonomous.
+
+\begin{table}[htbp]
+\centering
+\caption{Authority rule. One autonomous action; everything else is monitor-governed. The
+asymmetry is driven by measurement: losing nodes in GL costs nothing, losing them in FL
+costs F1.}
+\label{tab:authority}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Situation & Authority & Latency & Fallback \\
+\midrule
+Node inactive while in FL $\rightarrow$ GL & \textbf{ReSIDS, autonomous} & $\sim$2 rounds & deadline $D$ \\
+Further node loss while in GL & monitor & policy & none \\
+Node with attributed intrusion & monitor & policy & none \\
+GL $\rightarrow$ FL return & \textbf{monitor} & policy & \textbf{none, by design} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In GL, recall is unaffected by node loss---it holds at 100\% from 14 nodes down to 3,
+because the retained booster union keeps every specialist---so there is no urgency and no
+reason to spend autonomy. In FL the same loss removes a specialist from the aggregate and
+degrades detection (96.02 $\rightarrow$ 86.33 F1 under cascading loss), and the aggregator
+is a single point of failure. Being stuck in FL with a dead aggregator is therefore
+dangerous and the transition out of it must not depend on an external party; being stuck in
+GL is merely slower ($\Theta(N)$ dissemination instead of depth-1), so the return to FL
+deliberately has \emph{no} fallback. If the monitor is unreachable, the system rests in the
+degraded-but-safe state.
+
+Returning to FL means re-accepting the hub---the very point of failure and of trust that GL
+exists to survive---which is a trust decision rather than a heuristic one. Consequently the
+recovery gates (dwell plus unanimity of local health) cease to be an autonomous commit rule
+and become \emph{evidence} the agent reports and checks a command against.
+
+Every event carries \texttt{decided\_by} $\in$ \{\texttt{autonomous}, \texttt{monitor},
+\texttt{operator}\}, present only on events that \emph{are} an action. This makes the rule
+machine-checkable rather than documentary: a conformance script rejects any stream that
+claims autonomy where Table~\ref{tab:authority} does not grant it.
+
+\subsection{Observation surface}
+\label{sec:api-events}
+
+Five event types (Table~\ref{tab:events}) carry every state change an operator needs. Two
+are actions; three are observations. An event refers to a closed traffic window and carries
+its bounds, so it can be correlated with sequence-of-event records: \texttt{window\_start}
+and \texttt{window\_end} are the window, distinct from \texttt{ts}, the emission instant.
+
+\begin{table}[htbp]
+\centering
+\caption{Event types. Only the two actions carry \texttt{decided\_by}; attaching it to an
+observation would assert a decision that was never taken.}
+\label{tab:events}
+\begin{tabular}{@{}llp{0.42\linewidth}@{}}
+\toprule
+Type & Kind & Payload beyond the common fields \\
+\midrule
+\texttt{architecture\_change} & action & \texttt{from\_mode}, \texttt{to\_mode}, \texttt{reason}, \texttt{decided\_by} \\
+\texttt{node\_isolated} & action & \texttt{source\_node}, \texttt{reason}, \texttt{decided\_by} \\
+\texttt{node\_failure} & observation & \texttt{failed\_nodes} \\
+\texttt{node\_recovery} & observation & \texttt{recovered\_nodes} \\
+\texttt{intrusion\_detected} & observation & \texttt{attack}, \texttt{k\_votes}, \texttt{n\_flags}, \texttt{detector\_specialists}, \texttt{source\_node} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two naming decisions encode architectural facts. \texttt{detector\_specialists} names
+boosters, not nodes: every node holds the same diffused union and reaches the same verdict,
+so a per-node reading would suggest a corroboration the architecture does not have.
+\texttt{n\_flags} is the alarm's \emph{volume} (flagged samples in the window) while
+\texttt{k\_votes} is its \emph{corroboration strength} (concurring specialists on the
+strongest single sample); Section~\ref{sec:api-fp} shows why both must be reported.
+
+\subsubsection{Behavioural contract}
+
+What a consumer may rely on is not expressible in a schema, so it is stated separately:
+events are ordered by \texttt{seq} ascending; \texttt{seq} starts at 1, has no gaps, and
+continues across restarts; \texttt{since} is exclusive; retention is bounded and a
+\texttt{since} below it yields \texttt{410 Gone} rather than a silently short answer.
+
+The operative rule is that a consumer must reconcile using the highest \emph{contiguous}
+\texttt{seq} it has received, never the highest \emph{seen}. The difference is not
+cosmetic. Once a later notification arrives, the tail is current while an earlier event is
+still missing, and the hole becomes invisible. Measured on the replay harness at 20\%
+notification loss: \textbf{33 events permanently lost} with the tail test, \textbf{zero}
+with the contiguous one. The same request subsumes liveness---an empty answer means alive,
+no gap, and nothing to recover---so a separate periodic probe costs a round trip and buys
+nothing.
+
+\subsubsection{False positives are the monitor's design constraint}
+\label{sec:api-fp}
+
+The interface must be sized for the alarm load it will actually carry. Replaying a
+benign-only stream, in which every alarm is by construction a false positive, 252 of 724
+windows raise one (34.8\%). The two populations separate on volume rather than on
+corroboration: median \texttt{n\_flags} of 56 for false positives against 973 for true
+alarms. A threshold of $\texttt{n\_flags} \geq 275$ removes every false positive while
+retaining 91.8\% of true alarms; the remaining 8.2\% fall below the worst false positive on
+volume and are recoverable only through \texttt{k\_votes}, whose range overlaps
+($\leq 4$ on false positives, up to 10 on true ones). Reporting a single fused score
+instead of both fields would make that residue unrecoverable, which is the reason the event
+carries two numbers and no verdict.
+
+\subsection{Command surface}
+\label{sec:api-commands}
+
+Three commands---and no more---cover every row of Table~\ref{tab:authority} that is not
+autonomous: \texttt{set\_mode} for both transitions, \texttt{isolate\_node} and
+\texttt{readmit\_node} for membership. Readmission is not symmetry for its own sake: with a
+34.8\% false-positive rate on benign windows, wrongful isolation is expected, and a surface
+that can isolate but not readmit would force a node restart to undo the IDS's own mistake.
+
+Four envelope fields carry the semantics, each answering a failure mode rather than a
+convention. \texttt{command\_id}, a client-generated UUID, makes execution \emph{at most
+once}: the channel that loses messages also duplicates them, and a duplicated isolation or
+mode switch is not idempotent by nature. \texttt{authority\_epoch}, monotonic, refuses a
+commander whose epoch has been superseded, without which two monitors during a failover are
+indistinguishable from legitimate traffic. \texttt{not\_after} bounds replay of a captured
+command. \texttt{expect} states the view the monitor decided on, and a mismatch refuses the
+command outright---the same argument as contiguous-seq reconciliation, one layer up: a
+monitor decides on a polled view that is already in the past, and an actuation surface must
+not let a stale view act.
+
+Three properties are not negotiable.
+
+\begin{enumerate}
+\item \textbf{The deadline $D$ is not commandable.} No verb cancels, holds or extends it. A
+commander able to postpone $D$ is a commander able to keep a node in FL with a dead
+aggregator, reintroducing through the control channel the single point of failure GL exists
+to survive. $D$ is configuration, changed by redeploying policy, not by a message in
+flight.
+
+\item \textbf{The monitor decides \emph{whether}; the agent verifies whether it is
+\emph{possible}.} A GL $\rightarrow$ FL return is refused while membership is incomplete,
+and an isolation is refused below $\texttt{min\_nodes} = 3$---the floor at which the
+measurement stops supporting the claim, since recall is verified from 14 nodes down to 3 and
+no further. An explicit \texttt{force} flag overrides both and is recorded in the resulting
+event.
+
+\item \textbf{The response is not the commit record.} A response can be lost; the
+authoritative record is the event, carrying \texttt{decided\_by} and \texttt{command\_id}.
+Rejected commands produce no event, so every answered command also receives a position in a
+command log that reconciles exactly like the event stream---otherwise a refused actuation
+attempt would leave no trace at all.
+\end{enumerate}
+
+Isolation removes a node from the federation and the booster pool; it does \emph{not}
+disconnect it from the process bus. An isolated node keeps publishing GOOSE/SV and keeps
+being attributed as the source of alarms. Containment is a network action that ReSIDS
+neither performs nor claims, and the command result says so on every accepted isolation.
+
+What the surface deliberately omits is as much a part of the specification as what it
+offers: no booster upload (a commander able to inject a model can poison detection), no
+runtime change of $k$ or of the decision thresholds (a silent way to blind the IDS), no
+label supply for graduation (a commander able to label can teach the system that an attack
+is benign), and no traffic blocking.
+
+\subsection{Deployment: fifteen instances}
+\label{sec:api-instances}
+
+In the decentralised deployment each agent serves the interface independently: the FL
+aggregator plus the 14 clients, fifteen endpoints in all. Four things change relative to a
+single endpoint, and three of them are places where a uniform treatment of the fifteen is
+wrong.
+
+\paragraph{Fifteen watermarks.} Each instance has its own \texttt{seq} space, so a
+\texttt{since} from one endpoint is meaningless on another. The monitor holds one contiguous
+watermark per instance; a shared counter would be silently wrong rather than merely lossy.
+
+\paragraph{The aggregator's silence is not a fault.} In GL the aggregator has no role and
+stops emitting. A monitor treating its fifteen endpoints uniformly declares it dead
+immediately after the FL $\rightarrow$ GL switch it has just observed---that is, precisely
+when the operator most needs an unambiguous picture. The rule is derived from the stream
+rather than special-cased: while the mode is \texttt{gossip}, the aggregator is expected
+quiet.
+
+\paragraph{Agreement is not corroboration.} Alarms for one window arrive from many
+instances, and what that means depends on what the instances observe. When every agent
+scores the whole window with the same diffused union, all live agents reach the same
+verdict \emph{by construction}; fourteen identical alarms are agreement, and counting them
+as corroboration would inflate confidence with replication. The useful signal there is the
+converse---divergence---and an isolated-but-live node is exactly that case, its membership
+view frozen at the moment of isolation while its agent continues. When instead each agent
+observes its own bus segment, alarms from different instances are independent evidence and
+$k$-of-$n$ fusion \emph{at the monitor} becomes a second, outer layer above the $k$-of-$n$
+already running inside each node's pool. Section~\ref{sec:api-corrob} quantifies the
+difference. We report both because only the first is faithful to the single-trace
+evaluation used throughout this paper; the second is a declared modelling premise.
+
+\paragraph{Fan-out, with asymmetric unanimity.} A mode switch is federation-wide while
+commands are per-instance, so a fan-out can partially fail---and the two directions do not
+tolerate it equally. A partial FL $\rightarrow$ GL is safe: the stragglers converge on GL,
+the resting state. A partial GL $\rightarrow$ FL splits the federation, leaving some
+instances aggregating through a hub the others have abandoned. The return therefore requires
+unanimity and is aborted otherwise, while the outbound switch does not. The fifteen commands
+of one decision share an \texttt{intent\_id} so the audit trail records them as a single
+act, each retaining its own \texttt{command\_id}. This is the only place where the
+multi-instance setting changes command semantics rather than repeating them, and it follows
+from the same asymmetry as Table~\ref{tab:authority}.
+
+\subsection{Measured: agreement is not evidence}
+\label{sec:api-corrob}
+
+We instantiated the deployment of Section~\ref{sec:api-instances}---fifteen endpoints served
+by the reference implementation, polled over HTTP by the monitor---and measured how many
+instances report the same traffic window, on attack traffic and on benign-only traffic in
+which every alarm is by construction a false positive. The monitor consumed the streams with
+no gap on any instance, each reconciled on its own contiguous sequence number.
+Table~\ref{tab:corrob} gives the result.
+
+\begin{table}[htbp]
+\centering
+\caption{Client instances reporting the same window. Requiring corroboration across
+instances costs 6.4\% of true detections and filters no false positive at all: a false
+positive is a property of the traffic window, not an idiosyncrasy of an agent.}
+\label{tab:corrob}
+\begin{tabular}{@{}llrr@{}}
+\toprule
+Window class & View & $\geq 2$ inst. & $\geq 5$ inst. \\
+\midrule
+Attack ($n=282$) & \texttt{replicated} & 100.0\% & 100.0\% \\
+                 & \texttt{sharded} & \textbf{93.6\%} & 93.3\% \\
+\addlinespace
+Benign ($n=252$), all false positives & \texttt{replicated} & 100.0\% & 100.0\% \\
+                 & \texttt{sharded} & \textbf{100.0\%} & 100.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The replicated rows are uninformative by construction, and that is itself the first result.
+Fourteen identical alarms are not fourteen corroborations: every agent holds the same
+diffused union and scores the same samples, so a monitor fusing them as independent evidence
+would report a confidence never independently obtained.
+
+The two emphasised figures are the second and more consequential result:
+\textbf{instance-level corroboration is strictly harmful as a filter}. Requiring $k \geq 2$
+\emph{instances} discards 6.4\% of true detections while removing no false positive
+whatsoever---every false positive is corroborated by at least seven instances even when each
+agent observes only its own slice. The reason is structural: a false positive is a property
+of the traffic window rather than an idiosyncrasy of an agent, so a benign window that
+resembles an attack resembles one to everybody, and partitioning the observation does not
+decorrelate the error. It only reduces how much of it each agent sees. Triage must
+therefore remain volume-based, as the single-endpoint baseline of Section~\ref{sec:api-fp}
+indicated. Fanning out to fifteen endpoints buys reconciliation, attribution and divergence
+detection; it does not buy a second opinion.
+
+On the attack side the sharded distribution is bimodal---either all fourteen instances fire
+or exactly one does---and the single-instance tail consists of the sparse windows, in which
+so few samples fall inside the second that only one agent's slice contains any. One artifact
+must be declared: those windows concentrate on a single instance, because round-robin slice
+assignment gives index 0 the first sample of every window. A deployment partitioned by bus
+segment would not carry that bias, so the 6.4\% figure stands while its attribution to one
+agent does not.
+
+\paragraph{Divergence as a detector.} Because agreement is uninformative under replication,
+the useful signal is its absence. Of the five nodes isolated during the scenario, the
+monitor identified \textbf{four from divergence alone}, without reading a single
+\texttt{node\_isolated} event: each isolated instance continues to report, carrying the
+membership view frozen at the moment it was cut out of the federation, which places it in
+the minority against the others. No instance ever disagreed about \emph{which} attack was
+present; the divergence was entirely in membership. The fifth isolation is invisible to this
+signal for a structural reason worth stating---it froze at what was already the final
+membership, so no subsequent change exposed the staleness. Divergence therefore detects
+isolation only while membership continues to change, and cannot be the sole mechanism.
+
+\subsection{Security}
+\label{sec:api-security}
+
+The observation surface is read-only and, bound to loopback, unauthenticated. That stance
+does not extend to the command surface, which changes the behaviour of a protection system:
+mutual authentication is mandatory, and each command additionally carries a detached
+signature. The reason for the second mechanism is that channel authentication proves the
+\emph{connection}, not the \emph{decision}: with a TLS-terminating proxy or an IoT hub in
+the path---which a CoAP deployment explicitly introduces---that intermediary becomes an
+implicit commander, and an audit trail based on channel identity alone cannot tell.
+
+Regarding standards alignment, IEC 62351 offers no DTLS profile; it delegates TCP/IP
+profiles to TLS (62351-3) and protects GOOSE/SV inside the PDU (62351-6, 62351-9). The
+ReSIDS-to-monitor channel is out-of-band management traffic and therefore outside that
+scope, which we state explicitly rather than claim conformance by proximity. Transport cost
+is not the deciding factor at our volume: DTLS 1.3 adds roughly 11 bytes per record, which
+still fits inside Ethernet minimum padding, so a protected datagram occupies the same 84
+bytes on the wire as an unprotected one.
+
+The command surface creates an attack surface that did not exist while the monitor was
+read-only. A compromised commander can force GL, force FL, isolate honest nodes, or readmit
+an isolated one. The mechanisms above are bounds rather than solutions---epoch for failover,
+membership floor, flap limit, signature for attribution, and the deliberate absence of a
+deadline veto so that the worst case remains \emph{degraded} rather than \emph{disarmed}.
+Byzantine-aware trust of the commander itself is outside the scope of this version.
+
+\subsection{Implementation status}
+\label{sec:api-status}
+
+\begin{table}[htbp]
+\centering
+\caption{What is implemented, and what is specified. The separation is stated here because
+an interface paper that blurs it is not actionable.}
+\label{tab:api-status}
+\begin{tabular}{@{}lp{0.52\linewidth}@{}}
+\toprule
+State & Component \\
+\midrule
+Implemented & event emission; \texttt{/events}, \texttt{/status}, \texttt{/health}; the
+JSONL audit trail; contiguous-seq reconciliation in the reference consumer; the fifteen
+endpoints and the multi-instance monitor \\
+Specified only & \texttt{/commands} and the command log; at-most-once execution; mutual
+authentication, per-command signature and epoch enforcement; \texttt{switch\_pending} and
+the evidence fields of \texttt{/status}; the monitor-commanded switch policy and deadline
+$D$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The event half of the loop is verifiable today: both scenario streams conform to the schema
+and to the authority rule, and the command log those streams \emph{imply} is derived
+mechanically from their monitor-decided events---seven commands for seven actions---which
+demonstrates that the command surface is sufficient for the scenarios without claiming it is
+built.

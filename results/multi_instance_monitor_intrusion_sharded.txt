@@ -1,0 +1,77 @@
+
+=== per-instance reconciliation ===
+instance  alive  events  contiguous  gap  mode       n_act
+srv       True         3           3 -    gossip     12   
+c00       True       286         286 -    gossip     9    
+c01       True       270         270 -    gossip     9    
+c02       True       269         269 -    gossip     9    
+c03       True       270         270 -    gossip     9    
+c04       True       270         270 -    gossip     9    
+c05       True       269         269 -    gossip     9    
+c06       True       269         269 -    gossip     9    
+c07       True       269         269 -    gossip     9    
+c08       True       269         269 -    gossip     9    
+c09       True       269         269 -    federated  9    
+c10       True       269         269 -    gossip     9    
+c11       True       269         269 -    federated  9    
+c12       True       269         269 -    gossip     9    
+c13       True       269         269 -    gossip     9    
+
+gaps: NONE (each instance reconciled on its OWN contiguous seq)
+federation mode at end: gossip
+server instance: 3 events; silence is expected in GL
+
+=== how many client instances reported the same window ===
+   1 instances:    18 windows
+   2 instances:     1 windows
+  14 instances:   263 windows
+  windows seen: 282
+
+=== divergence (minority against the majority of reporting instances) ===
+  windows with a split: 245 of 282
+  membership view — instances in the minority, and the view they hold:
+      c09:  245 windows, view=('federated', 12)
+      c10:  228 windows, view=('gossip', 11)
+      c11:  245 windows, view=('federated', 13)
+      c12:  219 windows, view=('gossip', 10)
+      a frozen view is the signature of a node ISOLATED from the federation but STILL RUNNING: isolation removes it from the pool, not from the bus
+  attack label — no instance ever disagreed on WHAT the attack was
+  example:
+      2026-01-01T00:06:57.000420+00:00 membership view: {'majority': "('gossip', 12)", 'minority': {'c09': "('federated', 12)", 'c11': "('federated', 13)"}}
+      2026-01-01T00:07:06.000420+00:00 membership view: {'majority': "('gossip', 12)", 'minority': {'c09': "('federated', 12)", 'c11': "('federated', 13)"}}
+
+=== control plane seen (by instance) ===
+  c00   architecture_change    1
+  c00   node_isolated          5
+  c01   architecture_change    1
+  c01   node_isolated          5
+  c02   architecture_change    1
+  c02   node_isolated          5
+  c03   architecture_change    1
+  c03   node_isolated          5
+  c04   architecture_change    1
+  c04   node_isolated          5
+  c05   architecture_change    1
+  c05   node_isolated          5
+  c06   architecture_change    1
+  c06   node_isolated          5
+  c07   architecture_change    1
+  c07   node_isolated          5
+  c08   architecture_change    1
+  c08   node_isolated          5
+  c09   architecture_change    1
+  c09   node_isolated          5
+  c10   architecture_change    1
+  c10   node_isolated          5
+  c11   architecture_change    1
+  c11   node_isolated          5
+  c12   architecture_change    1
+  c12   node_isolated          5
+  c13   architecture_change    1
+  c13   node_isolated          5
+  srv   architecture_change    1
+  srv   node_isolated          2
+
+=== command fan-out, were the monitor to act now ===
+  set_mode -> gossip         reachable 15/15  unanimity=not required  may_proceed=True
+  set_mode -> federated      reachable 15/15  unanimity=required  may_proceed=True

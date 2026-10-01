@@ -22,6 +22,11 @@
       "format": "date-time",
       "description": "Expiry. A command captured on the wire and replayed later is refused once this passes (403). Absent means no expiry, which is discouraged on an actuation surface; the reference policy caps acceptance at issued_at + 60 s regardless."
     },
+    "intent_id": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+      "description": "Shared by every command of ONE decision fanned out across instances (docs/MULTI_INSTANCE.md 4). A mode switch is federation-wide while commands are per-instance, so one decision becomes 15 commands: each keeps its own command_id, the idempotency key, and they share this id so the trail shows they were a single act. Absent on a single-target command. This field exists because specifying the surface for one endpoint did not reveal the need -- building the 15-instance monitor did."
+    },
     "authority_epoch": {
       "type": "integer",
       "minimum": 0,

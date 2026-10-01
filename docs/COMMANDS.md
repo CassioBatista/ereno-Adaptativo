@@ -108,6 +108,14 @@ has emitted events the monitor has not read, the decision was taken without them
 `expect` is optional. Omitting it is a deliberate statement that the command is
 unconditional (an operator override, typically), not an oversight.
 
+A fifth field, **`intent_id`**, appears when one decision is fanned out across instances: a
+mode switch is federation-wide while commands are per-instance, so one decision becomes 15
+commands, each with its own `command_id` and all sharing the `intent_id`. It was added after
+the fact — specifying the surface against a single endpoint did not reveal the need; building
+the 15-instance monitor did ([`MULTI_INSTANCE.md`](MULTI_INSTANCE.md) §4), along with the
+asymmetric unanimity rule that governs such a fan-out: a partial FL→GL is safe, a partial
+GL→FL splits the federation.
+
 ---
 
 ## 3. Outcomes
