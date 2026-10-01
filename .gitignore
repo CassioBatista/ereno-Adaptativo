@@ -13,3 +13,6 @@ results/*.log
 
 # Cache de hashes de entrada (chaveado por size+mtime) — local
 results/.input_hashes.json
+
+# Matriz de votos pontuada (derivada, ~40 MB, regenerável por scripts/scored_cache.py)
+results/.cache/
