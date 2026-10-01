@@ -71,9 +71,11 @@
         "node_failure",
         "recovery",
         "scheduled",
-        "intrusion"
+        "intrusion",
+        "commanded",
+        "autonomous_fallback"
       ],
-      "description": "Cause of the event. architecture_change: node_failure | recovery | scheduled | intrusion. node_failure: node_failure. node_recovery: recovery. node_isolated: intrusion. Only 'node_failure' while in federated mode is acted on autonomously (fail-fast FL->GL); every other cause is monitor-governed."
+      "description": "Cause of the event. architecture_change: node_failure | recovery | scheduled | intrusion | commanded | autonomous_fallback. node_failure: node_failure. node_recovery: recovery. node_isolated: intrusion. Only 'node_failure' while in federated mode is acted on autonomously (fail-fast FL->GL); every other cause is monitor-governed. The last two distinguish the outcome of the FL-pending race under the monitor_commanded policy (docs/COMMANDS.md 4.1): 'commanded' = the monitor's set_mode arrived within the deadline D; 'autonomous_fallback' = D expired first and the node self-protected."
     },
     "failed_nodes": {
       "type": "array",
@@ -211,6 +213,13 @@
         null
       ],
       "description": "Who took the ACTION. Present only on events that ARE an action: architecture_change and node_isolated. Pure observations (node_failure, node_recovery, intrusion_detected) carry no decision and omit it. autonomous is reserved for the single autonomous action in the system - the fail-fast FL->GL triggered by node inactivity; every other action (further losses in GL, intrusion-driven isolation, the GL->FL return) is monitor or operator."
+    },
+    "command_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The command that caused this action, when one did (docs/COMMANDS.md). Present only where decided_by is 'monitor' or 'operator'; null or absent on an autonomous action, which no command caused. This field is what closes the loop between the two surfaces: the command result can be lost in transit, so the EVENT carrying command_id is the authoritative commit record, and the monitor correlates on it rather than trusting its HTTP response."
     }
   },
   "examples": [

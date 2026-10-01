@@ -5,6 +5,14 @@ autonomous, decentralized switch (`DistributedArchManager`). This document speci
 an *optional* supervised switching policy for deployments that require operator
 oversight / auditability of architecture changes (e.g., critical infrastructure).
 
+> **Where the wire format lives.** This document is the *policy*: who decides, the PENDING
+> state, and why the deadline D is mandatory. The `set_mode` command itself — payload,
+> idempotency, preconditions, failure codes, authentication — is specified in
+> [`COMMANDS.md`](COMMANDS.md). One consequence stated there is worth repeating here:
+> **no command can cancel, hold or extend D.** A commander able to postpone it is a
+> commander able to keep a node in FL with a dead aggregator, which is the single point of
+> failure GL exists to survive.
+
 ## Motivation
 
 In v2 the FL↔GL switch is **autonomous**: a node detects a peer timeout locally and
@@ -128,9 +136,11 @@ architecture:
 - Detection reuses the v2 timeout detector (`fd/peer_failure.py`).
 - The `intrusion_detected` / `node_failure` / `node_recovery` / `node_isolated` /
   `architecture_change` events reuse the monitor API (`docs/API.md`, schema ≥ 1.3.0);
-  this adds the `set_mode` **command** and the `switch_pending` state. Every event
-  carries `decided_by` (`autonomous` | `monitor` | `operator`), so the trail never
-  leaves the authority ambiguous.
+  this adds the `set_mode` **command** and the `switch_pending` state, both specified in
+  [`COMMANDS.md`](COMMANDS.md) (API 1.4.0). Every event carries `decided_by`
+  (`autonomous` | `monitor` | `operator`) and, when a command caused it, `command_id` —
+  so the trail never leaves the authority ambiguous, and a commanded action can always be
+  traced back to the command and the identity that issued it.
 - **Intrusion never drives an autonomous transition.** An attributed, corroborated
   intrusion is reported; removing the node (`node_isolated`, `reason: intrusion`) is
   **commanded by the monitor**, and any mode change that follows is commanded too. This

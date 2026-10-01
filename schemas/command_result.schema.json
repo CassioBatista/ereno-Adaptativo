@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CassioBatista/ereno-Adaptativo/schemas/command_result.schema.json",
+  "title": "ReSIDS command result",
+  "description": "The agent's answer to a command, and the record kept in the command log (GET /commands). Note what this is NOT: it is not the commit record. A response can be lost; the authoritative record that a command took effect is the EVENT it produced, carrying decided_by and command_id. A monitor that treats a lost response as a failed command, and reissues, is safe only because command_id makes execution at most once -- which is why that key is mandatory rather than advisory.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["command_id", "cmd_seq", "received_at", "outcome"],
+  "properties": {
+    "command_id": {
+      "type": "string",
+      "description": "Echo of the command's idempotency key."
+    },
+    "cmd_seq": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Monotonic, gap-free position in the command log, assigned to EVERY command the agent answered -- accepted or rejected. Rejected commands produce no event, so without this log a refused actuation attempt (a stale view, a bad epoch, a forced override that failed) would leave no trace at all. It is reconciled exactly like the event seq: poll GET /commands?since=<highest contiguous cmd_seq>."
+    },
+    "received_at": {"type": "string", "format": "date-time"},
+    "outcome": {
+      "type": "string",
+      "enum": ["applied", "no_op", "rejected"],
+      "description": "applied: accepted, and it commits at the next round boundary (HTTP 202) -- not yet in effect when you read this. no_op: the requested state was already the current state, so nothing was done and nothing is wrong (HTTP 200). rejected: nothing was applied (4xx)."
+    },
+    "replayed": {
+      "type": "boolean",
+      "default": false,
+      "description": "true when this is the stored outcome of a command_id already seen. The agent did not execute anything a second time."
+    },
+    "effective_round": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "The round at which the change takes effect, for outcome=applied. Commands commit on a ROUND BOUNDARY, never mid-round: a mode change applied halfway through an aggregation would split the round between two protocols. A command accepted during round r therefore takes effect at r+1."
+    },
+    "event_seq": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "The seq of the event that records the commit, once emitted. This is the field that closes the loop between the two surfaces: the monitor correlates its command with the event, and treats THAT as proof."
+    },
+    "state": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "description": "The agent's state as it stands in the answer: mode, round, active_nodes, isolated_nodes, switch_pending, authority_epoch, last_seq. On a 409 this is what the monitor's stale view should be reconciled against."
+    },
+    "warnings": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Accepted, but with a consequence the commander should know. Two are expected in practice: isolating a node does NOT stop its traffic (removing it from the federation leaves its GOOSE/SV publication untouched, so containment remains a network action); and isolating the last holder of a specialist narrows what the pool can type, even though recall holds."
+    },
+    "error": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["code", "detail"],
+      "description": "Present exactly when outcome=rejected.",
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "malformed",
+            "unauthenticated",
+            "bad_signature",
+            "stale_epoch",
+            "expired",
+            "expectation_failed",
+            "evidence_not_met",
+            "unknown_node",
+            "membership_floor",
+            "too_soon",
+            "not_ready"
+          ],
+          "description": "expectation_failed: the expect block does not match reality (409). evidence_not_met: the agent's own safety condition is unmet, e.g. a GL->FL return while membership is incomplete (412, overridable with force). membership_floor: the isolation would take the federation below min_nodes (412). too_soon: flap protection, a commanded switch within min_switch_interval of the last one (429) -- without it a compromised commander could starve diffusion by oscillating the mode."
+        },
+        "detail": {"type": "string"}
+      }
+    }
+  },
+  "examples": [
+    {
+      "command_id": "f1c0a9de-5b2e-4a77-9c31-2b8d6e40a111",
+      "cmd_seq": 1,
+      "received_at": "2026-01-01T00:10:07.120000+00:00",
+      "outcome": "applied",
+      "replayed": false,
+      "effective_round": 9,
+      "event_seq": 10,
+      "warnings": [
+        "node 11 remains able to publish GOOSE/SV: IDS-level isolation does not block traffic"
+      ],
+      "state": {"mode": "federated", "round": 8, "n_active": 13, "isolated_nodes": [11], "authority_epoch": 3}
+    },
+    {
+      "command_id": "9ab3c7d1-44e2-4b08-8f6a-1c2d3e4f5333",
+      "cmd_seq": 2,
+      "received_at": "2026-01-01T00:11:02.400000+00:00",
+      "outcome": "rejected",
+      "error": {
+        "code": "evidence_not_met",
+        "detail": "set_mode{to: federated} refused: membership full for 0 of 3 required rounds (2 nodes still absent). Returning to FL re-accepts the hub; the agent does not do that on an unmet condition unless force is set."
+      },
+      "state": {"mode": "gossip", "round": 41, "n_active": 12, "authority_epoch": 3}
+    }
+  ]
+}

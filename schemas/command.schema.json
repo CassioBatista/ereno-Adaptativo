@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CassioBatista/ereno-Adaptativo/schemas/command.schema.json",
+  "title": "ReSIDS monitor command",
+  "description": "A command issued BY the monitor TO a ReSIDS agent. This is an ACTUATION payload, not an observation: it is the channel through which the monitor exercises the authority the authority rule gives it (docs/decentralized_monitoring.md 1.1) over every transition except the autonomous fail-fast FL->GL. Three commands exist and no more; docs/COMMANDS.md 7 lists what is deliberately absent and why. Execution is AT MOST ONCE, keyed by command_id.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["command_id", "issued_at", "authority_epoch", "issuer", "command", "params"],
+  "properties": {
+    "command_id": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+      "description": "Client-generated UUID. THE idempotency key: re-submitting the same command_id never executes twice, it returns the stored outcome with replayed=true. Mandatory because the channel may duplicate (CoAP CON retransmission, HTTP retry) and a duplicated mode switch or isolation is not harmless."
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the monitor issued the command (ISO-8601 UTC)."
+    },
+    "not_after": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Expiry. A command captured on the wire and replayed later is refused once this passes (403). Absent means no expiry, which is discouraged on an actuation surface; the reference policy caps acceptance at issued_at + 60 s regardless."
+    },
+    "authority_epoch": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monotonic counter of WHICH monitor holds authority. An agent refuses any command whose epoch is below the highest it has accepted (403), so a revoked or partitioned monitor cannot keep commanding after a failover. This is the split-brain guard: two monitors commanding at once is otherwise indistinguishable from legitimate traffic."
+    },
+    "issuer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["monitor", "operator"],
+          "description": "Copied into the resulting event's decided_by, so the audit trail distinguishes a policy engine's decision from a human's."
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "description": "Stable identity of the commander (monitor instance id, or operator account). Recorded in the command log; NOT a credential."
+        }
+      }
+    },
+    "command": {
+      "type": "string",
+      "enum": ["set_mode", "isolate_node", "readmit_node"],
+      "description": "set_mode covers both transitions; isolate_node/readmit_node cover membership. Nothing else is commandable."
+    },
+    "params": {
+      "type": "object",
+      "description": "Command-specific arguments; constrained per command by the if/then blocks below."
+    },
+    "expect": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Optimistic precondition: the state the monitor BELIEVED was in effect when it decided. If reality differs the command is refused with 409 and the current state, and nothing is applied. This exists because the monitor decides on a POLLED view that is already in the past -- the same reason the event surface insists on the contiguous seq rather than the highest seen.",
+      "properties": {
+        "mode": {"type": ["string", "null"], "enum": ["federated", "gossip", null]},
+        "n_active": {"type": ["integer", "null"], "minimum": 0},
+        "seq": {
+          "type": ["integer", "null"],
+          "minimum": 0,
+          "description": "The monitor's highest CONTIGUOUS event seq. The agent refuses if it has since emitted events the monitor has not seen, which is how a decision taken on a stale view is stopped before it actuates."
+        }
+      }
+    },
+    "force": {
+      "type": "boolean",
+      "default": false,
+      "description": "Override the agent's own safety evidence (see docs/COMMANDS.md 4.2). Permitted only where that section says so, always recorded in the event's detail, and never able to override authentication, the epoch, the expiry or the idempotency key."
+    },
+    "signature": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["alg", "key_id", "value"],
+      "description": "Detached signature over the canonical serialization of this object without the signature member (docs/COMMANDS.md 6.2). Channel authentication alone (mTLS/DTLS) proves the CONNECTION, not the decision: with a TLS-terminating proxy in front, the proxy would become an implicit commander and the trail could not tell. A per-command signature keeps authority provable from the log alone.",
+      "properties": {
+        "alg": {"type": "string", "enum": ["ed25519"]},
+        "key_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "value": {"type": "string", "contentEncoding": "base64"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"command": {"const": "set_mode"}}, "required": ["command"]},
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["to", "reason"],
+            "properties": {
+              "to": {
+                "type": "string",
+                "enum": ["federated", "gossip"],
+                "description": "Target mode. gossip: the commanded FL->GL path, which runs in parallel with the deadline D and loses the race to it if the monitor is silent. federated: the GL->FL return, which has NO autonomous counterpart -- if this command never arrives the system stays in GL by design."
+              },
+              "reason": {
+                "type": "string",
+                "enum": ["recovery", "intrusion", "node_failure", "scheduled"],
+                "description": "Copied to the event. Both streams exercise this: a GL->FL with reason recovery, and an FL->GL with reason intrusion -- a commanded switch whose driver is NOT inactivity."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"command": {"const": "isolate_node"}}, "required": ["command"]},
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["node", "reason"],
+            "properties": {
+              "node": {"type": "integer", "minimum": 0, "description": "Node index to remove from the federation."},
+              "reason": {"type": "string", "enum": ["intrusion", "unresponsive"]},
+              "evidence_seq": {
+                "type": ["array", "null"],
+                "items": {"type": "integer", "minimum": 1},
+                "description": "The intrusion_detected event seqs the monitor is acting on. Not verified by the agent; recorded so the trail shows WHICH alarms justified the isolation. With a 34.8% false-positive rate on benign windows, an isolation whose justification is not recorded cannot be reviewed."
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"command": {"const": "readmit_node"}}, "required": ["command"]},
+      "then": {
+        "properties": {
+          "params": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["node", "reason"],
+            "properties": {
+              "node": {"type": "integer", "minimum": 0},
+              "reason": {
+                "type": "string",
+                "enum": ["recovery", "false_positive", "cleared"],
+                "description": "false_positive is not a courtesy value: it is the expected one. Isolation driven by alarms will sometimes be wrong, so the surface must make undoing it a first-class, auditable act rather than a manual restart."
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "examples": [
+    {
+      "command_id": "f1c0a9de-5b2e-4a77-9c31-2b8d6e40a111",
+      "issued_at": "2026-01-01T00:10:07.000420+00:00",
+      "not_after": "2026-01-01T00:10:37.000420+00:00",
+      "authority_epoch": 3,
+      "issuer": {"kind": "monitor", "id": "mon-a"},
+      "command": "isolate_node",
+      "params": {"node": 11, "reason": "intrusion", "evidence_seq": [4, 7, 9]},
+      "expect": {"mode": "federated", "n_active": 14, "seq": 9}
+    },
+    {
+      "command_id": "7d2b41e8-0c35-4f19-bb52-9a6e13c7d222",
+      "issued_at": "2026-01-01T00:11:49.000420+00:00",
+      "not_after": "2026-01-01T00:12:19.000420+00:00",
+      "authority_epoch": 3,
+      "issuer": {"kind": "operator", "id": "cassio"},
+      "command": "set_mode",
+      "params": {"to": "federated", "reason": "recovery"},
+      "expect": {"mode": "gossip", "n_active": 14, "seq": 205}
+    }
+  ]
+}

@@ -1,12 +1,25 @@
 openapi: 3.1.0
 info:
-  title: ReSIDS Monitor API (REST pull)
-  version: "1.3.0"
+  title: ReSIDS Monitor API (REST)
+  version: "1.4.0"
   description: >
-    Read-only observability API of the ReSIDS adaptation plane (fd/monitor.py).
-    An external monitor POLLS these endpoints. The same events are also pushed to an IoT
-    hub over CoAP (see docs/API.md, "CoAP push"); this spec covers the REST/HTTP pull
-    surface only.
+    Observability AND command API of the ReSIDS adaptation plane (fd/monitor.py).
+    An external monitor POLLS the event endpoints and POSTS commands. The same events are
+    also pushed to an IoT hub over CoAP (see docs/API.md, "CoAP push"); this spec covers
+    the REST/HTTP surface only.
+
+
+    IMPLEMENTATION STATUS: the /events, /status and /health endpoints are implemented
+    (with the gaps noted in docs/API.md 2.1). The /commands endpoints are SPECIFIED AND
+    NOT IMPLEMENTED -- see docs/COMMANDS.md 9. They are included here because an external
+    developer cannot build a monitor that DECIDES without them, and the authority rule
+    (docs/decentralized_monitoring.md 1.1) puts every transition except the autonomous
+    fail-fast FL->GL in the monitor's hands.
+
+
+    The two surfaces differ in one respect that must not be blurred: /events is read-only
+    and unauthenticated on loopback, while /commands actuates a protection system and
+    REQUIRES mutual authentication plus a per-command signature (docs/COMMANDS.md 6).
 
 
     The Event payload is NOT redefined here: it is $ref'd from
@@ -97,10 +110,170 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Error" }
+  /commands:
+    post:
+      summary: Issue a command (NOT IMPLEMENTED — see docs/COMMANDS.md §9)
+      description: >
+        The actuation surface. Execution is AT MOST ONCE, keyed by the client-generated
+        `command_id`: re-submitting the same id returns the stored outcome with
+        `replayed: true` and executes nothing. Reissuing after a lost response is
+        therefore the correct recovery, not a risk.
+
+
+        A command accepted during round r commits at the START OF r+1: a mode change
+        applied mid-aggregation would split the round between two protocols. So `202`
+        means accepted, NOT yet in effect.
+
+
+        The response is not the commit record. The authoritative record is the EVENT the
+        command produces, carrying `decided_by` and `command_id` (docs/COMMANDS.md §3.1).
+      security:
+        - mutualTLS: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Command" }
+      responses:
+        "202":
+          description: "Accepted; commits at the next round boundary. `outcome: applied`."
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+        "200":
+          description: >
+            Nothing to do. Either the requested state was already in effect
+            (`outcome: no_op` — e.g. a set_mode that lost the race to the deadline D),
+            or this `command_id` was already processed (`replayed: true`).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+        "400":
+          description: Malformed — fails schemas/command.schema.json.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+        "401":
+          description: No valid channel identity. Checked before the body is parsed.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+        "403":
+          description: >
+            `bad_signature`, `stale_epoch` (authority_epoch below the highest accepted —
+            the split-brain guard), or `expired` (past `not_after`, or past the 60 s cap).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+        "409":
+          description: >
+            `expectation_failed`: the `expect` block does not match reality, so the
+            decision was taken on a stale view. Nothing was applied; `state` carries the
+            current state to reconcile against.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+        "412":
+          description: >
+            The agent's own safety condition is unmet: `evidence_not_met` (a GL->FL return
+            while membership is incomplete) or `membership_floor` (an isolation that would
+            drop below min_nodes). Overridable with `force: true`, which is recorded.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+        "422":
+          description: "`unknown_node`: no such node index."
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+        "429":
+          description: >
+            `too_soon`: flap protection. A commanded switch within `min_switch_interval`
+            of the last one is refused, so a commander cannot starve booster diffusion by
+            oscillating the mode.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+        "503":
+          description: "`not_ready`: agent starting or shutting down."
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+    get:
+      summary: Command log, incremental (NOT IMPLEMENTED)
+      description: >
+        Mirrors GET /events exactly: `since` is EXCLUSIVE, results ascend by `cmd_seq`,
+        which is gap-free, and the consumer polls with its highest CONTIGUOUS value.
+
+
+        Every ANSWERED command appears here, accepted or rejected. Rejected commands
+        produce no event, so without this log a refused actuation attempt — a stale view,
+        a bad epoch, a failed override — would leave no trace anywhere.
+      security:
+        - mutualTLS: []
+      parameters:
+        - name: since
+          in: query
+          description: Exclusive lower bound on `cmd_seq`. Pass the highest contiguous one received.
+          schema: { type: integer, default: 0, minimum: 0 }
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 10000 }
+      responses:
+        "200":
+          description: Command results with cmd_seq greater than `since`, ascending.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/CommandResult" }
+        "400":
+          description: Malformed parameter.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+  /commands/{command_id}:
+    get:
+      summary: Stored outcome of one command (NOT IMPLEMENTED)
+      description: >
+        Lets a monitor that lost a response find out what happened without reissuing.
+        Reissuing is also safe (at-most-once), so this is a convenience, not the only
+        recovery path.
+      security:
+        - mutualTLS: []
+      parameters:
+        - name: command_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: The stored result.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CommandResult" }
+        "404":
+          description: Unknown command_id (never received, or beyond retention).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
 components:
+  securitySchemes:
+    mutualTLS:
+      type: mutualTLS
+      description: >
+        TLS 1.3 with client certificates, mandatory on the command surface. It proves the
+        CONNECTION, not the DECISION — hence the additional per-command Ed25519 signature
+        in schemas/command.schema.json: with a TLS-terminating proxy or an IoT hub in the
+        path, that intermediary would otherwise become an implicit commander and the audit
+        trail could not tell (docs/COMMANDS.md §6.2).
   schemas:
     Event:
       $ref: "../schemas/event.schema.json"
+    Command:
+      $ref: "../schemas/command.schema.json"
+    CommandResult:
+      $ref: "../schemas/command_result.schema.json"
     Status:
       type: object
       required: [current_mode, round, last_seq, api_version]
@@ -118,6 +291,46 @@ components:
         failed_nodes:
           type: array
           items: { type: integer, minimum: 0 }
+        isolated_nodes:
+          type: array
+          items: { type: integer, minimum: 0 }
+          description: >
+            Removed by command, not by failure. Distinct from failed_nodes because the
+            remedy differs: a failed node returns on its own, an isolated one needs
+            readmit_node. An isolated node also keeps publishing GOOSE/SV — isolation is
+            an IDS-level membership change, not containment (docs/COMMANDS.md §4.4).
+        switch_pending:
+          type: [object, "null"]
+          description: >
+            Non-null while a node has detected inactivity and is awaiting a command under
+            the monitor_commanded policy. This is the window in which a set_mode command
+            races the deadline D; after it the mode has already changed, autonomously.
+          properties:
+            from_mode: { type: string, enum: [federated, gossip] }
+            to_mode: { type: string, enum: [federated, gossip] }
+            since_round: { type: integer, minimum: 0 }
+            deadline_round:
+              type: integer
+              minimum: 0
+              description: Round at which the autonomous fallback fires if no command arrives.
+        authority_epoch:
+          type: integer
+          minimum: 0
+          description: >
+            Highest epoch accepted. A commander must carry at least this value; lower is
+            refused with stale_epoch. Bumped on monitor failover.
+        evidence:
+          type: [object, "null"]
+          description: >
+            What the agent will check a command against. Without this a monitor cannot know
+            whether a GL->FL return would be accepted and would be reduced to guess-and-retry.
+          properties:
+            membership_full_for_rounds: { type: integer, minimum: 0 }
+            dwell_required: { type: integer, minimum: 0 }
+        last_cmd_seq:
+          type: integer
+          minimum: 0
+          description: Highest cmd_seq answered. Compare with your contiguous value, as with last_seq.
         last_seq:
           type: integer
           minimum: 0

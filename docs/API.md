@@ -1,7 +1,15 @@
 # ReSIDS Monitor API
 
 Observability / notification interface of the ReSIDS adaptation plane
-([`fd/monitor.py`](../fd/monitor.py)). Two surfaces share **one event model**:
+([`fd/monitor.py`](../fd/monitor.py)).
+
+> **This document is the OBSERVATION half.** The monitor also *decides*: under the
+> authority rule ([`decentralized_monitoring.md`](decentralized_monitoring.md) §1.1) every
+> transition except the autonomous fail-fast FL→GL is its call. The commands through which
+> it acts are specified in [`COMMANDS.md`](COMMANDS.md) — a separate surface, with
+> mandatory authentication, because it actuates rather than reports.
+
+Two surfaces share **one event model**:
 
 1. **REST pull** — an external monitor POLLS ReSIDS (`GET /events`, `/status`, `/health`).
    Machine-readable spec: [`openapi.yaml`](openapi.yaml) (OpenAPI **3.1**, which `$ref`s
@@ -11,13 +19,14 @@ Observability / notification interface of the ReSIDS adaptation plane
    ThingsBoard) as CoAP telemetry/attributes.
 
 Authoritative payload schema: [`schemas/event.schema.json`](../schemas/event.schema.json).
-Version: **1.2.0**. Events emitted: `architecture_change` (FL↔GL switch),
+Version: **1.4.0**. Five events are emitted: `architecture_change` (FL↔GL switch),
 `node_failure` (a node identified as failing), `node_recovery` (a node back in the
-membership) and `intrusion_detected` (an attack alarm — **notification only**, see §4).
+membership), `node_isolated` (a node removed by command) and `intrusion_detected` (an
+attack alarm — **notification only**, see §4).
 
-Changes in 1.2.0 (additive except one rename): the `node_recovery` type; the traffic
-window (`window_start`, `window_end`, `window_samples`); explicit state on every event
-(`mode`, `n_active`); and `detector_nodes` **renamed** to `detector_specialists`.
+Of these, only `architecture_change` and `node_isolated` are **actions**; the other three
+are observations. The distinction is carried by `decided_by`, and §6 records when each
+piece arrived.
 
 ---
 
@@ -27,14 +36,14 @@ window (`window_start`, `window_end`, `window_samples`); explicit state on every
 |---|---|---|---|
 | `seq` | int | monotonic, ≥1 | unique; continues across runs |
 | `ts` | string / int | ISO-8601 UTC (REST) · epoch-ms (CoAP) | timestamp |
-| `type` | enum | `architecture_change`, `node_failure`, `node_recovery`, `intrusion_detected` | event kind |
+| `type` | enum | `architecture_change`, `node_failure`, `node_recovery`, `node_isolated`, `intrusion_detected` | event kind |
 | `round` | int | ≥0 | federation round |
 | `window_start` / `window_end` | string \| null | ISO-8601 UTC | traffic window the event refers to, from the GOOSE/SV frame timestamps — **distinct from `ts`**, the emission instant |
 | `window_samples` | int \| null | ≥0 | samples scored in the window — denominator for `n_flags` |
 | `mode` | enum \| null | `federated`, `gossip` | aggregation mode in effect, so the monitor never infers state |
 | `n_active` | int \| null | ≥0 | `len(active_nodes)` |
 | `from_mode` / `to_mode` | enum \| null | `federated`, `gossip` | architecture_change only |
-| `reason` | enum \| null | `node_failure`, `recovery`, `scheduled` | cause |
+| `reason` | enum \| null | `node_failure`, `recovery`, `scheduled`, `intrusion`, `commanded`, `autonomous_fallback` | cause. The last two distinguish the outcome of the FL-pending race against the deadline D ([`COMMANDS.md`](COMMANDS.md) §4.1) |
 | `failed_nodes` | int[] | node indices | authoritative on `node_failure` |
 | `recovered_nodes` | int[] | node indices | authoritative on `node_recovery` |
 | `active_nodes` | int[] \| null | node indices | null = all active |
@@ -44,10 +53,15 @@ window (`window_start`, `window_end`, `window_samples`); explicit state on every
 | `detector_specialists` | int[] | specialist indices | which **boosters** fired — not nodes: every node holds the same diffused union and reaches the same verdict (`intrusion_detected`) |
 | `source_node` | int \| null | node index | attributed emitter; **null when unavailable (typical v2)** |
 | `confidence` | number \| null | score | optional (`intrusion_detected`) |
+| `decided_by` | enum \| null | `autonomous`, `monitor`, `operator` | who took the **action**. Present only on `architecture_change` and `node_isolated`; observations omit it. `autonomous` is reserved for the one autonomous action in the system |
+| `command_id` | string \| null | UUID | the command that caused the action ([`COMMANDS.md`](COMMANDS.md)). Null on an autonomous action, which no command caused |
 | `detail` | string \| null | free text | optional |
 
 **Current state** (served by `/status`, pushed as CoAP attributes):
-`current_mode`, `round`, `active_nodes[]`, `failed_nodes[]`, `last_seq`.
+`current_mode`, `round`, `active_nodes[]`, `failed_nodes[]`, `isolated_nodes[]`,
+`switch_pending`, `authority_epoch`, `evidence`, `last_seq`, `last_cmd_seq`. The last five
+exist for the command surface: a commander that cannot read `evidence` cannot know whether
+a GL→FL return will be accepted, and would be reduced to guess-and-retry.
 
 ---
 
@@ -109,8 +123,8 @@ checkable from a stream.
 | **Retention** | bounded. `/status.retained_from_seq` is the oldest `seq` still served; a `since` below it returns **`410 Gone`**, never a silently short answer |
 | **Errors** | `400` malformed parameter · `404` unknown path · `410` beyond retention |
 | **Versioning** | `/status.api_version` carries the implemented version, for in-band discovery |
-| **Authentication** | **none** on this surface; it binds to `127.0.0.1` by default. Exposing it beyond loopback requires a reverse proxy with TLS and authentication — the server itself does not authenticate |
-| **Read-only** | no endpoint mutates state. Commands (the monitor-commanded switch) are a separate, not-yet-implemented surface |
+| **Authentication** | **none** on this surface; it binds to `127.0.0.1` by default. Exposing it beyond loopback requires a reverse proxy with TLS and authentication — the server itself does not authenticate. **This stance is specific to reading**: the command surface requires mutual authentication and a per-command signature ([`COMMANDS.md`](COMMANDS.md) §6) |
+| **Read-only** | no endpoint *here* mutates state. Actuation lives on the separate, specified-but-unimplemented command surface ([`COMMANDS.md`](COMMANDS.md)) |
 
 **Retention matters more than it looks.** The in-memory store keeps the last
 `keep_in_memory` events (10 000 by default) while the JSONL trail keeps everything. A
@@ -219,10 +233,26 @@ monitor:
 
 ## 6. Versioning
 
-API version follows this document (**1.2.0**). Breaking changes to the event model
+API version follows this document (**1.4.0**). Breaking changes to the event model
 or endpoints bump the major version; additive fields bump the minor. The `type`
 and `reason` enums may gain values in minor versions — consumers must ignore
 unknown enum values gracefully.
+
+**v1.4.0** adds the **command surface** ([`COMMANDS.md`](COMMANDS.md)): the `/commands`
+endpoints, `schemas/command.schema.json`, `schemas/command_result.schema.json`, the event
+field `command_id`, the `reason` values `commanded` and `autonomous_fallback`, and the
+`/status` fields `isolated_nodes`, `switch_pending`, `authority_epoch`, `evidence` and
+`last_cmd_seq` — all additive. Nothing on the event surface changes meaning.
+
+**v1.3.0** added the `node_isolated` type and `decided_by`, and restricted `decided_by` to
+events that *are* an action. That restriction is the machine-checkable form of the
+authority rule: `autonomous` may appear only on node inactivity and the FL→GL it triggers,
+and [`scripts/validate_events.py`](../scripts/validate_events.py) rejects a stream that
+claims otherwise.
+
+**v1.2.0** added the `node_recovery` type; the traffic window (`window_start`,
+`window_end`, `window_samples`); explicit state on every event (`mode`, `n_active`); and
+**renamed** `detector_nodes` to `detector_specialists`.
 
 **v1.1.0** added the `intrusion_detected` event type and its fields (`attack`,
 `k_votes`, `n_flags`, `detector_nodes`, `source_node`, `confidence`) — additive,
@@ -238,5 +268,7 @@ architecture does not have.
 ## 7. Files
 
 - [`schemas/event.schema.json`](../schemas/event.schema.json) — authoritative payload schema (JSON Schema 2020-12).
-- [`openapi.yaml`](openapi.yaml) — REST endpoints (OpenAPI 3).
-- [`fd/monitor.py`](../fd/monitor.py) — reference implementation.
+- [`openapi.yaml`](openapi.yaml) — REST endpoints, events and commands (OpenAPI 3.1).
+- [`COMMANDS.md`](COMMANDS.md) — the command surface: the half that lets the monitor decide.
+- [`fd/monitor.py`](../fd/monitor.py) — reference implementation (events only).
+- [`scripts/validate_events.py`](../scripts/validate_events.py) — stream conformance, including the authority rule.

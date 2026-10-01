@@ -18,7 +18,11 @@ with its own CoAP endpoint — and states precisely what is not implemented (§9
 >
 > The event model, the contiguous-`seq` reconciliation, the deadline D and the authority
 > rule are **transport-independent** and survive either choice — which is exactly why the
-> decision can wait.
+> decision can wait. The command surface was specified the same way:
+> [`COMMANDS.md`](COMMANDS.md) §§1–7 bind to no transport, and §8 gives both bindings side
+> by side. Writing it out did surface one asymmetry worth weighing when the decision is
+> taken: two of the command rejections (`409` conflict, `429` too soon) have no registered
+> CoAP equivalent, so the CoAP binding must carry `error.code` in the payload.
 
 ---
 
