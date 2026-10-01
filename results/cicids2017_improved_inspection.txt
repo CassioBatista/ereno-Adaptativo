@@ -1,0 +1,54 @@
+=== 1. COLUMNS (91 in the corrected export) ===
+our F1..F78 found by name: 77/78
+missing (1): [(56, 'Fwd Header Length.1')]
+present only in the corrected export (14): ['id', 'Flow ID', 'Src IP', 'Src Port', 'Dst IP', 'Protocol', 'Timestamp', 'Fwd RST Flags', 'Bwd RST Flags', 'ICMP Code', 'ICMP Type', 'Total TCP Flow Time', 'Label', 'Attempted Category']
+relative order of the shared features preserved: True
+our combined GRASP selection (31 features): 31 map by name, lost []
+
+=== 2. LABELS, same 3 days (tuesday, wednesday, thursday) ===
+  tuesday.csv: 322,078 flows
+  wednesday.csv: 496,641 flows
+  thursday.csv: 362,076 flows
+
+label                                                flows
+  BENIGN                                           922,398
+  DoS Hulk                                         158,468
+  Infiltration - Portscan                           71,767
+  DoS GoldenEye                                      7,567
+  FTP-Patator                                        3,972
+  DoS Slowloris                                      3,859
+  DoS Slowhttptest - Attempted                       3,368
+  SSH-Patator                                        2,961
+  DoS Slowloris - Attempted                          1,847
+  DoS Slowhttptest                                   1,740
+  Web Attack - Brute Force - Attempted               1,292
+  Web Attack - XSS - Attempted                         655
+  DoS Hulk - Attempted                                 581
+  DoS GoldenEye - Attempted                             80
+  Web Attack - Brute Force                              73
+  Infiltration - Attempted                              45
+  Infiltration                                          36
+  SSH-Patator - Attempted                               27
+  Web Attack - XSS                                      18
+  Web Attack - SQL Injection                            13
+  FTP-Patator - Attempted                               12
+  Heartbleed                                            11
+  Web Attack - SQL Injection - Attempted                 5
+
+=== 3. PER CLASS: v2 (original) vs corrected ===
+class              v2 orig   corrected     delta  +Attempted
+BENIGN           1,039,547     922,398    -11.3%           0
+hulk               230,124     158,468    -31.1%         581
+GoldenEye           10,293       7,567    -26.5%          80
+ftp                  7,935       3,972    -49.9%          12
+ssh                  5,897       2,961    -49.8%          27
+slowloris            5,796       3,859    -33.4%       1,847
+Slowhttptest         5,499       1,740    -68.4%       3,368
+brute                1,507          73    -95.2%       1,292
+xss                    652          18    -97.2%         655
+sql                     21          13    -38.1%           5
+Heartbleed              11          11     +0.0%           0
+
+Attempted flows total: 7,867 — would be counted as attack in the original, they are NOT an attack payload
+  share vs proper attack flows of the same classes: 4.2%
+labels outside our 10 classes (e.g. Thursday-afternoon Infiltration): {'Infiltration - Attempted': 45, 'Infiltration': 36, 'Infiltration - Portscan': 71767}
