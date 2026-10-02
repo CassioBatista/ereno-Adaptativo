@@ -108,9 +108,14 @@ In the scenario format this is `timing.detect_lag`, `timing.watchdog` and
 
 ## Figure
 
-`results/monitor_commanded_sequence.{png,pdf}` still draws the earlier design (a remote
-monitor racing a deadline). It needs to be redrawn for the node-local Disaster-FD and the
-watchdog.
+- `results/monitor_commanded_sequence.{png,pdf}` (`scripts/monitor_commanded_sequence.py`):
+  agent, node-local Disaster-FD and federated Disaster-FD; the commanded FL→GL (round 102),
+  the watchdog when the local FD is down (round 105), and the federated GL→FL with no
+  fallback.
+- `results/decentralized_monitoring_sequence.{png,pdf}`
+  (`scripts/decentralized_monitoring_sequence.py`): the five observability phases with the
+  same roles, including a partition (the local FD still commands) and a local-FD crash (the
+  watchdog acts).
 
 ## Relation to the rest of ReSIDS
 
