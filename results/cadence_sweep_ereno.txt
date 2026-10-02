@@ -1,0 +1,29 @@
+ERENO cadence sweep — thresholds calibrated ONCE at the 1-s cadence, then held fixed
+calibration (benign windows, 1 s, margin x1.25): volume T = 344, fraction f = 0.0454
+
+      local tick  windows   atk   med n |  volume TP  volume FP |  fraction TP  fraction FP | benign max frac    (n>=50)
+          0.25 s     2905   642    1190 |  176/642      0/2263  |   629/642      151/2263   |          0.1461     0.1461
+           0.5 s     1640   401    2378 |  338/401      0/1239  |   394/401       16/1239   |          0.0728     0.0728
+             1 s     1006   282    4758 |  258/282      0/724   |   275/282        0/724    |          0.0364     0.0364
+             2 s      702   260    4759 |  252/260      0/442   |   252/260        0/442    |          0.0364     0.0364
+             5 s      500   245    4761 |  238/245      0/255   |   231/245        0/255    |          0.0363     0.0363
+            10 s      361   221    4761 |  217/221      0/140   |   205/221        0/140    |          0.0363     0.0363
+     500 samples     5912   723     500 |  308/723      0/5189  |   689/723      212/5189   |          0.3060     0.3060
+    1000 samples     2956   455    1000 |  231/455      0/2501  |   417/455      103/2501   |          0.1720     0.1720
+    4759 samples      622   215    4759 |  190/215      0/407   |   203/215        1/407    |          0.0492     0.0492
+   20000 samples      148    93   20000 |   90/93       1/55    |    80/93         0/55     |          0.0180     0.0180
+
+combined rule (volume OR fraction), thresholds fixed at 1 s  |  recalibrated at each cadence (in-sample, FP 0 by construction)
+      local tick    both TP    both FP |  recal T  recal f   recal TP
+          0.25 s  629/642    151/2263  |      344   0.1826  589/642  
+           0.5 s  394/401     16/1239  |      344   0.0909  392/401  
+             1 s  276/282      0/724   |      344   0.0454  276/282  
+             2 s  255/260      0/442   |      344   0.0454  255/260  
+             5 s  241/245      0/255   |      344   0.0454  241/245  
+            10 s  218/221      0/140   |      403   0.0454  218/221  
+     500 samples  689/723    212/5189  |      193   0.3825  420/723  
+    1000 samples  417/455    103/2501  |      216   0.2150  289/455  
+    4759 samples  203/215      1/407   |      294   0.0615  193/215  
+   20000 samples   90/93       1/55    |      450   0.0224   86/93   
+
+volume TP/FP = attack/benign windows alarmed by n_flags >= T; fraction likewise by n_flags/window_samples > f. 'benign max frac' is the largest flagged fraction in any benign window at that cadence; the last column restricts it to windows of at least 50 samples.
