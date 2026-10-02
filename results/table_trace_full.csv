@@ -672,7 +672,7 @@ window,window_start,window_end,n_samples,traffic,stream,scenario_round,n_events,
 670,2026-01-01T00:11:23.000420+00:00,2026-01-01T00:11:24.000420+00:00,0,none,,,0,,,,,,
 671,2026-01-01T00:11:24.000420+00:00,2026-01-01T00:11:25.000420+00:00,0,none,,,0,,,,,,
 672,2026-01-01T00:11:25.000420+00:00,2026-01-01T00:11:26.000420+00:00,3,benign,,,0,,,,,,
-673,2026-01-01T00:11:26.000420+00:00,2026-01-01T00:11:27.000420+00:00,4758,benign,availability,102,2,architecture_change|intrusion_detected,masquerade_fake_normal,38,2,,autonomous
+673,2026-01-01T00:11:26.000420+00:00,2026-01-01T00:11:27.000420+00:00,4758,benign,availability,102,2,architecture_change|intrusion_detected,masquerade_fake_normal,38,2,,monitor
 674,2026-01-01T00:11:27.000420+00:00,2026-01-01T00:11:28.000420+00:00,1003,attack,intrusion,41,1,intrusion_detected,injection,1000,6,11,
 675,2026-01-01T00:11:28.000420+00:00,2026-01-01T00:11:29.000420+00:00,4758,attack,intrusion,42,1,intrusion_detected,inverse_replay,321,4,10,
 676,2026-01-01T00:11:29.000420+00:00,2026-01-01T00:11:30.000420+00:00,0,none,,,0,,,,,,

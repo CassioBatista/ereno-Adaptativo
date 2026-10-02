@@ -119,7 +119,8 @@ def main():
     fed = [json.loads(l) for l in open(fed_path, encoding="utf-8")]
     print(f"[inst] {name}: {len(fed)} federation events from {fed_path}")
 
-    ts, fired, y, nc, cv, spec_attack = train_and_score(sc)
+    from scored_cache import get_scored        # same model as the streams, no retraining
+    ts, fired, y, nc, cv, spec_attack, _ = get_scored(a.scenario)
     t0 = float(ts[0])
     win = np.floor((ts - t0) / sc["window_seconds"]).astype(np.int64)
     bnd = np.searchsorted(win, np.arange(int(win[-1]) + 2))

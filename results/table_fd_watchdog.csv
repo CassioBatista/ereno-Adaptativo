@@ -33,9 +33,9 @@ seq,round,mode,n_active,decided_by,type,attack,n_flags,k_votes,nodes,window_trut
 32,98,federated,14,,intrusion_detected,masquerade_fake_normal,29,2,,benign (any alarm here is a FALSE POSITIVE)
 33,100,federated,13,,node_failure,,,,failed=13,
 34,100,federated,13,,intrusion_detected,masquerade_fake_fault,74,2,,benign (any alarm here is a FALSE POSITIVE)
-35,102,gossip,13,monitor,architecture_change,,,,federated->gossip,
-36,102,gossip,13,,intrusion_detected,masquerade_fake_normal,38,2,,benign (any alarm here is a FALSE POSITIVE)
-37,104,gossip,13,,intrusion_detected,masquerade_fake_fault,56,2,,benign (any alarm here is a FALSE POSITIVE)
+35,102,federated,13,,intrusion_detected,masquerade_fake_normal,38,2,,benign (any alarm here is a FALSE POSITIVE)
+36,104,federated,13,,intrusion_detected,masquerade_fake_fault,56,2,,benign (any alarm here is a FALSE POSITIVE)
+37,105,gossip,13,autonomous,architecture_change,,,,federated->gossip,
 38,106,gossip,13,,intrusion_detected,masquerade_fake_fault,65,2,,benign (any alarm here is a FALSE POSITIVE)
 39,107,gossip,13,,intrusion_detected,masquerade_fake_fault,47,2,,benign (any alarm here is a FALSE POSITIVE)
 40,109,gossip,13,,intrusion_detected,masquerade_fake_fault,65,2,,benign (any alarm here is a FALSE POSITIVE)

@@ -52,19 +52,30 @@
         "detect_lag": {
           "type": "integer",
           "minimum": 0,
-          "description": "Rounds from an inactivity event to the AUTONOMOUS fail-fast FL->GL. The only autonomous action."
+          "description": "Rounds from an inactivity event to the fail-fast FL->GL commanded by the NODE-LOCAL Disaster-FD monitor process, on local evidence only (no regional agreement), so it keeps fail-fast latency and partition tolerance."
         },
         "dwell": {
           "type": "integer",
           "minimum": 0,
-          "description": "Rounds of full membership required before GL->FL is even proposed (evidence for the monitor)."
+          "description": "Rounds of full membership required before the federated Disaster-FD considers the GL->FL return."
         },
         "cmd_latency": {
           "type": "integer",
           "minimum": 0,
-          "description": "Rounds the monitor takes to issue a command. GL->FL is monitor-commanded and has NO autonomous fallback."
+          "description": "Rounds the FEDERATED (regional) Disaster-FD takes to reach and issue a decision: GL->FL, isolation, losses while in GL. GL->FL has NO fallback: if the federation cannot decide, the system rests in GL."
+        },
+        "watchdog": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 3,
+          "description": "D: rounds the agent waits for its own node-local Disaster-FD monitor before falling back to FL->GL by itself. Used only when that local process is unavailable (local_fd_available: false). The fallback exists in the fail-safe direction only."
         }
       }
+    },
+    "local_fd_available": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the node-local Disaster-FD monitor process is alive. true (normal): FL->GL is commanded by it (decided_by=monitor). false: models a crashed or hung local FD process, so the agent's watchdog fires after D rounds (decided_by=autonomous, reason=autonomous_fallback) -- the only case in which the agent acts on its own."
     },
     "attribution": {
       "type": "object",

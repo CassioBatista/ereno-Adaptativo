@@ -1,13 +1,14 @@
 # Driver 1: INACTIVITY. Benign-only traffic, so every alarm is a false positive and the
-# stream doubles as the false-positive baseline the monitor must learn to filter.
-# Exercises the single autonomous action in the system (fail-fast FL->GL) and the
-# monitor-commanded GL->FL return.
+# stream doubles as the false-positive baseline Disaster-FD must learn to filter.
+# Exercises the fail-fast FL->GL commanded by the node-local Disaster-FD monitor and the
+# GL->FL return decided by the federated Disaster-FD.
 name: availability
 description: >-
   Benign-only traffic. Three nodes go inactive and come back. The FL->GL switch is
-  autonomous (fail-fast, detect_lag rounds); further losses while in GL trigger nothing,
-  because GL absorbs them; the GL->FL return is commanded by the monitor after the
-  dwell evidence plus the command latency, and has no autonomous fallback.
+  commanded by the node-local Disaster-FD monitor on local evidence (fail-fast,
+  detect_lag rounds, no regional quorum); further losses while in GL trigger nothing,
+  because GL absorbs them; the GL->FL return is decided by the federated Disaster-FD
+  after the dwell evidence plus its decision latency, and has no fallback of any kind.
 stream: benign_only
 window_seconds: 1.0
 nodes: 14
@@ -28,14 +29,16 @@ model:
 sim_epoch: "2026-01-01T00:00:00Z"   # synthetic anchor for the relative trace time
 
 timing:
-  detect_lag: 2       # autonomous fail-fast FL->GL
-  dwell: 3            # full-membership evidence handed to the monitor
-  cmd_latency: 3      # monitor issues the GL->FL command
+  detect_lag: 2       # node-local Disaster-FD commands the fail-fast FL->GL
+  dwell: 3            # full-membership evidence for the federated Disaster-FD
+  cmd_latency: 3      # federated Disaster-FD decides the GL->FL return
+  watchdog: 3         # D: agent's wait on its own local FD (used only if it is down)
+local_fd_available: true
 
 # The benign-only stream has ~724 windows; every round below must fall inside it.
 schedule:
-  - {round: 100, event: node_failure,  node: 13, note: "triggers the autonomous FL->GL"}
-  - {round: 200, event: node_failure,  node: 12, note: "already in GL: no autonomous action"}
+  - {round: 100, event: node_failure,  node: 13, note: "local Disaster-FD commands FL->GL"}
+  - {round: 200, event: node_failure,  node: 12, note: "already in GL: no transition"}
   - {round: 300, event: node_failure,  node: 11}
   - {round: 480, event: node_recovery, node: 11}
   - {round: 540, event: node_recovery, node: 12}

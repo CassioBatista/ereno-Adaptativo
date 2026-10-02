@@ -10,8 +10,10 @@ is entitled to rely on but which JSON Schema cannot express:
     GET /events?since=<highest CONTIGUOUS seq> - see docs/API.md §2);
   * window_start < window_end, and ts >= window_end (an event is emitted at the close of
     the window it refers to);
-  * `decided_by: autonomous` appears ONLY where the authority rule allows it: node
-    inactivity, and the FL->GL transition it triggers (docs/decentralized_monitoring.md §1.1);
+  * `decided_by: autonomous` appears ONLY where the authority rule allows it: the agent's
+    watchdog FL->GL (reason autonomous_fallback), when its node-local Disaster-FD monitor is
+    unavailable. Every other decision is Disaster-FD's (decided_by: monitor)
+    (docs/decentralized_monitoring.md §1.1);
   * per-type required fields (failed_nodes on node_failure, recovered_nodes on
     node_recovery, from/to_mode on architecture_change, source_node on node_isolated).
 
@@ -92,13 +94,20 @@ def check_events(path):
                        f"it must not carry decided_by")
         if is_action and e.get("decided_by") is None:
             fail(errs, f"seq {e['seq']}: {e['type']} is an action and must state decided_by")
+        # Every decision belongs to Disaster-FD (decided_by=monitor). The agent acts alone
+        # only through its watchdog -- FL->GL, reason autonomous_fallback -- when its own
+        # node-local Disaster-FD process is unavailable. Anything else claiming autonomy,
+        # or a fallback in the unsafe direction, is a violation.
         if e.get("decided_by") == "autonomous":
             ok = (e["type"] == "architecture_change" and e.get("to_mode") == "gossip"
-                  and e.get("reason") == "node_failure")
+                  and e.get("reason") == "autonomous_fallback")
             if not ok:
                 fail(errs, f"seq {e['seq']}: decided_by=autonomous not allowed for "
-                           f"{e['type']}/{e.get('reason')} — the only autonomous action is "
-                           f"the fail-fast FL->GL on inactivity")
+                           f"{e['type']}/{e.get('to_mode')}/{e.get('reason')} — the agent acts "
+                           f"alone only as the watchdog FL->GL (reason autonomous_fallback)")
+        if e.get("reason") == "autonomous_fallback" and e.get("decided_by") != "autonomous":
+            fail(errs, f"seq {e['seq']}: reason autonomous_fallback must be decided_by "
+                       f"autonomous (it is the agent's watchdog, not a Disaster-FD decision)")
     print(f"events: {len(evs)} | types: {dict(Counter(e['type'] for e in evs))}")
     print(f"seq range: {seqs[0] if seqs else '-'}..{seqs[-1] if seqs else '-'} | "
           f"decided_by: {dict(Counter(e.get('decided_by') for e in evs))}")

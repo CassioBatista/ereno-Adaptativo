@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-09-30T12:50:30+00:00",
+  "generated_at": "2026-10-02T09:56:57+00:00",
   "scenario": {
     "file": "conf/scenarios/intrusion.yaml",
-    "bytes": 1707,
-    "sha256": "4a0889d76b44b5bd491b8cbddca1dc3703692792e1958fbfe5e7c957d7fdaddc",
+    "bytes": 1801,
+    "sha256": "123bd6f93b212765e8c801313961e0cc2095779dd91a38951c5121fce54712ec",
     "name": "intrusion"
   },
   "generator": {
     "file": "scripts/scenario_events.py",
-    "bytes": 16873,
-    "sha256": "ea37e31d229bfbd4937f52a683bf0ff2343f3c8adba9ed7024c90390ca8fcbef",
+    "bytes": 17004,
+    "sha256": "6a21080240ad80793c2e6212af33264fcf1129b40aa3f05eddec73e751b7b05b",
     "git": {
-      "commit": "5d8c5a8",
+      "commit": "4078686",
       "dirty": true,
       "note": "working tree has uncommitted changes — the commit alone does NOT identify this generator"
     }
@@ -19,15 +19,15 @@
   "schemas": {
     "event": {
       "file": "schemas/event.schema.json",
-      "bytes": 8908,
-      "sha256": "edba3438c1ea4f95a9a1b7732813f501703e68ea08c7c1b7b5b5ab94d2c1c9f6"
+      "bytes": 10172,
+      "sha256": "63e5db1be82111d46cfe12f628e59578c6f5608c718506d3c1b08fdde221e50b"
     },
     "scenario": {
       "file": "schemas/scenario.schema.json",
-      "bytes": 6291,
-      "sha256": "5df8dd6c0eb38846cb37ef68028c7278dd387d3c0629f630bae1be9d96384493"
+      "bytes": 7318,
+      "sha256": "d26c2f93a6f647d0431844cff90840484bbf2da3be18cdaf354433dbd431ccb8"
     },
-    "api_version": "1.3.0"
+    "api_version": "1.4.0"
   },
   "inputs": {
     "train": {
@@ -91,13 +91,14 @@
     "timing": {
       "detect_lag": 2,
       "dwell": 3,
-      "cmd_latency": 3
+      "cmd_latency": 3,
+      "watchdog": 3
     }
   },
   "output": {
     "file": "results/events_intrusion.jsonl",
-    "bytes": 168446,
-    "sha256": "61628967bc77376fa43c11f3a4914ca6c7c72cf95037da0317d7d12877a5950a",
+    "bytes": 168711,
+    "sha256": "d76c77a9a2a9ec54b58673de2976bfd269ba92d5047140ffdf7144c46cec6abe",
     "events": 288,
     "types": {
       "intrusion_detected": 282,

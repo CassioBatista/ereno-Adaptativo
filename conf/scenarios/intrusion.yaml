@@ -1,15 +1,16 @@
 # Driver 2: ATTRIBUTED INTRUSION. Attack traffic; a node whose emitted traffic is
 # repeatedly and corroboratedly flagged is ISOLATED — but the IDS never isolates: it
-# reports, the monitor decides and commands. Intrusion never drives the autonomous
-# transition; any mode change here is monitor-commanded.
+# reports, the federated Disaster-FD decides and commands. Intrusion never drives the
+# fail-fast transition; any mode change here is decided by the federated Disaster-FD.
 #
 # HONEST SCOPE: `source_node` attribution does NOT exist in v2 (always null). The
 # `attribution` map below is synthetic, a v3 premise used to exercise this driver.
 name: intrusion
 description: >-
   Attack traffic with synthetic attribution. Corroborated alarms accumulate against the
-  attributed emitter; after isolate_after of them the monitor commands node_isolated
-  (reason: intrusion), and after command_switch_after isolations it commands FL->GL.
+  attributed emitter; after isolate_after of them the federated Disaster-FD commands
+  node_isolated (reason: intrusion), and after command_switch_after isolations it
+  commands FL->GL.
 stream: with_attack
 window_seconds: 1.0
 nodes: 14
@@ -31,6 +32,8 @@ timing:
   detect_lag: 2
   dwell: 3
   cmd_latency: 3
+  watchdog: 3
+local_fd_available: true
 
 attribution:            # SYNTHETIC (v3 premise), attack class -> emitter node
   injection: 11
@@ -43,7 +46,7 @@ attribution:            # SYNTHETIC (v3 premise), attack class -> emitter node
 
 isolation:
   escalate_flags: 10      # n_flags for an alarm to count as evidence
-  isolate_after: 5        # corroborated alarms against one node -> monitor isolates it
-  command_switch_after: 2 # isolations -> monitor commands FL->GL (never autonomous)
+  isolate_after: 5        # corroborated alarms against one node -> Disaster-FD isolates it
+  command_switch_after: 2 # isolations -> Disaster-FD commands FL->GL (never the agent)
 
 schedule: []              # no inactivity in this scenario: the driver is intrusion

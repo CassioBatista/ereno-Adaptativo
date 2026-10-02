@@ -1,10 +1,10 @@
 {
   "generated_at": "2026-10-02T09:56:57+00:00",
   "scenario": {
-    "file": "conf/scenarios/availability.yaml",
-    "bytes": 2164,
-    "sha256": "550a9ab97f7711fddb2d164f95d149b179cb488efa139136ec0f605e4202c96f",
-    "name": "availability"
+    "file": "conf/scenarios/fd_watchdog.yaml",
+    "bytes": 1808,
+    "sha256": "634ced08f5c444c90445579bfe6eb423ef59f7b09ae08e95a29b9dee1baa37dc",
+    "name": "fd_watchdog"
   },
   "generator": {
     "file": "scripts/scenario_events.py",
@@ -96,9 +96,9 @@
     }
   },
   "output": {
-    "file": "results/events_availability.jsonl",
-    "bytes": 130300,
-    "sha256": "1b157e122ab88c1665fdde9d5dc71d9b105c2bb1055267c4dc50f9de035d77ad",
+    "file": "results/events_fd_watchdog.jsonl",
+    "bytes": 130313,
+    "sha256": "fa36d3f0a17e5f7a27019fe50170ad85eaa9c430aad68f4d703ecfbcf05f7eaf",
     "events": 260,
     "types": {
       "intrusion_detected": 252,

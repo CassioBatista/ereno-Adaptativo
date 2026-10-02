@@ -1,0 +1,44 @@
+# Driver 1 with the node-local Disaster-FD process DOWN. Same traffic and schedule as
+# availability.yaml; the only difference is local_fd_available: false. It exercises the
+# single case in which the ReSIDS agent acts on its own: its watchdog falls back to FL->GL
+# after D rounds without a command from its local Disaster-FD (decided_by=autonomous,
+# reason=autonomous_fallback). Fail-safe direction only: the GL->FL return still waits for
+# the federated Disaster-FD, and nothing else falls back.
+name: fd_watchdog
+description: >-
+  Benign-only traffic, node-local Disaster-FD monitor unavailable. The first inactivity
+  is detected but no command arrives, so the agent's watchdog switches FL->GL itself,
+  detect_lag + watchdog rounds after the failure (D rounds later than when the local FD
+  is alive). Everything after that is decided by the federated Disaster-FD, exactly as
+  in the availability scenario.
+stream: benign_only
+window_seconds: 1.0
+nodes: 14
+fusion_k: 2
+
+data:
+  train: all_in_one_ereno_train
+  test: all_in_one_ereno_test
+  benign_cap: 500000
+model:
+  features_file: features/all_in_one_ereno_train_combined.json
+  seed: 42
+  num_boost_round: 10
+  max_depth: 4
+  eta: 0.1
+sim_epoch: "2026-01-01T00:00:00Z"
+
+timing:
+  detect_lag: 2
+  dwell: 3
+  cmd_latency: 3
+  watchdog: 3         # D: the price of the local FD being down is D extra rounds in FL
+local_fd_available: false
+
+schedule:
+  - {round: 100, event: node_failure,  node: 13, note: "no local FD command: watchdog fires at 105"}
+  - {round: 200, event: node_failure,  node: 12}
+  - {round: 300, event: node_failure,  node: 11}
+  - {round: 480, event: node_recovery, node: 11}
+  - {round: 540, event: node_recovery, node: 12}
+  - {round: 600, event: node_recovery, node: 13, note: "GL->FL still needs the federated Disaster-FD"}

@@ -8,10 +8,15 @@ happened and the GL->FL return never fired. Here the schedule is data
 (conf/scenarios/*.yaml, validated against schemas/scenario.schema.json AND against the
 number of windows the selected stream actually has), so that failure mode is impossible.
 
-Authority rule enforced (docs/decentralized_monitoring.md §1.1):
-  * node inactivity while in FL -> GL is the ONLY autonomous action (decided_by=autonomous);
-  * further losses in GL, intrusion-driven isolation and the GL->FL return are all
-    monitor-governed (decided_by=monitor).
+Authority rule enforced (docs/decentralized_monitoring.md §1.1). Two roles only: the
+Disaster-FD monitor processes (one per node and per server) and the ReSIDS agent.
+  * FL -> GL on node inactivity is commanded by the NODE-LOCAL Disaster-FD monitor, from
+    local evidence only (fail-fast, no regional quorum): decided_by=monitor;
+  * further losses in GL, intrusion-driven isolation and the GL->FL return are decided by
+    the FEDERATED Disaster-FD: decided_by=monitor;
+  * the agent acts alone ONLY through its watchdog, when its own node-local Disaster-FD
+    process is unavailable for D rounds (scenario local_fd_available: false):
+    decided_by=autonomous, reason=autonomous_fallback. Fail-safe direction only.
 
 Usage:
   python scripts/scenario_events.py conf/scenarios/availability.yaml conf/scenarios/intrusion.yaml
@@ -69,6 +74,8 @@ def load_scenario(path):
     sc["timing"].setdefault("detect_lag", 2)
     sc["timing"].setdefault("dwell", 3)
     sc["timing"].setdefault("cmd_latency", 3)
+    sc["timing"].setdefault("watchdog", 3)
+    sc.setdefault("local_fd_available", True)
     return sc
 
 
@@ -119,50 +126,12 @@ def main():
         raise SystemExit("[scenario] scenarios in one call must share data/model/nodes; "
                          "run them separately")
     B, M, N = scs[0]["data"], scs[0]["model"], scs[0]["nodes"]
-    feats = list(M["features"])
-    params = {"max_depth": M["max_depth"], "eta": M["eta"],
-              "objective": "binary:logistic", "seed": M["seed"], "nthread": 4}
-
-    rng = np.random.default_rng(M["seed"])
-    nc = util.normal_class
-    print(f"[scenario] loading train ({B['train']}, {len(feats)} features)...")
-    Xtr_raw, ytr, cv = util.load_arff(f"{B['train']}.csv")
-    Xtr = util.filter_features(Xtr_raw, feats); del Xtr_raw
-    nidx = np.where(ytr == nc)[0]
-    if len(nidx) > B["benign_cap"]:
-        drop = rng.permutation(nidx)[B["benign_cap"]:]
-        keep = np.ones(len(ytr), bool); keep[drop] = False
-        Xtr, ytr = Xtr[keep], ytr[keep]
-    attacks = sorted(int(c) for c in np.unique(ytr) if c != nc)
-    bslice = np.array_split(rng.permutation(np.where(ytr == nc)[0]), N)
-    spec_attack = []
-    for at in attacks:
-        spec_attack += [at, at]
-    spec_attack = spec_attack[:N]
-
-    print(f"[scenario] training {N} specialists...")
-    boosters = []
-    for cid in range(N):
-        at = spec_attack[cid]
-        aidx = np.where(ytr == at)[0]
-        peers = [c for c in range(N) if spec_attack[c] == at]
-        shard = np.array_split(rng.permutation(aidx), len(peers))[peers.index(cid)]
-        idx = np.concatenate([shard, bslice[cid]])
-        lab = (ytr[idx] != nc).astype(int)
-        p = dict(params, scale_pos_weight=(lab == 0).sum() / max(lab.sum(), 1))
-        boosters.append(xgb.train(p, xgb.DMatrix(Xtr[idx], label=lab),
-                                  num_boost_round=M["num_boost_round"]))
-    del Xtr, ytr
-
-    print("[scenario] scoring test...")
-    Xte_raw, yte, _ = util.load_arff(f"{B['test']}.csv")
-    util.normal_class = nc
-    t_te = Xte_raw[:, 0].copy()
-    Xte = util.filter_features(Xte_raw, feats); del Xte_raw
-    d = xgb.DMatrix(Xte); del Xte
-    fired = np.vstack([(b.predict(d) >= 0.5) for b in boosters])
-    order = np.argsort(t_te, kind="stable")
-    ts, fired, y = t_te[order], fired[:, order], yte[order]
+    # Training + scoring is shared with every other analysis through the cache
+    # (scripts/scored_cache.py -> instance_streams.train_and_score, the same block that
+    # used to be inlined here), so the streams and the analyses score one identical model.
+    from scored_cache import get_scored
+    ts, fired, y, nc, cv, spec_attack, cache = get_scored(paths[0])
+    print(f"[scenario] scored test from {cache}")
     t0 = float(ts[0])
 
     inputs = None
@@ -194,6 +163,7 @@ def main():
 
 def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
     N, K, T = sc["nodes"], sc["fusion_k"], sc["timing"]
+    local_fd = bool(sc.get("local_fd_available", True))
     win = np.floor((ts - t0) / sc["window_seconds"]).astype(np.int64)
     bnd = np.searchsorted(win, np.arange(int(win[-1]) + 2))
     sel = []
@@ -230,7 +200,10 @@ def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
                             failed_nodes=[fail[r]], active_nodes=sorted(active),
                             n_active=len(active)))
             if mode == "federated" and pend is None:
-                pend = r + T["detect_lag"]
+                # normal: the node-local Disaster-FD monitor commands FL->GL after
+                # detect_lag; if that local process is down, the agent's watchdog waits
+                # D more rounds before acting alone
+                pend = r + T["detect_lag"] + (0 if local_fd else T["watchdog"])
         if r in back:
             active.add(back[r]); seq += 1
             evs.append(dict(base, seq=seq, type="node_recovery", mode=mode,
@@ -242,22 +215,31 @@ def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
         if len(active) < N:
             full_since = None
 
-        # the ONE autonomous transition
+        # FL->GL on inactivity: commanded by the NODE-LOCAL Disaster-FD monitor from local
+        # evidence only (fail-fast, no regional quorum). The agent acts alone only through
+        # its watchdog, when that local FD process itself is unavailable.
         if pend is not None and r >= pend and mode == "federated":
             mode, pend, seq = "gossip", None, seq + 1
             evs.append(dict(base, seq=seq, type="architecture_change", mode="gossip",
-                            from_mode="federated", to_mode="gossip", reason="node_failure",
-                            decided_by="autonomous", failed_nodes=sorted(set(range(N)) - active),
+                            from_mode="federated", to_mode="gossip",
+                            reason="node_failure" if local_fd else "autonomous_fallback",
+                            decided_by="monitor" if local_fd else "autonomous",
+                            failed_nodes=sorted(set(range(N)) - active),
                             active_nodes=sorted(active), n_active=len(active),
-                            detail="autonomous fail-fast: inactivity while in FL"))
-        # GL->FL: monitor's call, no autonomous fallback
+                            detail=("fail-fast FL->GL commanded by the node-local Disaster-FD "
+                                    "monitor on local evidence (no regional quorum)"
+                                    if local_fd else
+                                    f"agent watchdog: node-local Disaster-FD monitor unresponsive "
+                                    f"for D={T['watchdog']} rounds; fail-safe direction only")))
+        # GL->FL: the federated Disaster-FD's call, with NO fallback of any kind
         if mode == "gossip" and full_since is not None and r - full_since >= T["dwell"] + T["cmd_latency"]:
             mode, full_since, seq = "federated", None, seq + 1
             evs.append(dict(base, seq=seq, type="architecture_change", mode="federated",
                             from_mode="gossip", to_mode="federated", reason="recovery",
                             decided_by="monitor", failed_nodes=[],
                             active_nodes=sorted(active), n_active=len(active),
-                            detail=f"monitor-commanded; evidence = full membership for {T['dwell']} rounds"))
+                            detail=f"commanded by the federated Disaster-FD; evidence = full "
+                                   f"membership for {T['dwell']} rounds"))
 
         pool = sorted(active) if mode == "federated" else sorted(retained)
         sub = fired[pool, lo:hi]
@@ -288,8 +270,9 @@ def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
                                 if benign_win else
                                 (f"source node {src} is ALREADY ISOLATED and still emitting — "
                                  "IDS-level isolation does not block traffic; containment is a "
-                                 "network action for the operator" if src_isolated else
-                                 "notification only; containment is monitor/operator-gated"))))
+                                 "network action outside the IDS" if src_isolated else
+                                 "notification only; isolation is decided by the federated "
+                                 "Disaster-FD"))))
 
         # evidence accrues only against nodes not yet isolated — an already-isolated
         # emitter still produces alarms, but there is nothing left for the monitor to
@@ -305,7 +288,7 @@ def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
                                 failed_nodes=[src], source_node=src, attack=atk,
                                 k_votes=int(votes[fl].max()), active_nodes=sorted(active),
                                 n_active=len(active),
-                                detail=(f"monitor-commanded isolation after "
+                                detail=(f"isolation commanded by the federated Disaster-FD after "
                                         f"{isol_cfg.get('isolate_after', 5)} corroborated alarms")))
                 if mode == "federated" and len(isolated) >= isol_cfg.get("command_switch_after", 2):
                     mode, seq = "gossip", seq + 1
@@ -313,8 +296,8 @@ def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
                                     from_mode="federated", to_mode="gossip", reason="intrusion",
                                     decided_by="monitor", failed_nodes=sorted(isolated),
                                     active_nodes=sorted(active), n_active=len(active),
-                                    detail="MONITOR-COMMANDED (not fail-fast): intrusion never "
-                                           "drives the autonomous transition"))
+                                    detail="commanded by the federated Disaster-FD (intrusion, "
+                                           "not inactivity: never a fail-fast transition)"))
 
     out = f"results/events_{sc['name']}.jsonl"
     os.makedirs("results", exist_ok=True)

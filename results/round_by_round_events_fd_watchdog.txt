@@ -1,8 +1,8 @@
-# Round-by-round — results/events_availability.jsonl
+# Round-by-round — results/events_fd_watchdog.jsonl
 # 1 round = 1.0 s = ~4,673 samples at 0.214 ms each
-# 260 events in 256 rounds; the timeline spans 724 rounds, so 468 (64.6%) carry no event
+# 260 events in 257 rounds; the timeline spans 724 rounds, so 467 (64.5%) carry no event
 # types: {'intrusion_detected': 252, 'node_failure': 3, 'architecture_change': 2, 'node_recovery': 3}
-# decided_by: {None: 258, 'monitor': 2}
+# decided_by: {None: 258, 'autonomous': 1, 'monitor': 1}
 
   seq  round mode       n_act decided_by  type                 payload
 ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -40,9 +40,9 @@
    32     98 federated     14             intrusion_detected   attack=masquerade_fake_normal n_flags=29    k_votes=2   specialists=[4, 5, 6, 7]
    33    100 federated     13             node_failure         failed_nodes=[13]
    34    100 federated     13             intrusion_detected   attack=masquerade_fake_fault  n_flags=74    k_votes=2   specialists=[4, 5, 6, 7]
-   35    102 gossip        13 monitor     architecture_change  federated -> gossip  reason=node_failure
-   36    102 gossip        13             intrusion_detected   attack=masquerade_fake_normal n_flags=38    k_votes=2   specialists=[4, 5, 6, 7]
-   37    104 gossip        13             intrusion_detected   attack=masquerade_fake_fault  n_flags=56    k_votes=2   specialists=[4, 5, 6, 7]
+   35    102 federated     13             intrusion_detected   attack=masquerade_fake_normal n_flags=38    k_votes=2   specialists=[4, 5, 6, 7]
+   36    104 federated     13             intrusion_detected   attack=masquerade_fake_fault  n_flags=56    k_votes=2   specialists=[4, 5, 6, 7]
+   37    105 gossip        13 autonomous  architecture_change  federated -> gossip  reason=autonomous_fallback
    38    106 gossip        13             intrusion_detected   attack=masquerade_fake_fault  n_flags=65    k_votes=2   specialists=[4, 5, 6, 7]
    39    107 gossip        13             intrusion_detected   attack=masquerade_fake_fault  n_flags=47    k_votes=2   specialists=[4, 5, 6, 7]
    40    109 gossip        13             intrusion_detected   attack=masquerade_fake_fault  n_flags=65    k_votes=2   specialists=[4, 5, 6, 7]

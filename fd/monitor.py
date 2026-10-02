@@ -246,11 +246,11 @@ class MonitorRecorder:
                            detail: str | None = None) -> dict:
         """Emit an intrusion alarm (aggregated per round/window).
 
-        NOTIFICATION ONLY: ReSIDS reports the detection to the external monitor; it
-        does NOT isolate/quarantine the node. `k_votes` (k-of-n corroboration) and
-        `source_node` (attributed emitter, null when unavailable) are inputs for the
-        operator/monitor to decide on containment — never actuated here (Level-2,
-        operator-gated). Attribution (source_node) is typically null in v2."""
+        NOTIFICATION ONLY: the agent reports the detection to its Disaster-FD monitor
+        process; it does NOT isolate/quarantine the node. `k_votes` (k-of-n
+        corroboration) and `source_node` (attributed emitter, null when unavailable)
+        are inputs for the federated Disaster-FD to decide on isolation — never actuated
+        here. Attribution (source_node) is typically null in v2."""
         ev = self._store.append({
             "type": "intrusion_detected", "round": round,
             "from_mode": None, "to_mode": None, "reason": None,

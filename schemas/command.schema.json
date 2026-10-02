@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/CassioBatista/ereno-Adaptativo/schemas/command.schema.json",
   "title": "ReSIDS monitor command",
-  "description": "A command issued BY the monitor TO a ReSIDS agent. This is an ACTUATION payload, not an observation: it is the channel through which the monitor exercises the authority the authority rule gives it (docs/decentralized_monitoring.md 1.1) over every transition except the autonomous fail-fast FL->GL. Three commands exist and no more; docs/COMMANDS.md 7 lists what is deliberately absent and why. Execution is AT MOST ONCE, keyed by command_id.",
+  "description": "A command issued BY a Disaster-FD monitor process TO a ReSIDS agent. This is an ACTUATION payload, not an observation: it is the channel through which Disaster-FD exercises the authority the rule of docs/decentralized_monitoring.md 1.1 gives it over EVERY transition -- the fail-fast FL->GL from the node-local instance, everything else from the federated detector. The agent acts alone only as a watchdog when its own local FD process is down, and that action carries no command. Three commands exist and no more; docs/COMMANDS.md 7 lists what is deliberately absent and why. Execution is AT MOST ONCE, keyed by command_id.",
   "type": "object",
   "additionalProperties": false,
   "required": ["command_id", "issued_at", "authority_epoch", "issuer", "command", "params"],
@@ -40,7 +40,7 @@
         "kind": {
           "type": "string",
           "enum": ["monitor", "operator"],
-          "description": "Copied into the resulting event's decided_by, so the audit trail distinguishes a policy engine's decision from a human's."
+          "description": "Copied into the resulting event's decided_by. 'monitor' = a Disaster-FD monitor process (the normal case); 'operator' = a human decision recorded through Disaster-FD, so the audit trail distinguishes the two."
         },
         "id": {
           "type": "string",
