@@ -1,10 +1,18 @@
-# Fifteen instances: the monitor as a multi-endpoint consumer
+# Fifteen instances: the federated Disaster-FD view over fifteen agents
 
 **Status: running against the real API.** The 15 endpoints are served by `fd/monitor.py`
 itself (`scripts/serve_instances.py`), and `scripts/multi_instance_monitor.py` polls them
 over HTTP. What is *not* implemented is the command half: the fan-out below is computed and
 printed, never sent, because `POST /commands` does not exist yet
 ([`COMMANDS.md`](COMMANDS.md) §9).
+
+**Roles** ([`decentralized_monitoring.md`](decentralized_monitoring.md) §1.1): each agent
+is paired with its own node-local Disaster-FD monitor process, and the monitors federate by
+region. `scripts/multi_instance_monitor.py` simulates the **federated** Disaster-FD — the
+regional view that reconciles all fifteen agents and takes the decisions that need it
+(losses in GL, isolation, the GL→FL return). The fail-fast FL→GL needs none of this: each
+node-local instance commands its own agent from local evidence. In this document "the
+monitor" means that federated Disaster-FD view; there is no external monitor.
 
 One monitored instance per ReSIDS agent — the FL aggregator plus the 14 clients:
 
@@ -35,8 +43,8 @@ merely lossy.
 
 In GL the aggregator has no role and stops emitting. A monitor that treats its 15 endpoints
 uniformly declares the server dead **immediately after the FL→GL switch it has just
-observed** — and that switch is the one autonomous action in the system, so this false
-alarm fires exactly when the operator most needs the picture to be clear.
+observed** — the fail-fast transition the node-local Disaster-FD instances commanded — so
+this false alarm fires exactly when the regional picture most needs to be clear.
 
 The rule is derived from the stream rather than special-cased: while the federation mode is
 `gossip`, `srv` is expected quiet. The monitor knows the mode because it read the
@@ -73,16 +81,20 @@ measured difference between them.
 
 ## 4. Fan-out, and why unanimity is asymmetric
 
-A mode switch is federation-wide; commands are per-instance. A fan-out can therefore
-partially fail, and the two directions do not tolerate that equally:
+A mode switch is federation-wide; commands are per-instance. In normal operation the
+fail-fast FL→GL involves no fan-out at all — each node-local Disaster-FD commands its own
+agent, and nodes may switch a round or two apart, which is harmless because they all
+converge on GL. A fan-out from the federated Disaster-FD (a GL→FL return, or an FL→GL
+driven by intrusion) can partially fail, and the two directions do not tolerate that
+equally:
 
 | Intent | Partial application | Unanimity |
 |---|---|---|
 | `set_mode → gossip` (FL→GL) | the unreachable instances converge on GL anyway, which is the resting state | **not required** |
 | `set_mode → federated` (GL→FL) | **splits the federation**: some instances aggregate through a hub the others have abandoned | **required** |
 
-So the monitor pre-checks all 15 and aborts the whole intent if any would refuse a GL→FL
-return. This is the one place where the multi-instance setting changes command *semantics*
+So the federated Disaster-FD pre-checks all 15 and aborts the whole intent if any would
+refuse a GL→FL return. This is the one place where the multi-instance setting changes command *semantics*
 rather than merely repeating them, and it follows directly from the authority asymmetry
 ([`decentralized_monitoring.md`](decentralized_monitoring.md) §1.1): GL is safe to rest in,
 FL is not safe to enter halfway.

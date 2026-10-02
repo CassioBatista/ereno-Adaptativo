@@ -3,15 +3,20 @@
 Observability / notification interface of the ReSIDS adaptation plane
 ([`fd/monitor.py`](../fd/monitor.py)).
 
-> **This document is the OBSERVATION half.** The monitor also *decides*: under the
+> **Who is "the monitor".** The architecture has two roles only: **Disaster-FD** — one
+> monitor process per node and per server, federated by region — and the **ReSIDS agent**.
+> "Monitor" in this API always means a Disaster-FD monitor process; there is no external
+> monitor or supervisor, and the monitor in this repository is a simulation of it.
+>
+> **This document is the OBSERVATION half.** Disaster-FD also *decides*: under the
 > authority rule ([`decentralized_monitoring.md`](decentralized_monitoring.md) §1.1) every
-> transition except the autonomous fail-fast FL→GL is its call. The commands through which
-> it acts are specified in [`COMMANDS.md`](COMMANDS.md) — a separate surface, with
-> mandatory authentication, because it actuates rather than reports.
+> transition is its call — the fail-fast FL→GL by the node-local instance, everything else
+> by the federated one. The agent acts alone only as a watchdog when its own local FD
+> process is down. The commands are specified in [`COMMANDS.md`](COMMANDS.md).
 
 Two surfaces share **one event model**:
 
-1. **REST pull** — an external monitor POLLS ReSIDS (`GET /events`, `/status`, `/health`).
+1. **REST pull** — the Disaster-FD monitor POLLS the agent (`GET /events`, `/status`, `/health`).
    Machine-readable spec: [`openapi.yaml`](openapi.yaml) (OpenAPI **3.1**, which `$ref`s
    the event schema instead of restating it — they drifted apart once, over
    `detector_nodes`, and the `$ref` makes that impossible).
@@ -19,7 +24,7 @@ Two surfaces share **one event model**:
    ThingsBoard) as CoAP telemetry/attributes.
 
 Authoritative payload schema: [`schemas/event.schema.json`](../schemas/event.schema.json).
-Version: **1.4.0**. Five events are emitted: `architecture_change` (FL↔GL switch),
+Version: **1.5.0**. Five events are emitted: `architecture_change` (FL↔GL switch),
 `node_failure` (a node identified as failing), `node_recovery` (a node back in the
 membership), `node_isolated` (a node removed by command) and `intrusion_detected` (an
 attack alarm — **notification only**, see §4).
@@ -43,7 +48,7 @@ piece arrived.
 | `mode` | enum \| null | `federated`, `gossip` | aggregation mode in effect, so the monitor never infers state |
 | `n_active` | int \| null | ≥0 | `len(active_nodes)` |
 | `from_mode` / `to_mode` | enum \| null | `federated`, `gossip` | architecture_change only |
-| `reason` | enum \| null | `node_failure`, `recovery`, `scheduled`, `intrusion`, `commanded`, `autonomous_fallback` | cause. The last two distinguish the outcome of the FL-pending race against the deadline D ([`COMMANDS.md`](COMMANDS.md) §4.1) |
+| `reason` | enum \| null | `node_failure`, `recovery`, `scheduled`, `intrusion`, `autonomous_fallback` (`commanded` kept for pre-1.5.0 streams) | the **cause**; who decided is in `decided_by`. `autonomous_fallback` marks the agent's watchdog ([`COMMANDS.md`](COMMANDS.md) §4.1) |
 | `failed_nodes` | int[] | node indices | authoritative on `node_failure` |
 | `recovered_nodes` | int[] | node indices | authoritative on `node_recovery` |
 | `active_nodes` | int[] \| null | node indices | null = all active |
@@ -53,8 +58,8 @@ piece arrived.
 | `detector_specialists` | int[] | specialist indices | which **boosters** fired — not nodes: every node holds the same diffused union and reaches the same verdict (`intrusion_detected`) |
 | `source_node` | int \| null | node index | attributed emitter; **null when unavailable (typical v2)** |
 | `confidence` | number \| null | score | optional (`intrusion_detected`) |
-| `decided_by` | enum \| null | `autonomous`, `monitor`, `operator` | who took the **action**. Present only on `architecture_change` and `node_isolated`; observations omit it. `autonomous` is reserved for the one autonomous action in the system |
-| `command_id` | string \| null | UUID | the command that caused the action ([`COMMANDS.md`](COMMANDS.md)). Null on an autonomous action, which no command caused |
+| `decided_by` | enum \| null | `monitor`, `autonomous`, `operator` | who took the **action**. Present only on `architecture_change` and `node_isolated`; observations omit it. `monitor` = a Disaster-FD monitor process (node-local for the fail-fast FL→GL, federated otherwise); `autonomous` = the agent's watchdog FL→GL, and nothing else |
+| `command_id` | string \| null | UUID | the command that caused the action ([`COMMANDS.md`](COMMANDS.md)). Null on the watchdog action, which no command caused |
 | `detail` | string \| null | free text | optional |
 
 **Current state** (served by `/status`, pushed as CoAP attributes):
@@ -200,16 +205,17 @@ Status codes: `2.01 Created`, `2.04 Changed`, `4.00 Bad Request`,
   `n_flags` as the volume) — not one message per sample, to avoid flooding.
   `k_votes` is the k-of-n corroboration strength; `source_node` is the attributed
   emitter when known (GOOSE/SV source) and **null otherwise (typical in v2)**.
-  This is a **notification** for the operator/monitor — ReSIDS does **NOT** isolate,
-  quarantine, or otherwise actuate on it (see below). Attribution and any
-  containment action are external / operator decisions (a Byzantine-aware,
-  trust-driven containment loop is deferred to v3, see `docs/v3_trust_model.md`).
+  This is a **notification** for Disaster-FD — the agent does **NOT** isolate,
+  quarantine, or otherwise actuate on it. Isolation is decided by the federated
+  Disaster-FD; physical containment is a network action outside the IDS (a
+  Byzantine-aware, trust-driven containment loop is deferred to v3,
+  see `docs/v3_trust_model.md`).
 - **Delivery:** CoAP CON is retried on loss; the local JSONL audit trail
   (`EventStore`) is the durable fallback if the monitor is unreachable.
 - **Ordering / idempotency:** `seq` is monotonic; consumers should de-duplicate by
   `seq`. Re-delivered CON messages carry the same `seq`.
-- **Read-only:** the monitor observes; it never actuates the protected system
-  (operator-gated, Level-2).
+- **Read-only:** this surface only observes. Actuation goes through the command surface,
+  and neither ever touches the protected process bus.
 
 ---
 
@@ -233,10 +239,19 @@ monitor:
 
 ## 6. Versioning
 
-API version follows this document (**1.4.0**). Breaking changes to the event model
+API version follows this document (**1.5.0**). Breaking changes to the event model
 or endpoints bump the major version; additive fields bump the minor. The `type`
 and `reason` enums may gain values in minor versions — consumers must ignore
 unknown enum values gracefully.
+
+**v1.5.0** moves authority to **Disaster-FD** (decision of 2026-10-02). The schema is
+unchanged; what changes is **who is recorded as deciding the fail-fast FL→GL**: it is now
+commanded by the node-local Disaster-FD monitor (`decided_by: monitor`, `reason:
+node_failure`), and `decided_by: autonomous` is reserved for the agent's watchdog
+(`reason: autonomous_fallback`) when that local process is down. A consumer that read
+`autonomous` as "the fail-fast transition" must update: in normal operation it no longer
+appears. `reason: commanded` is no longer emitted (the decider is in `decided_by`). The
+scenario format gains `timing.watchdog` and `local_fd_available`.
 
 **v1.4.0** adds the **command surface** ([`COMMANDS.md`](COMMANDS.md)): the `/commands`
 endpoints, `schemas/command.schema.json`, `schemas/command_result.schema.json`, the event
@@ -246,9 +261,8 @@ field `command_id`, the `reason` values `commanded` and `autonomous_fallback`, a
 
 **v1.3.0** added the `node_isolated` type and `decided_by`, and restricted `decided_by` to
 events that *are* an action. That restriction is the machine-checkable form of the
-authority rule: `autonomous` may appear only on node inactivity and the FL→GL it triggers,
-and [`scripts/validate_events.py`](../scripts/validate_events.py) rejects a stream that
-claims otherwise.
+authority rule; [`scripts/validate_events.py`](../scripts/validate_events.py) rejects a
+stream that claims otherwise (since 1.5.0: `autonomous` only on the watchdog FL→GL).
 
 **v1.2.0** added the `node_recovery` type; the traffic window (`window_start`,
 `window_end`, `window_samples`); explicit state on every event (`mode`, `n_active`); and

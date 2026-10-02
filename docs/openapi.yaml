@@ -1,20 +1,23 @@
 openapi: 3.1.0
 info:
   title: ReSIDS Monitor API (REST)
-  version: "1.4.0"
+  version: "1.5.0"
   description: >
-    Observability AND command API of the ReSIDS adaptation plane (fd/monitor.py).
-    An external monitor POLLS the event endpoints and POSTS commands. The same events are
-    also pushed to an IoT hub over CoAP (see docs/API.md, "CoAP push"); this spec covers
-    the REST/HTTP surface only.
+    Observability AND command API between a ReSIDS agent and its Disaster-FD monitor
+    process (fd/monitor.py simulates the latter). The architecture has two roles only:
+    Disaster-FD (one monitor process per node and per server, federated by region) and the
+    agent; there is no external monitor or supervisor. The Disaster-FD monitor POLLS the
+    event endpoints and POSTS commands. The same events can also be pushed over CoAP (see
+    docs/API.md, "CoAP push"); this spec covers the REST/HTTP surface only.
 
 
     IMPLEMENTATION STATUS: the /events, /status and /health endpoints are implemented
     (with the gaps noted in docs/API.md 2.1). The /commands endpoints are SPECIFIED AND
-    NOT IMPLEMENTED -- see docs/COMMANDS.md 9. They are included here because an external
-    developer cannot build a monitor that DECIDES without them, and the authority rule
-    (docs/decentralized_monitoring.md 1.1) puts every transition except the autonomous
-    fail-fast FL->GL in the monitor's hands.
+    NOT IMPLEMENTED -- see docs/COMMANDS.md 9. They are included here because the
+    authority rule (docs/decentralized_monitoring.md 1.1) puts EVERY transition in
+    Disaster-FD's hands: the fail-fast FL->GL in the node-local instance's, everything
+    else in the federated one's. The agent acts alone only as a watchdog when its own
+    node-local Disaster-FD process is down.
 
 
     The two surfaces differ in one respect that must not be blurred: /events is read-only
@@ -302,9 +305,9 @@ components:
         switch_pending:
           type: [object, "null"]
           description: >
-            Non-null while a node has detected inactivity and is awaiting a command under
-            the monitor_commanded policy. This is the window in which a set_mode command
-            races the deadline D; after it the mode has already changed, autonomously.
+            Non-null while inactivity has been observed and the agent awaits the set_mode
+            command from its node-local Disaster-FD monitor. Normally short (detect_lag);
+            it lasts until deadline_round only if that local process is unresponsive.
           properties:
             from_mode: { type: string, enum: [federated, gossip] }
             to_mode: { type: string, enum: [federated, gossip] }
@@ -312,7 +315,10 @@ components:
             deadline_round:
               type: integer
               minimum: 0
-              description: Round at which the autonomous fallback fires if no command arrives.
+              description: >
+                Round at which the agent's watchdog D falls back to FL->GL on its own if its
+                node-local Disaster-FD monitor has not commanded it (reason
+                autonomous_fallback).
         authority_epoch:
           type: integer
           minimum: 0

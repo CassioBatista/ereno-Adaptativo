@@ -38,16 +38,21 @@ round against the number of windows the selected stream actually has.
 | `window_seconds` | round length; one round = one traffic window (1.0 s ≈ 4.7k SV samples) |
 | `nodes` | N, the **static** logical index space |
 | `fusion_k` | k in the k-of-n decision fusion |
-| `timing.detect_lag` | rounds from inactivity to the **autonomous** fail-fast FL→GL |
+| `timing.detect_lag` | rounds from inactivity to the fail-fast FL→GL commanded by the **node-local** Disaster-FD |
 | `timing.dwell` | rounds of full membership required as **evidence** before GL→FL |
-| `timing.cmd_latency` | rounds the monitor takes to issue a command |
+| `timing.cmd_latency` | rounds the **federated** Disaster-FD takes to decide (GL→FL, isolation) |
+| `timing.watchdog` | D: rounds the agent waits for its own local Disaster-FD before acting alone |
+| `local_fd_available` | `false` simulates a crashed node-local Disaster-FD process (exercises the watchdog) |
 | `attribution` | attack class → emitter node — **synthetic, v3 premise** (see §5) |
-| `isolation.*` | evidence threshold, isolations before the monitor acts, and before it commands FL→GL |
+| `isolation.*` | evidence threshold, isolations before Disaster-FD acts, and before it commands FL→GL |
 | `schedule[]` | membership changes: `{round, event: node_failure\|node_recovery, node}` |
+
+Three scenarios ship: `availability` (inactivity, local FD alive), `fd_watchdog` (the same,
+local FD down) and `intrusion` (attributed intrusion).
 
 `stream: benign_only` is worth its own note: those windows contain **no attack sample**,
 so every alarm produced there is a **false positive**. That scenario doubles as the
-false-positive baseline the monitor has to filter
+false-positive baseline Disaster-FD has to filter
 ([`fp_baseline_stream_a.py`](../scripts/fp_baseline_stream_a.py)).
 
 ## 3. Validation — three layers, all fatal except the last
@@ -68,17 +73,19 @@ says so instead of staying silent.
 ## 4. The authority rule is enforced, not configured
 
 `timing` tunes the latencies; it cannot change **who decides**. The generator emits
-`decided_by` on every event, and there is exactly one `autonomous` value in the system:
+`decided_by` on every action, and `monitor` always means a Disaster-FD monitor process:
 
-| Situation | `decided_by` |
-|---|---|
-| node inactive while in FL → GL | `autonomous` (fail-fast) |
-| further node loss while in GL | nothing happens |
-| intrusion-driven isolation | `monitor` |
-| GL → FL return | `monitor` |
+| Situation | `decided_by` | `reason` |
+|---|---|---|
+| node inactive while in FL → GL | `monitor` (node-local Disaster-FD) | `node_failure` |
+| further node loss while in GL | nothing happens | — |
+| intrusion-driven isolation | `monitor` (federated Disaster-FD) | `intrusion` |
+| GL → FL return | `monitor` (federated Disaster-FD) | `recovery` |
+| local Disaster-FD down (`fd_watchdog`) | `autonomous` (agent watchdog) | `autonomous_fallback` |
 
-See [`decentralized_monitoring.md`](decentralized_monitoring.md) §1.1 for why: autonomy
-is granted only in the direction that fails safe.
+See [`decentralized_monitoring.md`](decentralized_monitoring.md) §1.1 for why:
+Disaster-FD decides; the agent acts alone only when its own detector is gone, and only in
+the direction that fails safe.
 
 ## 5. Honest scope
 

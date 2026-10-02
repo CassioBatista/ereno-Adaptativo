@@ -7,8 +7,8 @@ with its own CoAP endpoint — and states precisely what is not implemented (§9
 
 > **OPEN DECISION — transport, deliberately postponed.** Everything below assumes the
 > CoAP binding (Resource Directory + Observe + DTLS 1.3). That premise is **not settled**.
-> For the *decision* monitor — which, under the authority rule of §1.1, commands
-> isolation and the GL→FL return — REST/TLS scores better on ordered reliable delivery,
+> For the Disaster-FD monitor processes — which, under the authority rule of §1.1, decide
+> every transition — REST/TLS scores better on ordered reliable delivery,
 > firewall traversal, tooling, IEC 62351-3 alignment, and is the surface already
 > implemented (stdlib, no dependency). CoAP keeps the edge for IoT-hub telemetry and
 > constrained links; at our volume (558 events in 83 min) its byte savings are
@@ -38,39 +38,72 @@ The separation is the whole point: diffusing *models* (rarely) is what makes the
 per-sample decision purely local, so no per-sample traffic ever competes with the
 protection traffic that must meet TT6 (3 ms).
 
-## 1.1 Authority rule — autonomy only where inaction costs
+## 1.1 Authority rule — Disaster-FD decides; the agent only protects itself
 
-There are **two** drivers of node reduction (inactivity and attributed intrusion) and
-two mode transitions, but **only one autonomous action in the whole system**:
+**Two roles, and only two** (decision of 2026-10-02):
 
-| Situation | Authority | Latency |
+| Role | Who | Does |
 |---|---|---|
-| **node inactive while in FL → GL** | **ReSIDS, autonomous fail-fast** | ~2 rounds (measured) |
-| further node loss while in GL | monitor | policy |
-| node with attributed intrusion (any mode) | monitor | policy |
-| **GL → FL return** | **monitor** | policy |
+| **Failure detector and decider** | **Disaster-FD** — one monitor process per node and per server, federated by region | detects failures (suspicion, trust, reliability) **and decides every transition** |
+| **Agent** | each ReSIDS node | executes Disaster-FD's commands; acts on its own **only** as a watchdog (below) |
 
-The rule follows the measurements. In **GL**, losing nodes costs nothing: recall stays
-**100% from 14 down to 3 nodes**, because the retained union keeps every booster. No
-degradation, no urgency, no need to spend autonomy. In **FL** it costs: each lost node
-removes its specialist from the aggregate, k≥2 loses redundancy, and the server is the
-single point of failure — measured 96.02 → 86.33 F1 under cascading loss.
+There is no external monitor or supervisor in the architecture. The REST/CoAP surface of
+[`API.md`](API.md) and [`COMMANDS.md`](COMMANDS.md) is the interface between the agent and
+its Disaster-FD monitor process; in this repository that process is **simulated** (the
+"monitor" of `fd/monitor.py`, the scenario generator and the 15-instance demo).
 
-**Autonomy is granted only in the direction that fails safe.** Being stuck in FL with a
-dead server is dangerous, so FL→GL is autonomous *and* carries the deadline fallback D.
-Being stuck in GL is merely slower (Θ(N) dissemination), so GL→FL needs **no fallback**
-at all: if the monitor is unreachable, the system simply stays in the degraded-but-safe
-state. GL is the resting state; returning to the efficient-but-fragile FL means
-**re-accepting the hub**, which is the very point of failure and of trust that GL exists
-to survive — a trust decision that belongs to the operator, not to a heuristic.
+> Failure detection is federated (Disaster-FD); the protective action is local to the
+> agent; every other decision belongs to Disaster-FD.
 
-Consequences: the dwell and unanimity gates stop being an autonomous commit rule and
-become **evidence** ReSIDS supplies to the monitor ("membership full for N rounds"); and
-the autonomous attack surface shrinks to a single trigger — a forged `node_failure` while
-in GL can no longer cause anything by itself.
+| Situation | Who decides | Evidence | Latency |
+|---|---|---|---|
+| **node inactive while in FL → GL** | **node-local Disaster-FD monitor** | **local only** — no regional agreement | `detect_lag` (~2 rounds) |
+| further node loss while in GL | federated Disaster-FD | regional | policy |
+| node with attributed intrusion (any mode) | federated Disaster-FD | regional | policy |
+| **GL → FL return** | **federated Disaster-FD** | regional (full membership for `dwell` rounds) | `dwell` + `cmd_latency` |
+| *node-local Disaster-FD process down* | **agent watchdog** — FL→GL only | none: absence of its own FD | `detect_lag` + D |
 
-Events carry `decided_by` (`autonomous` | `monitor` | `operator`) so the audit trail
-never leaves this ambiguous.
+**Why Disaster-FD can command even the fail-fast transition.** The objection to a monitor
+deciding FL→GL was the single point of failure: a *central* monitor may sit on the other
+side of the very partition that took the server down, leaving the node stuck in FL with a
+dead aggregator. A Disaster-FD monitor **co-located with the node** cannot be on the other
+side of any partition from its own agent. So Disaster-FD holds authority over every
+transition without reintroducing the single point of failure — **provided** the FL→GL is
+decided from the local instance's own evidence. If it waited for regional agreement, it
+would inherit the federation's latency and its exposure to partitions. Hence the split:
+**local to go down, federated to come back up** — the same "fast into the safe mode,
+careful into the efficient one" asymmetry the measurements already justify.
+
+The measurements behind the asymmetry are unchanged. In **GL**, losing nodes costs nothing:
+recall stays **100% from 14 down to 3 nodes**, because the retained union keeps every
+booster. In **FL** it costs: each lost node removes its specialist from the aggregate, and
+the server is the single point of failure — measured 96.02 → 86.33 F1 under cascading loss.
+GL is the resting state, so **GL→FL has no fallback of any kind**: if the federated
+Disaster-FD cannot decide, the system stays in the degraded-but-safe state. Returning to FL
+means re-accepting the hub, which is a trust decision — and trust is precisely what
+Disaster-FD (built on Impact-FD: reliability threshold, trust level, impact factor)
+quantifies.
+
+**The agent's only autonomy is a watchdog on its own detector.** If the node-local
+Disaster-FD process crashes or hangs — a process failure, not a network one — the agent
+falls back to FL→GL by itself after D rounds (`decided_by: autonomous`,
+`reason: autonomous_fallback`). It is a safety net for the case where the detector no
+longer exists, not a decision competing with Disaster-FD, and it exists in the fail-safe
+direction only. Scenario `conf/scenarios/fd_watchdog.yaml` exercises it: the switch lands
+D = 3 rounds later than when the local FD is alive (round 105 vs. 102).
+
+Consequences: the dwell and unanimity gates are **evidence** for the federated Disaster-FD
+("membership full for N rounds"), not an agent's commit rule; and a forged `node_failure`
+while in GL causes nothing by itself.
+
+Events carry `decided_by` so the trail is never ambiguous: `monitor` = a Disaster-FD
+monitor process (local for the fail-fast FL→GL, federated otherwise); `autonomous` = the
+agent's watchdog, and nothing else. [`scripts/validate_events.py`](../scripts/validate_events.py)
+rejects a stream that claims `autonomous` anywhere but the watchdog FL→GL.
+
+> **An extension of Disaster-FD, stated as such.** As published, Disaster-FD *detects*
+> (suspicion, trust, reliability); it does not command an IDS. Making it the decider is an
+> extension this design requires, to be agreed with its authors and presented as such.
 
 ## 2. Components
 
@@ -157,12 +190,13 @@ counter per agent.
 |---|---|---|
 | Notification never arrives | UDP loss | the next `GET /events?since=<contiguous>` both reveals and fills the hole |
 | `since=` request times out | agent down **or** address changed | **re-lookup in the RD before declaring it down** — a DHCP renewal must not become a false "node down" |
-| `since=` times out *and* RD registration expired | agent really gone | report loss of visibility; the IDS keeps switching autonomously |
-| Monitor unreachable while a switch is pending | management partition | after **D** rounds the node falls back to autonomous fail-fast — without this the monitor becomes the SPOF the GL mode exists to survive |
+| `since=` times out *and* RD registration expired | agent really gone | report loss of visibility; the node's own local Disaster-FD still governs its fail-fast |
+| Node-local Disaster-FD process unresponsive | FD process crashed or hung | after **D** rounds the agent's watchdog falls back to FL→GL on its own — the only autonomous action, fail-safe direction only |
+| Federated Disaster-FD cannot decide | regional partition | nothing happens: the system rests in GL; GL→FL has no fallback by design |
 
-Measured on the replay harness (`scripts/monitor_interaction_sim.py`): autonomous
-fail-fast switches 2 rounds after the trigger, monitor-commanded 3 rounds, deadline
-fallback 5 rounds — and it **always** switches.
+In the regenerated streams: the local Disaster-FD commands FL→GL `detect_lag` = 2 rounds
+after the inactivity (round 102 for a failure at 100); with the local FD down, the
+watchdog lands D = 3 rounds later (round 105) — and it **always** switches.
 
 ## 7. Transport: DTLS 1.3 (target), 1.2 (interoperability floor)
 

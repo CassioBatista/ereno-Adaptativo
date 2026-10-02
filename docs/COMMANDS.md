@@ -1,23 +1,27 @@
-# ReSIDS monitor command surface
+# ReSIDS command surface (Disaster-FD → agent)
 
 **Status: specification. NOT implemented.** `fd/monitor.py` serves the read-only event
 surface only ([`API.md`](API.md)); nothing here exists in code yet. §9 states the gap
 precisely.
 
-This is the half of the interface that makes the monitor a **decision-maker** rather than
-an observer. [`API.md`](API.md) lets an external developer see everything ReSIDS does;
-this document lets them *act*, which is what the authority rule
-([`decentralized_monitoring.md`](decentralized_monitoring.md) §1.1) requires of them:
+**Who commands.** The architecture has two roles only: **Disaster-FD** — one monitor
+process per node and per server, federated by region — and the **ReSIDS agent**. Throughout
+this document, "monitor" means **a Disaster-FD monitor process**; there is no external
+monitor or supervisor. This is the half of the interface through which Disaster-FD
+exercises the authority the rule of
+[`decentralized_monitoring.md`](decentralized_monitoring.md) §1.1 gives it — over **every**
+transition:
 
-| Situation | Authority | Surface |
+| Situation | Decides | Surface |
 |---|---|---|
-| node inactive while in FL → GL | **ReSIDS, autonomous** | none needed — it acts alone |
-| further node loss while in GL | monitor | `set_mode` / `isolate_node` |
-| node with attributed intrusion | monitor | `isolate_node` |
-| **GL → FL return** | **monitor** | `set_mode` — and *only* this |
+| node inactive while in FL → GL | **node-local Disaster-FD monitor** (local evidence) | `set_mode {to: gossip}` |
+| further node loss while in GL | federated Disaster-FD | `set_mode` / `isolate_node` |
+| node with attributed intrusion | federated Disaster-FD | `isolate_node` |
+| **GL → FL return** | **federated Disaster-FD** | `set_mode` — and *only* this |
+| node-local Disaster-FD process down | agent watchdog (FL→GL only) | none — no command exists to receive |
 
-Exactly one row needs no command. Every other row is unreachable without the surface
-below, which is why the system was not yet specifiable end to end.
+Every transition goes through a command, except the watchdog, which by definition fires when
+there is no detector left to command.
 
 Transport: the decision between CoAP and REST is still open
 ([`decentralized_monitoring.md`](decentralized_monitoring.md), opening note). §8 gives
@@ -25,7 +29,7 @@ the binding for both. Everything in §§1–7 is transport-independent.
 
 Authoritative payloads: [`schemas/command.schema.json`](../schemas/command.schema.json)
 and [`schemas/command_result.schema.json`](../schemas/command_result.schema.json).
-Machine-readable endpoints: [`openapi.yaml`](openapi.yaml). API version **1.4.0**.
+Machine-readable endpoints: [`openapi.yaml`](openapi.yaml). API version **1.5.0**.
 
 ---
 
@@ -40,28 +44,32 @@ Machine-readable endpoints: [`openapi.yaml`](openapi.yaml). API version **1.4.0*
 That is the whole surface. §7 lists what is deliberately missing, which matters as much
 as what is here.
 
-Both streams in `conf/scenarios/` exercise it, and between them they cover every
-commanded action the simulation produces — 7 commands for 7 monitor-decided events:
+The streams in `conf/scenarios/` exercise it, and between them they cover every commanded
+action the simulation produces — 8 commands for 8 Disaster-FD-decided events:
 
 | Stream | Round | Event | Command it implies |
 |---|---|---|---|
+| availability | 102 | `architecture_change` FL→GL | `set_mode {to: gossip, reason: node_failure}` — node-local FD |
+| availability | 606 | `architecture_change` GL→FL | `set_mode {to: federated, reason: recovery}` — federated FD |
 | intrusion | 8 | `node_isolated` node 11 | `isolate_node {node: 11, reason: intrusion}` |
 | intrusion | 21 | `node_isolated` node 9 | `isolate_node {node: 9, reason: intrusion}` |
 | intrusion | 21 | `architecture_change` FL→GL | `set_mode {to: gossip, reason: intrusion}` |
 | intrusion | 23 | `node_isolated` node 10 | `isolate_node {node: 10, reason: intrusion}` |
 | intrusion | 39 | `node_isolated` node 12 | `isolate_node {node: 12, reason: intrusion}` |
 | intrusion | 48 | `node_isolated` node 8 | `isolate_node {node: 8, reason: intrusion}` |
-| availability | 606 | `architecture_change` GL→FL | `set_mode {to: federated, reason: recovery}` |
+
+The third stream, `fd_watchdog`, has the node-local FD down: its FL→GL (round 105) is the
+agent's watchdog and implies **no** command; its GL→FL (round 606) is commanded as above.
 
 `scripts/commands_from_stream.py` reconstructs exactly this from the event streams and
 validates it, so the claim that the surface is sufficient is checked rather than
-asserted. Note the FL→GL at intrusion round 21: a **commanded** switch whose driver is
-intrusion, not inactivity — the autonomous path is not the only way into GL.
+asserted. Note the FL→GL at intrusion round 21: commanded by the federated Disaster-FD,
+driven by intrusion rather than inactivity.
 
 `readmit_node` is exercised by no scenario yet. It is in the surface regardless, because
 the false-positive baseline makes wrongful isolation expected, not hypothetical: 252 of
 724 benign windows raise an alarm (34.8%). A surface that can isolate but not readmit
-forces an operator to restart a node to undo a mistake the IDS made.
+forces a node restart to undo a mistake the IDS made.
 
 ---
 
@@ -106,7 +114,8 @@ a stale view act. `expect.seq` is the monitor's highest contiguous event seq —
 has emitted events the monitor has not read, the decision was taken without them.
 
 `expect` is optional. Omitting it is a deliberate statement that the command is
-unconditional (an operator override, typically), not an oversight.
+unconditional (a regional override by the federated Disaster-FD, typically), not an
+oversight.
 
 A fifth field, **`intent_id`**, appears when one decision is fanned out across instances: a
 mode switch is federation-wide while commands are per-instance, so one decision becomes 15
@@ -158,28 +167,26 @@ a stale view, a bad epoch, a failed override — would leave no trace anywhere.
 
 ## 4. Semantics that are not negotiable
 
-### 4.1 The deadline D is not commandable
+### 4.1 The watchdog D is not commandable
 
-While a node sits in `FL-pending` after detecting inactivity, two clocks run: the
-monitor's decision, and the deadline **D**
-([`monitor_commanded_switch.md`](monitor_commanded_switch.md)).
+The fail-fast FL→GL is commanded by the **node-local** Disaster-FD monitor from local
+evidence. Alongside it, the agent runs a watchdog **D** on that local process
+([`monitor_commanded_switch.md`](monitor_commanded_switch.md)):
 
-- `set_mode {to: gossip}` arrives within D → commanded commit, event `reason: commanded`,
-  `decided_by: monitor`, `command_id` set.
-- D expires first → autonomous commit, `reason: autonomous_fallback`,
-  `decided_by: autonomous`, no `command_id`.
-- the command arrives *after* the fallback already fired → `200 no_op`: the state the
-  monitor wanted is the current state. Not an error.
+- the node-local FD commands `set_mode {to: gossip}` → commit, `decided_by: monitor`,
+  `reason: node_failure`, `command_id` set;
+- the node-local FD process stops answering for D rounds → the agent commits FL→GL on its
+  own: `decided_by: autonomous`, `reason: autonomous_fallback`, no `command_id`;
+- a command arriving *after* the watchdog fired → `200 no_op`: the state Disaster-FD wanted
+  is the current state. Not an error.
 
-**There is no command to cancel, hold or extend the deadline, and there will not be
-one.** A commander able to postpone D indefinitely is a commander able to keep a node in
-FL with a dead aggregator — which is exactly the single point of failure GL exists to
-survive, reintroduced through the control channel. D is configuration
-(`deadline_rounds`), changed by redeploying policy, not by a command in flight. A
-`hold` verb would be equivalent to `D → ∞`, which the switch document already calls not
-recommended.
+**There is no command to cancel, hold or extend D, and there will not be one.** A commander
+able to postpone it is a commander able to keep a node in FL with a dead aggregator and a
+dead detector — the single point of failure GL exists to survive, reintroduced through the
+control channel. D is configuration (`watchdog_rounds`), changed by redeploying policy, not
+by a command in flight.
 
-### 4.2 The monitor decides *whether*; the agent verifies *whether it is possible*
+### 4.2 Disaster-FD decides *whether*; the agent verifies *whether it is possible*
 
 Authority is not omnipotence. Two commands meet a local safety condition:
 
@@ -187,8 +194,8 @@ Authority is not omnipotence. Two commands meet a local safety condition:
 `evidence_not_met` unless membership has been full for `dwell` rounds. Returning to FL
 means **re-accepting the hub**, the point of failure and of trust GL exists to survive;
 doing that while nodes are still missing is the one transition that can make things
-worse. The v2 dwell/unanimity gates stop being an autonomous commit rule and become
-*evidence the agent checks against the command*.
+worse. The dwell/unanimity gates are *evidence the agent checks against the command*, not
+a commit rule of its own.
 
 **`isolate_node`** — refused with `membership_floor` if it would take the federation below
 `min_nodes` (default 3). The floor is where the measurement stops supporting the claim:
@@ -196,8 +203,8 @@ recall holds at 100% from 14 nodes down to 3 because the retained union keeps ev
 booster, and below that nothing was measured.
 
 `force: true` overrides both. It is recorded in the event's `detail`, it never overrides
-authentication, epoch, expiry or idempotency, and it exists because an operator
-reconstructing a substation sometimes knows more than the agent's evidence does.
+authentication, epoch, expiry or idempotency, and it exists because the federated
+Disaster-FD, with a regional view, sometimes knows more than one agent's local evidence does.
 
 An accepted isolation returns a **warning**, not a refusal, when it removes the last
 holder of a specialist: the pool loses the ability to *type* that attack precisely, while
@@ -244,7 +251,7 @@ for the same measured reason.
 
 ```json
 {
-  "api_version": "1.4.0",
+  "api_version": "1.5.0",
   "current_mode": "gossip",
   "round": 606,
   "active_nodes": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
@@ -272,7 +279,12 @@ protection system.
 
 ### 6.1 Channel
 
-Mutual authentication is mandatory: mTLS with TLS 1.3 on the REST binding, DTLS 1.3 with
+Two channels differ in exposure. Between the agent and its **own** node-local Disaster-FD
+process the channel is local to the host (IPC); it never crosses the network, and
+authentication can be correspondingly lighter. Commands from the **federated** Disaster-FD
+cross the network and get everything below.
+
+For those, mutual authentication is mandatory: mTLS with TLS 1.3 on the REST binding, DTLS 1.3 with
 raw public keys or PSK on the CoAP binding. Unauthenticated requests get `401` before
 anything is parsed. This aligns with IEC 62351-3 (TLS for TCP/IP profiles) — see
 [`decentralized_monitoring.md`](decentralized_monitoring.md) §7.1 on why the standard
@@ -291,7 +303,7 @@ authority provable from the log alone, after the fact, without trusting the tran
 
 It did not exist while the monitor was read-only, and it should be stated plainly: a
 compromised commander can force GL (degrading efficiency), force FL (re-accepting a hub
-it may control), isolate honest nodes one by one, or readmit a node an operator isolated.
+it may control), isolate honest nodes one by one, or readmit a node it had isolated.
 The mitigations above are bounds, not solutions — epoch for failover, floor for
 membership, flap limit for oscillation, signature for attribution, and the deliberate
 absence of a deadline veto so the worst case stays *degraded*, never *disarmed*.
