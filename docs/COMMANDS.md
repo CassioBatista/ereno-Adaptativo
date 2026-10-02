@@ -29,7 +29,7 @@ the binding for both. Everything in §§1–7 is transport-independent.
 
 Authoritative payloads: [`schemas/command.schema.json`](../schemas/command.schema.json)
 and [`schemas/command_result.schema.json`](../schemas/command_result.schema.json).
-Machine-readable endpoints: [`openapi.yaml`](openapi.yaml). API version **1.5.0**.
+Machine-readable endpoints: [`openapi.yaml`](openapi.yaml). API version **1.6.0**.
 
 ---
 
@@ -251,7 +251,7 @@ for the same measured reason.
 
 ```json
 {
-  "api_version": "1.5.0",
+  "api_version": "1.6.0",
   "current_mode": "gossip",
   "round": 606,
   "active_nodes": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],

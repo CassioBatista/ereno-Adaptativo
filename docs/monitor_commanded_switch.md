@@ -62,6 +62,20 @@ FL-active ──local FD silent for D──────────────�
 GL ──federated FD: full membership for dwell──▶ set_mode(federated) ──▶ FL   (no fallback)
 ```
 
+## Which clock counts what
+
+The time reference is Disaster-FD's, in two cadences
+([`decentralized_monitoring.md`](decentralized_monitoring.md) §1.2). `detect_lag` and the
+watchdog D are counted in **local** rounds — the node-local Disaster-FD tick — so the
+fail-fast transition keeps its speed even when the regional federation slows down. `dwell`
+and `cmd_latency` are counted in **federated** rounds, and the GL→FL return is only taken on
+a federated tick. With the federated tick five times slower (`two_cadences` scenario), the
+FL→GL stays at round 102 while the GL→FL moves from 606 to 630.
+
+The latency of protection is the node-local detector's detection time plus at most one
+local tick. Co-location removes the command delay; it does not make perceiving a remote
+failure faster than the detector's timeout allows.
+
 ## What the watchdog is, and what it is not
 
 It is a **health check on the agent's own detector**, not a race against a remote decider.

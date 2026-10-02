@@ -74,6 +74,22 @@ Disaster-FD, and it acts only in the fail-safe direction. In our scenarios, with
 detector alive the commanded switch follows an inactivity after two rounds; with it down,
 the watchdog lands $D=3$ rounds later---bounded, and the switch always happens.
 
+\paragraph{Time reference.} The agent infers no time from the traffic: the time reference
+is also Disaster-FD's, and the window of an event is whatever the agent scored between two
+ticks. Traffic timestamps, where the protocol carries them, travel only as optional
+metadata for correlation with sequence-of-event records, so the same contract applies to
+GOOSE/SV and to datasets with no time at all. There are two cadences, matching the two
+halves of Table~\ref{tab:authority}: the \emph{local} tick of the node's own detector counts
+the detection lag and the watchdog, and the \emph{federated} tick counts the dwell and the
+decision latency of the regional detector, which takes federated decisions only on that
+tick. A false suspicion towards GL merely moves the node to the safe mode, so the local
+cadence can be short and aggressive while the federated one stays slow and careful; when
+the federation slows down under degradation, protection does not. With the federated tick
+five times slower than the local one, the commanded FL $\rightarrow$ GL is unchanged while
+the return to FL is delayed by the corresponding federated rounds. Protection latency is
+thus the local detector's detection time plus at most one local tick: co-location removes
+the command delay, but not the time needed to perceive that a remote node has failed.
+
 Every action records who took it: \texttt{decided\_by} is \texttt{monitor} for a
 Disaster-FD decision and \texttt{autonomous} only for the watchdog (cause
 \texttt{autonomous\_fallback}). This makes the rule machine-checkable: a conformance
@@ -147,6 +163,15 @@ window false-positive rate of 0.14\%, with thresholds selected out of sample on 
 blocks of the trace and a 25\% safety margin over the benign maximum. Each of the three
 fields resolves a case the others cannot, which is why the event carries three numbers and
 no verdict.
+
+Because the window is the detector's tick, its length is not fixed, and thresholds are
+calibrated once. Calibrated at a 1-s tick and then held fixed, the rule keeps 98.1--98.6\%
+of attack windows with no false window when the tick is \emph{stretched} to 2, 5 and
+10\,s---the direction in which degradation pushes the detector. \emph{Shortening} it is not
+safe: false positives cluster in time, so a short window that lands on a cluster carries a
+high flagged fraction, and at 0.25\,s 6.7\% of benign windows alarm. Neither the volume nor
+the fraction is invariant to the window length, and neither alone holds across cadences;
+the rule is therefore calibrated at the shortest cadence the detector may use.
 
 \subsection{Command surface}
 \label{sec:api-commands}

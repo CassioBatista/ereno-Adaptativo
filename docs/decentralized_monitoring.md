@@ -105,6 +105,53 @@ rejects a stream that claims `autonomous` anywhere but the watchdog FL→GL.
 > (suspicion, trust, reliability); it does not command an IDS. Making it the decider is an
 > extension this design requires, to be agreed with its authors and presented as such.
 
+## 1.2 Time reference — two cadences, both from Disaster-FD
+
+**The agent infers no time from the traffic.** The time reference is supplied by
+Disaster-FD, and the window of an event is simply what the agent scored between two
+ticks. Traffic timestamps, when the protocol carries them (IEC 61850 GOOSE/SV), ride along
+as optional metadata (`traffic_time_start/end`) for correlation with sequence-of-event
+records; where the data has none (CICIoT2023), they are absent and nothing else changes.
+
+There are **two cadences**, matching the two halves of the authority rule:
+
+| Cadence | Ticked by | Counts | Delimits |
+|---|---|---|---|
+| **local** (`round`) | node-local Disaster-FD | `detect_lag`, watchdog D | the traffic window of each event |
+| **federated** (`fed_round`) | regional Disaster-FD | `dwell`, `cmd_latency` | when federated decisions may be taken |
+
+*Local to go down, federated to come back up* — in clocks as in authority. A false
+FL→GL suspicion only moves the node to the safe mode, so the local cadence can be short and
+aggressive; the federated one can be slow and careful. If the federation slows down under
+degradation, protection does not slow with it. Measured (`conf/scenarios/two_cadences.yaml`,
+federated tick every 5 local rounds): the FL→GL stays at round 102, the GL→FL moves from
+606 to 630 = 600 + (dwell + cmd_latency) × 5, on a federated tick; isolations land on the
+next federated tick (8→10, 21→25, 23→25, 39→40, 48→50).
+
+**Protection latency** = detection time of the node-local Disaster-FD + at most one local
+tick. Co-location makes the command delay negligible; it does not make detecting a
+*remote* failure faster, which is bounded by the detector's timeout and grows when the
+network degrades. That is the price of not switching on a guess.
+
+**Triage under a cadence that changes** (`scripts/cadence_sweep.py`). Thresholds are
+calibrated once; Disaster-FD may then stretch its tick. Calibrating at 1 s (margin ×1.25)
+and holding the thresholds fixed:
+
+| Local tick | Rule volume OR fraction | False windows |
+|---|---|---|
+| stretched to 2 / 5 / 10 s | 98.1 / 98.4 / 98.6 % of attack windows | **0** |
+| shortened to 0.5 / 0.25 s | 98.3 / 98.0 % | **1.3 / 6.7 %** of benign windows |
+| count-based, 500 / 1000 samples | 95.3 / 91.6 % | 4.1 / 4.1 % |
+
+Stretching — the direction degradation pushes — is safe. Shortening is not: false
+positives **cluster in time**, so a short window that lands on a cluster has a high
+flagged fraction. Neither `n_flags` nor the fraction is invariant to the window length,
+and the event carries both because neither alone holds across cadences (at 10 s volume
+keeps 98.2 % and fraction 92.8 %; at 0.25 s fraction keeps 98.0 % and volume 27 %). Hence
+the rule: **calibrate at the shortest cadence Disaster-FD may use**. For data without time,
+a count-based tick should not be shorter than the traffic's natural burst: recalibrated at
+500 or 1000 samples, detection falls to 58 % and 64 %.
+
 ## 2. Components
 
 ```

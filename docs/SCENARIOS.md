@@ -35,20 +35,25 @@ round against the number of windows the selected stream actually has.
 |---|---|
 | `name` | scenario id; names the output as `results/events_<name>.jsonl` |
 | `stream` | which windows to replay: `benign_only`, `with_attack`, `all` |
-| `window_seconds` | round length; one round = one traffic window (1.0 s ≈ 4.7k SV samples) |
+| `cadence.local` | the **node-local Disaster-FD tick** — `period_s` (time-based, e.g. 1.0 s ≈ 4.7k SV samples) or `samples` (count-based, for data without time; the tick is then simulated, with `nominal_period_s` for its instants). One local round = one event window |
+| `cadence.federated.every` | the **regional Disaster-FD tick**, every N local rounds; federated decisions only happen on it |
+| `traffic_time` | `frame` (events also carry the frame times of the window) or `none` |
+| `window_seconds` | deprecated alias of `cadence.local.period_s` |
 | `nodes` | N, the **static** logical index space |
 | `fusion_k` | k in the k-of-n decision fusion |
-| `timing.detect_lag` | rounds from inactivity to the fail-fast FL→GL commanded by the **node-local** Disaster-FD |
-| `timing.dwell` | rounds of full membership required as **evidence** before GL→FL |
-| `timing.cmd_latency` | rounds the **federated** Disaster-FD takes to decide (GL→FL, isolation) |
-| `timing.watchdog` | D: rounds the agent waits for its own local Disaster-FD before acting alone |
+| `timing.detect_lag` | **local** rounds from inactivity to the fail-fast FL→GL commanded by the node-local Disaster-FD |
+| `timing.dwell` | **federated** rounds of full membership required as evidence before GL→FL |
+| `timing.cmd_latency` | **federated** rounds the regional Disaster-FD takes to decide (GL→FL, isolation) |
+| `timing.watchdog` | D: **local** rounds the agent waits for its own local Disaster-FD before acting alone |
 | `local_fd_available` | `false` simulates a crashed node-local Disaster-FD process (exercises the watchdog) |
 | `attribution` | attack class → emitter node — **synthetic, v3 premise** (see §5) |
-| `isolation.*` | evidence threshold, isolations before Disaster-FD acts, and before it commands FL→GL |
-| `schedule[]` | membership changes: `{round, event: node_failure\|node_recovery, node}` |
+| `isolation.*` | evidence threshold (`escalate_flags` volume, or `escalate_fraction`), isolations before Disaster-FD acts, and before it commands FL→GL |
+| `schedule[]` | membership changes: `{round, event: node_failure\|node_recovery, node}` — rounds are **local** rounds |
 
-Three scenarios ship: `availability` (inactivity, local FD alive), `fd_watchdog` (the same,
-local FD down) and `intrusion` (attributed intrusion).
+Four scenarios ship: `availability` (inactivity, local FD alive), `fd_watchdog` (the same,
+local FD down), `two_cadences` (the same, federated tick 5× slower than the local one) and
+`intrusion` (attributed intrusion). The time reference and the two cadences are explained
+in [`decentralized_monitoring.md`](decentralized_monitoring.md) §1.2.
 
 `stream: benign_only` is worth its own note: those windows contain **no attack sample**,
 so every alarm produced there is a **false positive**. That scenario doubles as the

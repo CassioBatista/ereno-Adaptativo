@@ -24,7 +24,7 @@ Two surfaces share **one event model**:
    ThingsBoard) as CoAP telemetry/attributes.
 
 Authoritative payload schema: [`schemas/event.schema.json`](../schemas/event.schema.json).
-Version: **1.5.0**. Five events are emitted: `architecture_change` (FL↔GL switch),
+Version: **1.6.0**. Five events are emitted: `architecture_change` (FL↔GL switch),
 `node_failure` (a node identified as failing), `node_recovery` (a node back in the
 membership), `node_isolated` (a node removed by command) and `intrusion_detected` (an
 attack alarm — **notification only**, see §4).
@@ -42,9 +42,11 @@ piece arrived.
 | `seq` | int | monotonic, ≥1 | unique; continues across runs |
 | `ts` | string / int | ISO-8601 UTC (REST) · epoch-ms (CoAP) | timestamp |
 | `type` | enum | `architecture_change`, `node_failure`, `node_recovery`, `node_isolated`, `intrusion_detected` | event kind |
-| `round` | int | ≥0 | federation round |
-| `window_start` / `window_end` | string \| null | ISO-8601 UTC | traffic window the event refers to, from the GOOSE/SV frame timestamps — **distinct from `ts`**, the emission instant |
-| `window_samples` | int \| null | ≥0 | samples scored in the window — denominator for `n_flags` |
+| `round` | int | ≥0 | **local** round: tick of the node-local Disaster-FD (counts `detect_lag`, watchdog D) |
+| `fed_round` | int \| null | ≥0 | **federated** round: tick of the regional Disaster-FD (counts `dwell`, `cmd_latency`) |
+| `window_start` / `window_end` | string \| null | ISO-8601 UTC | the two local ticks delimiting the window — **not** inferred from traffic; distinct from `ts`, the emission instant |
+| `traffic_time_start` / `_end` | string \| null | ISO-8601 UTC | optional, per profile: first and last frame time in the window (IEC 61850); absent where the data has no time |
+| `window_samples` | int \| null | ≥0 | samples scored between the two ticks — denominator for `n_flags` |
 | `mode` | enum \| null | `federated`, `gossip` | aggregation mode in effect, so the monitor never infers state |
 | `n_active` | int \| null | ≥0 | `len(active_nodes)` |
 | `from_mode` / `to_mode` | enum \| null | `federated`, `gossip` | architecture_change only |
@@ -239,10 +241,20 @@ monitor:
 
 ## 6. Versioning
 
-API version follows this document (**1.5.0**). Breaking changes to the event model
+API version follows this document (**1.6.0**). Breaking changes to the event model
 or endpoints bump the major version; additive fields bump the minor. The `type`
 and `reason` enums may gain values in minor versions — consumers must ignore
 unknown enum values gracefully.
+
+**v1.6.0** makes **Disaster-FD the time reference**, in two cadences
+([`decentralized_monitoring.md`](decentralized_monitoring.md) §1.2). `round` becomes the
+local tick (node-local Disaster-FD) and the new `fed_round` the federated one; the window is
+what the agent scored between two local ticks and is no longer derived from traffic
+timestamps, which move to the optional, profile-dependent `traffic_time_start/end`. All
+additive; with a 1-s local tick and a federated tick every round, every pre-existing field
+of every event is unchanged (verified on the three scenario streams). The scenario format
+replaces `window_seconds` with `cadence` (the old field is still accepted) and gains
+`traffic_time` and `isolation.escalate_fraction`.
 
 **v1.5.0** moves authority to **Disaster-FD** (decision of 2026-10-02). The schema is
 unchanged; what changes is **who is recorded as deciding the fail-fast FL→GL**: it is now

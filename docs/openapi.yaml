@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: ReSIDS Monitor API (REST)
-  version: "1.5.0"
+  version: "1.6.0"
   description: >
     Observability AND command API between a ReSIDS agent and its Disaster-FD monitor
     process (fd/monitor.py simulates the latter). The architecture has two roles only:
