@@ -1,0 +1,92 @@
+Out-of-sample selection of window-level triage thresholds — ERENO, N=14, fusion k>=2
+calibration uses benign windows only: T = max n_flags + 1, f = max fraction, K = max k_votes + 1;  margin variant: T,f x1.25 and K+1
+
+=================== benign_cap = all  (724 benign + 282 attack windows) ===================
+in-sample thresholds (all windows): T=259  f=0.0347  K=4
+
+--- policy: max+1 ---
+scheme         rule                  TP    TPR       FP     FPR FPR 95% up  cert@10:1  cert@30:1 cert@100:1 cert@1000:1
+blocked-5      R1 volume       259/282   0.918   2/724    0.28%      0.87%      0.911      0.773      0.506      0.093
+blocked-5      R2 +fraction    276/282   0.979   3/724    0.41%      1.07%      0.900      0.750      0.473      0.082
+blocked-5      R3 +k_votes     280/282   0.993   3/724    0.41%      1.07%      0.902      0.753      0.478      0.084
+                 fold 0: 150 benign /  52 attack held out -> T=259, f=0.0347, K=4
+                 fold 1: 127 benign /  74 attack held out -> T=166, f=0.0347, K=4
+                 fold 2: 144 benign /  57 attack held out -> T=259, f=0.0347, K=4
+                 fold 3: 163 benign /  38 attack held out -> T=259, f=0.0347, K=4
+                 fold 4: 140 benign /  61 attack held out -> T=259, f=0.0347, K=4
+                 out-of-sample false windows (fold, window, n_flags, fraction, k_votes): [(1, 1168, 258, 0.0271, 2), (1, 1534, 165, 0.0347, 2), (1, 1813, 186, 0.0195, 2)]
+halves         R1 volume       259/282   0.918   2/724    0.28%      0.87%      0.911      0.773      0.506      0.093
+halves         R2 +fraction    276/282   0.979   3/724    0.41%      1.07%      0.900      0.750      0.473      0.082
+halves         R3 +k_votes     280/282   0.993   3/724    0.41%      1.07%      0.902      0.753      0.478      0.084
+                 fold 0: 354 benign / 149 attack held out -> T=166, f=0.0347, K=4
+                 fold 1: 370 benign / 133 attack held out -> T=259, f=0.0347, K=4
+                 out-of-sample false windows (fold, window, n_flags, fraction, k_votes): [(0, 1168, 258, 0.0271, 2), (0, 1534, 165, 0.0347, 2), (0, 1813, 186, 0.0195, 2)]
+random-2 x200  R1 volume      51802/56400  0.918 325/144800   0.22%      0.87%      0.911      0.773      0.506      0.093
+random-2 x200  R2 +fraction   55203/56400  0.979 539/144800   0.37%      1.07%      0.900      0.750      0.473      0.082
+random-2 x200  R3 +k_votes    56000/56400  0.993 662/144800   0.46%      1.07%      0.902      0.753      0.478      0.084
+
+--- policy: margin x1.25 ---
+scheme         rule                  TP    TPR       FP     FPR FPR 95% up  cert@10:1  cert@30:1 cert@100:1 cert@1000:1
+blocked-5      R1 volume       259/282   0.918   1/724    0.14%      0.65%      0.931      0.819      0.576      0.119
+blocked-5      R2 +fraction    276/282   0.979   1/724    0.14%      0.65%      0.936      0.830      0.595      0.128
+blocked-5      R3 +k_votes     277/282   0.982   1/724    0.14%      0.65%      0.936      0.831      0.596      0.128
+                 fold 0: 150 benign /  52 attack held out -> T=324, f=0.0433, K=5
+                 fold 1: 127 benign /  74 attack held out -> T=208, f=0.0433, K=5
+                 fold 2: 144 benign /  57 attack held out -> T=324, f=0.0433, K=5
+                 fold 3: 163 benign /  38 attack held out -> T=324, f=0.0433, K=5
+                 fold 4: 140 benign /  61 attack held out -> T=324, f=0.0433, K=5
+                 out-of-sample false windows (fold, window, n_flags, fraction, k_votes): [(1, 1168, 258, 0.0271, 2)]
+halves         R1 volume       259/282   0.918   1/724    0.14%      0.65%      0.931      0.819      0.576      0.119
+halves         R2 +fraction    276/282   0.979   1/724    0.14%      0.65%      0.936      0.830      0.595      0.128
+halves         R3 +k_votes     277/282   0.982   1/724    0.14%      0.65%      0.936      0.831      0.596      0.128
+                 fold 0: 354 benign / 149 attack held out -> T=208, f=0.0433, K=5
+                 fold 1: 370 benign / 133 attack held out -> T=324, f=0.0433, K=5
+                 out-of-sample false windows (fold, window, n_flags, fraction, k_votes): [(0, 1168, 258, 0.0271, 2)]
+random-2 x200  R1 volume      51800/56400  0.918 202/144800   0.14%      0.65%      0.931      0.819      0.576      0.119
+random-2 x200  R2 +fraction   55200/56400  0.979 202/144800   0.14%      0.65%      0.936      0.830      0.595      0.128
+random-2 x200  R3 +k_votes    55465/56400  0.983 202/144800   0.14%      0.65%      0.936      0.831      0.596      0.128
+
+=================== benign_cap = 500k  (724 benign + 282 attack windows) ===================
+in-sample thresholds (all windows): T=275  f=0.0364  K=5
+
+--- policy: max+1 ---
+scheme         rule                  TP    TPR       FP     FPR FPR 95% up  cert@10:1  cert@30:1 cert@100:1 cert@1000:1
+blocked-5      R1 volume       259/282   0.918   2/724    0.28%      0.87%      0.911      0.773      0.506      0.093
+blocked-5      R2 +fraction    276/282   0.979   3/724    0.41%      1.07%      0.900      0.750      0.473      0.082
+blocked-5      R3 +k_votes     277/282   0.982   3/724    0.41%      1.07%      0.900      0.750      0.474      0.083
+                 fold 0: 150 benign /  52 attack held out -> T=275, f=0.0364, K=5
+                 fold 1: 127 benign /  74 attack held out -> T=174, f=0.0364, K=5
+                 fold 2: 144 benign /  57 attack held out -> T=275, f=0.0364, K=5
+                 fold 3: 163 benign /  38 attack held out -> T=275, f=0.0364, K=5
+                 fold 4: 140 benign /  61 attack held out -> T=275, f=0.0364, K=5
+                 out-of-sample false windows (fold, window, n_flags, fraction, k_votes): [(1, 1168, 274, 0.0288, 2), (1, 1534, 173, 0.0364, 2), (1, 1813, 202, 0.0212, 2)]
+halves         R1 volume       259/282   0.918   2/724    0.28%      0.87%      0.911      0.773      0.506      0.093
+halves         R2 +fraction    276/282   0.979   3/724    0.41%      1.07%      0.900      0.750      0.473      0.082
+halves         R3 +k_votes     277/282   0.982   3/724    0.41%      1.07%      0.900      0.750      0.474      0.083
+                 fold 0: 354 benign / 149 attack held out -> T=174, f=0.0364, K=5
+                 fold 1: 370 benign / 133 attack held out -> T=275, f=0.0364, K=5
+                 out-of-sample false windows (fold, window, n_flags, fraction, k_votes): [(0, 1168, 274, 0.0288, 2), (0, 1534, 173, 0.0364, 2), (0, 1813, 202, 0.0212, 2)]
+random-2 x200  R1 volume      51803/56400  0.918 370/144800   0.26%      0.87%      0.911      0.773      0.506      0.093
+random-2 x200  R2 +fraction   55206/56400  0.979 650/144800   0.45%      1.07%      0.900      0.750      0.473      0.082
+random-2 x200  R3 +k_votes    55433/56400  0.983 729/144800   0.50%      1.26%      0.884      0.718      0.433      0.071
+
+--- policy: margin x1.25 ---
+scheme         rule                  TP    TPR       FP     FPR FPR 95% up  cert@10:1  cert@30:1 cert@100:1 cert@1000:1
+blocked-5      R1 volume       258/282   0.915   1/724    0.14%      0.65%      0.931      0.818      0.575      0.119
+blocked-5      R2 +fraction    276/282   0.979   1/724    0.14%      0.65%      0.936      0.830      0.595      0.128
+blocked-5      R3 +k_votes     277/282   0.982   1/724    0.14%      0.65%      0.936      0.831      0.596      0.128
+                 fold 0: 150 benign /  52 attack held out -> T=344, f=0.0454, K=6
+                 fold 1: 127 benign /  74 attack held out -> T=218, f=0.0454, K=6
+                 fold 2: 144 benign /  57 attack held out -> T=344, f=0.0454, K=6
+                 fold 3: 163 benign /  38 attack held out -> T=344, f=0.0454, K=6
+                 fold 4: 140 benign /  61 attack held out -> T=344, f=0.0454, K=6
+                 out-of-sample false windows (fold, window, n_flags, fraction, k_votes): [(1, 1168, 274, 0.0288, 2)]
+halves         R1 volume       259/282   0.918   1/724    0.14%      0.65%      0.931      0.819      0.576      0.119
+halves         R2 +fraction    276/282   0.979   1/724    0.14%      0.65%      0.936      0.830      0.595      0.128
+halves         R3 +k_votes     277/282   0.982   1/724    0.14%      0.65%      0.936      0.831      0.596      0.128
+                 fold 0: 354 benign / 149 attack held out -> T=218, f=0.0454, K=6
+                 fold 1: 370 benign / 133 attack held out -> T=344, f=0.0454, K=6
+                 out-of-sample false windows (fold, window, n_flags, fraction, k_votes): [(0, 1168, 274, 0.0288, 2)]
+random-2 x200  R1 volume      51710/56400  0.917 214/144800   0.15%      0.65%      0.931      0.819      0.576      0.119
+random-2 x200  R2 +fraction   55202/56400  0.979 234/144800   0.16%      0.65%      0.936      0.830      0.595      0.128
+random-2 x200  R3 +k_votes    55406/56400  0.982 246/144800   0.17%      0.65%      0.936      0.831      0.596      0.128
