@@ -12,7 +12,12 @@ description: >-
   node_isolated (reason: intrusion), and after command_switch_after isolations it
   commands FL->GL.
 stream: with_attack
-window_seconds: 1.0
+# Time reference supplied by Disaster-FD, in two cadences; the agent infers no time from
+# the traffic. IEC 61850 profile: 1-s local tick, frame times carried as metadata.
+cadence:
+  local: {period_s: 1.0}     # node-local Disaster-FD tick: detect_lag, watchdog, event window
+  federated: {every: 1}      # regional Disaster-FD tick: dwell, cmd_latency, federated decisions
+traffic_time: frame
 nodes: 14
 fusion_k: 2
 

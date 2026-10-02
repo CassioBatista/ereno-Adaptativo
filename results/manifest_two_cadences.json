@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-02T11:24:53+00:00",
+  "generated_at": "2026-10-02T11:27:01+00:00",
   "scenario": {
-    "file": "conf/scenarios/availability.yaml",
-    "bytes": 2538,
-    "sha256": "e4ac01b46c86446d32cc1378afff1f2306a22493c802f4ebdd6b16d2bc3ef897",
-    "name": "availability"
+    "file": "conf/scenarios/two_cadences.yaml",
+    "bytes": 2459,
+    "sha256": "7a9eec5e8be98476b886c4c2ec27d8571394559715ef53359aec2c8655d482b3",
+    "name": "two_cadences"
   },
   "generator": {
     "file": "scripts/scenario_events.py",
@@ -91,7 +91,7 @@
         "period_s": 1.0
       },
       "federated": {
-        "every": 1
+        "every": 5
       }
     },
     "traffic_time": "frame",
@@ -105,9 +105,9 @@
     }
   },
   "output": {
-    "file": "results/events_availability.jsonl",
-    "bytes": 164586,
-    "sha256": "fd13ed11ed27fa5134848a78759e07fb7231b501da602387143f63a4ac970439",
+    "file": "results/events_two_cadences.jsonl",
+    "bytes": 164416,
+    "sha256": "f73f604ddf3d4690c6b7a162b1239c1df68f629210a7f7cde1e8c0bea10a67dc",
     "events": 260,
     "types": {
       "intrusion_detected": 252,

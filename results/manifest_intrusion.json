@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-10-02T09:56:57+00:00",
+  "generated_at": "2026-10-02T11:24:53+00:00",
   "scenario": {
     "file": "conf/scenarios/intrusion.yaml",
-    "bytes": 1801,
-    "sha256": "123bd6f93b212765e8c801313961e0cc2095779dd91a38951c5121fce54712ec",
+    "bytes": 2175,
+    "sha256": "12ad709baae8294c5debb1c128a37161d3cd07fdb65451289df0592b25cf4939",
     "name": "intrusion"
   },
   "generator": {
     "file": "scripts/scenario_events.py",
-    "bytes": 17004,
-    "sha256": "6a21080240ad80793c2e6212af33264fcf1129b40aa3f05eddec73e751b7b05b",
+    "bytes": 20555,
+    "sha256": "6496acfcd43a3b30681eb1f986f6677a07303aa3136a26be80b3d42144186d05",
     "git": {
-      "commit": "4078686",
+      "commit": "924c825",
       "dirty": true,
       "note": "working tree has uncommitted changes — the commit alone does NOT identify this generator"
     }
@@ -19,15 +19,15 @@
   "schemas": {
     "event": {
       "file": "schemas/event.schema.json",
-      "bytes": 10172,
-      "sha256": "63e5db1be82111d46cfe12f628e59578c6f5608c718506d3c1b08fdde221e50b"
+      "bytes": 11779,
+      "sha256": "69380ca95a2e8213775308490f8b66561b67284c49cde8f82f9d057039aca672"
     },
     "scenario": {
       "file": "schemas/scenario.schema.json",
-      "bytes": 7318,
-      "sha256": "d26c2f93a6f647d0431844cff90840484bbf2da3be18cdaf354433dbd431ccb8"
+      "bytes": 10663,
+      "sha256": "97bf2d00f648c1c846b8909c3d417fb578011d9284adc8ac87b48f5e162ac478"
     },
-    "api_version": "1.4.0"
+    "api_version": "1.5.0"
   },
   "inputs": {
     "train": {
@@ -86,6 +86,15 @@
   "stream": {
     "selector": "with_attack",
     "window_seconds": 1.0,
+    "cadence": {
+      "local": {
+        "period_s": 1.0
+      },
+      "federated": {
+        "every": 1
+      }
+    },
+    "traffic_time": "frame",
     "windows": 282,
     "sim_epoch": "2026-01-01T00:00:00Z",
     "timing": {
@@ -97,8 +106,8 @@
   },
   "output": {
     "file": "results/events_intrusion.jsonl",
-    "bytes": 168711,
-    "sha256": "d76c77a9a2a9ec54b58673de2976bfd269ba92d5047140ffdf7144c46cec6abe",
+    "bytes": 206610,
+    "sha256": "47c71d93aff35d4e5cab6619f7c3a0dc66f1dcd5bc31f583139f3924cc5c4899",
     "events": 288,
     "types": {
       "intrusion_detected": 282,

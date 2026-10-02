@@ -36,7 +36,22 @@
     "round": {
       "type": "integer",
       "minimum": 0,
-      "description": "Federation round in which the event occurred."
+      "description": "LOCAL round: the tick count of the node-local Disaster-FD cadence, which counts detect_lag and the watchdog D. The time reference comes from Disaster-FD; the agent infers no time from the traffic. (In the scenario simulations it is re-indexed over the windows the scenario selects.)"
+    },
+    "fed_round": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "FEDERATED round: the tick count of the regional Disaster-FD cadence (one federated tick every N local rounds), which counts dwell and cmd_latency and is the only cadence at which federated decisions are taken."
+    },
+    "traffic_time_start": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Optional, profile-dependent: time of the FIRST traffic frame scored in the window, when the protocol carries one (IEC 61850 GOOSE/SV). For correlation with sequence-of-event records. Absent where the data has no time (CICIoT2023). Never used to define the window."
+    },
+    "traffic_time_end": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Optional, profile-dependent: time of the LAST traffic frame scored in the window. See traffic_time_start."
     },
     "from_mode": {
       "type": [
@@ -183,7 +198,7 @@
         "null"
       ],
       "format": "date-time",
-      "description": "Start of the evaluated traffic window, from the GOOSE/SV frame timestamps (synthetic epoch under simulation). Distinct from ts, which is the emission instant."
+      "description": "Start of the window: the node-local Disaster-FD tick at which it opened (synthetic epoch under simulation). The window is whatever the agent scored between two ticks; it is NOT derived from traffic timestamps -- those, when the profile has them, are in traffic_time_start/end. Distinct from ts, which is the emission instant."
     },
     "window_end": {
       "type": [
@@ -191,7 +206,7 @@
         "null"
       ],
       "format": "date-time",
-      "description": "End of the traffic window, exclusive."
+      "description": "End of the window: the next node-local Disaster-FD tick (exclusive)."
     },
     "window_samples": {
       "type": [
@@ -199,7 +214,7 @@
         "null"
       ],
       "minimum": 0,
-      "description": "Samples scored in the window - the denominator for n_flags."
+      "description": "Samples the agent scored between the two local ticks -- the denominator for n_flags. The window length is not fixed (Disaster-FD may stretch its cadence under delay), so triage needs both n_flags and the fraction n_flags / window_samples: measured, a rule combining them and calibrated at 1 s holds when the tick is stretched to 10 s, but neither is invariant when it is shortened (scripts/cadence_sweep.py)."
     },
     "decided_by": {
       "type": [

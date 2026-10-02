@@ -1,20 +1,19 @@
-# Driver 1: INACTIVITY. Benign-only traffic, so every alarm is a false positive and the
-# stream doubles as the false-positive baseline Disaster-FD must learn to filter.
-# Exercises the fail-fast FL->GL commanded by the node-local Disaster-FD monitor and the
-# GL->FL return decided by the federated Disaster-FD.
-name: availability
+# Driver 1 with TWO DIFFERENT CADENCES. Same traffic and schedule as availability.yaml;
+# the federated Disaster-FD ticks five times slower than the node-local one, as it would
+# when the regional federation slows down under network degradation.
+# Expected: the fail-fast FL->GL is unchanged (local cadence, round 102), while the GL->FL
+# return waits (dwell + cmd_latency) FEDERATED rounds and lands on a federated tick.
+name: two_cadences
 description: >-
-  Benign-only traffic. Three nodes go inactive and come back. The FL->GL switch is
-  commanded by the node-local Disaster-FD monitor on local evidence (fail-fast,
-  detect_lag rounds, no regional quorum); further losses while in GL trigger nothing,
-  because GL absorbs them; the GL->FL return is decided by the federated Disaster-FD
-  after the dwell evidence plus its decision latency, and has no fallback of any kind.
+  Benign-only traffic, local Disaster-FD tick 1 s, federated tick every 5 local rounds.
+  Protection keeps the local cadence; the return to FL takes the federated one. Local to
+  go down, federated to come back up -- in clocks as in authority.
 stream: benign_only
 # Time reference supplied by Disaster-FD, in two cadences; the agent infers no time from
 # the traffic. IEC 61850 profile: 1-s local tick, frame times carried as metadata.
 cadence:
   local: {period_s: 1.0}     # node-local Disaster-FD tick: detect_lag, watchdog, event window
-  federated: {every: 1}      # regional Disaster-FD tick: dwell, cmd_latency, federated decisions
+  federated: {every: 5}      # regional Disaster-FD ticks 5x slower than the local one
 traffic_time: frame
 nodes: 14
 fusion_k: 2

@@ -7,9 +7,12 @@
   "required": [
     "name",
     "stream",
-    "window_seconds",
     "nodes",
     "schedule"
+  ],
+  "anyOf": [
+    {"required": ["cadence"]},
+    {"required": ["window_seconds"]}
   ],
   "additionalProperties": false,
   "properties": {
@@ -32,7 +35,43 @@
     "window_seconds": {
       "type": "number",
       "exclusiveMinimum": 0,
-      "description": "Round length; one round = one traffic window."
+      "description": "DEPRECATED alias of cadence.local.period_s, kept so older scenario files still load."
+    },
+    "cadence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["local"],
+      "description": "The time reference, supplied by Disaster-FD -- the agent infers no time from the traffic. Two cadences: LOCAL (the node-local Disaster-FD tick) counts detect_lag and the watchdog, and delimits the traffic window of each event; FEDERATED (the regional Disaster-FD) counts dwell and cmd_latency and is the only cadence at which federated decisions (GL->FL, isolation, losses in GL) are taken. Local to go down, federated to come back up -- in clocks as in authority.",
+      "properties": {
+        "local": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Exactly one of period_s (time-based tick, for traffic that carries time) or samples (count-based tick, for datasets without timestamps such as CICIoT2023, where the tick must be SIMULATED and declared as such).",
+          "properties": {
+            "period_s": {"type": "number", "exclusiveMinimum": 0,
+                         "description": "Local tick period in seconds. The event window is what the agent scored between two ticks."},
+            "samples": {"type": "integer", "minimum": 1,
+                        "description": "Count-based tick: one local round per this many samples in arrival order. Simulates the FD tick when the data has no time."},
+            "nominal_period_s": {"type": "number", "exclusiveMinimum": 0, "default": 1.0,
+                                 "description": "With samples: the wall-clock period assigned to each simulated tick, used only for the synthetic tick instants of the events."}
+          },
+          "oneOf": [{"required": ["period_s"]}, {"required": ["samples"]}]
+        },
+        "federated": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "every": {"type": "integer", "minimum": 1, "default": 1,
+                      "description": "One federated tick every N local rounds. Federated decisions are taken only on federated ticks, and dwell and cmd_latency are counted in federated rounds. 1 reproduces a single shared cadence."}
+          }
+        }
+      }
+    },
+    "traffic_time": {
+      "type": "string",
+      "enum": ["frame", "none"],
+      "default": "frame",
+      "description": "Domain profile: 'frame' when the traffic carries timestamps (IEC 61850 GOOSE/SV), so events ALSO carry traffic_time_start/end -- the first and last frame time in the window, for correlation with sequence-of-event records; 'none' when it does not (CICIoT2023). Either way the event window itself is the Disaster-FD tick, never inferred from traffic."
     },
     "nodes": {
       "type": "integer",
@@ -92,17 +131,23 @@
         "escalate_flags": {
           "type": "integer",
           "minimum": 1,
-          "description": "n_flags for an alarm to count as evidence against its source node."
+          "description": "VOLUME rule: n_flags for an alarm to count as evidence against its source node. Calibrated at one cadence; scripts/cadence_sweep.py shows it holds when the local tick is STRETCHED but loses short attack windows when it is shortened."
+        },
+        "escalate_fraction": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "description": "FRACTION rule: n_flags / window_samples for an alarm to count as evidence. When set, it replaces escalate_flags. NOT invariant to the window length: false positives cluster in time, so a SHORTER window than the one it was calibrated at inflates the benign fraction (scripts/cadence_sweep.py). Calibrate at the shortest cadence Disaster-FD may use."
         },
         "isolate_after": {
           "type": "integer",
           "minimum": 1,
-          "description": "Corroborated alarms attributed to one node before the MONITOR commands isolation."
+          "description": "Corroborated alarms attributed to one node before the federated Disaster-FD commands isolation (taken at the next federated tick)."
         },
         "command_switch_after": {
           "type": "integer",
           "minimum": 1,
-          "description": "Isolations after which the monitor commands FL->GL. Intrusion never triggers the autonomous switch."
+          "description": "Isolations after which the federated Disaster-FD commands FL->GL. Intrusion never triggers the fail-fast switch."
         }
       }
     },

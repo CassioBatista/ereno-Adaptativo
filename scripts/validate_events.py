@@ -87,6 +87,16 @@ def check_events(path):
         if e.get("window_start") and e.get("window_end"):
             if not (e["window_start"] < e["window_end"] <= e["ts"]):
                 fail(errs, f"seq {e['seq']}: window/ts ordering violated")
+        # traffic time is metadata inside the tick window, never the window itself
+        if e.get("traffic_time_start") and e.get("traffic_time_end"):
+            if not (e["traffic_time_start"] <= e["traffic_time_end"]):
+                fail(errs, f"seq {e['seq']}: traffic_time_start after traffic_time_end")
+            if e.get("window_start") and not (
+                    e["window_start"] <= e["traffic_time_start"]
+                    and e["traffic_time_end"] < e["window_end"]):
+                fail(errs, f"seq {e['seq']}: traffic time outside its tick window")
+        if e.get("fed_round") is not None and e["fed_round"] > e["round"]:
+            fail(errs, f"seq {e['seq']}: fed_round {e['fed_round']} exceeds the local round")
         # decided_by belongs to ACTIONS only, and 'autonomous' to exactly one of them
         is_action = e["type"] in ("architecture_change", "node_isolated")
         if e.get("decided_by") is not None and not is_action:

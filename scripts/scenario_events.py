@@ -76,6 +76,17 @@ def load_scenario(path):
     sc["timing"].setdefault("cmd_latency", 3)
     sc["timing"].setdefault("watchdog", 3)
     sc.setdefault("local_fd_available", True)
+    # Two cadences, both supplied by Disaster-FD. `window_seconds` is the deprecated
+    # single-cadence form and maps onto the local time-based tick.
+    cad = sc.setdefault("cadence", {})
+    loc = cad.setdefault("local", {})
+    if not loc:
+        loc["period_s"] = float(sc.get("window_seconds", 1.0))
+    if "samples" in loc:
+        loc.setdefault("nominal_period_s", 1.0)
+    cad.setdefault("federated", {}).setdefault("every", 1)
+    sc["window_seconds"] = loc.get("period_s")      # None for a count-based tick
+    sc.setdefault("traffic_time", "frame")
     return sc
 
 
@@ -154,6 +165,7 @@ def main():
                "features_file": M.get("features_file"), "specialists": N,
                "benign_cap": B["benign_cap"], "fusion_k": sc["fusion_k"]},
             stream={"selector": sc["stream"], "window_seconds": sc["window_seconds"],
+                    "cadence": sc["cadence"], "traffic_time": sc["traffic_time"],
                     "windows": nwin, "sim_epoch": sc["sim_epoch"],
                     "timing": sc["timing"]},
             output={**file_ref(out), "events": sum(types.values()), "types": dict(types)})
@@ -161,20 +173,40 @@ def main():
               f"(output sha256 {man['output']['sha256'][:12]}…)")
 
 
+def local_ticks(sc, ts, t0):
+    """Partition the scored samples by the NODE-LOCAL Disaster-FD tick.
+
+    The agent infers no time from the traffic: a window is what it scored between two
+    ticks. Time-based ticks (period_s) bucket by arrival time; count-based ticks (samples)
+    bucket by arrival order, for data that carries no time (the tick is then simulated).
+    Returns (bounds, number of ticks, period used for the tick instants)."""
+    loc = sc["cadence"]["local"]
+    if "samples" in loc:
+        k, n = int(loc["samples"]), len(ts)
+        n_w = (n + k - 1) // k
+        return np.minimum(np.arange(n_w + 1) * k, n), n_w, float(loc.get("nominal_period_s", 1.0))
+    period = float(loc["period_s"])
+    win = np.floor((ts - t0) / period).astype(np.int64)
+    n_w = int(win[-1]) + 1
+    return np.searchsorted(win, np.arange(n_w + 1)), n_w, period
+
+
 def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
     N, K, T = sc["nodes"], sc["fusion_k"], sc["timing"]
     local_fd = bool(sc.get("local_fd_available", True))
-    win = np.floor((ts - t0) / sc["window_seconds"]).astype(np.int64)
-    bnd = np.searchsorted(win, np.arange(int(win[-1]) + 2))
+    every = int(sc["cadence"]["federated"]["every"])      # federated tick every N local rounds
+    frame_time = sc.get("traffic_time", "frame") == "frame"
+    bnd, n_w, period = local_ticks(sc, ts, t0)
     sel = []
-    for w in range(int(win[-1]) + 1):
+    for w in range(n_w):
         lo, hi = bnd[w], bnd[w + 1]
         if hi == lo:
             continue
         benign = bool((y[lo:hi] == nc).all())
         if sc["stream"] == "all" or (sc["stream"] == "benign_only") == benign:
             sel.append((w, lo, hi))        # keep the ORIGINAL window index for the clock
-    print(f"[scenario] {sc['name']}: stream '{sc['stream']}' -> {len(sel)} windows")
+    print(f"[scenario] {sc['name']}: stream '{sc['stream']}' -> {len(sel)} windows "
+          f"(local tick {sc['cadence']['local']}, federated every {every})")
     validate_schedule(sc, len(sel))
 
     fail = {s["round"]: s["node"] for s in sc["schedule"] if s["event"] == "node_failure"}
@@ -184,14 +216,22 @@ def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
 
     evs, seq, active, retained = [], 0, set(range(N)), set(range(N))
     mode, pend, full_since, evidence, isolated = "federated", None, None, Counter(), set()
+    pending_iso = {}          # src -> (attack, k_votes) awaiting the next federated tick
     # `r` is the scenario round (consecutive, so the schedule indexes it); `w` is the
     # window's position in the ORIGINAL trace, and the timestamps must come from w — the
     # selected windows are NOT contiguous in time (the two streams are disjoint views of
     # one trace, interleaved in it), so deriving the clock from r would fabricate a
     # timeline and break correlation with SOE/disturbance records.
     for r, (w, lo, hi) in enumerate(sel):
-        ws, we = t0 + w * sc["window_seconds"], t0 + (w + 1) * sc["window_seconds"]
-        base = {"ts": iso(we), "round": r, "window_start": iso(ws), "window_end": iso(we)}
+        # window bounds = the local Disaster-FD tick instants (never inferred from traffic);
+        # the frame times, when the profile has them, ride along as metadata
+        ws, we = t0 + w * period, t0 + (w + 1) * period
+        fed_tick = r % every == 0
+        base = {"ts": iso(we), "round": r, "fed_round": r // every,
+                "window_start": iso(ws), "window_end": iso(we)}
+        if frame_time:
+            base["traffic_time_start"] = iso(ts[lo])
+            base["traffic_time_end"] = iso(ts[hi - 1])
 
         if r in fail:
             active.discard(fail[r]); seq += 1
@@ -231,8 +271,10 @@ def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
                                     if local_fd else
                                     f"agent watchdog: node-local Disaster-FD monitor unresponsive "
                                     f"for D={T['watchdog']} rounds; fail-safe direction only")))
-        # GL->FL: the federated Disaster-FD's call, with NO fallback of any kind
-        if mode == "gossip" and full_since is not None and r - full_since >= T["dwell"] + T["cmd_latency"]:
+        # GL->FL: the federated Disaster-FD's call, with NO fallback of any kind. Taken only
+        # on a federated tick; dwell and cmd_latency are counted in FEDERATED rounds.
+        if mode == "gossip" and full_since is not None and fed_tick \
+                and r - full_since >= (T["dwell"] + T["cmd_latency"]) * every:
             mode, full_since, seq = "federated", None, seq + 1
             evs.append(dict(base, seq=seq, type="architecture_change", mode="federated",
                             from_mode="gossip", to_mode="federated", reason="recovery",
@@ -245,59 +287,14 @@ def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
         sub = fired[pool, lo:hi]
         votes = sub.sum(axis=0)
         fl = votes >= K
-        if not fl.any():
-            continue
-        det = [pool[i] for i in np.where(sub[:, fl].any(axis=1))[0]]
-        by = Counter()
-        for s in det:
-            by[cv[spec_attack[s]]] += int(sub[pool.index(s)][fl].sum())
-        atk = by.most_common(1)[0][0]
-        # Attribution is about the EMITTER of the traffic, not about IDS membership: an
-        # isolated node keeps publishing GOOSE/SV, because removing it from the
-        # federation does not disconnect it from the network. Conditioning source_node on
-        # `active` (as an earlier version did) erased the attribution of 74 of 80
-        # injection alarms and hid exactly the fact the operator needs to see — that
-        # IDS-level isolation did not stop the attack.
-        src = attr.get(atk)
-        src_isolated = src is not None and src in isolated
-        seq += 1
-        benign_win = bool((y[lo:hi] == nc).all())
-        evs.append(dict(base, seq=seq, type="intrusion_detected", mode=mode, attack=atk,
-                        k_votes=int(votes[fl].max()), n_flags=int(fl.sum()),
-                        detector_specialists=det, active_nodes=sorted(active),
-                        n_active=len(active), source_node=src, window_samples=int(hi - lo),
-                        detail=("benign-only window: this alarm is a FALSE POSITIVE"
-                                if benign_win else
-                                (f"source node {src} is ALREADY ISOLATED and still emitting — "
-                                 "IDS-level isolation does not block traffic; containment is a "
-                                 "network action outside the IDS" if src_isolated else
-                                 "notification only; isolation is decided by the federated "
-                                 "Disaster-FD"))))
-
-        # evidence accrues only against nodes not yet isolated — an already-isolated
-        # emitter still produces alarms, but there is nothing left for the monitor to
-        # isolate; that case is reported in the alarm's detail instead.
-        if src is not None and not src_isolated and isol_cfg \
-                and int(votes[fl].max()) >= K \
-                and int(fl.sum()) >= isol_cfg.get("escalate_flags", 10):
-            evidence[src] += 1
-            if evidence[src] == isol_cfg.get("isolate_after", 5):
-                active.discard(src); isolated.add(src); seq += 1
-                evs.append(dict(base, seq=seq, type="node_isolated", mode=mode,
-                                reason="intrusion", decided_by="monitor",
-                                failed_nodes=[src], source_node=src, attack=atk,
-                                k_votes=int(votes[fl].max()), active_nodes=sorted(active),
-                                n_active=len(active),
-                                detail=(f"isolation commanded by the federated Disaster-FD after "
-                                        f"{isol_cfg.get('isolate_after', 5)} corroborated alarms")))
-                if mode == "federated" and len(isolated) >= isol_cfg.get("command_switch_after", 2):
-                    mode, seq = "gossip", seq + 1
-                    evs.append(dict(base, seq=seq, type="architecture_change", mode="gossip",
-                                    from_mode="federated", to_mode="gossip", reason="intrusion",
-                                    decided_by="monitor", failed_nodes=sorted(isolated),
-                                    active_nodes=sorted(active), n_active=len(active),
-                                    detail="commanded by the federated Disaster-FD (intrusion, "
-                                           "not inactivity: never a fail-fast transition)"))
+        if fl.any():
+            seq, mode = alarm(sc, base, r, lo, hi, pool, sub, votes, fl, y, nc, cv, spec_attack,
+                              attr, isol_cfg, K, evs, seq, mode, active, isolated, evidence,
+                              pending_iso)
+        # isolations decided by the federated Disaster-FD are taken on its tick only
+        if pending_iso and fed_tick:
+            seq, mode = take_isolations(base, isol_cfg, evs, seq, mode, active, isolated,
+                                        pending_iso)
 
     out = f"results/events_{sc['name']}.jsonl"
     os.makedirs("results", exist_ok=True)
@@ -308,6 +305,80 @@ def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
     print(f"[scenario] {sc['name']}: {len(evs)} events -> {dict(types)}")
     print(f"[scenario]   -> {out}")
     return out, len(sel), types
+
+
+def alarm(sc, base, r, lo, hi, pool, sub, votes, fl, y, nc, cv, spec_attack, attr, isol_cfg,
+          K, evs, seq, mode, active, isolated, evidence, pending_iso):
+    """One intrusion_detected for the window; accrue evidence against its source.
+
+    The isolation itself is NOT taken here: it is a federated Disaster-FD decision, queued
+    in pending_iso and executed on the next federated tick (take_isolations)."""
+    det = [pool[i] for i in np.where(sub[:, fl].any(axis=1))[0]]
+    by = Counter()
+    for s in det:
+        by[cv[spec_attack[s]]] += int(sub[pool.index(s)][fl].sum())
+    atk = by.most_common(1)[0][0]
+    # Attribution is about the EMITTER of the traffic, not about IDS membership: an
+    # isolated node keeps publishing GOOSE/SV, because removing it from the federation
+    # does not disconnect it from the network. Conditioning source_node on `active` (as an
+    # earlier version did) erased the attribution of 74 of 80 injection alarms and hid
+    # exactly the fact that needs to be seen — that IDS-level isolation did not stop the
+    # attack.
+    src = attr.get(atk)
+    src_isolated = src is not None and src in isolated
+    n_flags, n_win = int(fl.sum()), int(hi - lo)
+    seq += 1
+    benign_win = bool((y[lo:hi] == nc).all())
+    evs.append(dict(base, seq=seq, type="intrusion_detected", mode=mode, attack=atk,
+                    k_votes=int(votes[fl].max()), n_flags=n_flags,
+                    detector_specialists=det, active_nodes=sorted(active),
+                    n_active=len(active), source_node=src, window_samples=n_win,
+                    detail=("benign-only window: this alarm is a FALSE POSITIVE"
+                            if benign_win else
+                            (f"source node {src} is ALREADY ISOLATED and still emitting — "
+                             "IDS-level isolation does not block traffic; containment is a "
+                             "network action outside the IDS" if src_isolated else
+                             "notification only; isolation is decided by the federated "
+                             "Disaster-FD"))))
+
+    # Evidence accrues only against nodes not yet isolated. The escalation test is the
+    # flagged FRACTION when configured and the volume (n_flags) otherwise; both are
+    # calibrated at one cadence (scripts/cadence_sweep.py: safe when the tick stretches,
+    # not when it shortens).
+    if "escalate_fraction" in isol_cfg:
+        escalates = n_flags / n_win >= isol_cfg["escalate_fraction"]
+    else:
+        escalates = n_flags >= isol_cfg.get("escalate_flags", 10)
+    if src is not None and not src_isolated and src not in pending_iso and isol_cfg \
+            and int(votes[fl].max()) >= K and escalates:
+        evidence[src] += 1
+        if evidence[src] >= isol_cfg.get("isolate_after", 5):
+            pending_iso[src] = (atk, int(votes[fl].max()))
+    return seq, mode
+
+
+def take_isolations(base, isol_cfg, evs, seq, mode, active, isolated, pending_iso):
+    """Execute the isolations queued for this federated tick (and the FL->GL they may
+    lead to). With federated.every = 1 this happens in the same round as the alarm that
+    completed the evidence, exactly as before the two cadences existed."""
+    for src, (atk, kv) in list(pending_iso.items()):
+        del pending_iso[src]
+        active.discard(src); isolated.add(src); seq += 1
+        evs.append(dict(base, seq=seq, type="node_isolated", mode=mode,
+                        reason="intrusion", decided_by="monitor",
+                        failed_nodes=[src], source_node=src, attack=atk,
+                        k_votes=kv, active_nodes=sorted(active), n_active=len(active),
+                        detail=(f"isolation commanded by the federated Disaster-FD after "
+                                f"{isol_cfg.get('isolate_after', 5)} corroborated alarms")))
+        if mode == "federated" and len(isolated) >= isol_cfg.get("command_switch_after", 2):
+            mode, seq = "gossip", seq + 1
+            evs.append(dict(base, seq=seq, type="architecture_change", mode="gossip",
+                            from_mode="federated", to_mode="gossip", reason="intrusion",
+                            decided_by="monitor", failed_nodes=sorted(isolated),
+                            active_nodes=sorted(active), n_active=len(active),
+                            detail="commanded by the federated Disaster-FD (intrusion, "
+                                   "not inactivity: never a fail-fast transition)"))
+    return seq, mode
 
 
 if __name__ == "__main__":
