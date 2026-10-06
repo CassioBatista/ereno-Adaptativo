@@ -2,17 +2,20 @@
 
 **Status: design.** Today `fd/monitor.py` serves ONE local REST endpoint bound to the
 aggregation plane (`build_monitor(conf)` in `main_dist.py`, wired into `HybridStrategy`).
-This document specifies the decentralized alternative — one ReSIDS agent per IED, each
-with its own CoAP endpoint — and states precisely what is not implemented (§9).
+This document specifies the decentralized alternative — one ReSIDS agent per monitored
+device, each with its own CoAP endpoint — and states precisely what is not implemented (§9).
+The design is domain-neutral; what a domain fixes (window timing, attribution, attack
+labels, security alignment, agent placement) is bound by a profile
+([`PROFILES.md`](PROFILES.md)). IEC 61850 appears below only as that profile's example.
 
 > **OPEN DECISION — transport, deliberately postponed.** Everything below assumes the
 > CoAP binding (Resource Directory + Observe + DTLS 1.3). That premise is **not settled**.
 > For the Disaster-FD monitor processes — which, under the authority rule of §1.1, decide
 > every transition — REST/TLS scores better on ordered reliable delivery,
-> firewall traversal, tooling, IEC 62351-3 alignment, and is the surface already
-> implemented (stdlib, no dependency). CoAP keeps the edge for IoT-hub telemetry and
-> constrained links; at our volume (558 events in 83 min) its byte savings are
-> irrelevant on a substation LAN. If REST is chosen for the monitor path, the
+> firewall traversal, tooling, alignment with domains that prescribe TLS (see the profiles),
+> and is the surface already implemented (stdlib, no dependency). CoAP keeps the edge for
+> IoT-hub telemetry and constrained links; at our volume (558 events in 83 min) its byte
+> savings are irrelevant on a wired local network. If REST is chosen for the monitor path, the
 > **Resource Directory (§4) largely loses its purpose**, since HTTP deployments usually
 > solve discovery by provisioning or conventional service discovery.
 >
@@ -30,13 +33,14 @@ with its own CoAP endpoint — and states precisely what is not implemented (§9
 
 | Plane | Cadence | Traffic | Constraint |
 |---|---|---|---|
-| **Data** — score each sample against the local booster pool, fuse *k*-of-*n* | one sample / ~0.21 ms (SV cadence, in bursts) | **none** — the decision is local | CPU only: ~4.7 k samples/s |
-| **Control** — booster diffusion, mode switch, control digest | rounds (~1 s ≈ 4.7 k samples) | ~13 KB per booster, **only when knowledge changes** | must not contend with GOOSE/SV (lower 802.1Q priority) |
-| **Observability** — events to the monitor | event-driven + periodic ping | ~300 B per event | none critical |
+| **Data** — score each sample against the local booster pool, fuse *k*-of-*n* | per sample (IEC 61850 profile: one every ~0.21 ms, SV cadence, in bursts) | **none** — the decision is local | CPU only (IEC 61850 profile: ~4.7 k samples/s) |
+| **Control** — booster diffusion, mode switch, control digest | local Disaster-FD ticks (IEC 61850 profile: ~1 s ≈ 4.7 k samples) | ~13 KB per booster, **only when knowledge changes** | must not contend with the monitored system's own traffic (lower 802.1Q priority) |
+| **Observability** — events to Disaster-FD | event-driven + periodic ping | ~300 B per event | none critical |
 
 The separation is the whole point: diffusing *models* (rarely) is what makes the
 per-sample decision purely local, so no per-sample traffic ever competes with the
-protection traffic that must meet TT6 (3 ms).
+monitored system's time-critical traffic (in the IEC 61850 profile, protection messages
+that must meet TT6, 3 ms).
 
 ## 1.1 Authority rule — Disaster-FD decides; the agent only protects itself
 
@@ -155,22 +159,25 @@ a count-based tick should not be shorter than the traffic's natural burst: recal
 ## 2. Components
 
 ```
-   ┌────────────┐  register (DTLS)   ┌──────────────┐
-   │ ReSIDS     │ ─────────────────► │  Resource    │
-   │ agent @IED │ ◄───────────────── │  Directory   │
-   └─────┬──────┘   lookup           └──────┬───────┘
-         │ Observe notifications (CON)      │ lookup (cached)
-         │ ───────────────────────────►     ▼
-         │                            ┌──────────────┐
-         │ ◄─────────────────────────── │   Monitor    │
-         │   GET /events?since=<contig> └──────────────┘
+   ┌───────────────┐  register (DTLS)   ┌──────────────┐
+   │ ReSIDS        │ ─────────────────► │  Resource    │
+   │ agent @device │ ◄───────────────── │  Directory   │
+   └─────┬─────────┘   lookup           └──────┬───────┘
+         │ Observe notifications (CON)         │ lookup (cached)
+         │ ──────────────────────────────►     ▼
+         │                            ┌─────────────────┐
+         │ ◄─────────────────────────── │  Disaster-FD    │
+         │   GET /events?since=<contig> │  (federated)    │
+         │                              └─────────────────┘
          │   (reconcile + liveness + recover, one round trip)
 ```
 
-**ReSIDS agent** (one per IED) — CoAP server exposing `/status`, `/events`, and an
-observable event resource; CoAP client registering itself in the RD.
+**ReSIDS agent** (one per monitored device — an IED in the IEC 61850 profile) — CoAP
+server exposing `/status`, `/events`, and an observable event resource; CoAP client
+registering itself in the RD. Each agent is paired with its node-local Disaster-FD monitor.
 **Resource Directory** (RFC 9176) — registry: which agents exist and where.
-**Monitor** — RD lookup (cached) + Observe subscription + periodic ping + triage.
+**Federated Disaster-FD** — RD lookup (cached) + Observe subscription + periodic
+reconciliation + triage, and the decisions of §1.1.
 
 ## 3. Identity: three tiers, deliberately different scopes
 
@@ -178,21 +185,22 @@ observable event resource; CoAP client registering itself in the RD.
 |---|---|---|---|
 | Neighbour map | index → address | **each node**, degree-sized (2 on a ring) | gossip, peer timeout |
 | Membership roster | valid index space, `n_active` | every node, but tiny (⌈N/8⌉-byte bitmaps) | quorum, unanimity gate |
-| Identity map | index ↔ IED ↔ base URI | **RD + monitor only** | showing the operator which IED |
+| Identity map | index ↔ device ↔ base URI | **RD + Disaster-FD only** | naming which device an index is |
 
 Nodes emit **indices**; the monitor resolves them. Replicating a provisioned identity
 map across N nodes would create contradictory reports when one copy goes stale.
 
 ## 4. Message flows
 
-**Discovery (rare).** Agent registers with an **explicit** `base=` (substation IEDs have
-fixed IPs; the implicit source-address base breaks behind NAT). `ep=` carries the IED
-name; the logical index is a registration attribute. The monitor looks up once and caches.
+**Discovery (rare).** Agent registers with an **explicit** `base=` (fixed-address devices
+are common in industrial deployments, and the implicit source-address base breaks behind
+NAT). `ep=` carries the device name; the logical index is a registration attribute. The
+federated Disaster-FD looks up once and caches.
 
-**Events (on occurrence).** The agent notifies the monitor over Observe, CON, one JSON
-object per event. Four types: `intrusion_detected`, `node_failure`, `node_recovery`,
-`architecture_change`. Every event carries `seq`, `ts`, `round`, `window_start`,
-`window_end`, `mode`, `n_active`, `active_nodes`.
+**Events (on occurrence).** The agent notifies Disaster-FD over Observe, CON, one JSON
+object per event. Five types: `intrusion_detected`, `node_failure`, `node_recovery`,
+`node_isolated`, `architecture_change`. Every event carries `seq`, `ts`, `round`,
+`fed_round`, `window_start`, `window_end`, `mode`, `n_active`, `active_nodes`.
 
 **Reconciliation (periodic) — one request, three jobs.** The monitor tracks, **per
 agent**, the highest **contiguous** `seq` (the largest *c* with every seq ≤ *c*
@@ -217,19 +225,24 @@ or after a long outage, to resync state without replaying the whole event histor
 period, add a CoAP ping (empty CON → RST, §7). It is cheap but carries no state, so it
 complements rather than replaces `since=`.
 
-## 5. Duplicate alarms are a feature, not a bug
+## 5. Duplicate alarms: agreement, not corroboration
 
-Every node holds the same diffused union, so **every node reaches the same verdict** and
-will emit the *same* `intrusion_detected`. With per-node endpoints the monitor receives
-N copies of each alarm. Two admissible policies:
+Every node holds the same diffused union, so when agents observe the same traffic **every
+node reaches the same verdict** and emits the *same* `intrusion_detected`. With per-node
+endpoints the federated Disaster-FD receives N copies of each alarm.
 
-* **Deduplicate** by (`window_start`, `attack`) and keep the count of reporting agents;
-* **Treat the count as corroboration across agents** — an alarm reported by 1 of 14
-  agents when all hold the same pool is anomalous, and is exactly the signal a
-  compromised/lying agent would produce (v3 territory).
+**Deduplicate** by (`window_start`, `attack`) and keep the count of reporting agents — but
+do **not** treat that count as corroboration. Measured over fifteen endpoints
+([`MULTI_INSTANCE.md`](MULTI_INSTANCE.md) §6): requiring ≥ 2 reporting instances removes
+**no** false positive (every benign false alarm is reported by at least 7 instances, even
+when each agent sees only its own slice of the traffic) and discards 6.4 % of true
+detections. A false positive is a property of the traffic window, not of an agent. The
+useful signal in the count is its **absence**: an agent that disagrees with the others —
+a different label, a frozen membership view — is reporting something real (an
+isolated-but-live node, or in v3 a lying one).
 
-Note `seq` is **per agent** in this architecture; the monitor keeps one contiguity
-counter per agent.
+Note `seq` is **per agent** in this architecture; Disaster-FD keeps one contiguity counter
+per agent.
 
 ## 6. Failure cases and the required reactions
 
@@ -264,8 +277,8 @@ Stacking the layers for the smallest message, the CoAP ping (IPv4):
 | Ethernet frame | 64 (**padded**) | 79 | 64 (**still padded**) |
 | **On the wire** (preamble + IFG) | **84** | **99** | **84** |
 
-With 1.3 the whole record fits under Ethernet's 46-byte minimum payload, so on a
-substation LAN the ping costs **exactly what plain CoAP costs** — the security is free
+With 1.3 the whole record fits under Ethernet's 46-byte minimum payload, so on a wired
+local network the ping costs **exactly what plain CoAP costs** — the security is free
 at that size. On larger messages the share drops from +15% to ~+5% (a ~200 B `/status`)
 and from +10% to ~+4% (a ~300 B event).
 
@@ -278,35 +291,24 @@ survives a mapping change without renegotiating.
 constrained stacks still ship 1.2 only. So 1.2 is the interoperability floor, not the
 design target.
 
-### 7.1 Alignment with IEC 62351 — TLS, not DTLS
+### 7.1 When the domain prescribes TLS
 
-IEC 62351 does **not** define a DTLS profile. It delegates transport protection of
-**TCP/IP profiles to TLS** (62351-3; 62351-4 for MMS), while GOOSE/SV (62351-6) are
-protected **inside the PDU** with group keys (62351-9), precisely because TLS does not
-serve multicast with a 3 ms budget.
-
-Two consequences:
-
-1. **This channel is not an IEC 61850 profile.** ReSIDS↔monitor is an out-of-band
-   *management* interface; 62351 does not prescribe it. Choosing DTLS here is not a
-   deviation from the standard — it is outside its scope.
-2. **Where the utility applies 62351, the natural alignment is TLS.** The whole design
-   survives the change: **RFC 8323** carries CoAP over **TCP, TLS and WebSockets**, with
-   its own Ping/Pong signalling, so `Observe` and `GET /events?since=<contiguous>` keep
-   working unchanged — only the transport differs.
-
-The byte budget above then no longer applies (TCP adds header, handshake and
-keep-alives), but this channel is **sparse** — 558 events in 83 min on the replay — so
-the saving only matters on a constrained link (6LoWPAN, radio), not on a substation LAN.
-Whichever transport is chosen, it should reuse the site PKI and cipher policy of
-**62351-9** rather than a parallel credential scheme.
+Some domains prescribe their own transport security. When a profile does, the natural
+alignment is TLS, and the design survives the change: **RFC 8323** carries CoAP over
+**TCP, TLS and WebSockets**, with its own Ping/Pong signalling, so `Observe` and
+`GET /events?since=<contiguous>` keep working unchanged — only the transport differs. The
+byte budget above then no longer applies (TCP adds header, handshake and keep-alives), but
+this channel is **sparse** — 558 events in 83 min on the replay — so the saving only matters
+on a constrained link (6LoWPAN, radio), not on a wired local network. Whichever transport
+is chosen, it should reuse the site's PKI and cipher policy rather than a parallel
+credential scheme. The IEC 61850 case (IEC 62351) is in [`PROFILES.md`](PROFILES.md).
 
 **Adopted for this design: DTLS 1.3 over CoAP/UDP**, matching the IoT-hub integration
-(ThingsBoard / Magenta) the monitor interface already targets, and keeping the byte
-budget of §7. TLS (RFC 8323, CoAP-over-TLS) is the recorded migration path for
-deployments governed by 62351 or crossing the utility WAN; since it preserves `Observe`
-and `since=<contiguous>` unchanged, the switch costs transport configuration only — no
-change to the event model, the reconciliation logic or the fallback semantics.
+(ThingsBoard / Magenta) the interface already targets, and keeping the byte budget of §7.
+TLS (RFC 8323, CoAP-over-TLS) is the recorded migration path for deployments whose profile
+prescribes it or that cross a wide-area network; since it preserves `Observe` and
+`since=<contiguous>` unchanged, the switch costs transport configuration only — no change
+to the event model, the reconciliation logic or the fallback semantics.
 
 ## 8. Identity and security
 

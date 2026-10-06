@@ -24,7 +24,7 @@ Two surfaces share **one event model**:
    ThingsBoard) as CoAP telemetry/attributes.
 
 Authoritative payload schema: [`schemas/event.schema.json`](../schemas/event.schema.json).
-Version: **1.6.0**. Five events are emitted: `architecture_change` (FL↔GL switch),
+Version: **1.7.0**. Five events are emitted: `architecture_change` (FL↔GL switch),
 `node_failure` (a node identified as failing), `node_recovery` (a node back in the
 membership), `node_isolated` (a node removed by command) and `intrusion_detected` (an
 attack alarm — **notification only**, see §4).
@@ -45,7 +45,7 @@ piece arrived.
 | `round` | int | ≥0 | **local** round: tick of the node-local Disaster-FD (counts `detect_lag`, watchdog D) |
 | `fed_round` | int \| null | ≥0 | **federated** round: tick of the regional Disaster-FD (counts `dwell`, `cmd_latency`) |
 | `window_start` / `window_end` | string \| null | ISO-8601 UTC | the two local ticks delimiting the window — **not** inferred from traffic; distinct from `ts`, the emission instant |
-| `traffic_time_start` / `_end` | string \| null | ISO-8601 UTC | optional, per profile: first and last frame time in the window (IEC 61850); absent where the data has no time |
+| `traffic_time_start` / `_end` | string \| null | ISO-8601 UTC | optional, per profile: first and last traffic timestamp in the window (e.g. GOOSE/SV frames in `iec61850-goose-sv`); absent where the data has no time |
 | `window_samples` | int \| null | ≥0 | samples scored between the two ticks — denominator for `n_flags` |
 | `mode` | enum \| null | `federated`, `gossip` | aggregation mode in effect, so the monitor never infers state |
 | `n_active` | int \| null | ≥0 | `len(active_nodes)` |
@@ -54,11 +54,11 @@ piece arrived.
 | `failed_nodes` | int[] | node indices | authoritative on `node_failure` |
 | `recovered_nodes` | int[] | node indices | authoritative on `node_recovery` |
 | `active_nodes` | int[] \| null | node indices | null = all active |
-| `attack` | string \| null | attack class/type | `intrusion_detected` only |
+| `attack` | string \| null | label | from the **label set of the domain profile** in force (`/status.profile.label_set`; [`PROFILES.md`](PROFILES.md)) — the core fixes no vocabulary |
 | `k_votes` | int \| null | k in k-of-n | corroboration **strength** (`intrusion_detected`) |
 | `n_flags` | int \| null | ≥0 | alarm **volume**: flagged samples in the window (`intrusion_detected`) |
 | `detector_specialists` | int[] | specialist indices | which **boosters** fired — not nodes: every node holds the same diffused union and reaches the same verdict (`intrusion_detected`) |
-| `source_node` | int \| null | node index | attributed emitter; **null when unavailable (typical v2)** |
+| `source_node` | int \| null | node index | attributed emitter; where the identity comes from is fixed by the **profile** (`/status.profile.attribution`); **null when unavailable (typical v2)** |
 | `confidence` | number \| null | score | optional (`intrusion_detected`) |
 | `decided_by` | enum \| null | `monitor`, `autonomous`, `operator` | who took the **action**. Present only on `architecture_change` and `node_isolated`; observations omit it. `monitor` = a Disaster-FD monitor process (node-local for the fail-fast FL→GL, federated otherwise); `autonomous` = the agent's watchdog FL→GL, and nothing else |
 | `command_id` | string \| null | UUID | the command that caused the action ([`COMMANDS.md`](COMMANDS.md)). Null on the watchdog action, which no command caused |
@@ -68,7 +68,9 @@ piece arrived.
 `current_mode`, `round`, `active_nodes[]`, `failed_nodes[]`, `isolated_nodes[]`,
 `switch_pending`, `authority_epoch`, `evidence`, `last_seq`, `last_cmd_seq`. The last five
 exist for the command surface: a commander that cannot read `evidence` cannot know whether
-a GL→FL return will be accepted, and would be reduced to guess-and-retry.
+a GL→FL return will be accepted, and would be reduced to guess-and-retry. `profile`
+(`name`, `label_set`, `attribution`, `traffic_time`) states the domain binding, so a
+consumer knows which vocabulary `attack` uses and whether `source_node` can ever be set.
 
 ---
 
@@ -206,7 +208,9 @@ Status codes: `2.01 Created`, `2.04 Changed`, `4.00 Bad Request`,
   alarm, **aggregated per round/window** (one alarm per attack type per round, with
   `n_flags` as the volume) — not one message per sample, to avoid flooding.
   `k_votes` is the k-of-n corroboration strength; `source_node` is the attributed
-  emitter when known (GOOSE/SV source) and **null otherwise (typical in v2)**.
+  emitter when the domain profile provides attribution (e.g. the GOOSE/SV publisher in
+  `iec61850-goose-sv`; see [`PROFILES.md`](PROFILES.md)) and **null otherwise (typical
+  in v2)**. `attack` is a label from the profile's label set.
   This is a **notification** for Disaster-FD — the agent does **NOT** isolate,
   quarantine, or otherwise actuate on it. Isolation is decided by the federated
   Disaster-FD; physical containment is a network action outside the IDS (a
@@ -241,10 +245,17 @@ monitor:
 
 ## 6. Versioning
 
-API version follows this document (**1.6.0**). Breaking changes to the event model
+API version follows this document (**1.7.0**). Breaking changes to the event model
 or endpoints bump the major version; additive fields bump the minor. The `type`
 and `reason` enums may gain values in minor versions — consumers must ignore
 unknown enum values gracefully.
+
+**v1.7.0** makes the **domain binding explicit** ([`PROFILES.md`](PROFILES.md)): a `profile`
+(name, label set, attribution source, traffic time) in the scenario, the manifest and
+`/status`. `attack` is a label from the profile's label set and `source_node` comes from the
+profile's attribution source (always null when it is `none`). Additive; the scenario
+streams are unchanged. The core documentation no longer assumes IEC 61850; that domain is
+the `iec61850-goose-sv` profile, where its IEC 62351 alignment now lives.
 
 **v1.6.0** makes **Disaster-FD the time reference**, in two cadences
 ([`decentralized_monitoring.md`](decentralized_monitoring.md) §1.2). `round` becomes the

@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: ReSIDS Monitor API (REST)
-  version: "1.6.0"
+  version: "1.7.0"
   description: >
     Observability AND command API between a ReSIDS agent and its Disaster-FD monitor
     process (fd/monitor.py simulates the latter). The architecture has two roles only:
@@ -300,8 +300,19 @@ components:
           description: >
             Removed by command, not by failure. Distinct from failed_nodes because the
             remedy differs: a failed node returns on its own, an isolated one needs
-            readmit_node. An isolated node also keeps publishing GOOSE/SV — isolation is
-            an IDS-level membership change, not containment (docs/COMMANDS.md §4.4).
+            readmit_node. An isolated node also keeps emitting traffic — isolation is an
+            IDS-level membership change, not containment (docs/COMMANDS.md §4.4).
+        profile:
+          type: [object, "null"]
+          description: >
+            The domain binding in force (docs/PROFILES.md): which label set `attack` draws
+            from, where `source_node` comes from (always null when attribution is `none`),
+            and whether events carry traffic timestamps.
+          properties:
+            name: { type: string, examples: ["iec61850-goose-sv", "iot-flow", "it-flow"] }
+            label_set: { type: string, examples: ["ereno-7", "ciciot2023-7"] }
+            attribution: { type: string, enum: [protocol_source, device_address, none] }
+            traffic_time: { type: string, enum: [frame, none] }
         switch_pending:
           type: [object, "null"]
           description: >

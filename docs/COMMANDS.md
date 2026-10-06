@@ -29,7 +29,7 @@ the binding for both. Everything in §§1–7 is transport-independent.
 
 Authoritative payloads: [`schemas/command.schema.json`](../schemas/command.schema.json)
 and [`schemas/command_result.schema.json`](../schemas/command_result.schema.json).
-Machine-readable endpoints: [`openapi.yaml`](openapi.yaml). API version **1.6.0**.
+Machine-readable endpoints: [`openapi.yaml`](openapi.yaml). API version **1.7.0**.
 
 ---
 
@@ -225,8 +225,8 @@ legitimate.
 
 Worth stating on the command surface, because this is where the misunderstanding would be
 acted upon: `isolate_node` removes a node from the federation and from the booster pool.
-It does **not** disconnect it from the process bus. An isolated node keeps publishing
-GOOSE/SV, keeps being observed, and keeps producing alarms — the event stream shows
+It does **not** disconnect it from the monitored network. An isolated node keeps emitting
+traffic, keeps being observed, and keeps producing alarms — the event stream shows
 exactly that, with `source_node` still attributed after isolation. Containment is a
 **network** action (VLAN, port, ACL) that ReSIDS neither performs nor claims to. The
 result carries this as a `warning` on every accepted isolation.
@@ -251,7 +251,7 @@ for the same measured reason.
 
 ```json
 {
-  "api_version": "1.6.0",
+  "api_version": "1.7.0",
   "current_mode": "gossip",
   "round": 606,
   "active_nodes": [0,1,2,3,4,5,6,7,8,9,10,11,12,13],
@@ -286,9 +286,10 @@ cross the network and get everything below.
 
 For those, mutual authentication is mandatory: mTLS with TLS 1.3 on the REST binding, DTLS 1.3 with
 raw public keys or PSK on the CoAP binding. Unauthenticated requests get `401` before
-anything is parsed. This aligns with IEC 62351-3 (TLS for TCP/IP profiles) — see
-[`decentralized_monitoring.md`](decentralized_monitoring.md) §7.1 on why the standard
-offers no DTLS profile and what that implies for the CoAP option.
+anything is parsed. Where a domain prescribes TLS, the REST binding aligns with it
+directly and the CoAP binding moves to CoAP over TLS
+([`decentralized_monitoring.md`](decentralized_monitoring.md) §7.1); the IEC 61850 case is
+in [`PROFILES.md`](PROFILES.md).
 
 ### 6.2 Per-command signature
 

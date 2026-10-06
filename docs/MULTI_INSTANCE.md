@@ -19,7 +19,7 @@ One monitored instance per ReSIDS agent — the FL aggregator plus the 14 client
 | Instance | Port | Role | Emits | Exists in |
 |---|---|---|---|---|
 | `srv` | 8722 | FL aggregator | control plane only | **FL only** |
-| `c00`–`c13` | 8723–8736 | IED agent | alarms + control plane | both modes |
+| `c00`–`c13` | 8723–8736 | device agent | alarms + control plane | both modes |
 
 Each serves the full surface of [`API.md`](API.md) independently. This is not a fifteenfold
 repetition of the single-endpoint case: four things change, and three of them are places

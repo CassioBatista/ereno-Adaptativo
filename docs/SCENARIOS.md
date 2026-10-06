@@ -38,6 +38,7 @@ round against the number of windows the selected stream actually has.
 | `cadence.local` | the **node-local Disaster-FD tick** — `period_s` (time-based, e.g. 1.0 s ≈ 4.7k SV samples) or `samples` (count-based, for data without time; the tick is then simulated, with `nominal_period_s` for its instants). One local round = one event window |
 | `cadence.federated.every` | the **regional Disaster-FD tick**, every N local rounds; federated decisions only happen on it |
 | `traffic_time` | `frame` (events also carry the frame times of the window) or `none` |
+| `profile` | domain binding ([`PROFILES.md`](PROFILES.md)): `name`, `label_set` (vocabulary of `attack`), `attribution` (`protocol_source`, `device_address` or `none` — with `none`, `source_node` is always null) |
 | `window_seconds` | deprecated alias of `cadence.local.period_s` |
 | `nodes` | N, the **static** logical index space |
 | `fusion_k` | k in the k-of-n decision fusion |
@@ -100,8 +101,9 @@ the direction that fails safe.
 * **Time is reconstructed.** Windows come from sorting the test split by its absolute-time
   column, which interleaves ERENO's overlapping per-attack scenarios. The result is a
   coherent synthetic stream, not a single wire capture. UTC stamps derive from a
-  synthetic epoch; in a deployment `window_start`/`window_end` come from the GOOSE/SV
-  frame timestamps.
+  synthetic epoch; in a deployment `window_start`/`window_end` are Disaster-FD's tick
+  instants and `traffic_time_start/end` the traffic's own timestamps where the profile
+  has them.
 * **Membership is a static index space.** Nodes go down and come back with the *same*
   index. A node joining with a new index would change N, hence the quorum and the
   control-digest bitmap width — that belongs with the v3 package.
