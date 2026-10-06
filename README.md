@@ -133,7 +133,7 @@ O mesmo arquivo configura dataset, particionador, topologia, número de rounds e
 
 ## Datasets
 
-Datasets de trabalho: **CICIDS2017** (regenerado dos originais — `all_in_one_cicids_v2`) e **ERENO IEC-61850** (GOOSE/SV, domínio-alvo), além de WSN, NSL-KDD e SWaT no formato "all-in-one". Subconjuntos de features em `python/feature_subsets/`.
+Datasets de trabalho: **CICIDS2017** (regenerado dos originais — `all_in_one_cicids_v2`) e **ERENO IEC-61850** (GOOSE/SV, estudo de caso — perfil `iec61850-goose-sv`, ver [`docs/PROFILES.md`](docs/PROFILES.md)), além de WSN, NSL-KDD e SWaT no formato "all-in-one". Subconjuntos de features em `python/feature_subsets/`.
 
 ## Documentação
 
