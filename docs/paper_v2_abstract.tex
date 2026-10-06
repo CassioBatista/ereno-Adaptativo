@@ -1,0 +1,42 @@
+% Paper 2 (ReSIDS v2) -- abstract, keywords and highlights for Engineering Applications
+% of Artificial Intelligence (EAAI). Impersonal style.
+% EAAI limits: abstract <= 250 words (this one: 239 including the [RESULT] placeholder,
+% so about 11 words are left for it); 1-6 keywords; 3-5 highlights of <= 85 characters.
+% Framing: domain-neutral core, three audited domains (ERENO, CICIoT2023, corrected
+% CICIDS2017); the IEC 61850 substation is the case study, not the scope.
+% TODO: fill [RESULT] once CICIoT2023 and the corrected CICIDS2017 have been run.
+% TODO: confirm that F1 95.98% comes from the k >= 2 configuration used in v2.
+
+\begin{abstract}
+The evolution of networks has increased their complexity and driven a shift toward
+distributed architectures, from enterprise networks to the Internet of Things and
+cyber-physical systems. While this shift opens new landscapes and opportunities, it also
+enlarges the attack surface, calling for adaptive distributed intrusion detection that
+keeps working while its own nodes fail. Federated learning (FL) has been widely adopted
+to train intrusion detectors across distributed networks, coordinating a shared model
+through a server; gossip learning (GL), far less explored, lets peers exchange models
+directly, without a server. This research presents ReSIDS, which combines both: it fuses
+per-attack gradient-boosted specialists by k-of-n voting and switches between FL and GL
+at runtime. A federated failure detector monitors the nodes and commands each switch:
+the system moves to GL when nodes fail and returns to FL once they recover. The
+architecture is not tied to one kind of network: applying it to another requires only
+retraining the specialists. Because attacks are rare in real traffic, individual alerts
+are dominated by false alarms; ReSIDS therefore aggregates them over windows, with
+thresholds calibrated on held-out data. On public IEC 61850 substation traffic (ERENO),
+detection is unchanged as membership shrinks from 14 to 3 nodes (F1-score 95.98\%), and
+windowed alarms flag 97.9\% of attack windows at a 0.14\% false-alarm rate. On IoT
+(CICIoT2023) and enterprise (corrected CICIDS2017) traffic, [RESULT]. Runtime switching
+makes the learning topology an operational choice rather than a design-time commitment.
+\end{abstract}
+
+\begin{keyword}
+intrusion detection \sep federated learning \sep gossip learning \sep failure detection
+\sep fault tolerance \sep XGBoost
+\end{keyword}
+
+% Highlights (separate file at submission; character counts include spaces):
+%  - Intrusion detection switches between federated and gossip learning at runtime (77)
+%  - A federated failure detector commands every switch; agents act alone as fallback (80)
+%  - Detection is unchanged as the training membership shrinks from 14 to 3 nodes (76)
+%  - Out-of-sample window triage: 97.9% of attack windows at a 0.14% false-alarm rate (80)
+%  - Domain profiles reuse one architecture for substation, IoT and enterprise traffic (81)

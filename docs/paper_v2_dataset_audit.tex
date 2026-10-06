@@ -1,0 +1,302 @@
+% Paper 2 (ReSIDS v2) -- dataset audit. Impersonal style.
+% Every number below comes from a released script and its report:
+%   scripts/inspect_edge_iiotset.py   -> results/edge_iiotset_inspection.txt
+%   scripts/inspect_uav_nidd.py       -> results/uav_nidd_inspection.txt
+%   scripts/list_uav_nidd_figshare.py -> results/uav_nidd_figshare_listing.txt
+%   scripts/inspect_pdnet_ids26.py    -> results/pdnet_ids26_inspection.txt
+%   scripts/inspect_uav_hassler.py    -> results/uav_hassler_inspection.txt
+%   scripts/inspect_ereno.py          -> results/ereno_audit.txt (+ ereno_attribution.txt)
+%   scripts/inspect_ciciot2023.py     -> results/ciciot2023_audit.txt (10 of 169 parts)
+% Citation keys are in docs/refs_v2.bib (section "Dataset audit").
+%   scripts/inspect_cicids2017c.py    -> results/cicids2017c_audit.txt
+%   scripts/inspect_iomt2024.py       -> results/iomt2024_audit.txt (Kaggle mirror; checksums in results/iomt2024_md5sums.txt)
+%   scripts/inspect_cic_iiot2025.py   -> results/cic_iiot2025_audit.txt (Kaggle mirror; checksums in results/cic_iiot2025_md5sums.txt)
+%   scripts/inspect_cps_survey4.py    -> results/{morris1,hai2007,westermo,powerduck}_audit.txt
+%                                        (+ results/cps_survey4_followup.txt)
+%   scripts/inspect_hai2305.py        -> results/hai2305_audit.txt (SHA-256 checked against GitHub LFS)
+
+\subsection{Dataset audit}
+\label{sec:dataset-audit}
+
+The evaluation of Section~\ref{sec:datasets} requires properties that accuracy
+benchmarks seldom exercise: rows aligned with their header, labels that describe attack
+behaviour rather than the capture session, a time order from which windows can be built,
+source addresses for attribution, and enough benign traffic to measure precision at
+operational prevalence. Ten public datasets from cyber-physical and IoT settings were
+considered as additional domains: two industrial IoT, two medical, two aerial, two power
+system and two industrial control system datasets. The last four were shortlisted from a
+recent survey of CPS intrusion datasets~\cite{quincozes2025cpsdatasets}, whose other
+smart-grid and ICS entries were excluded on their published description: EPIC has no
+per-sample labels, Biswas et al.\ and ICS-ADD are unlabelled packet captures, the Sahu
+dataset is not public, and ICS-Flow and Electra carry no physical data. Before use, each of
+the ten was audited with the same protocol, and none could be retained. The three datasets used in the evaluation,
+ERENO, CICIoT2023 and the corrected CICIDS2017, went through the same protocol. Table~\ref{tab:dataset-audit}
+summarises the outcome; the scripts and their reports are released with the artifact.
+
+\paragraph{Protocol.}
+Six checks were applied to every release.
+(i)~\emph{Structure}: fields per line, embedded header lines, and agreement between the
+kind of value a column holds (epoch time, radio frequency, signal power, IPv4 address)
+and the name in its header.
+(ii)~\emph{Labels}: exact duplicates, duplicates once identifiers are removed, feature
+vectors carrying more than one label, and identical files filed under different labels.
+(iii)~\emph{Time}: presence and completeness of timestamps, and whether classes are
+interleaved or recorded in separate sessions.
+(iv)~\emph{Attribution}: whether source addresses exist and point to the emitter.
+(v)~\emph{Prevalence}: class balance of the release and benign volume.
+(vi)~\emph{Shortcut probe}: a gradient-boosted classifier trained on deduplicated rows
+with and without the columns that locate a row in a capture (timestamps, frame and
+sequence numbers, checksums, ports, addresses), on a random split and, where the release
+provides one, on an independent test file. Three outcomes indicate that labels are
+predictable from the capture rather than from the attack: separability carried by one
+such column, a collapse once they are removed, or separability that holds on a random
+split but not on independent data.
+
+\begin{table}[t]
+\centering
+\caption{Outcome of the dataset audit. Checks: S structure, L labels, T time,
+A attribution, P prevalence, X shortcut probe.}
+\label{tab:dataset-audit}
+\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Dataset & Domain & Failed checks & Main finding & Use \\
+\midrule
+ERENO~\cite{quincozes2023ereno} & IEC 61850 substation & A &
+  attacks impersonate the single publisher & retained \\
+CICIoT2023~\cite{neto2023ciciot2023} & IoT network & T, A, P &
+  no time or address; IAT acts as a capture clock & retained \\
+CICIDS2017, corrected~\cite{engelen2021troubleshooting} & enterprise network & L, X &
+  scans duplicated across two labels; window-size fingerprint & retained \\
+\midrule
+Edge-IIoTset~\cite{ferrag2022edgeiiotset} & industrial IoT & S, L, T, A, X &
+  two classes shifted by one column & rejected \\
+UAV-NIDD~\cite{hadi2025uavnidd} & UAV network & S, L, T, A, P, X &
+  captures reused across scenarios and labels & rejected \\
+PDNet-IDS26~\cite{lui2026pdnet} & medical IoT & P, X &
+  class identified by the TCP connection & rejected \\
+Hassler et al.~\cite{hassler2024uav} & UAV, cyber-physical & S, T, X &
+  two attacks without benign data in their schema & rejected \\
+CIC-BCCC-NRC-IoMT-2024~\cite{dadkhah2024ciciomt} & medical IoT & L, T, A, P, X &
+  ICMP, UDP and ARP classes hold only TCP flows & rejected \\
+CIC IIoT 2025~\cite{firouzi2025datasense} & industrial IoT, sensors & L, T, A, X &
+  empty windows labelled attack; sensors carry no attack signal & rejected \\
+Morris-1~\cite{pan2015hybrid} & power system (PMU) & T, A, P &
+  1\% random sample: no time order; 71\% attacks & rejected \\
+PowerDuck~\cite{zemanek2022powerduck} & IEC 61850 substation & A, P, X &
+  floods are 92.5\% of packets; no transfer across recordings & rejected \\
+Westermo~\cite{westermo2023dataset} & ICS network & L &
+  timing labels mark flows not involving the attacker; no process data & not used \\
+HAI 23.05~\cite{shin2020hai} & ICS process (HIL) & A, X &
+  sound labels; supervised detection fails on unseen attacks & not used \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Edge-IIoTset.}
+The selected release of Edge-IIoTset~\cite{ferrag2022edgeiiotset} holds 2{,}219{,}201
+packets and 14 attacks. Every row of two classes, DDoS-UDP (121{,}568) and MITM
+(1{,}214), is shifted by one column: the timestamp field holds an IP address or a
+protocol value, so the features of these classes describe other fields, and the classes
+become separable by an export artefact. The reduced release distributed for machine
+learning shows the same shift in its MITM rows. The timestamp also lost its month and
+day when the original date was split at its comma; captures collected between November
+2021 and January 2022 therefore overlap in time of day, and the file is ordered in one
+block per class. Labels are assigned per capture and applied to every packet: once the
+identifiers recommended by the authors are removed, 13.95\% of the rows are duplicates
+and 1{,}513 feature vectors carry more than one label. The probe reaches a macro-F1 of
+0.51 on the cleaned features and 0.15 once per-packet arbitrary values (sequence and
+acknowledgement numbers, checksums, stream identifiers) are also removed, so
+separability rests on values that identify captures rather than attacks. Source
+addresses cannot support attribution: benign traffic comes from two hosts, and about
+half of the attack packets carry as source the address of a host that also originates
+41\% of the benign traffic.
+
+\paragraph{UAV-NIDD.}
+UAV-NIDD~\cite{hadi2025uavnidd,hadi2025uavniddData} provides labelled files for three
+compromise scenarios (UAV, access point, ground control station) and the raw captures.
+In the UAV scenario, 24{,}732 of 885{,}384 lines (2.8\%) are truncated to one to five
+fields, and several columns hold another field's values: the relative-time column holds
+epoch timestamps and the source-address column holds protocol numbers. The
+access-point file names its label column ``Normal'' and shows the same kind of shift.
+The timestamps place the classes in separate sessions years apart: benign traffic of the
+UAV scenario dates from September 2017 and most attacks from March 2024. On the
+access-point file, the probe separates all classes perfectly (macro-F1 1.00) even
+without time, position and identity columns. In the ground-control-station file, the
+50{,}135 reconnaissance flows are a row-by-row copy of the 50{,}135 scanning flows, and
+76\% of the rows are duplicates; the file published later as an update has the same
+size and the same per-class counts. The raw release explains these observations.
+Checksums show that the three scenarios reuse the same captures: the brute-force and
+fake-landing captures appear in all three, and one scanning capture is filed as scanning
+in two scenarios and as reconnaissance in a third. Identical files are also filed under
+different attacks, de-authentication and MITM, and fake landing and replay. Finally,
+some denial-of-service captures are named after UDP ports 5554 and 5556, the
+navigation-data and command ports of the Parrot AR.Drone protocol, a platform that is
+not part of the described testbed.
+
+\paragraph{PDNet-IDS26.}
+PDNet-IDS26~\cite{lui2026pdnet} fuses MQTT traffic with Parkinson's telemonitoring
+records and is the only audited release with clinical payloads. The public file is
+undersampled to 25\% per class (5{,}388 rows each), so precision at operational
+prevalence cannot be measured, as its authors acknowledge. Each class arrives on a
+single subscriber TCP connection (two for replay). The destination port alone separates
+FDI from benign traffic with 100\% accuracy, and the probe reaches a macro-F1 of 1.00 on
+every class even after patient identity and sequence numbers are removed. The F1-score
+of 0.77 reported for FDI by the authors indicates that the published file retains a
+session identifier that their own evaluation did not use. Denial-of-service rows carry
+an all-zero clinical payload, and the replay class covers 9 of the 42 patients.
+
+\paragraph{Hassler et al.}
+The cyber-physical UAV dataset of Hassler et al.~\cite{hassler2024uav,hassler2024uavData}
+stacks ten blocks in one CSV, one network and one physical block per class, under five
+schemas. Evil twin and FDI share a network schema that contains no benign rows, and
+their physical blocks use two further schemas, so neither attack has benign data in its
+own feature space. The FDI physical block has no timestamp, and the evil-twin physical
+clock is offset by five hours from its network clock, consistent with a time-zone error.
+Benign traffic, de-authentication DoS and replay share schemas and can be aligned in
+time, with offsets of 16 to 48~s. Yet the probe on their network features falls from a
+macro-F1 of 0.99 to 0.65 once timestamps and sequence numbers are removed, because the
+classes were recorded in separate flight sessions.
+
+\paragraph{CIC-BCCC-NRC-IoMT-2024.}
+This release re-extracts CICIoMT2024~\cite{dadkhah2024ciciomt}, captured from 40 medical
+IoT devices, into CICFlowMeter flows with addresses and timestamps, within the
+TabularIoTAttacks-2024 collection~\cite{sasi2024tabular}. Its structure is sound: one
+header, 85 fields per line, and well-formed addresses, ports and timestamps. Its labels
+describe capture sessions, not flows. All 3{,}385{,}313 flows are TCP, including those of
+the ICMP-flood, UDP-flood and ARP-spoofing classes; in those classes most flows go to
+MQTT (port 1883) and HTTPS (port 443), that is, ordinary device traffic recorded while
+the attack ran. Each class was recorded in its own session between 28~August and
+12~September 2023, and benign traffic only on 13 and 14~September, so no benign flow
+falls inside any attack window. Benign flows are 0.96\% of the release, DDoS flows
+0.15\% and ARP spoofing 0.03\%. The probe falls from a macro-F1 of 0.881 on a random
+split with identifiers to 0.769 on a time-ordered split without them, and DDoS and ARP
+spoofing reach only 0.39 and 0.37, consistent with classes whose flows do not contain
+the attack. The audit used a third-party mirror of the release (checksums released with the
+scripts).
+
+\paragraph{CIC IIoT 2025.}
+CIC IIoT 2025 (DataSense)~\cite{firouzi2025datasense} is the only candidate that joins
+network traffic with industrial sensor readings. Its processed release describes each of
+38 devices per time window, from 1 to 10~s, with sensor-log and network aggregates. The
+audit used the 1-s and 10-s windows. Their structure is sound, but three checks fail.
+Labels: half of the benign windows (50.6\%) and 10.7\% of the attack windows contain
+neither traffic nor sensor readings, so 9{,}748 empty windows are labelled as attacks.
+Time: the benign file covers one hour on 9~September 2025, while the attacks were recorded
+in separate sessions between January and June 2025, so no benign window falls inside any
+attack span. The probe falls from a macro-F1 of 0.968 on a random split to 0.726 on a
+time-ordered split, with brute force, DoS and DDoS between 0.34 and 0.59. The release is
+also inconsistent across window sizes: the ten-second attack file has 5.5 times fewer
+windows than the one-second file, where 10 would be expected, so the two resolutions do
+not tile the same attack time. Above all, the sensor data carry no attack signal. Trained
+on sensor features alone, the probe reaches a macro-F1 of 0.17, against 0.97 with network
+features. Moreover, sensors report in 99\% of their benign windows but in about half of
+their attack windows, a difference between sessions rather than an effect of the attacks.
+The physical part of this dataset therefore cannot support a cyber-physical evaluation.
+
+\paragraph{Power system and industrial control datasets.}
+Morris-1~\cite{pan2015hybrid} joins synchrophasor measurements with relay, control-panel
+and Snort logs for natural faults and attacks on a transmission system. Its structure is
+sound: 78{,}377 rows, no conflicting labels and negligible duplication, although 10{,}906
+impedance values are infinite. Each of its 15 sets, however, is a 1\% random sample of the
+scenario recordings and carries no timestamp, so no time-ordered window can be built.
+There is no address column; 71\% of the rows are attacks; and only the binary labelling
+remains online. Trained on ten sets and tested on the other five, the probe reaches a
+macro-F1 of 0.60, with physical measurements carrying almost all of the signal.
+
+PowerDuck~\cite{zemanek2022powerduck} records GOOSE traffic in a physical substation
+testbed and labels every attacker packet; its labels agree with the published attack list
+for 99.97\% of packets. Two flooding recordings, however, make up 92.5\% of all packets
+(5.6\% malicious without them), and 92\% of the packet vectors are duplicates. As in
+ERENO, every malicious packet carries the legitimate publisher's address. Most
+importantly, separability does not carry across recordings. On deduplicated data the
+probe reaches a macro-F1 of 0.99 on a random split, but when a recording is held out,
+while other recordings of the same attack family remain in training, the F1-score of the
+malicious class falls to 0.00 for replay, 0.07 for insertion and 0.30 for suppression.
+
+Westermo~\cite{westermo2023dataset} records 90 minutes of traffic in an industrial
+network, with scheduled events interleaved in one continuous capture and source addresses
+that identify the attacker. It provides two labellings. The timing labelling marks every
+flow during an event as malicious, and 67\% of the flows it marks do not involve the
+attacker. The attacker-involvement labelling is sound and needs no session shortcut: the
+probe scores the same on random and time-ordered splits (macro-F1 0.61 and 0.60). The
+flow files carry no process data, however, and two of the six events are
+misconfigurations invisible in flow statistics (F1-score near zero). The dataset therefore
+adds no property beyond the corrected CICIDS2017.
+
+HAI 23.05~\cite{shin2020hai}, the latest release of the HIL-based augmented ICS dataset
+(steam-turbine and pumped-storage generation emulated in the loop), is the soundest of the
+candidates. It holds 86 process variables at 1~Hz with no gaps, 249 hours of normal
+operation for training, and 52 attacks interleaved with normal operation (4.0\% of the
+test time). Its binary labels match, segment by segment, the start time and duration of
+the 52 attacks listed in the technical manual. The only defect is that one label file
+truncates its timestamps to the minute, so it aligns with the data by row order only.
+Joining the labels with the manual yields a per-attack label set by target control loop.
+Supervised detection, however, does not transfer beyond the attacks it has seen. The
+probe reaches a macro-F1 of 0.99 on a random split, but 0.53 when trained on one test file
+and tested on the other, 0.27 on a time-ordered split, and 0.07 per control loop on
+held-out attack instances. Each attack instance is distinct, normal operation drifts
+across days, and consecutive seconds are strongly correlated, which inflates any random
+split. The earlier release (HAI 20.07) behaves better (0.86 across files, 0.92
+time-ordered), but its labels name only the attacked process. HAI is built for one-class
+anomaly detection trained on normal operation. Using it would require one-class
+specialists, a change of detector design outside the scope of this paper, and it has no
+network traffic for attribution.
+
+\paragraph{Implications.}
+These findings do not make the releases useless for every purpose. They do prevent an
+evaluation built on time-ordered windows, source attribution and realistic prevalence,
+and results reported on these releases should be read with them in mind. Two causes
+recur. The first is per-session labelling: each class is recorded in its own capture, so
+time, session and sequence fields identify the class. The second is export errors:
+shifted columns, truncated lines, merged schemas and duplicated files. A pre-release
+check of field counts, of value kinds per column, of checksums across files, and a
+probe with identifiers removed would expose all of them.
+
+\paragraph{Retained datasets.}
+ERENO~\cite{quincozes2023ereno} passes the structure, label and time checks. Every line
+has 59 fields; no feature vector carries two labels; duplicates are below 1\%; no test
+vector reappears in the training file; and attacks are interleaved with benign traffic
+over the whole simulation, with 97 to 100\% of every attack class inside the benign time
+span. The probe stays near-perfect on the authors' independent test file (macro-F1 0.994)
+after absolute time and the SqNum/StNum counters are removed, so separability is carried
+by message content rather than by capture position. It also reflects that the attacks
+are generated by deterministic rules, a limitation of synthetic data. ERENO fails the
+attribution check. All benign messages and 99.9 to 100\% of the attack messages carry
+the same publisher identity (one source MAC address and one \texttt{gocbRef}), because
+the attacks impersonate the legitimate publisher. Source attribution in this domain would
+therefore point at the victim, and isolation is exercised only in synthetic scenarios
+(Section~\ref{sec:api-events}).
+
+CICIoT2023~\cite{neto2023ciciot2023} was audited on 10 of the 169 files of its CSV
+release (2{,}366{,}956 rows). It passes the structure and label checks: one header, 47
+fields per line, no missing or infinite values, no duplicate rows, no feature vector with
+two labels, and rows in shuffled order. It has neither timestamps nor addresses, so the
+local tick is count-based and attribution is none (Section~\ref{sec:datasets}). The
+column named IAT is not an inter-arrival time. Its values form narrow bands per class,
+around $8.3\times10^{7}$ for denial-of-service and Mirai traffic and $1.67\times10^{8}$
+for benign, reconnaissance, spoofing and web traffic, as a capture clock would. Removing
+it lowers the probe's F1-score for DoS from 1.00 to 0.73, so the DoS/DDoS distinction
+partly rests on it, and IAT is therefore excluded from the features. Benign traffic is
+2.4\% of the sample, and the web and brute-force categories together 0.08\%: benign
+traffic must be rebalanced to a stated prevalence, and those two categories yield wide
+confidence intervals.
+
+The corrected CICIDS2017~\cite{engelen2021troubleshooting,liu2022error} (2{,}099{,}976
+flows over five days) passes the structure, time, attribution and prevalence checks.
+Every line has 91 fields; addresses, ports and timestamps are well formed; and attacks
+run concurrently with benign traffic, which makes up 15 to 99.8\% of the flows inside
+each attack's time window. Attack flows come from the external attacker's gateway
+(172.16.0.1) or from the internal hosts compromised by the botnet and the infiltration,
+so source attribution points at the emitter. Monday holds eight hours of benign-only
+traffic (371{,}624 flows). Two findings set conditions of use. First, 126 feature
+vectors carry more than one label, covering 91{,}253 rows that are almost all port scans
+labelled both ``Portscan'' and ``Infiltration -- Portscan''. Scans launched from the
+infiltrated host are indistinguishable from those launched from outside, so the two
+labels are merged. Second, the probe falls from a macro-F1 of 0.991 on a random split to
+0.932 on a time-ordered split, and to 0.908 once the initial TCP window sizes are also
+removed. In that last step the port-scan F1-score drops from 0.86 to 0.62. The initial
+window acts as a fingerprint of the scanning host's operating system rather than of the
+attack, and it is therefore excluded from the features.
+Attempted flows (11{,}979), whose attacks delivered no payload, are labelled benign; the
+web and infiltration categories keep only 104 and 36 flows.

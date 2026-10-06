@@ -77,8 +77,9 @@ the watchdog lands $D=3$ rounds later---bounded, and the switch always happens.
 \paragraph{Time reference.} The agent infers no time from the traffic: the time reference
 is also Disaster-FD's, and the window of an event is whatever the agent scored between two
 ticks. Traffic timestamps, where the protocol carries them, travel only as optional
-metadata for correlation with sequence-of-event records, so the same contract applies to
-GOOSE/SV and to datasets with no time at all. There are two cadences, matching the two
+metadata for correlation with the monitored system's own event logs, so the same contract
+applies to timestamped protocols and to datasets with no time at all. There are two
+cadences, matching the two
 halves of Table~\ref{tab:authority}: the \emph{local} tick of the node's own detector counts
 the detection lag and the watchdog, and the \emph{federated} tick counts the dwell and the
 decision latency of the regional detector, which takes federated decisions only on that
@@ -103,9 +104,16 @@ an IDS. We present that extension as such.
 \label{sec:api-events}
 
 Five event types (Table~\ref{tab:events}) carry every state change Disaster-FD needs. Two
-are actions; three are observations. An event refers to a closed traffic window and carries
-its bounds, so it can be correlated with sequence-of-event records: \texttt{window\_start}
-and \texttt{window\_end} are the window, distinct from \texttt{ts}, the emission instant.
+are actions; three are observations. An event refers to a closed window between two local
+ticks and carries its bounds: \texttt{window\_start} and \texttt{window\_end} are the
+window, distinct from \texttt{ts}, the emission instant.
+
+The interface is domain-neutral. What a domain fixes is bound by a \emph{profile}: the label
+set from which \texttt{attack} is drawn, the source of attribution for
+\texttt{source\_node}---a protocol's publisher identity, a device address, or none, in which
+case the field is always null---and whether the traffic carries timestamps. The profile in
+force is reported with the stream, so no field depends on an implicit vocabulary; our
+evaluation instantiates it on ERENO, whose seven attack classes form its label set.
 
 \begin{table}[htbp]
 \centering
@@ -218,7 +226,7 @@ attempt would leave no trace at all.
 \end{enumerate}
 
 Isolation removes a node from the federation and the booster pool; it does \emph{not}
-disconnect it from the process bus. An isolated node keeps publishing GOOSE/SV and keeps
+disconnect it from the monitored network. An isolated node keeps emitting traffic and keeps
 being attributed as the source of alarms. Containment is a network action that ReSIDS
 neither performs nor claims, and the command result says so on every accepted isolation.
 
@@ -255,7 +263,7 @@ verdict \emph{by construction}; fourteen identical alarms are agreement, and cou
 as corroboration would inflate confidence with replication. The useful signal there is the
 converse---divergence---and an isolated-but-live node is exactly that case, its membership
 view frozen at the moment of isolation while its agent continues. When instead each agent
-observes its own bus segment, alarms from different instances are independent evidence and
+observes its own network segment, alarms from different instances are independent evidence and
 $k$-of-$n$ fusion \emph{across instances} becomes a second, outer layer above the
 $k$-of-$n$ already running inside each node's pool. Section~\ref{sec:api-corrob} quantifies
 the difference. We report both because only the first is faithful to the single-trace
@@ -320,7 +328,7 @@ On the attack side the sharded distribution is bimodal---either all fourteen ins
 or exactly one does---and the single-instance tail consists of the sparse windows, in which
 so few samples fall inside the second that only one agent's slice contains any. One artifact
 must be declared: those windows concentrate on a single instance, because round-robin slice
-assignment gives index 0 the first sample of every window. A deployment partitioned by bus
+assignment gives index 0 the first sample of every window. A deployment partitioned by network
 segment would not carry that bias, so the 6.4\% figure stands while its attribution to one
 agent does not.
 
@@ -347,15 +355,14 @@ TLS-terminating proxy or an IoT hub in the path---which a CoAP deployment explic
 introduces---that intermediary becomes an implicit commander, and an audit trail based on
 channel identity alone cannot tell. The observation surface, read-only and bound to
 loopback, does not require this; the command surface does, because it changes the behaviour
-of a protection system.
+of the detector itself.
 
-Regarding standards alignment, IEC 62351 offers no DTLS profile; it delegates TCP/IP
-profiles to TLS (62351-3) and protects GOOSE/SV inside the PDU (62351-6, 62351-9). The
-ReSIDS--Disaster-FD channel is out-of-band management traffic and therefore outside that
-scope, which we state explicitly rather than claim conformance by proximity. Transport cost
-is not the deciding factor at our volume: DTLS 1.3 adds roughly 11 bytes per record, which
-still fits inside Ethernet minimum padding, so a protected datagram occupies the same 84
-bytes on the wire as an unprotected one.
+Where a domain prescribes its own transport security, the interface follows it: the REST
+binding runs over TLS directly, and the CoAP binding moves to CoAP over TLS without changing
+the event model or the reconciliation contract. Transport cost is not the deciding factor
+at our volume: DTLS 1.3 adds roughly 11 bytes per record, which still fits inside Ethernet
+minimum padding, so a protected datagram occupies the same 84 bytes on the wire as an
+unprotected one.
 
 A detector that also commands creates an attack surface a pure detector does not have. A
 compromised Disaster-FD instance can force GL, force FL, isolate honest nodes, or readmit an
