@@ -1,0 +1,62 @@
+UAV-NIDD-UAG.zip 1825769456 53a0d5887e326e5010907ee9b028dd34 https://ndownloader.figshare.com/files/48745870
+GCS-to-UAV Updated.zip 9556196 e0b7499571a7c79654fb12fa93f83ea2 https://ndownloader.figshare.com/files/56418563
+
+UAV-NIDD-UAG.zip: 232 entries (read 33 KB to list)
+
+== same CRC32 + size in more than one place (captures reused across scenarios)
+   334,051,368  crc=cce9a4c1
+      Access Point Case2/GPS Spoofing and Jamming -Ap/GPS  spoofing and Jaming .pcap
+      UAV-Case 1/GPS Jamming UAV/GPS Jammong UAV.pcap
+   241,080,861  crc=084a2ef5
+      GCS Case3/DDoS/DDOS-GCS.pcap
+      UAV-Case 1/DDoS-UAV/DDos.pcap
+    68,722,747  crc=d54ba030
+      Access Point Case2/BruteForce-Ap/BruteForce Ap.csv
+      UAV-Case 1/Brute-Force UAV/Bruteforce-AP.csv
+    15,861,650  crc=bcf0d3a8
+      Access Point Case2/BruteForce-Ap/Bruteforce-AP.pcap
+      GCS Case3/Brute-force/Bruteforce-GCS.pcap
+      UAV-Case 1/Brute-Force UAV/Bruteforce-AP.pcap
+    11,628,813  crc=1874276f
+      GCS Case3/MITM/MITM1-GCS.pcap
+      UAV-Case 1/MITM-UAV/MITM UAV.pcap
+     9,737,594  crc=2ca952da
+      Access Point Case2/Fake-Landin packet AP/FakeLanding.csv
+      UAV-Case 1/De-Authentication/FakeLanding.csv
+      UAV-Case 1/Fake-Landing Packets/FakeLanding.csv
+     8,274,413  crc=7dc89105
+      Access Point Case2/Scanning-Ap/Scanning-AP.pcap
+      GCS Case3/Reconnassiance/Reconnassiance.pcap
+      GCS Case3/Scanning/Scanning-GCS.pcap
+     6,486,835  crc=b64c7086
+      Access Point Case2/De-authentication Ap/De.csv
+      Access Point Case2/De-authentication Ap/De2.csv
+     4,308,049  crc=1cdd211b
+      Access Point Case2/DDoS-Ap/DDos.csv
+      Access Point Case2/DDoS-Ap/DDos2.csv
+     1,846,931  crc=2f41dc61
+      Access Point Case2/Fake-Landin packet AP/FakeLanding.pcap
+      GCS Case3/Fake-Landing Packet/FakeLanding.pcap
+      UAV-Case 1/Fake-Landing Packets/FakeLanding.pcap
+       671,482  crc=f10568ca
+      Access Point Case2/De-authentication Ap/Deauthentication.pcap
+      Access Point Case2/De-authentication Ap/deauthnitication-01.cap
+      GCS Case3/De-authentication/Deauthentication.pcap
+       525,626  crc=6e5c01df
+      GCS Case3/De-authentication/De-authentication.csv
+      GCS Case3/MITM/MITM Attack.csv
+       442,084  crc=9116d1ee
+      Access Point Case2/DDoS-Ap/DDos-01.cap
+      Access Point Case2/DDoS-Ap/DDos.pcap
+       358,288  crc=087a60e0
+      Access Point Case2/Replay Attack-Ap/replay-01.cap
+      GCS Case3/Replay attack/replay-01.cap
+        33,940  crc=b34ba64c
+      GCS Case3/Fake-Landing Packet/conn.csv
+      GCS Case3/Replay attack/conn.csv
+        10,361  crc=9076b6da
+      Access Point Case2/DoS-Ap/Dos-02.cap
+      Access Point Case2/DoS-Ap/Dos.pcap
+         2,954  crc=1ce034d0
+      GCS Case3/Reconnassiance/Reconnassiance-02.cap
+      UAV-Case 1/Reconnacciance-UAV/Reconnassiance-02.cap

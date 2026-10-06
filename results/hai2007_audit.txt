@@ -1,0 +1,32 @@
+
+=== (i) STRUCTURE ===
+  train1: rows=309,600 cols=64 NaN=0 time parsed=100.00% 2019-09-11 20:00:00 .. 2019-09-15 09:59:59  step(s)={1.0: 309599}
+  train2: rows=241,200 cols=64 NaN=0 time parsed=100.00% 2019-11-01 20:00:00 .. 2019-11-04 14:59:59  step(s)={1.0: 241199}
+  test1: rows=291,600 cols=64 NaN=0 time parsed=100.00% 2019-10-29 11:00:00 .. 2019-11-01 19:59:59  step(s)={1.0: 291599}
+  test2: rows=153,000 cols=64 NaN=0 time parsed=100.00% 2019-11-04 15:00:00 .. 2019-11-06 09:29:59  step(s)={1.0: 152999}
+process variables=59; label columns=['attack', 'attack_P1', 'attack_P2', 'attack_P3']
+
+=== (ii) LABELS ===
+  test1: attack rows=11,538 (3.96%); attack segments=28; attack == any(P1..P3): 100.00%; per process: {attack_P1: 9683, attack_P2: 2495, attack_P3: 1197}
+  test2: attack rows=5,989 (3.91%); attack segments=10; attack == any(P1..P3): 100.00%; per process: {attack_P1: 5207, attack_P2: 3510, attack_P3: 604}
+  train1: attack rows=0 (0.00%); attack segments=0; attack == any(P1..P3): 100.00%; per process: {attack_P1: 0, attack_P2: 0, attack_P3: 0}
+  train2: attack rows=776 (0.32%); attack segments=2; attack == any(P1..P3): 100.00%; per process: {attack_P1: 776, attack_P2: 0, attack_P3: 0}
+labels name the attacked process, not the attack type: no per-attack label set
+duplicates of process vectors (time removed): 0 (0.00%)
+vectors with >1 label: 0
+
+=== (iii) TIME ===
+  test1: attacks inside continuous operation; normal rows between first and last attack: 261,371
+  test2: attacks inside continuous operation; normal rows between first and last attack: 143,543
+  train files are normal-only (attack rows: 776 )
+
+=== (iv) ATTRIBUTION ===
+no network traffic; the per-process labels locate the attacked subsystem (P1..P3)
+
+=== (v) PREVALENCE ===
+  test: attack 3.94% of 444,600 s; all files: attack 1.84%; normal operation available: 271.4 h
+
+=== (vi) SHORTCUT PROBE (attack vs normal, test files; time excluded) ===
+  [process variables] random 70/30                               macro-F1=0.996  0=1.00  1=0.99
+  [process variables] independent groups (1 train / 1 test)      macro-F1=0.863  0=0.99  1=0.74
+  [process variables] time-ordered 70/30 per class               macro-F1=0.921  0=0.99  1=0.85

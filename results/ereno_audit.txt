@@ -1,0 +1,57 @@
+
+=== (i) STRUCTURE ===
+train: 2,955,738 rows; header fields=59; fields per data line={59: 2955738}; NaN cells=0
+test: 2,955,648 rows; header fields=59; fields per data line={59: 2955648}; NaN cells=0
+value kinds (train): absolute-time and counter columns
+  F1_Time                    min=13 max=4992 integer=False monotonic-in-file=False
+  F38_t                      min=13.0166 max=4991.61 integer=False monotonic-in-file=False
+  F39_GooseTimestamp         min=13.0166 max=9795 integer=False monotonic-in-file=False
+  F40_SqNum                  min=0 max=9999 integer=True monotonic-in-file=False
+  F41_StNum                  min=0 max=99999 integer=True monotonic-in-file=False
+  F43_frameLen               min=255 max=285 integer=True monotonic-in-file=False
+  F45_gooseLen               min=241 max=271 integer=True monotonic-in-file=False
+  F58_delay                  min=-999.017 max=0.983044 integer=False monotonic-in-file=False
+
+=== (ii) LABELS ===
+train: exact duplicates 27,823; feature duplicates 27,823; without absolute time 27,823 (0.94%); vectors (no abs. time) with >1 label 0, rows involved 0: {}
+test: exact duplicates 27,586; feature duplicates 27,586; without absolute time 27,586 (0.93%); vectors (no abs. time) with >1 label 0, rows involved 0: {}
+test rows whose (features without abs. time, label) also occur in train: 0.00%
+
+=== (iii) TIME ===
+train: label runs in file order 90 (classes=8); F1_Time monotonic: False
+  high_StNum               F1_Time [222.001, 4970.999]  rows=   39,000  inside benign span 100.0%
+  injection                F1_Time [132.000, 4849.999]  rows=   39,000  inside benign span 100.0%
+  inverse_replay           F1_Time [57.851, 4799.000]  rows=   26,033  inside benign span 100.0%
+  masquerade_fake_fault    F1_Time [211.306, 4976.000]  rows=   17,287  inside benign span 100.0%
+  masquerade_fake_normal   F1_Time [32.507, 4811.600]  rows=   17,419  inside benign span 100.0%
+  normal                   F1_Time [13.000, 4992.000]  rows=2,759,425  inside benign span 100.0%
+  poisoned_high_rate       F1_Time [179.300, 4871.400]  rows=   18,574  inside benign span 100.0%
+  random_replay            F1_Time [92.042, 4898.000]  rows=   39,000  inside benign span 100.0%
+test: label runs in file order 90 (classes=8); F1_Time monotonic: False
+  high_StNum               F1_Time [60.000, 4997.000]  rows=   39,000  inside benign span  97.4%
+  injection                F1_Time [13.000, 4896.999]  rows=   39,000  inside benign span  97.4%
+  inverse_replay           F1_Time [118.797, 4900.000]  rows=   30,319  inside benign span 100.0%
+  masquerade_fake_fault    F1_Time [184.017, 4979.900]  rows=   17,200  inside benign span 100.0%
+  masquerade_fake_normal   F1_Time [82.507, 4957.600]  rows=   17,420  inside benign span 100.0%
+  normal                   F1_Time [17.000, 4981.000]  rows=2,755,139  inside benign span 100.0%
+  poisoned_high_rate       F1_Time [294.300, 4970.400]  rows=   18,570  inside benign span 100.0%
+  random_replay            F1_Time [628.038, 4990.000]  rows=   39,000  inside benign span  97.4%
+
+=== (iv) ATTRIBUTION ===
+identity fields (ethSrc, ethDst, gocbRef, goID, gooseAppid, datSet) were removed by scripts/build_ereno_dataset.py; this copy cannot attribute an alarm to a publisher. Auditing attribution needs the original release.
+
+=== (v) PREVALENCE ===
+train: normal 93.36%, random_replay 1.32%, injection 1.32%, high_StNum 1.32%, inverse_replay 0.88%, poisoned_high_rate 0.63%, masquerade_fake_normal 0.59%, masquerade_fake_fault 0.58%
+  benign span of F1_Time: 13.000 .. 4992.000 (4979.0 units)
+test: normal 93.22%, random_replay 1.32%, injection 1.32%, high_StNum 1.32%, inverse_replay 1.03%, poisoned_high_rate 0.63%, masquerade_fake_normal 0.59%, masquerade_fake_fault 0.58%
+  benign span of F1_Time: 17.000 .. 4981.000 (4964.0 units)
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 ===
+-- random 70/30 within train
+  all features                         macro-F1=1.000  high_StNum=1.00  injection=1.00  inverse_replay=1.00  masquerade_fake_fault=1.00  masquerade_fake_normal=1.00  normal=1.00  poisoned_high_rate=1.00  random_replay=1.00
+  without absolute time                macro-F1=1.000  high_StNum=1.00  injection=1.00  inverse_replay=1.00  masquerade_fake_fault=1.00  masquerade_fake_normal=1.00  normal=1.00  poisoned_high_rate=1.00  random_replay=1.00
+  without abs. time and SqNum/StNum    macro-F1=0.999  high_StNum=1.00  injection=1.00  inverse_replay=1.00  masquerade_fake_fault=1.00  masquerade_fake_normal=1.00  normal=1.00  poisoned_high_rate=1.00  random_replay=1.00
+-- authors' train -> test
+  all features                         macro-F1=0.997  high_StNum=1.00  injection=1.00  inverse_replay=1.00  masquerade_fake_fault=0.99  masquerade_fake_normal=1.00  normal=1.00  poisoned_high_rate=1.00  random_replay=1.00
+  without absolute time                macro-F1=0.998  high_StNum=1.00  injection=1.00  inverse_replay=1.00  masquerade_fake_fault=0.99  masquerade_fake_normal=1.00  normal=1.00  poisoned_high_rate=1.00  random_replay=1.00
+  without abs. time and SqNum/StNum    macro-F1=0.994  high_StNum=1.00  injection=1.00  inverse_replay=0.98  masquerade_fake_fault=0.98  masquerade_fake_normal=1.00  normal=1.00  poisoned_high_rate=1.00  random_replay=1.00

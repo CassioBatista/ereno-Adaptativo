@@ -1,0 +1,57 @@
+
+=== (i) STRUCTURE ===
+packets=1,133,589 in 20 recordings (4 normal); unparsable lines=0
+'data' field sizes (fields per packet): {4: 1084940, 14: 48649}
+timestamps monotonic within recording: 100.00%
+
+=== (ii) LABELS ===
+'malicious' field agrees with malicious/*.json ids: 99.97%
+attack packets per recording:
+  01-replay-opening-switch-isolated      packets=   2,016 malicious=       2 (0.10%)
+  02-replay-opening-switch-w-context     packets=   2,577 malicious=      27 (1.05%)
+  03-replay-old-measurements             packets=   1,982 malicious=      81 (4.09%)
+  04-insert-fake-open-w-intermediate     packets=   2,527 malicious=     150 (5.94%)
+  05-insert-fake-open-only-end           packets=   2,085 malicious=     145 (6.95%)
+  06-insert-distort-meas-up-grad         packets=   5,080 malicious=   1,509 (29.70%)
+  07-insert-distort-meas-down-grad       packets=   7,527 malicious=   1,481 (19.68%)
+  08-insert-distort-meas-up-sharp        packets=   4,768 malicious=     154 (3.23%)
+  09-insert-distort-meas-down-sharp      packets=   4,489 malicious=     192 (4.28%)
+  10-sup-1-1-tbv0                        packets=   4,232 malicious=     159 (3.76%)
+  11-sup-1-1-tbv1                        packets=   4,039 malicious=     188 (4.65%)
+  12-sup-1-1-tbv2                        packets=   5,111 malicious=     216 (4.23%)
+  13-sup-2                               packets=   4,770 malicious=     164 (3.44%)
+  14-sup-1                               packets=   4,244 malicious=     176 (4.15%)
+  15-flood-repeat                        packets= 487,573 malicious= 484,000 (99.27%)
+  16-flood-bloat-repeat                  packets= 563,589 malicious= 560,000 (99.36%)
+duplicates on (src,dst,length,stNum,sqNum): 1,049,835
+
+=== (iii) TIME ===
+  01-replay-opening-switch-isolated      recording    335 s; benign share inside attack span 0.00%
+  02-replay-opening-switch-w-context     recording    336 s; benign share inside attack span 78.91%
+  03-replay-old-measurements             recording    320 s; benign share inside attack span 85.00%
+  04-insert-fake-open-w-intermediate     recording    308 s; benign share inside attack span 93.57%
+  05-insert-fake-open-only-end           recording    324 s; benign share inside attack span 92.09%
+  06-insert-distort-meas-up-grad         recording    505 s; benign share inside attack span 47.82%
+  07-insert-distort-meas-down-grad       recording   1058 s; benign share inside attack span 52.85%
+  08-insert-distort-meas-up-sharp        recording    680 s; benign share inside attack span 93.18%
+  09-insert-distort-meas-down-sharp      recording    692 s; benign share inside attack span 92.21%
+  10-sup-1-1-tbv0                        recording    618 s; benign share inside attack span 91.99%
+  11-sup-1-1-tbv1                        recording    624 s; benign share inside attack span 92.20%
+  12-sup-1-1-tbv2                        recording    731 s; benign share inside attack span 92.54%
+  13-sup-2                               recording    689 s; benign share inside attack span 92.39%
+  14-sup-1                               recording    704 s; benign share inside attack span 91.92%
+  15-flood-repeat                        recording    635 s; benign share inside attack span 0.35%
+  16-flood-bloat-repeat                  recording    693 s; benign share inside attack span 0.23%
+
+=== (iv) ATTRIBUTION ===
+publishers in normal recordings: ['b4b15a0e843b', 'b4b15a0e8444', 'b4b15a0e844a']
+malicious packets whose source MAC is a legitimate publisher: 100.00%; sources: {'b4b15a0e843b': 1048644}
+
+=== (v) PREVALENCE ===
+  all packets: malicious 92.51% of 1,133,589
+  without the two flooding recordings: malicious 5.63% of 82,427
+  benign packets in normal recordings: 26,980
+
+=== (vi) SHORTCUT PROBE (malicious vs benign, per packet) ===
+  [behavioural (no ids, no absolute time)] random 70/30                               macro-F1=0.996  benign=0.99  malicious=1.00
+  [behavioural (no ids, no absolute time)] independent groups (14 train / 6 test)     macro-F1=0.022  benign=0.04  malicious=0.00

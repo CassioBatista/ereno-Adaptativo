@@ -1,0 +1,8 @@
+WESTERMO IT-malicious=44,877 NST-malicious=14,701; malicious by timing only (IT=1, NST=0): 30,176 (67.2% of IT-malicious); NST=1 but IT=0: 0
+POWERDUCK behavioural-vector duplicates: 1,040,115 of 1,133,589 (91.8%)
+deduplicated: 93,474 packets, malicious 18.01%
+  [dedup, random] random 70/30                               macro-F1=0.990  benign=1.00  malicious=0.98
+  held-out replay recordings ['03-replay-old-measurements']: F1(malicious)=0.00 F1(benign)=0.98 (train sees other recordings of the same family)
+  held-out insert recordings ['08-insert-distort-meas-up-sharp', '09-insert-distort-meas-down-sharp']: F1(malicious)=0.07 F1(benign)=0.98 (train sees other recordings of the same family)
+  held-out sup recordings ['14-sup-1']: F1(malicious)=0.30 F1(benign)=0.96 (train sees other recordings of the same family)
+  held-out flood recordings ['16-flood-bloat-repeat']: F1(malicious)=0.95 F1(benign)=0.91 (train sees other recordings of the same family)

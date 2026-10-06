@@ -1,0 +1,157 @@
+
+=== (i) STRUCTURE ===
+benign_1sec: rows=136,800 header fields=94 fields per line={94: 136800}
+attack_1sec: rows=90,391 header fields=94 fields per line={94: 90391}
+benign_10sec: rows=13,680 header fields=94 fields per line={94: 13680}
+attack_10sec: rows=16,350 header fields=94 fields per line={94: 16350}
+same header benign/attack: True
+list/text columns: ['log_data-types', 'network_ips_all', 'network_ips_dst', 'network_ips_src', 'network_macs_all', 'network_macs_dst', 'network_macs_src', 'network_ports_all', 'network_ports_dst', 'network_ports_src', 'network_protocols_all', 'network_protocols_dst', 'network_protocols_src', '_kind']
+numeric columns=71; NaN=0; inf=0
+  timestamp_start parsed 100.00%
+  timestamp_end parsed 100.00%
+  window length (s), 1 s files: {1.0: 227191}
+  device_mac well-formed 100.00%; devices=38
+
+=== (ii) LABELS (1 s windows) ===
+label1: {'benign': 136800, 'attack': 90391}
+label2 (category): {'benign': 136800, 'recon': 33648, 'dos': 18420, 'ddos': 18056, 'mitm': 8062, 'malware': 7541, 'web': 2796, 'bruteforce': 1868}
+label4 (attack): 84 distinct
+label1/label2 inconsistent rows: 0
+  benign: windows with no network and no sensor data 50.57%; with no network data 50.63%
+  attack: windows with no network and no sensor data 10.70%; with no network data 10.93%
+  empty windows by attack category: {'recon': 5819, 'ddos': 1432, 'dos': 745, 'mitm': 523, 'bruteforce': 409, 'web': 397, 'malware': 349}
+feature duplicates: 79,794 (35.12%)
+vectors with >1 label1: 10 (rows 79,048); top: {'benign': 69300, 'attack': 9748}
+vectors with >1 label2: 22 (rows 79,131); top: {'benign': 69300, 'recon': 5859, 'ddos': 1478, 'dos': 758, 'mitm': 574, 'bruteforce': 409}
+
+=== (iii) TIME ===
+  benign     2025-09-09 14:09:40.400000+00:00 .. 2025-09-09 15:09:39.400000+00:00  dates=['2025-09-09']
+  bruteforce 2025-02-13 20:09:40.849000+00:00 .. 2025-02-14 18:58:42.692000+00:00  dates=['2025-02-13', '2025-02-14']
+  ddos       2025-01-23 15:20:14.269000+00:00 .. 2025-02-13 04:38:22.164000+00:00  dates=['2025-01-23', '2025-01-24', '2025-01-25', '2025-01-26', '2025-01-27', '2025-02-12']
+  dos        2025-01-16 15:58:24.801000+00:00 .. 2025-02-12 22:05:30.815000+00:00  dates=['2025-01-16', '2025-01-17', '2025-01-20', '2025-01-21', '2025-01-26', '2025-02-12']
+  malware    2025-06-12 17:07:47.234000+00:00 .. 2025-06-12 19:11:53.585000+00:00  dates=['2025-06-12']
+  mitm       2025-01-27 16:18:30.596000+00:00 .. 2025-02-25 17:39:07.250000+00:00  dates=['2025-01-27', '2025-02-13', '2025-02-14', '2025-02-25']
+  recon      2025-01-15 13:04:54.353000+00:00 .. 2025-01-16 15:27:20.286000+00:00  dates=['2025-01-15', '2025-01-16']
+  web        2025-01-28 20:00:05.167000+00:00 .. 2025-02-04 21:43:37.604000+00:00  dates=['2025-01-28', '2025-02-04']
+  bruteforce benign windows inside its span: 0
+  ddos       benign windows inside its span: 0
+  dos        benign windows inside its span: 0
+  malware    benign windows inside its span: 0
+  mitm       benign windows inside its span: 0
+  recon      benign windows inside its span: 0
+  web        benign windows inside its span: 0
+
+=== (iv) ATTRIBUTION ===
+rows per device (benign | attack):
+label1                      attack  benign
+device_name                               
+accelerometer-sensor          2568    3600
+ap                            3276    3600
+blurams-camera                2431    3600
+dekco-camera                  2413    3600
+edge1                         8870    3600
+flame-sensor                  2540    3600
+gas-sensor                    2561    3600
+geeni-camera                  2479    3600
+light-sensor                  2562    3600
+motion-sensor                 2837    3600
+mqtt-broker                   9000    3600
+myq-camera                    2476    3600
+plug-all-cameras              1204    3600
+plug-all-rpb                  1025    3600
+plug-all-sensors               637    3600
+plug-cameras-dekco-blurams     717    3600
+plug-cameras-geeni             777    3600
+plug-cameras-yi                836    3600
+plug-edge1                     647    3600
+plug-flame                     693    3600
+plug-motion                    637    3600
+plug-mqtt                      640    3600
+plug-proximity                 932    3600
+plug-rfid                      753    3600
+plug-vibration                 769    3600
+proximity-collision-sensor    2545    3600
+rfid-sensor                   2534    3600
+router                        4053    3600
+soil-sensor                   2567    3600
+sound-sensor                  2562    3600
+steam-sensor                  2934    3600
+switch                        2440    3600
+ultrasonic-sensor             2562    3600
+vibration-sensor              2539    3600
+water-sensor                  2565    3600
+weather-sensor                2835    3600
+wisenet-camera                3127    3600
+yi-camera                     2848    3600
+benign source IPs: 194; attack windows with any source IP: 88.48%; of those, with a source never seen in benign: 4.46%
+  by category: {'ddos': '2.75%', 'dos': '3.79%', 'mitm': '10.85%', 'web': '0.79%', 'recon': '4.23%', 'malware': '6.00%', 'bruteforce': '2.54%'}
+
+=== (v) PREVALENCE (1 s windows) ===
+  benign      136,800  60.21%
+  recon        33,648  14.81%
+  dos          18,420  8.11%
+  ddos         18,056  7.95%
+  mitm          8,062  3.55%
+  malware       7,541  3.32%
+  web           2,796  1.23%
+  bruteforce    1,868  0.82%
+  benign span: 2025-09-09 14:09:40.400000+00:00 .. 2025-09-09 15:09:39.400000+00:00
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 over label2 (1 s windows, dedup) ===
+-- random 70/30
+  network + sensor + device id   macro-F1=0.969  benign=0.98  bruteforce=0.94  ddos=0.97  dos=0.98  malware=0.97  mitm=0.97  recon=0.96  web=0.99
+  network + sensor               macro-F1=0.968  benign=0.98  bruteforce=0.93  ddos=0.97  dos=0.98  malware=0.96  mitm=0.97  recon=0.96  web=0.99
+  network only                   macro-F1=0.965  benign=0.98  bruteforce=0.94  ddos=0.97  dos=0.98  malware=0.96  mitm=0.95  recon=0.96  web=0.99
+  sensor only                    macro-F1=0.166  benign=0.64  bruteforce=0.00  ddos=0.04  dos=0.01  malware=0.07  mitm=0.25  recon=0.31  web=0.00
+-- time-ordered 70/30 per category
+  network + sensor + device id   macro-F1=0.725  benign=0.99  bruteforce=0.27  ddos=0.59  dos=0.52  malware=0.87  mitm=0.62  recon=0.96  web=0.98
+  network + sensor               macro-F1=0.726  benign=0.99  bruteforce=0.34  ddos=0.59  dos=0.51  malware=0.82  mitm=0.62  recon=0.96  web=0.99
+  network only                   macro-F1=0.711  benign=0.99  bruteforce=0.32  ddos=0.57  dos=0.50  malware=0.78  mitm=0.58  recon=0.95  web=0.99
+  sensor only                    macro-F1=0.109  benign=0.63  bruteforce=0.00  ddos=0.01  dos=0.01  malware=0.02  mitm=0.01  recon=0.19  web=0.00
+
+=== (vii) SYNC — sensor data and window consistency ===
+windows with sensor data, by device (benign | attack):
+label1                      attack  benign
+device_name                               
+accelerometer-sensor         0.538   0.996
+ap                           0.000   0.000
+blurams-camera               0.000   0.000
+dekco-camera                 0.000   0.000
+edge1                        0.000   0.000
+flame-sensor                 0.080   0.100
+gas-sensor                   0.549   0.996
+geeni-camera                 0.000   0.000
+light-sensor                 0.528   0.967
+motion-sensor                0.109   0.138
+mqtt-broker                  0.000   0.000
+myq-camera                   0.000   0.000
+plug-all-cameras             0.000   0.000
+plug-all-rpb                 0.000   0.000
+plug-all-sensors             0.000   0.000
+plug-cameras-dekco-blurams   0.000   0.000
+plug-cameras-geeni           0.000   0.000
+plug-cameras-yi              0.000   0.000
+plug-edge1                   0.000   0.000
+plug-flame                   0.000   0.000
+plug-motion                  0.000   0.000
+plug-mqtt                    0.000   0.000
+plug-proximity               0.000   0.000
+plug-rfid                    0.000   0.000
+plug-vibration               0.000   0.000
+proximity-collision-sensor   0.087   0.099
+rfid-sensor                  0.093   0.102
+router                       0.000   0.000
+soil-sensor                  0.487   0.991
+sound-sensor                 0.533   0.997
+steam-sensor                 0.598   0.996
+switch                       0.000   0.000
+ultrasonic-sensor            0.543   0.992
+vibration-sensor             0.083   0.298
+water-sensor                 0.535   0.996
+weather-sensor               0.558   0.920
+wisenet-camera               0.000   0.000
+yi-camera                    0.000   0.000
+  benign: 1 s windows=136,800; 10 s windows=13,680; ratio=10.00 (10 expected if 10 s windows tile the same time)
+  attack: 1 s windows=90,391; 10 s windows=16,350; ratio=5.53 (10 expected if 10 s windows tile the same time)
+  benign: scenarios=1; ratio 1s/10s per scenario: median=10.00 min=10.00 max=10.00; scenarios only in one file: 0
+  attack: scenarios=936; ratio 1s/10s per scenario: median=5.55 min=5.03 max=6.40; scenarios only in one file: 0

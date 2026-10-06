@@ -1,0 +1,121 @@
+
+=== (i) STRUCTURE — 15 files ===
+  Benign Traffic               rows=   32,620  fields per line={85: 32620}
+  DDoS ICMP Flood              rows=    2,552  fields per line={85: 2552}
+  DDoS UDP Flood               rows=    2,576  fields per line={85: 2576}
+  DoS ICMP Flood               rows=    2,107  fields per line={85: 2107}
+  DoS TCP Flood                rows=2,106,916  fields per line={85: 2106916}
+  DoS UDP Flood                rows=    3,115  fields per line={85: 3115}
+  MITM ARP Spoofing            rows=    1,053  fields per line={85: 1053}
+  MQTT DDoS Publish Flood      rows=  413,913  fields per line={85: 413913}
+  MQTT DoS Connect Flood       rows=  238,031  fields per line={85: 238031}
+  MQTT DoS Publish Flood       rows=      953  fields per line={85: 953}
+  MQTT Malformed               rows=    2,246  fields per line={85: 2246}
+  Recon OS Scan                rows=   85,317  fields per line={85: 85317}
+  Recon Ping Sweep             rows=       71  fields per line={85: 71}
+  Recon Port Scan              rows=  485,522  fields per line={85: 485522}
+  Recon Vulnerability Scan     rows=    8,321  fields per line={85: 8321}
+same header in all files: True
+total rows=3,385,313; numeric columns=79; NaN=0; inf=0
+  Src IP: IPv4-shaped 100.00%
+  Dst IP: IPv4-shaped 100.00%
+  Src Port: within 0..65535 100.00%
+  Dst Port: within 0..65535 100.00%
+  Protocol values: {6.0: 3385313}
+  Timestamp parsed (dd/mm/yyyy hh:mm:ss AM/PM): 100.00%; e.g. 14/09/2023 09:24:26 AM
+
+=== (ii) LABELS ===
+file -> 'Attack Name' / 'Label' values:
+  Benign Traffic               {'Benign Traffic': 32620}  {'0': 32620}
+  DDoS ICMP Flood              {'DDoS ICMP Flood': 2552}  {'1': 2552}
+  DDoS UDP Flood               {'DDoS UDP Flood': 2576}  {'1': 2576}
+  DoS ICMP Flood               {'DoS ICMP Flood': 2107}  {'1': 2107}
+  DoS TCP Flood                {'DoS TCP Flood': 2106916}  {'1': 2106916}
+  DoS UDP Flood                {'DoS UDP Flood': 3115}  {'1': 3115}
+  MITM ARP Spoofing            {'MITM ARP Spoofing': 1053}  {'1': 1053}
+  MQTT DDoS Publish Flood      {'MQTT DDoS Publish Flood': 413913}  {'1': 413913}
+  MQTT DoS Connect Flood       {'MQTT DoS Connect Flood': 238031}  {'1': 238031}
+  MQTT DoS Publish Flood       {'MQTT DoS Publish Flood': 953}  {'1': 953}
+  MQTT Malformed               {'MQTT Malformed': 2246}  {'1': 2246}
+  Recon OS Scan                {'Recon OS Scan': 85317}  {'1': 85317}
+  Recon Ping Sweep             {'Recon Ping Sweep': 71}  {'1': 71}
+  Recon Port Scan              {'Recon Port Scan': 485522}  {'1': 485522}
+  Recon Vulnerability Scan     {'Recon Vulnerability Scan': 8321}  {'1': 8321}
+exact duplicate rows: 109,180
+duplicates without identifiers: 788,227 (23.28%)
+vectors with >1 class: 32,709 (rows 266,280); top: {'Recon Port Scan': 146573, 'Recon OS Scan': 68567, 'MQTT DDoS Publish Flood': 38956, 'MQTT DoS Connect Flood': 10805, 'Recon Vulnerability Scan': 746, 'Benign Traffic': 307}
+vectors with >1 category: 171 (rows 5,338); top: {'MQTT': 4814, 'Benign': 307, 'DoS': 118, 'Recon': 52, 'DDoS': 43, 'Spoofing': 4}
+unique rows per class: {'DoS TCP Flood': 2070485, 'MQTT DoS Connect Flood': 221695, 'MQTT DDoS Publish Flood': 169578, 'Recon OS Scan': 42124, 'Recon Port Scan': 39864, 'Benign Traffic': 32261, 'Recon Vulnerability Scan': 6837, 'DoS UDP Flood': 3040, 'DDoS UDP Flood': 2519, 'DDoS ICMP Flood': 2513, 'DoS ICMP Flood': 2075, 'MQTT Malformed': 2036, 'MITM ARP Spoofing': 1040, 'MQTT DoS Publish Flood': 951, 'Recon Ping Sweep': 68}
+
+=== (iii) TIME ===
+                                         min                 max    count
+_file                                                                    
+Benign Traffic           2023-09-13 11:21:00 2023-09-14 13:20:48    32620
+DDoS ICMP Flood          2023-09-05 15:28:00 2023-09-06 14:10:46     2552
+DDoS UDP Flood           2023-09-05 13:35:00 2023-09-05 15:25:55     2576
+DoS ICMP Flood           2023-09-01 13:17:00 2023-09-01 15:41:22     2107
+DoS TCP Flood            2023-08-30 13:08:00 2023-08-30 15:27:55  2106916
+DoS UDP Flood            2023-08-31 14:03:00 2023-09-01 12:53:56     3115
+MITM ARP Spoofing        2023-09-06 14:28:00 2023-09-06 16:14:54     1053
+MQTT DDoS Publish Flood  2023-08-29 16:57:00 2023-08-29 17:07:59   413913
+MQTT DoS Connect Flood   2023-08-28 15:26:00 2023-08-28 15:37:00   238031
+MQTT DoS Publish Flood   2023-08-29 14:19:00 2023-08-29 14:30:00      953
+MQTT Malformed           2023-08-28 11:39:00 2023-08-28 11:49:56     2246
+Recon OS Scan            2023-09-07 13:20:00 2023-09-07 13:37:59    85317
+Recon Ping Sweep         2023-09-07 13:49:00 2023-09-07 13:50:58       71
+Recon Port Scan          2023-09-07 12:20:00 2023-09-07 13:06:00   485522
+Recon Vulnerability Scan 2023-09-12 12:28:06 2023-09-12 12:39:46     8321
+  DDoS ICMP Flood              benign flows inside its window: 0 (benign share 0.00%)
+  DDoS UDP Flood               benign flows inside its window: 0 (benign share 0.00%)
+  DoS ICMP Flood               benign flows inside its window: 0 (benign share 0.00%)
+  DoS TCP Flood                benign flows inside its window: 0 (benign share 0.00%)
+  DoS UDP Flood                benign flows inside its window: 0 (benign share 0.00%)
+  MITM ARP Spoofing            benign flows inside its window: 0 (benign share 0.00%)
+  MQTT DDoS Publish Flood      benign flows inside its window: 0 (benign share 0.00%)
+  MQTT DoS Connect Flood       benign flows inside its window: 0 (benign share 0.00%)
+  MQTT DoS Publish Flood       benign flows inside its window: 0 (benign share 0.00%)
+  MQTT Malformed               benign flows inside its window: 0 (benign share 0.00%)
+  Recon OS Scan                benign flows inside its window: 0 (benign share 0.00%)
+  Recon Ping Sweep             benign flows inside its window: 0 (benign share 0.00%)
+  Recon Port Scan              benign flows inside its window: 0 (benign share 0.00%)
+  Recon Vulnerability Scan     benign flows inside its window: 0 (benign share 0.00%)
+distinct capture dates: [np.str_('2023-08-28'), np.str_('2023-08-29'), np.str_('2023-08-30'), np.str_('2023-08-31'), np.str_('2023-09-01'), np.str_('2023-09-05'), np.str_('2023-09-06'), np.str_('2023-09-07'), np.str_('2023-09-12'), np.str_('2023-09-13'), np.str_('2023-09-14')]
+
+=== (iv) ATTRIBUTION ===
+  Benign Traffic               src=   234 dst=   148  top src: 192.168.137.234 (6.94%), 34.173.20.6 (4.85%), 10.0.0.3 (4.75%)
+  DDoS ICMP Flood              src=   114 dst=    63  top src: 10.0.0.3 (4.08%), 10.0.0.12 (4.08%), 10.0.0.7 (4.08%)
+  DDoS UDP Flood               src=   103 dst=    85  top src: 192.168.137.174 (7.73%), 192.168.137.140 (4.81%), 10.0.0.3 (3.80%)
+  DoS ICMP Flood               src=    44 dst=    79  top src: 192.168.137.174 (12.06%), 192.168.137.140 (5.27%), 10.0.0.3 (4.75%)
+  DoS TCP Flood                src=    73 dst=   104  top src: 192.168.137.48 (99.90%), 192.168.137.115 (0.01%), 192.168.137.210 (0.01%)
+  DoS UDP Flood                src=    96 dst=   129  top src: 192.168.137.35 (8.19%), 192.168.137.216 (8.12%), 192.168.137.210 (5.26%)
+  MITM ARP Spoofing            src=    96 dst=    36  top src: 34.173.20.6 (3.99%), 10.0.0.8 (3.99%), 10.0.0.7 (3.99%)
+  MQTT DDoS Publish Flood      src=    30 dst=    25  top src: 192.168.137.250 (88.65%), 192.168.137.212 (3.71%), 192.168.137.180 (3.69%)
+  MQTT DoS Connect Flood       src=    28 dst=    20  top src: 192.168.137.48 (89.39%), 192.168.137.250 (10.49%), 192.168.137.115 (0.02%)
+  MQTT DoS Publish Flood       src=    33 dst=    26  top src: 192.168.137.48 (65.58%), 192.168.137.250 (5.46%), 192.168.137.115 (4.72%)
+  MQTT Malformed               src=    31 dst=    30  top src: 192.168.137.48 (85.00%), 192.168.137.250 (2.54%), 192.168.137.115 (2.14%)
+  Recon OS Scan                src=    31 dst=    42  top src: 192.168.137.105 (22.54%), 192.168.137.174 (21.24%), 192.168.137.250 (19.43%)
+  Recon Ping Sweep             src=    22 dst=    10  top src: 192.168.137.174 (14.08%), 10.0.0.8 (5.63%), 10.0.0.1 (5.63%)
+  Recon Port Scan              src=    30 dst=    51  top src: 192.168.137.250 (55.02%), 192.168.137.105 (14.43%), 192.168.137.174 (14.02%)
+  Recon Vulnerability Scan     src=    30 dst=    23  top src: 192.168.137.140 (25.17%), 192.168.137.233 (12.67%), 192.168.137.174 (12.49%)
+benign: 234 source and 148 destination addresses; private 192.168.x sources: 11
+source address alone -> category (majority per address): 84.79%
+
+=== (v) PREVALENCE ===
+  DoS        2,112,138  62.39%
+  MQTT         655,143  19.35%
+  Recon        579,231  17.11%
+  Benign        32,620  0.96%
+  DDoS           5,128  0.15%
+  Spoofing       1,053  0.03%
+  benign span: 2023-09-13 11:21:00 .. 2023-09-14 13:20:48
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (dedup; per class up to 100k rows) ===
+-- random 70/30
+  with identifiers (ports)                 macro-F1=0.881  Benign=0.99  DDoS=0.81  DoS=1.00  MQTT=1.00  Recon=0.99  Spoofing=0.49
+  without identifiers                      macro-F1=0.842  Benign=0.94  DDoS=0.63  DoS=1.00  MQTT=1.00  Recon=0.99  Spoofing=0.49
+    top gain: ['Fwd Header Length', 'Bwd IAT Total', 'Fwd IAT Min', 'SYN Flag Count', 'Flow IAT Min', 'Fwd PSH Flags']
+  without identifiers and Init Win Bytes   macro-F1=0.830  Benign=0.94  DDoS=0.60  DoS=1.00  MQTT=1.00  Recon=0.99  Spoofing=0.45
+-- time-ordered 70/30 per category
+  with identifiers (ports)                 macro-F1=0.807  Benign=0.92  DDoS=0.55  DoS=1.00  MQTT=0.99  Recon=0.99  Spoofing=0.39
+  without identifiers                      macro-F1=0.769  Benign=0.87  DDoS=0.39  DoS=1.00  MQTT=0.99  Recon=0.99  Spoofing=0.37
+  without identifiers and Init Win Bytes   macro-F1=0.766  Benign=0.87  DDoS=0.38  DoS=0.99  MQTT=0.99  Recon=0.99  Spoofing=0.37

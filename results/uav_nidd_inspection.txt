@@ -1,0 +1,204 @@
+
+=== case1_uav: ../datasets/uav_nidd/UAV-Case1-Label/UAV-Case1-Label.csv — 885,384 rows x 45 columns ===
+fields per line: header=45, rows={45: 860652, 1: 13225, 2: 7809, 4: 2437, 3: 913, 5: 348}
+label column (last): 'Label'
+non-numeric columns: ['frame.encap_type', 'frame.len', 'frame.number', 'frame.time_delta_displayed', 'frame.time_epoch', 'radiotap.timestamp.ts', 'wlan.duration', 'wlan.seq', 'wlan.tag', 'arp', 'arp.hw.type', 'arp.proto.type', 'ip.dst', 'ip.proto', 'ip.src', 'ip.ttl']
+constant columns: []
+NaN cells: 1070313
+-- labels
+  DDoS                           193,180  21.82%
+  BruteForce                     175,925  19.87%
+  UDP Flooding                   152,775  17.26%
+  MITM                           151,586  17.12%
+  ICMP Flooding                   47,544  5.37%
+  Jamming                         41,600  4.70%
+  replay                          25,977  2.93%
+  FakeLanding                     24,050  2.72%
+  Normal                          17,949  2.03%
+  De-authentication               14,606  1.65%
+  Scanning                         9,030  1.02%
+  DoS                              6,424  0.73%
+  Reconnassiance                       6  0.00%
+  label runs in file order: 24,747 (= number of classes -> one block per class)
+-- alignment (dominant value kind per column; '!!' = contradicts the name)
+  frame.time_epoch                  num(med=3e-05)        expected epoch-s  !!
+  frame.time_relative               epoch-s                 (named otherwise)
+  radiotap.channel.freq             num(med=0)            expected wifi-freq-MHz  !!
+  radiotap.dbm_antsignal            num(med=0)            expected dBm  !!
+  wlan_radio.frequency              num(med=0)            expected wifi-freq-MHz  !!
+  wlan_radio.signal_dbm             num(med=0)            expected dBm  !!
+  ip.dst                            IPv4                  expected IPv4
+  ip.proto                          IPv4                    (named otherwise)
+  ip.src                            num(med=6)            expected IPv4  !!
+  ip.ttl                            IPv4                    (named otherwise)
+-- time
+  frame.time_epoch: min=-2288.64 max=2288.64 zero=2.01%
+  frame.time_relative: min=1.50519e+09 max=1.7094e+09 zero=0.00%
+  DDoS                         frame.time_relative as epoch: 2024-03-02 10:17:21.669150114 .. 2024-03-02 10:17:50.872080088  (193,180 rows)
+  BruteForce                   frame.time_relative as epoch: 2024-03-02 08:51:41.667350054 .. 2024-03-02 09:43:43.369649887  (175,925 rows)
+  UDP Flooding                 frame.time_relative as epoch: 2017-11-29 00:32:37 .. 2017-11-29 00:33:44  (152,775 rows)
+  MITM                         frame.time_relative as epoch: 2024-03-02 14:10:30.894340038 .. 2024-03-02 14:35:51.845419884  (151,586 rows)
+  ICMP Flooding                frame.time_relative as epoch: 2017-11-29 00:47:45 .. 2017-11-29 00:48:36  (47,544 rows)
+  Jamming                      frame.time_relative as epoch: 2023-04-24 18:29:55.068809986 .. 2023-04-24 19:08:06.650629997  (41,600 rows)
+  replay                       frame.time_relative as epoch: 2017-09-13 23:49:46.668839931 .. 2017-09-13 23:51:17.807780027  (25,977 rows)
+  FakeLanding                  frame.time_relative as epoch: 2024-03-02 16:01:11.788130045 .. 2024-03-02 16:05:18.148760080  (24,050 rows)
+  Normal                       frame.time_relative as epoch: 2017-09-12 03:16:57.650160074 .. 2017-09-12 03:23:29.878319979  (17,949 rows)
+  De-authentication            frame.time_relative as epoch: 2017-09-13 23:42:36.167049885 .. 2017-09-13 23:43:42.070130110  (14,606 rows)
+  Scanning                     frame.time_relative as epoch: 2021-04-27 08:53:38.729130030 .. 2021-04-27 08:53:57.096829891  (9,030 rows)
+  DoS                          frame.time_relative as epoch: 2017-09-22 03:18:31 .. 2017-09-22 03:19:20  (6,424 rows)
+  Reconnassiance               frame.time_relative as epoch: 2024-02-22 02:48:26.485419989 .. 2024-02-22 02:51:58.579809904  (6 rows)
+-- addresses
+  DDoS                         rows with IPv4 src    0.00%  distinct=   0  top: 
+  BruteForce                   rows with IPv4 src    0.00%  distinct=   0  top: 
+  UDP Flooding                 rows with IPv4 src    0.00%  distinct=   0  top: 
+  MITM                         rows with IPv4 src    0.15%  distinct=   1  top: 192.168.21.131 (100.00%)
+  ICMP Flooding                rows with IPv4 src    0.00%  distinct=   0  top: 
+  Jamming                      rows with IPv4 src    0.00%  distinct=   0  top: 
+  replay                       rows with IPv4 src    0.00%  distinct=   0  top: 
+  FakeLanding                  rows with IPv4 src    0.13%  distinct=   1  top: 192.168.21.131 (100.00%)
+  Normal                       rows with IPv4 src    0.41%  distinct=   1  top: 192.168.1.3 (100.00%)
+  De-authentication            rows with IPv4 src    0.00%  distinct=   0  top: 
+  Scanning                     rows with IPv4 src    0.00%  distinct=   0  top: 
+  DoS                          rows with IPv4 src    0.00%  distinct=   0  top: 
+  Reconnassiance               rows with IPv4 src    0.00%  distinct=   0  top: 
+-- duplicates
+  exact duplicate rows: 35,933
+  duplicates without position columns: 37,023 (4.18%)
+  vectors carrying >1 label: 0
+-- shortcut hint: XGBoost macro-F1 (stratified 70/30, rows deduplicated)
+  all columns                        macro-F1=1.000  worst: BruteForce 1.00, DDoS 1.00, De-authentication 1.00
+    top gain: ['ip.proto', 'frame.encap_type', 'wlan.fcs.bad_checksum', 'frame.time_relative', 'frame.len', 'wlan.rsn.capabilities.mfpc']
+  without position/time              macro-F1=0.958  worst: FakeLanding 0.65, De-authentication 0.91, MITM 0.95
+  without position/time/identity     macro-F1=0.957  worst: FakeLanding 0.65, De-authentication 0.91, MITM 0.94
+
+=== case2_ap: ../datasets/uav_nidd/Access Point Case2 Label/Access Point Case2 Label.csv — 631,356 rows x 51 columns ===
+fields per line: header=51, rows={51: 631356}
+label column (last): 'Normal'
+non-numeric columns: ['wlan.duration', 'wlan.fc.moredata', 'wlan.seq', 'wlan_radio.data_rate', 'wlan_radio.end_tsf', 'ip.dst', 'ip.proto', 'ip.src', 'ip.ttl', 'data.len', 'icmpv6.mldr.nb_mcast_records', 'nbss.continuation_data', 'dns', 'http.connection', 'http.content_length', 'http.content_type', 'http.date', 'http.file_data', 'http.host', 'http.last_modified', 'http.location']
+constant columns: ['wlan.fc.protected']
+NaN cells: 0
+-- labels
+  Brute-Force                    172,509  27.32%
+  De-authentication              155,564  24.64%
+  Normal                         129,541  20.52%
+  Scanning                        70,319  11.14%
+  DDoS                            31,612  5.01%
+  Fake Landing                    24,584  3.89%
+  DoS                             23,612  3.74%
+  Ewil Twin                       10,034  1.59%
+  Replay                           8,525  1.35%
+  MITM                             5,016  0.79%
+  Reconnaissance                      40  0.01%
+  label runs in file order: 11 (= number of classes -> one block per class)
+-- alignment (dominant value kind per column; '!!' = contradicts the name)
+  frame.time_epoch                  num(med=4.1e-05)      expected epoch-s  !!
+  frame.time_relative               epoch-s                 (named otherwise)
+  radiotap.channel.freq             num(med=1)            expected wifi-freq-MHz  !!
+  radiotap.datarate                 wifi-freq-MHz           (named otherwise)
+  radiotap.dbm_antsignal            num(med=24)           expected dBm  !!
+  radiotap.length                   dBm                     (named otherwise)
+  radiotap.mactime                  dBm                     (named otherwise)
+  ip.dst                            IPv4                  expected IPv4
+  ip.proto                          IPv4                    (named otherwise)
+  ip.src                            num(med=6)            expected IPv4  !!
+  ip.ttl                            IPv4                    (named otherwise)
+-- time
+  frame.time_epoch: min=0 max=1.70854e+09 zero=28.78%
+  frame.time_relative: min=0 max=1.7094e+09 zero=25.53%
+  Brute-Force                  frame.time_relative as epoch: 2024-03-02 08:51:42 .. 2024-03-02 09:42:41  (172,509 rows)
+  De-authentication            frame.time_relative as epoch: 2024-02-21 18:31:00 .. 2024-02-21 18:38:43  (15,985 rows)
+  Normal                       frame.time_relative as epoch: 2017-10-12 17:18:54 .. 2017-10-13 19:18:42  (129,541 rows)
+  Scanning                     frame.time_relative as epoch: 2024-03-02 14:41:35 .. 2024-03-02 14:43:38  (70,319 rows)
+  DDoS                         frame.time_relative as epoch: 2024-02-21 17:36:40 .. 2024-02-21 17:41:22  (10,533 rows)
+  Fake Landing                 frame.time_relative as epoch: 2024-03-02 16:01:12 .. 2024-03-02 16:05:18  (24,050 rows)
+  Ewil Twin                    frame.time_relative as epoch: 2024-02-22 15:21:41 .. 2024-02-22 15:22:00  (10,034 rows)
+  Replay                       frame.time_relative as epoch: 2024-02-22 17:58:01 .. 2024-02-22 18:09:47  (8,525 rows)
+  MITM                         frame.time_relative as epoch: 2024-02-22 15:22:37 .. 2024-02-22 15:22:46  (5,016 rows)
+  Reconnaissance               frame.time_relative as epoch: 2024-02-22 02:38:23 .. 2024-02-22 02:47:34  (40 rows)
+-- addresses
+  Brute-Force                  rows with IPv4 src    0.00%  distinct=   0  top: 
+  De-authentication            rows with IPv4 src    0.00%  distinct=   0  top: 
+  Normal                       rows with IPv4 src    0.02%  distinct=   1  top: 192.168.21.131 (100.00%)
+  Scanning                     rows with IPv4 src    0.02%  distinct=   1  top: 192.168.21.131 (100.00%)
+  DDoS                         rows with IPv4 src    0.00%  distinct=   0  top: 
+  Fake Landing                 rows with IPv4 src    0.13%  distinct=   1  top: 192.168.21.131 (100.00%)
+  DoS                          rows with IPv4 src    0.00%  distinct=   0  top: 
+  Ewil Twin                    rows with IPv4 src   94.66%  distinct=  32  top: 192.168.21.131 (49.83%), 192.168.21.132 (49.80%), 192.168.21.1 (0.06%)
+  Replay                       rows with IPv4 src    0.00%  distinct=   0  top: 
+  MITM                         rows with IPv4 src   93.16%  distinct=   4  top: 192.168.21.131 (49.95%), 192.168.21.132 (49.93%), 192.168.21.1 (0.11%)
+  Reconnaissance               rows with IPv4 src  100.00%  distinct=  20  top: 0.0.0.0 (5.00%), 0.0.0.1 (5.00%), 0.0.0.2 (5.00%)
+-- duplicates
+  exact duplicate rows: 117
+  duplicates without position columns: 118 (0.02%)
+  vectors carrying >1 label: 0
+-- shortcut hint: XGBoost macro-F1 (stratified 70/30, rows deduplicated)
+  all columns                        macro-F1=1.000  worst: Ewil Twin 1.00, Fake Landing 1.00, DDoS 1.00
+    top gain: ['udp.dstport', 'wlan.fc.moredata', 'wlan_radio.end_tsf', 'ï»¿frame.encap_type', 'frame.time_epoch', 'ip.ttl']
+  without position/time              macro-F1=1.000  worst: Ewil Twin 1.00, MITM 1.00, Fake Landing 1.00
+  without position/time/identity     macro-F1=1.000  worst: Ewil Twin 1.00, MITM 1.00, DDoS 1.00
+
+=== case3_gcs: ../datasets/uav_nidd/GCS-Case 3/GCS-Case 3/GSC Case3 Label .csv — 149,434 rows x 45 columns ===
+fields per line: header=45, rows={45: 149434}
+label column (last): 'label'
+non-numeric columns: []
+constant columns: ['fwd_seg_size_min']
+NaN cells: 0
+-- labels
+  Scanning                        50,135  33.55%
+  Reco                            50,135  33.55%
+  DDoS                            14,292  9.56%
+  DoS                             14,121  9.45%
+  Normal                          13,444  9.00%
+  Bruteforce                       5,103  3.41%
+  MITM                             1,164  0.78%
+  Reply                              792  0.53%
+  FakeLanding                        200  0.13%
+  Evil                                48  0.03%
+  label runs in file order: 10 (= number of classes -> one block per class)
+-- alignment (dominant value kind per column; '!!' = contradicts the name)
+-- time
+  flow_duration: min=0 max=242.839 zero=35.29%
+-- duplicates
+  exact duplicate rows: 112,628
+  duplicates without position columns: 113,812 (76.16%)
+  vectors carrying >1 label: 1,172
+-- shortcut hint: XGBoost macro-F1 (stratified 70/30, rows deduplicated)
+  all columns                        macro-F1=0.698  worst: Evil 0.00, FakeLanding 0.37, Normal 0.51
+    top gain: ['bwd_pkt_len_max', 'bwd_iat_std', 'bwd_pkts_s', 'totlen_bwd_pkts', 'fwd_pkt_len_min', 'pkt_len_min']
+  without position/time              macro-F1=0.698  worst: Evil 0.00, FakeLanding 0.37, Normal 0.51
+  without position/time/identity     macro-F1=0.698  worst: Evil 0.00, FakeLanding 0.37, Normal 0.51
+
+=== sample: ../datasets/uav_nidd/Sample.csv — 81,113 rows x 45 columns ===
+fields per line: header=45, rows={45: 81113}
+label column (last): 'label'
+non-numeric columns: []
+constant columns: ['fwd_seg_size_min']
+NaN cells: 0
+-- labels
+  Scanning                        27,292  33.65%
+  Reco                            27,126  33.44%
+  DoS                              7,772  9.58%
+  DDoS                             7,707  9.50%
+  Normal                           7,178  8.85%
+  Bruteforce                       2,818  3.47%
+  MITM                               661  0.81%
+  Reply                              424  0.52%
+  FakeLanding                        108  0.13%
+  Evil                                27  0.03%
+  label runs in file order: 60,653 (= number of classes -> one block per class)
+-- alignment (dominant value kind per column; '!!' = contradicts the name)
+-- time
+  flow_duration: min=0 max=241.881 zero=35.45%
+-- duplicates
+  exact duplicate rows: 60,495
+  duplicates without position columns: 61,106 (75.33%)
+  vectors carrying >1 label: 600
+-- shortcut hint: XGBoost macro-F1 (stratified 70/30, rows deduplicated)
+  all columns                        macro-F1=0.721  worst: Reco 0.35, Scanning 0.49, FakeLanding 0.50
+    top gain: ['bwd_pkt_len_max', 'totlen_bwd_pkts', 'fwd_pkt_len_min', 'pkt_len_max', 'bwd_iat_std', 'pkt_len_min']
+  without position/time              macro-F1=0.721  worst: Reco 0.35, Scanning 0.49, FakeLanding 0.50
+  without position/time/identity     macro-F1=0.721  worst: Reco 0.35, Scanning 0.49, FakeLanding 0.50
+
+=== Sample.csv vs case 3 (same 45 flow columns?) ===
+same header: True
+Sample rows also in case 3: 100.00%

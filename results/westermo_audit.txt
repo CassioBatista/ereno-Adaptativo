@@ -1,0 +1,53 @@
+
+=== (i) STRUCTURE — extended ===
+  bottom  flows= 55,425 fields per line={64: 55425}
+  left    flows=  8,555 fields per line={64: 8555}
+  right   flows=  4,749 fields per line={64: 4749}
+flows=68,729 features=47 NaN=542173 inf=0; physical (process) columns: none in the flow files
+
+=== (ii) LABELS (extended) ===
+  IT_B_Label: {1: 44877, 0: 23852}
+  IT_M_Label: {'Normal': 23852, 'BAD-SSH': 22150, 'BAD-MITM': 6422, 'BAD-PORTSCAN2': 5571, 'BAD-MISCONF-DUPLICATION': 4611, 'BAD-MISCONF': 3889, 'BAD-PORTSCAN1': 1566, 'GOOD-SSH': 668}
+  NST_B_Label: {0: 54028, 1: 14701}
+  NST_M_Label: {'Normal': 54028, 'BAD-MISCONF-DUPLICATION': 4611, 'BAD-MISCONF': 3889, 'BAD-SSH': 2968, 'BAD-PORTSCAN2': 2179, 'BAD-MITM': 708, 'BAD-PORTSCAN1': 267, 'GOOD-SSH': 79}
+  flows malicious by timing (IT) but not involving the attacker (NST): 0 of 23,852 IT-malicious (0.00%)
+  feature duplicates: 13,909 (20.24%)
+  vectors with >1 IT_M_Label: 470
+  vectors with >1 NST_M_Label: 222
+
+=== (iii) TIME ===
+  capture span 5444 s; one continuous recording with scheduled events
+  bad-event starts in events.txt: 79; kinds: {'BAD-MITM': 16, 'BAD-MISCONF-DUPLICATION': 16, 'BAD-SSH': 16, 'BAD-PORTSCAN1': 8, 'BAD-MISCONF': 15, 'BAD-PORTSCAN2': 8}
+  BAD-MITM                   flows=   708  benign share inside its span 78.75%
+  BAD-MISCONF-DUPLICATION    flows= 4,611  benign share inside its span 78.36%
+  BAD-SSH                    flows= 2,968  benign share inside its span 78.97%
+  BAD-MISCONF                flows= 3,889  benign share inside its span 78.54%
+  GOOD-SSH                   flows=    79  benign share inside its span 78.85%
+  BAD-PORTSCAN1              flows=   267  benign share inside its span 78.68%
+  BAD-PORTSCAN2              flows= 2,179  benign share inside its span 78.77%
+
+=== (iv) ATTRIBUTION ===
+  Normal                     top source IPs: 198.18.134.11 (24245), 198.18.134.12 (16256), 198.18.134.1 (2064)
+  BAD-MITM                   top source IPs: 198.18.134.11 (290), 0.0.0.0 (18)
+  BAD-MISCONF-DUPLICATION    top source IPs: 198.18.134.11 (2016), 198.18.134.12 (1347), 198.18.134.1 (147)
+  BAD-SSH                    top source IPs: 198.18.134.49 (540), 198.18.134.47 (490), 198.18.134.3 (292)
+  BAD-MISCONF                top source IPs: 198.18.134.11 (1713), 198.18.134.12 (1150), 198.18.134.1 (153)
+  GOOD-SSH                   top source IPs: 198.18.134.3 (11), 198.18.134.1 (10), 198.18.134.5 (9)
+  BAD-PORTSCAN1              top source IPs: 198.18.134.43 (61), 198.18.134.3 (42), 198.18.134.40 (36)
+  BAD-PORTSCAN2              top source IPs: 198.18.134.48 (358), 198.18.134.1 (350), 198.18.134.49 (332)
+
+=== (v) PREVALENCE ===
+  IT_B_Label: {1: '65.30%', 0: '34.70%'}
+  NST_B_Label: {0: '78.61%', 1: '21.39%'}
+
+=== (vi) SHORTCUT PROBE (NST multiclass) ===
+  [flow features, identifiers excluded] random 70/30                               macro-F1=0.614  BAD-MISCONF=0.00  BAD-MISCONF-DUPLICATION=0.05  BAD-MITM=0.98  BAD-PORTSCAN1=0.29  BAD-PORTSCAN2=0.92  BAD-SSH=0.96  GOOD-SSH=0.79  Normal=0.93
+  [flow features, identifiers excluded] time-ordered 70/30 per class               macro-F1=0.600  BAD-MISCONF=0.01  BAD-MISCONF-DUPLICATION=0.01  BAD-MITM=0.96  BAD-PORTSCAN1=0.25  BAD-PORTSCAN2=0.92  BAD-SSH=0.97  GOOD-SSH=0.76  Normal=0.92
+  [with source/destination address codes] random 70/30                               macro-F1=0.683  BAD-MISCONF=0.04  BAD-MISCONF-DUPLICATION=0.07  BAD-MITM=0.98  BAD-PORTSCAN1=0.70  BAD-PORTSCAN2=0.96  BAD-SSH=0.97  GOOD-SSH=0.83  Normal=0.93
+
+=== (i) STRUCTURE — reduced ===
+  bottom  flows= 35,404 fields per line={64: 35404}
+  left    flows=  8,533 fields per line={64: 8533}
+  right   flows=  4,720 fields per line={64: 4720}
+flows=48,657 features=47 NaN=485336 inf=0; physical (process) columns: none in the flow files
+labels: {'IT_B_Label': {1: 32362, 0: 16295}, 'IT_M_Label': {'Normal': 16295, 'BAD-SSH': 16014, 'BAD-PORTSCAN2': 4467, 'BAD-MITM': 4449, 'BAD-MISCONF-DUPLICATION': 3131, 'BAD-MISCONF': 2677, 'BAD-PORTSCAN1': 1148, 'GOOD-SSH': 476}, 'NST_B_Label': {0: 36648, 1: 12009}, 'NST_M_Label': {'Normal': 36648, 'BAD-MISCONF-DUPLICATION': 3131, 'BAD-SSH': 2968, 'BAD-MISCONF': 2677, 'BAD-PORTSCAN2': 2179, 'BAD-MITM': 708, 'BAD-PORTSCAN1': 267, 'GOOD-SSH': 79}}

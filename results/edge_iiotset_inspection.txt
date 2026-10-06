@@ -1,0 +1,163 @@
+
+=== 1. SCHEMA — DNN file: 2,219,201 rows x 63 columns ===
+non-numeric columns: ['frame.time', 'ip.src_host', 'ip.dst_host', 'arp.dst.proto_ipv4', 'arp.src.proto_ipv4', 'http.file_data', 'http.request.uri.query', 'http.request.method', 'http.referer', 'http.request.full_uri', 'http.request.version', 'tcp.options', 'tcp.payload', 'tcp.srcport', 'dns.qry.name.len', 'mqtt.conack.flags', 'mqtt.msg', 'mqtt.protoname', 'mqtt.topic']
+constant columns: ['icmp.unused', 'http.tls_port', 'dns.qry.type', 'mqtt.msg_decoded_as']
+author drop list present: ['frame.time', 'ip.src_host', 'ip.dst_host', 'arp.src.proto_ipv4', 'arp.dst.proto_ipv4', 'http.file_data', 'http.request.full_uri', 'icmp.transmit_timestamp', 'http.request.uri.query', 'tcp.options', 'tcp.payload', 'tcp.srcport', 'tcp.dstport', 'udp.port', 'mqtt.msg']
+NaN cells: 0
+rows with a shifted layout (frame.time is not a time): 122,782
+  DDoS_UDP                 121,568 of 121,568  e.g. frame.time/src/dst = ['153.177.200.205', '192.168.0.128', '0']
+  MITM                       1,214 of 1,214  e.g. frame.time/src/dst = ['6.0', '192.168.0.152', '0.0']
+
+=== 2. LABELS ===
+Attack_type                     rows    share  category
+  Normal                   1,615,643   72.80%  Normal
+  DDoS_UDP                   121,568    5.48%  DoS/DDoS
+  DDoS_ICMP                  116,436    5.25%  DoS/DDoS
+  SQL_injection               51,203    2.31%  Injection
+  Password                    50,153    2.26%  Malware
+  Vulnerability_scanner       50,110    2.26%  Information gathering
+  DDoS_TCP                    50,062    2.26%  DoS/DDoS
+  DDoS_HTTP                   49,911    2.25%  DoS/DDoS
+  Uploading                   37,634    1.70%  Injection
+  Backdoor                    24,862    1.12%  Malware
+  Port_Scanning               22,564    1.02%  Information gathering
+  XSS                         15,915    0.72%  Injection
+  Ransomware                  10,925    0.49%  Malware
+  MITM                         1,214    0.05%  Man in the middle
+  Fingerprinting               1,001    0.05%  Information gathering
+Attack_label inconsistent with Attack_type: 0
+per category: {'Normal': 1615643, 'DoS/DDoS': 337977, 'Injection': 104752, 'Malware': 85940, 'Information gathering': 73675, 'Man in the middle': 1214}
+prevalence: normal 72.80%, attack 27.20% (normal:attack = 2.68:1)
+
+=== 3. DUPLICATES ===
+exact duplicate rows: 815
+duplicates on features+label (identifiers dropped): 309,530 (13.95%)
+feature vectors carrying >1 label: 1,513 distinct vectors
+  rows involved: 8,972; labels among them: {'Port_Scanning': 2590, 'Ransomware': 1246, 'Uploading': 1048, 'XSS': 969, 'Backdoor': 837, 'Password': 833, 'SQL_injection': 768, 'DDoS_HTTP': 357, 'Vulnerability_scanner': 157, 'Fingerprinting': 157, 'DDoS_ICMP': 9, 'DDoS_TCP': 1}
+unique rows per class after dedup (features+label):
+  Normal                   1,363,998  (kept 84.42%)
+  DDoS_UDP                   121,567  (kept 100.00%)
+  DDoS_ICMP                   67,939  (kept 58.35%)
+  SQL_injection               50,826  (kept 99.26%)
+  DDoS_TCP                    50,062  (kept 100.00%)
+  Vulnerability_scanner       50,026  (kept 99.83%)
+  Password                    49,933  (kept 99.56%)
+  DDoS_HTTP                   48,544  (kept 97.26%)
+  Uploading                   36,807  (kept 97.80%)
+  Backdoor                    24,026  (kept 96.64%)
+  Port_Scanning               19,977  (kept 88.53%)
+  XSS                         15,066  (kept 94.67%)
+  Ransomware                   9,689  (kept 88.69%)
+  Fingerprinting                 853  (kept 85.21%)
+  MITM                           358  (kept 29.49%)
+
+=== 4. TIME (frame.time) ===
+examples: [' 2021 11:44:10.081753000 ', ' 2021 11:44:10.162218000 ', ' 2021 11:44:10.162271000 '] [' 2021 19:35:13.836591000 ', ' 2021 19:02:58.462859000 ', ' 2021 19:59:04.287186000 ']
+parsed as 'YYYY HH:MM:SS.f': 2,096,419 / 2,219,201  (the month/day is missing: the original 'Mon DD, YYYY' was split on its comma)
+unparsed examples: {'192.168.0.128': 11533, '0.0': 873, '6.0': 341, '38.164.101.121': 2, '134.21.227.54': 2}
+class                      first      last    span_s    rows/s
+  Normal                    4968     83430     78462      20.6
+  DDoS_ICMP                83869     84273       404     288.4
+  SQL_injection            77718     78224       505     101.3
+  Password                  6336     74842     68506       0.7
+  Vulnerability_scanner     69736     70953      1217      41.2
+  DDoS_TCP                 68558     69086       528      94.8
+  DDoS_HTTP                41729     41999       270     184.9
+  Uploading                83313     83818       505      74.5
+  Backdoor                 64703     76021     11318       2.2
+  Port_Scanning            57809     67809     10000       2.3
+  XSS                      63887     71595      7707       2.1
+  Ransomware                   1     86399     86398       0.1
+  Fingerprinting           80071     80896       826       1.2
+label runs in file order: 15 (1 run per class = blocks; many = interleaved)
+time-of-day monotonic within file: False
+
+=== 5. ADDRESSES ===
+ip.src_host: 137,167 distinct
+ip.dst_host: 52,425 distinct
+class                    src   dst  top sources
+  Normal                  15    27  192.168.0.128 (41.31%), 192.168.0.101 (41.29%), 0 (17.31%)
+  DDoS_UDP             11534 11534  192.168.0.128 (90.51%), 244.158.10.197 (0.00%), 211.61.236.242 (0.00%)
+  DDoS_ICMP            96466 19951  192.168.0.128 (17.13%), 0 (0.01%), 0.52.221.167 (0.00%)
+  SQL_injection            4     6  192.168.0.170 (51.51%), 192.168.0.128 (48.39%), 0 (0.09%)
+  Password                 4     6  192.168.0.128 (50.40%), 192.168.0.170 (49.48%), 0 (0.12%)
+  Vulnerability_scanner     7     9  192.168.0.128 (50.15%), 192.168.0.170 (49.66%), 0 (0.10%)
+  DDoS_TCP             29151 20911  192.168.0.128 (41.77%), 94.241.144.228 (0.00%), 62.192.176.145 (0.00%)
+  DDoS_HTTP                4     4  192.168.0.170 (66.78%), 192.168.0.128 (33.20%), 0 (0.02%)
+  Uploading                4     6  192.168.0.170 (54.39%), 192.168.0.128 (45.46%), 0 (0.14%)
+  Backdoor                 4     7  192.168.0.128 (49.48%), 192.168.0.170 (47.57%), 0 (2.78%)
+  Port_Scanning            4     5  192.168.0.128 (44.62%), 192.168.0.170 (44.26%), 0 (10.77%)
+  XSS                      6     8  192.168.0.170 (50.45%), 192.168.0.128 (45.47%), 0 (3.47%)
+  Ransomware               4     7  192.168.0.128 (46.00%), 192.168.0.170 (43.90%), 0 (9.51%)
+  MITM                     7     1  0 (71.91%), 192.168.0.101 (12.77%), 192.168.0.152 (9.88%)
+  Fingerprinting           4     6  192.168.0.170 (46.65%), 192.168.0.128 (39.56%), 0 (13.19%)
+source address alone -> class (majority per address): accuracy 80.49%
+normal traffic: 15 source addresses; top 12:
+  192.168.0.128        667,345  41.31%
+  192.168.0.101        667,126  41.29%
+  0                    279,663  17.31%
+  0.0.0.0                  687  0.04%
+  192.168.0.1              687  0.04%
+  160.119.193.252           36  0.00%
+  197.84.150.123            34  0.00%
+  143.107.229.210           28  0.00%
+  146.101.60.86             12  0.00%
+  196.200.160.123           11  0.00%
+  85.254.217.5               7  0.00%
+  94.228.220.14              3  0.00%
+
+=== 6. SHORTCUT HINT — XGBoost on author-cleaned features (dedup, 70/30) ===
+categorical columns encoded as codes: ['http.request.method', 'http.referer', 'http.request.version', 'dns.qry.name.len', 'mqtt.conack.flags', 'mqtt.protoname', 'mqtt.topic']
+                       precision    recall  f1-score   support
+
+             Backdoor     0.6344    0.8085    0.7110      7208
+            DDoS_HTTP     0.6818    0.6236    0.6514     14563
+            DDoS_ICMP     0.0000    0.0000    0.0000     20382
+             DDoS_TCP     0.9301    0.9248    0.9274     15018
+             DDoS_UDP     0.6226    1.0000    0.7674     36470
+       Fingerprinting     0.0156    0.0117    0.0134       256
+                 MITM     0.0000    0.0000    0.0000       107
+               Normal     0.9971    0.9967    0.9969    409200
+             Password     0.7302    0.7026    0.7162     14980
+        Port_Scanning     0.5849    0.4070    0.4800      5993
+           Ransomware     0.0000    0.0000    0.0000      2907
+        SQL_injection     0.6674    0.7299    0.6972     15248
+            Uploading     0.5640    0.3880    0.4597     11042
+Vulnerability_scanner     0.8666    0.9056    0.8857     15008
+                  XSS     0.2634    0.4580    0.3344      4520
+
+             accuracy                         0.9027    572902
+            macro avg     0.5039    0.5304    0.5094    572902
+         weighted avg     0.8801    0.9027    0.8877    572902
+
+top features by gain: {'mqtt.protoname': 433614976.0, 'mqtt.hdrflags': 169934864.0, 'dns.qry.name': 74187064.0, 'tcp.checksum': 61923032.0, 'tcp.ack_raw': 30561890.0, 'tcp.flags': 16187886.0, 'mqtt.conack.flags': 15844908.0, 'http.request.method': 15751302.0, 'mqtt.len': 13456163.0, 'udp.stream': 11017533.0, 'tcp.seq': 10637995.0, 'tcp.ack': 8215791.0}
+
+without arbitrary per-packet fields ['tcp.seq', 'tcp.ack', 'tcp.ack_raw', 'tcp.checksum', 'icmp.checksum', 'icmp.seq_le', 'udp.stream', 'mbtcp.trans_id']:
+                       precision    recall  f1-score   support
+
+             Backdoor     0.0000    0.0000    0.0000      7208
+            DDoS_HTTP     0.0000    0.0000    0.0000     14563
+            DDoS_ICMP     0.0000    0.0000    0.0000     20382
+             DDoS_TCP     0.0000    0.0000    0.0000     15018
+             DDoS_UDP     0.6128    0.9033    0.7302     36470
+       Fingerprinting     0.0000    0.0000    0.0000       256
+                 MITM     0.0000    0.0000    0.0000       107
+               Normal     0.9793    0.6948    0.8129    409200
+             Password     0.1688    0.0413    0.0664     14980
+        Port_Scanning     0.0000    0.0000    0.0000      5993
+           Ransomware     0.0355    0.4892    0.0662      2907
+        SQL_injection     0.0608    0.5700    0.1098     15248
+            Uploading     0.0000    0.0000    0.0000     11042
+Vulnerability_scanner     0.2514    0.4728    0.3283     15008
+                  XSS     0.1599    0.0823    0.1087      4520
+
+             accuracy                         0.5855    572902
+            macro avg     0.1512    0.2169    0.1482    572902
+         weighted avg     0.7525    0.5855    0.6415    572902
+
+
+=== 7. ML FILE ===
+157,800 rows x 63 columns; same header as DNN: True
+frame.time examples: ['6.0', '6.0', '6.0']
+Attack_type: {'Normal': 24301, 'DDoS_UDP': 14498, 'DDoS_ICMP': 14090, 'Ransomware': 10925, 'DDoS_HTTP': 10561, 'SQL_injection': 10311, 'Uploading': 10269, 'DDoS_TCP': 10247, 'Backdoor': 10195, 'Vulnerability_scanner': 10076, 'Port_Scanning': 10071, 'XSS': 10052, 'Password': 9989, 'MITM': 1214, 'Fingerprinting': 1001}
+exact duplicates: 814

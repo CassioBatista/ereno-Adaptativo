@@ -1,0 +1,75 @@
+identity columns present: ['ethSrc', 'ethDst', 'gocbRef', 'goID', 'gooseAppid', 'datSet', '@class@']
+
+-- ethSrc: distinct overall=13
+@class@
+high_StNum                {' 00:a0:f4:08:2f:77': 38953, ' FF:FF:FF:FF:FF...
+injection                 {' 00:a0:f4:08:2f:77': 38950, ' FF:FF:FF:FF:FF...
+inverse_replay                                {' 00:a0:f4:08:2f:77': 26033}
+masquerade_fake_fault                         {' 00:a0:f4:08:2f:77': 17287}
+masquerade_fake_normal                        {' 00:a0:f4:08:2f:77': 17419}
+normal                                      {' 00:a0:f4:08:2f:77': 2759425}
+poisoned_high_rate                            {' 00:a0:f4:08:2f:77': 18574}
+random_replay                                 {' 00:a0:f4:08:2f:77': 39000}
+
+-- ethDst: distinct overall=14
+@class@
+high_StNum                {' 01:a0:f4:08:2f:77': 38953, ' FF:FF:FF:FF:FF...
+injection                 {' 01:a0:f4:08:2f:77': 38950, ' FF:FF:FF:FF:FF...
+inverse_replay                                {' 01:a0:f4:08:2f:77': 26033}
+masquerade_fake_fault                         {' 01:a0:f4:08:2f:77': 17287}
+masquerade_fake_normal                        {' 01:a0:f4:08:2f:77': 17419}
+normal                                      {' 01:a0:f4:08:2f:77': 2759425}
+poisoned_high_rate                            {' 01:a0:f4:08:2f:77': 18574}
+random_replay                                 {' 01:a0:f4:08:2f:77': 39000}
+
+-- gocbRef: distinct overall=2
+@class@
+high_StNum                {' LD/LLN0$GO$gcbA': 38953, ' LD/LLN0$IntLockB...
+injection                 {' LD/LLN0$GO$gcbA': 38950, ' LD/LLN0$IntLockB...
+inverse_replay                                  {' LD/LLN0$GO$gcbA': 26033}
+masquerade_fake_fault                           {' LD/LLN0$GO$gcbA': 17287}
+masquerade_fake_normal                          {' LD/LLN0$GO$gcbA': 17419}
+normal                                        {' LD/LLN0$GO$gcbA': 2759425}
+poisoned_high_rate                              {' LD/LLN0$GO$gcbA': 18574}
+random_replay                                   {' LD/LLN0$GO$gcbA': 39000}
+
+-- goID: distinct overall=2
+@class@
+high_StNum                {' InterlockingA': 38953, ' InterlockingF': 47}
+injection                 {' InterlockingA': 38950, ' InterlockingF': 50}
+inverse_replay                                  {' InterlockingA': 26033}
+masquerade_fake_fault                           {' InterlockingA': 17287}
+masquerade_fake_normal                          {' InterlockingA': 17419}
+normal                                        {' InterlockingA': 2759425}
+poisoned_high_rate                              {' InterlockingA': 18574}
+random_replay                                   {' InterlockingA': 39000}
+
+-- gooseAppid: distinct overall=2
+@class@
+high_StNum                {' 0x00003001': 38953, ' 0x00003002': 47}
+injection                 {' 0x00003001': 38950, ' 0x00003002': 50}
+inverse_replay                               {' 0x00003001': 26033}
+masquerade_fake_fault                        {' 0x00003001': 17287}
+masquerade_fake_normal                       {' 0x00003001': 17419}
+normal                                     {' 0x00003001': 2759425}
+poisoned_high_rate                           {' 0x00003001': 18574}
+random_replay                                {' 0x00003001': 39000}
+
+-- datSet: distinct overall=2
+@class@
+high_StNum                {' LD/LLN0$IntLockA': 38953, ' AA1C1Q01A1LD0/L...
+injection                 {' LD/LLN0$IntLockA': 38950, ' AA1C1Q01A1LD0/L...
+inverse_replay                                 {' LD/LLN0$IntLockA': 26033}
+masquerade_fake_fault                          {' LD/LLN0$IntLockA': 17287}
+masquerade_fake_normal                         {' LD/LLN0$IntLockA': 17419}
+normal                                       {' LD/LLN0$IntLockA': 2759425}
+poisoned_high_rate                             {' LD/LLN0$IntLockA': 18574}
+random_replay                                  {' LD/LLN0$IntLockA': 39000}
+normal                   ethSrc also used by normal traffic: 100.0%
+random_replay            ethSrc also used by normal traffic: 100.0%
+inverse_replay           ethSrc also used by normal traffic: 100.0%
+masquerade_fake_fault    ethSrc also used by normal traffic: 100.0%
+masquerade_fake_normal   ethSrc also used by normal traffic: 100.0%
+injection                ethSrc also used by normal traffic:  99.9%
+high_StNum               ethSrc also used by normal traffic:  99.9%
+poisoned_high_rate       ethSrc also used by normal traffic: 100.0%

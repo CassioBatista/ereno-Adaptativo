@@ -1,0 +1,40 @@
+
+=== (i) STRUCTURE ===
+  hai-train1: rows=280,800 cols=87 NaN=0 2022-08-04 18:00:01 .. 2022-08-08 00:00:00 step(s)={1.0: 280799}
+  hai-train2: rows=291,600 cols=87 NaN=0 2022-08-13 07:00:01 .. 2022-08-16 16:00:00 step(s)={1.0: 291599}
+  hai-train3: rows=126,000 cols=87 NaN=0 2022-08-19 16:00:01 .. 2022-08-21 03:00:00 step(s)={1.0: 125999}
+  hai-train4: rows=198,000 cols=87 NaN=0 2022-08-22 17:00:01 .. 2022-08-25 00:00:00 step(s)={1.0: 197999}
+  hai-test1: rows=54,000 cols=87 NaN=0 2022-08-12 16:00:01 .. 2022-08-13 07:00:00 step(s)={1.0: 53999}
+  hai-test2: rows=230,400 cols=87 NaN=0 2022-08-17 00:00:01 .. 2022-08-19 16:00:00 step(s)={1.0: 230399}
+  label-test1: rows=54,000; timestamps identical to hai-test1: True
+  label-test2: rows=230,400; timestamps identical to hai-test2: False
+process variables=86
+
+=== (ii) LABELS — segments vs the technical manual ===
+attacks listed in the manual for 23.05: 52 (test1 A1xx=14, test2 A2xx=38)
+  test1: label segments=14; manual entries=14
+  test2: label segments=38; manual entries=38
+  segments whose start minute matches the manual: 52/52; duration within max(5 s, 10%): 52/52
+  attacks per target loop: {'P1-PC': 13, 'P1-LC': 12, 'P1-FC': 10, 'P1-TC': 9, 'P1-CC': 7, 'P1-HC': 1}
+  duplicates of process vectors (time removed): 0 (0.00%)
+  test vectors with >1 label: 0
+
+=== (iii) TIME ===
+  test1: benign share between first and last attack 93.83%
+  test2: benign share between first and last attack 96.20%
+  training files carry no label column (normal operation by construction)
+
+=== (iv) ATTRIBUTION ===
+  process telemetry only: no network addresses; each attack targets one control loop (or two, for the combined attacks), which the per-loop labels locate
+
+=== (v) PREVALENCE ===
+  test: attack 4.00% of 284,400 s (79.0 h); normal training operation 249.0 h
+  per loop (test seconds): {'normal': 273016, 'P1-LC': 3768, 'P1-PC': 2813, 'P1-CC': 1658, 'P1-FC': 1618, 'P1-TC': 1444, 'P1-HC': 83}
+
+=== (vi) SHORTCUT PROBE ===
+  [binary] random 70/30                               macro-F1=0.994  attack=0.99  normal=1.00
+  [binary] independent groups (1 train / 1 test)      macro-F1=0.529  attack=0.12  normal=0.93
+  [binary] time-ordered 70/30 per class               macro-F1=0.274  attack=0.07  normal=0.48
+  [per loop] random 70/30                               macro-F1=0.992  P1-CC=0.99  P1-FC=0.99  P1-LC=1.00  P1-PC=0.99  P1-TC=0.99  normal=1.00
+  [per loop] time-ordered 70/30 per class               macro-F1=0.091  P1-CC=0.09  P1-FC=0.02  P1-LC=0.08  P1-PC=0.00  P1-TC=0.01  normal=0.34
+  [per loop] held-out attack instances (17 of 51)        macro-F1=0.069  P1-CC=0.00  P1-FC=0.01  P1-LC=0.00  P1-PC=0.04  P1-TC=0.00  normal=0.37

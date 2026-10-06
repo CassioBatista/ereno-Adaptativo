@@ -1,0 +1,69 @@
+
+=== 1-3. BLOCKS (10) ===
+line      1  cyber    schema S1 (37 features)  rows= 9,425  labels={'benign': 9425}  time[relative-s] 28106.0 .. 54392.4 s
+        duplicate rows: 0; without timestamp: 0
+line   9427  physical schema S2 (16 features)  rows= 4,290  labels={'benign': 4290}  time[relative-s] 28123.0 .. 54385.2 s
+        duplicate rows: 0; without timestamp: 1
+line  13718  cyber    schema S1 (37 features)  rows=11,671  labels={'DoS attack': 11671}  time[relative-s] 22568.2 .. 27406.5 s
+        duplicate rows: 0; without timestamp: 0
+line  25390  physical schema S2 (16 features)  rows=   973  labels={'DoS': 973}  time[relative-s] 22615.8 .. 27674.1 s
+        duplicate rows: 0; without timestamp: 29
+line  26364  cyber    schema S1 (37 features)  rows=12,006  labels={'Replay': 12006}  time[relative-s] 16369.5 .. 45525.1 s
+        duplicate rows: 0; without timestamp: 0
+line  38371  physical schema S2 (16 features)  rows=   973  labels={'Replay': 973}  time[relative-s] 16385.3 .. 45518.3 s
+        duplicate rows: 0; without timestamp: 33
+line  39345  cyber    schema S3 (34 features)  rows= 5,683  labels={'evil_twin': 5683}  time[epoch] 2023-05-13 16:49:19 .. 2023-05-13 23:05:08
+        duplicate rows: 0; without timestamp: 0
+line  45029  physical schema S4 (21 features)  rows= 5,473  labels={'evil_twin': 5473}  time[epoch] 2023-05-13 11:49:20 .. 2023-05-13 18:05:04
+        duplicate rows: 11; without timestamp: 490
+line  50503  cyber    schema S3 (34 features)  rows= 3,473  labels={'FDI': 3473}  time[epoch] 2023-09-06 01:25:39 .. 2023-09-15 22:51:54
+        duplicate rows: 0; without timestamp: 0
+line  53977  physical schema S5 (31 features)  rows=   807  labels={'FDI': 807}  time[none] (no timestamp column)
+        duplicate rows: 0; without timestamp: 0
+
+schemas:
+  S1: ['timestamp_c', 'frame.number', 'frame.len', 'frame.protocols', 'wlan.duration', 'wlan.ra', 'wlan.ta', 'wlan.da'] ... (37 features)
+  S2: ['timestamp_p', 'height', 'x_speed', 'y_speed', 'z_speed', 'pitch', 'roll', 'yaw'] ... (16 features)
+  S3: ['timestamp_c', 'frame.number', 'frame.len', 'wlan.ta', 'wlan.sa', 'wlan.ra', 'wlan.da', 'wlan.bssid'] ... (34 features)
+  S4: ['timestamp_p', 'mid', 'x', 'y', 'z', 'pitch', 'roll', 'yaw'] ... (21 features)
+  S5: ['mid', 'x', 'y', 'z', 'mpitch', 'mroll', 'myaw', 'pitch'] ... (31 features)
+
+=== 4. SYNC — cyber vs physical time ranges per class ===
+  benign     cyber [28106.0, 54392.4]  physical [28123.0, 54385.2]  overlap 26262.2 s  (start offset +17.1 s)
+  dos        cyber [22568.2, 27406.5]  physical [22615.8, 27674.1]  overlap 4790.7 s  (start offset +47.6 s)
+  replay     cyber [16369.5, 45525.1]  physical [16385.3, 45518.3]  overlap 29133.0 s  (start offset +15.8 s)
+  evil_twin  cyber [1683996559.0, 1684019108.0]  physical [1683978560.0, 1684001104.0]  overlap 4545.0 s  (start offset -17999.0 s)
+  fdi        cannot align: physical block has no timestamp
+
+=== 6. BENIGN COVERAGE — classes per feature space ===
+  S1: {'benign': 9425, 'DoS attack': 11671, 'Replay': 12006}
+  S2: {'benign': 4290, 'DoS': 973, 'Replay': 973}
+  S3: {'evil_twin': 5683, 'FDI': 3473}
+  S4: {'evil_twin': 5473}
+  S5: {'FDI': 807}
+
+=== 7. SHORTCUT HINT — XGBoost on cyber schema S1 (benign, DoS, replay) ===
+-- all features
+              precision    recall  f1-score   support
+
+  DoS attack     0.9906    0.9914    0.9910      3501
+      Replay     0.9917    0.9897    0.9907      3602
+      benign     0.9986    1.0000    0.9993      2828
+
+    accuracy                         0.9933      9931
+   macro avg     0.9936    0.9937    0.9937      9931
+weighted avg     0.9933    0.9933    0.9933      9931
+
+   top gain: ['timestamp_c', 'data.data', 'ip.ttl', 'wlan.duration', 'frame.protocols', 'wlan.ra']
+-- without position/sequence ids
+              precision    recall  f1-score   support
+
+  DoS attack     0.5792    0.8966    0.7037      3501
+      Replay     0.8291    0.2599    0.3957      3602
+      benign     0.7821    0.9353    0.8519      2828
+
+    accuracy                         0.6767      9931
+   macro avg     0.7301    0.6972    0.6504      9931
+weighted avg     0.7276    0.6767    0.6342      9931
+
+   top gain: ['wlan.fc.type', 'ip.hdr_len', 'wlan.duration', 'ip.ttl', 'ip.dst', 'wlan.fc.subtype']

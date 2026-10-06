@@ -1,0 +1,114 @@
+
+=== (i) STRUCTURE — 10 part files (sample of the 169 in the release) ===
+rows=2,366,956; columns=47; distinct headers across parts=1; fields per line={47: 2366956}
+non-numeric cells=0; NaN=0; inf=0
+columns: ['flow_duration', 'Header_Length', 'Protocol Type', 'Duration', 'Rate', 'Srate', 'Drate', 'fin_flag_number', 'syn_flag_number', 'rst_flag_number', 'psh_flag_number', 'ack_flag_number', 'ece_flag_number', 'cwr_flag_number', 'ack_count', 'syn_count', 'fin_count', 'urg_count', 'rst_count', 'HTTP', 'HTTPS', 'DNS', 'Telnet', 'SMTP', 'SSH', 'IRC', 'TCP', 'UDP', 'DHCP', 'ARP', 'ICMP', 'IPv', 'LLC', 'Tot sum', 'Min', 'Max', 'AVG', 'Std', 'Tot size', 'IAT', 'Number', 'Magnitue', 'Radius', 'Covariance', 'Variance', 'Weight']
+  flow_duration  min=0 median=0 max=99435.8 distinct=1,073,522
+  IAT            min=0 median=8.31245e+07 max=1.67639e+08 distinct=2,360,123
+  Number         min=1 median=9.5 max=15 distinct=96
+  Weight         min=1 median=141.55 max=244.6 distinct=102
+  Tot size       min=42 median=54 max=13098 distinct=52,526
+  Rate           min=0 median=15.822 max=8.38861e+06 distinct=1,781,514
+
+=== (ii) LABELS ===
+34 labels:
+  DDoS-ICMP_Flood               364,557   15.40%  DDoS
+  DDoS-UDP_Flood                274,432   11.59%  DDoS
+  DDoS-TCP_Flood                228,873    9.67%  DDoS
+  DDoS-PSHACK_Flood             207,971    8.79%  DDoS
+  DDoS-SYN_Flood                206,146    8.71%  DDoS
+  DDoS-RSTFINFlood              204,892    8.66%  DDoS
+  DDoS-SynonymousIP_Flood       182,094    7.69%  DDoS
+  DoS-UDP_Flood                 168,753    7.13%  DoS
+  DoS-TCP_Flood                 135,180    5.71%  DoS
+  DoS-SYN_Flood                 102,049    4.31%  DoS
+  BenignTraffic                  55,859    2.36%  Benign
+  Mirai-greeth_flood             49,844    2.11%  Mirai
+  Mirai-udpplain                 45,219    1.91%  Mirai
+  Mirai-greip_flood              38,157    1.61%  Mirai
+  DDoS-ICMP_Fragmentation        22,890    0.97%  DDoS
+  MITM-ArpSpoofing               15,618    0.66%  Spoofing
+  DDoS-UDP_Fragmentation         14,611    0.62%  DDoS
+  DDoS-ACK_Fragmentation         14,498    0.61%  DDoS
+  DNS_Spoofing                    9,142    0.39%  Spoofing
+  Recon-HostDiscovery             6,761    0.29%  Recon
+  Recon-OSScan                    5,046    0.21%  Recon
+  Recon-PortScan                  4,198    0.18%  Recon
+  DoS-HTTP_Flood                  3,701    0.16%  DoS
+  VulnerabilityScan               1,879    0.08%  Recon
+  DDoS-HTTP_Flood                 1,467    0.06%  DDoS
+  DDoS-SlowLoris                  1,176    0.05%  DDoS
+  DictionaryBruteForce              656    0.03%  BruteForce
+  BrowserHijacking                  295    0.01%  Web
+  SqlInjection                      248    0.01%  Web
+  CommandInjection                  243    0.01%  Web
+  Backdoor_Malware                  169    0.01%  Web
+  XSS                               160    0.01%  Web
+  Recon-PingSweep                   101    0.00%  Recon
+  Uploading_Attack                   71    0.00%  Web
+exact duplicate rows: 0
+feature duplicates: 0 (0.00%)
+vectors with >1 label: 0 (rows 0); top: {}
+vectors with >1 category: 0 (rows 0); top: {}
+label runs in file order: 2,160,114 (n = shuffled; #classes = blocks)
+
+=== (iii) TIME ===
+no timestamp column in the release
+IAT per label (if IAT were an inter-arrival time, ranges would overlap across classes; a capture clock gives one narrow band per capture):
+                                min      median         max
+label                                                      
+SqlInjection            0.000273013   0.0374099 1.66482e+08
+MITM-ArpSpoofing        5.96046e-07   0.0483516 1.66613e+08
+Recon-OSScan            9.05991e-07   0.0526471 1.66439e+08
+BrowserHijacking        1.19209e-06   0.0598609 1.66846e+08
+XSS                     0.000128007   0.0791557 1.67639e+08
+DictionaryBruteForce    5.29289e-06   0.0833991 1.66602e+08
+DoS-TCP_Flood                     0 8.29472e+07 9.95475e+07
+DoS-SYN_Flood                     0 8.29775e+07 9.95833e+07
+DoS-HTTP_Flood                    0 8.29995e+07 9.96034e+07
+DoS-UDP_Flood                     0 8.30123e+07 9.96399e+07
+DDoS-TCP_Flood                    0 8.30683e+07 9.96918e+07
+DDoS-SYN_Flood                    0   8.309e+07 1.00194e+08
+DDoS-UDP_Flood                    0  8.3103e+07 1.00194e+08
+DDoS-ICMP_Flood                   0  8.3129e+07  1.0018e+08
+VulnerabilityScan         0.0129245 8.32427e+07 9.98906e+07
+DDoS-ICMP_Fragmentation 9.53674e-07 8.32534e+07 1.00185e+08
+DDoS-PSHACK_Flood       6.19888e-07 8.33182e+07 9.99986e+07
+DDoS-ACK_Fragmentation  6.75987e-06 8.33367e+07 1.00009e+08
+DDoS-RSTFINFlood        4.76837e-07  8.3345e+07 1.00019e+08
+DDoS-SynonymousIP_Flood           0 8.33622e+07 1.00039e+08
+DDoS-UDP_Fragmentation  9.53674e-07 8.33704e+07 1.00049e+08
+DDoS-SlowLoris          0.000438837 8.33752e+07 1.00054e+08
+DDoS-HTTP_Flood          0.00427449 8.33917e+07 1.00071e+08
+Mirai-greip_flood                 0 8.36467e+07 1.00397e+08
+Mirai-greeth_flood                0 8.36815e+07 1.00443e+08
+Mirai-udpplain          7.94729e-07 8.37675e+07 1.00584e+08
+Recon-PortScan          1.28746e-06 1.66421e+08  1.6643e+08
+Recon-PingSweep         0.000208902 1.66447e+08 1.66448e+08
+BenignTraffic           1.50204e-06 1.66516e+08 1.66526e+08
+Recon-HostDiscovery     1.38283e-06 1.66847e+08 1.66849e+08
+DNS_Spoofing            1.40667e-06 1.66853e+08 1.66863e+08
+Backdoor_Malware        0.000136304  1.6763e+08  1.6763e+08
+CommandInjection        3.79086e-06 1.67639e+08 1.67639e+08
+Uploading_Attack        5.40972e-05 1.67639e+08 1.67639e+08
+IAT rounded to 1e3 -> label (majority per bin): accuracy 96.97%
+
+=== (iv) ATTRIBUTION ===
+no source/destination address column: alarms cannot be attributed to a device
+
+=== (v) PREVALENCE ===
+  DDoS        1,723,607  72.82%
+  DoS           409,683  17.31%
+  Mirai         133,220  5.63%
+  Benign         55,859  2.36%
+  Spoofing       24,760  1.05%
+  Recon          17,985  0.76%
+  Web             1,186  0.05%
+  BruteForce        656  0.03%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (dedup, stratified 70/30, 7 categories) ===
+  all features                   macro-F1=0.700  Benign=0.89  BruteForce=0.09  DDoS=1.00  DoS=1.00  Mirai=1.00  Recon=0.73  Spoofing=0.76  Web=0.14
+    top gain: ['Weight', 'IAT', 'Min', 'Header_Length', 'Protocol Type', 'psh_flag_number']
+  without IAT                    macro-F1=0.675  Benign=0.88  BruteForce=0.27  DDoS=0.95  DoS=0.73  Mirai=1.00  Recon=0.68  Spoofing=0.73  Web=0.16
+  without IAT, Number, Weight    macro-F1=0.678  Benign=0.87  BruteForce=0.30  DDoS=0.95  DoS=0.73  Mirai=1.00  Recon=0.67  Spoofing=0.73  Web=0.17
+  IAT alone                      macro-F1=0.213  Benign=0.00  BruteForce=0.00  DDoS=0.89  DoS=0.81  Mirai=0.00  Recon=0.00  Spoofing=0.00  Web=0.00

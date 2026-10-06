@@ -1,0 +1,66 @@
+
+=== 1. SCHEMA — 21,552 rows x 39 columns ===
+non-numeric: {'IP_Flags': ['0x02'], 'TCP_Flags': ['AP', 'A'], 'Attack_Cat': ['FDI', 'DOS', 'Benign', 'Replay']}
+constant: ['IP_TTL', 'IP_Flags', 'TCP_SrcPort', 'TCP_HdrLen', 'MQTT_Retain']
+NaN cells: 0
+columns not in NET/PATIENT/BIO: []
+
+=== 2. LABELS ===
+  FDI          5,388  25.00%
+  DOS          5,388  25.00%
+  Benign       5,388  25.00%
+  Replay       5,388  25.00%
+label runs in file order: 16,176 (4 = class blocks; ~n = shuffled)
+
+=== 3. DUPLICATES ===
+exact duplicate rows: 2252
+bio only: 12,415 duplicate vectors; 2,326 vectors shared by >1 class
+network only (no session ids): 9,727 duplicate vectors; 1 vectors shared by >1 class
+
+=== 4. PATIENTS ===
+  FDI      subjects= 42  age mean= 64.7 [36-85]  sex=1: 31.74%  test_time [-4.3, 215.5]
+  DOS      subjects=  2  age mean=  0.0 [0-58]  sex=1: 0.00%  test_time [0.0, 94.8]
+  Benign   subjects= 42  age mean= 64.8 [36-85]  sex=1: 32.00%  test_time [-4.3, 215.5]
+  Replay   subjects=  9  age mean= 70.2 [57-75]  sex=1: 5.57%  test_time [3.9, 183.7]
+subject overlap (Jaccard) between classes:
+  FDI     DOS     0.02  (shared 1)
+  FDI     Benign  1.00  (shared 42)
+  FDI     Replay  0.21  (shared 9)
+  DOS     Benign  0.02  (shared 1)
+  DOS     Replay  0.11  (shared 1)
+  Benign  Replay  0.21  (shared 9)
+subject_id alone -> class (majority per subject): accuracy 69.97%
+age alone -> class (majority per age value): accuracy 66.63%
+
+=== 5. PAYLOAD ===
+DoS rows with an all-zero biomedical payload: 100.0%
+  FDI      payload vector also seen in benign:  30.8%   total_UPDRS < motor_UPDRS:   7.4%
+  DOS      payload vector also seen in benign:   0.0%   total_UPDRS < motor_UPDRS:   0.0%
+  Benign   payload vector also seen in benign: 100.0%   total_UPDRS < motor_UPDRS:   0.0%
+  Replay   payload vector also seen in benign:  88.6%   total_UPDRS < motor_UPDRS:   0.0%
+(subject, test_time) records: 2,495; with >1 motor_UPDRS value: 1,939
+
+=== 6. NETWORK ===
+  FDI      src ports=    1  dst ports=  1  TTL=[np.int64(64)]  Length median=236  IAT median=0.1820  Seq range=[1, 1059467]
+  DOS      src ports=    1  dst ports=  1  TTL=[np.int64(64)]  Length median=11734  IAT median=0.0000  Seq range=[26671, 61893171]
+  Benign   src ports=    1  dst ports=  1  TTL=[np.int64(64)]  Length median=955  IAT median=0.0090  Seq range=[3, 1050775]
+  Replay   src ports=    1  dst ports=  2  TTL=[np.int64(64)]  Length median=234  IAT median=0.0085  Seq range=[1, 491758]
+TCP_SrcPort alone -> class: accuracy 25.00%
+
+=== 7. SHORTCUTS — XGBoost macro/per-class F1 (5 folds) ===
+
+-- folds: stratified
+feature set                                         macro  Benign     DOS     FDI  Replay
+A all features                                      1.000   1.000   1.000   1.000   1.000
+B paper (no subject_id, no src port)                1.000   1.000   1.000   1.000   1.000
+C B minus session ids (seq/ack)                     1.000   1.000   1.000   1.000   1.000
+D C minus patient identity (age/sex/test_time)      1.000   1.000   1.000   1.000   1.000
+
+-- folds: grouped by patient
+feature set                                         macro  Benign     DOS     FDI  Replay
+A all features                                      0.582   1.000   0.000   1.000   0.328
+B paper (no subject_id, no src port)                0.667   1.000   0.000   1.000   0.667
+C B minus session ids (seq/ack)                     0.667   1.000   0.000   1.000   0.666
+D C minus patient identity (age/sex/test_time)      0.667   1.000   0.000   1.000   0.667
+
+(grouped folds: DoS rows carry subject 0 and fall in one fold; the patient-grouped split tests whether detection survives unseen patients)

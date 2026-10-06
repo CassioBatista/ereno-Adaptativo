@@ -1,0 +1,108 @@
+
+=== (i) STRUCTURE ===
+monday     rows=  371,624  fields per line={91: 371624}
+tuesday    rows=  322,078  fields per line={91: 322078}
+wednesday  rows=  496,641  fields per line={91: 496641}
+thursday   rows=  362,076  fields per line={91: 362076}
+friday     rows=  547,557  fields per line={91: 547557}
+same header on all days: True
+total rows=2,099,976; numeric columns=85; NaN=0; inf=10
+  Src IP: IPv4-shaped 100.00%
+  Dst IP: IPv4-shaped 100.00%
+  Src Port: within 0..65535 100.00%
+  Dst Port: within 0..65535 100.00%
+  Protocol values: {6.0: 1098771, 17.0: 999092, 0.0: 1510, 1.0: 603}
+  Timestamp parsed: 100.00%; e.g. 2017-07-03 11:56:34.157427
+
+=== (ii) LABELS ===
+  BENIGN                                       1,582,566  Benign
+  Portscan                                       159,066  PortScan
+  DoS Hulk                                       158,468  DoS
+  DDoS                                            95,144  DDoS
+  Infiltration - Portscan                         71,767  Infiltration-Portscan
+  DoS GoldenEye                                    7,567  DoS
+  Botnet - Attempted                               4,067  Benign
+  FTP-Patator                                      3,972  BruteForce
+  DoS Slowloris                                    3,859  DoS
+  DoS Slowhttptest - Attempted                     3,368  Benign
+  SSH-Patator                                      2,961  BruteForce
+  DoS Slowloris - Attempted                        1,847  Benign
+  DoS Slowhttptest                                 1,740  DoS
+  Web Attack - Brute Force - Attempted             1,292  Benign
+  Botnet                                             736  Bot
+  Web Attack - XSS - Attempted                       655  Benign
+  DoS Hulk - Attempted                               581  Benign
+  DoS GoldenEye - Attempted                           80  Benign
+  Web Attack - Brute Force                            73  Web
+  Infiltration - Attempted                            45  Benign
+  Infiltration                                        36  Infiltration
+  SSH-Patator - Attempted                             27  Benign
+  Web Attack - XSS                                    18  Web
+  Web Attack - SQL Injection                          13  Web
+  FTP-Patator - Attempted                             12  Benign
+  Heartbleed                                          11  Heartbleed
+  Web Attack - SQL Injection - Attempted               5  Benign
+Attempted flows: 11,979; 'Attempted Category' values: {'0': 4845, '1': 4067, '6': 2804, '5': 138, '4': 75, '3': 27, '2': 23}
+exact duplicate rows (all columns): 0
+duplicates without identifiers: 384,764 (18.32%)
+vectors with >1 label: 126 (rows 91,253); top: {'Portscan': 76329, 'Infiltration - Portscan': 14794, 'Botnet - Attempted': 100, 'BENIGN': 15, 'Infiltration - Attempted': 15}
+vectors with >1 category: 111 (rows 91,138); top: {'PortScan': 76329, 'Infiltration-Portscan': 14794, 'Benign': 15}
+
+=== (iii) TIME ===
+monday     2017-07-03 11:55:58.598308 .. 2017-07-03 20:01:34.352593  label runs in file order 1
+tuesday    2017-07-04 11:53:44.398274 .. 2017-07-04 20:00:30.041663  label runs in file order 13,637
+wednesday  2017-07-05 11:42:42.084372 .. 2017-07-05 20:10:14.557249  label runs in file order 30,891
+thursday   2017-07-06 11:59:00.490140 .. 2017-07-06 20:04:36.513760  label runs in file order 99,346
+friday     2017-07-07 11:59:50.315195 .. 2017-07-07 20:02:40.977798  label runs in file order 244,127
+per attack category: time window and share of benign flows inside it (same day)
+  Bot                    days=['friday']  [2017-07-07 13:04:13.990571 .. 2017-07-07 14:02:02.808963]  flows in window=51,480  benign share 98.57%
+  BruteForce             days=['tuesday']  [2017-07-04 12:19:20.152476 .. 2017-07-04 19:04:15.353690]  flows in window=256,254  benign share 97.29%
+  DDoS                   days=['friday']  [2017-07-07 18:56:31.796937 .. 2017-07-07 19:16:10.645771]  flows in window=111,662  benign share 14.79%
+  DoS                    days=['wednesday']  [2017-07-05 12:48:54.539220 .. 2017-07-05 14:19:49.515445]  flows in window=247,814  benign share 30.74%
+  Heartbleed             days=['wednesday']  [2017-07-05 18:12:15.650811 .. 2017-07-05 18:32:18.242051]  flows in window=22,476  benign share 99.95%
+  Infiltration           days=['thursday']  [2017-07-06 17:19:02.547210 .. 2017-07-06 18:44:24.375292]  flows in window=135,555  benign share 48.63%
+  Infiltration-Portscan  days=['thursday']  [2017-07-06 17:00:31.706755 .. 2017-07-06 18:46:04.331747]  flows in window=151,252  benign share 52.53%
+  PortScan               days=['friday']  [2017-07-07 16:55:32.117090 .. 2017-07-07 18:23:53.256235]  flows in window=220,855  benign share 27.98%
+  Web                    days=['thursday']  [2017-07-06 12:19:27.660566 .. 2017-07-06 13:42:50.310628]  flows in window=57,382  benign share 99.82%
+
+=== (iv) ATTRIBUTION ===
+  Benign                 src=   174  top: 192.168.10.3 (18.57%), 192.168.10.5 (9.46%), 192.168.10.9 (8.57%)
+  Bot                    src=     5  top: 192.168.10.15 (29.89%), 192.168.10.9 (20.52%), 192.168.10.14 (18.89%)
+  BruteForce             src=     1  top: 172.16.0.1 (100.00%)
+  DDoS                   src=     1  top: 172.16.0.1 (100.00%)
+  DoS                    src=     1  top: 172.16.0.1 (100.00%)
+  Heartbleed             src=     1  top: 172.16.0.1 (100.00%)
+  Infiltration           src=     2  top: 192.168.10.8 (88.89%), 192.168.10.25 (11.11%)
+  Infiltration-Portscan  src=     2  top: 192.168.10.8 (98.67%), 172.16.0.1 (1.33%)
+  PortScan               src=     1  top: 172.16.0.1 (100.00%)
+  Web                    src=     1  top: 172.16.0.1 (100.00%)
+  Bot                    attack flows whose source also sends benign flows: 100.00%
+  BruteForce             attack flows whose source also sends benign flows: 100.00%
+  DDoS                   attack flows whose source also sends benign flows: 100.00%
+  DoS                    attack flows whose source also sends benign flows: 100.00%
+  Heartbleed             attack flows whose source also sends benign flows: 100.00%
+  Infiltration           attack flows whose source also sends benign flows: 100.00%
+  Infiltration-Portscan  attack flows whose source also sends benign flows: 100.00%
+  PortScan               attack flows whose source also sends benign flows: 100.00%
+  Web                    attack flows whose source also sends benign flows: 100.00%
+source address alone -> category (majority per address): 83.72%
+
+=== (v) PREVALENCE ===
+  monday     benign 100.00% of 371,624
+  tuesday    benign 97.85% of 322,078
+  wednesday  benign 65.44% of 496,641
+  thursday   benign 80.14% of 362,076
+  friday     benign 53.44% of 547,557
+  overall: {'Benign': '75.93%', 'DoS': '8.17%', 'PortScan': '7.57%', 'DDoS': '4.53%', 'Infiltration-Portscan': '3.42%', 'BruteForce': '0.33%', 'Bot': '0.04%', 'Web': '0.00%', 'Infiltration': '0.00%', 'Heartbleed': '0.00%'}
+  monday: {'Benign': 371624}; span 2017-07-03 11:55:58.598308 .. 2017-07-03 20:01:34.352593
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (dedup; all attacks + 400k benign) ===
+-- random 70/30
+  with identifiers (ports, id)             macro-F1=0.992  Benign=1.00  Bot=1.00  BruteForce=1.00  DDoS=1.00  DoS=1.00  Infiltration=0.95  Infiltration-Portscan=1.00  PortScan=0.99  Web=0.98
+  without identifiers                      macro-F1=0.991  Benign=1.00  Bot=1.00  BruteForce=1.00  DDoS=1.00  DoS=1.00  Infiltration=0.95  Infiltration-Portscan=1.00  PortScan=0.99  Web=0.98
+    top gain: ['Bwd Packet Length Std', 'Fwd Packet Length Mean', 'FWD Init Win Bytes', 'Packet Length Mean', 'Subflow Bwd Bytes', 'Down/Up Ratio']
+  without identifiers and Init Win Bytes   macro-F1=0.985  Benign=1.00  Bot=1.00  BruteForce=1.00  DDoS=1.00  DoS=1.00  Infiltration=0.90  Infiltration-Portscan=1.00  PortScan=0.99  Web=0.98
+-- time-ordered 70/30 per category
+  with identifiers (ports, id)             macro-F1=0.944  Benign=0.99  Bot=1.00  BruteForce=1.00  DDoS=1.00  DoS=0.97  Infiltration=1.00  Infiltration-Portscan=0.98  PortScan=0.87  Web=0.69
+  without identifiers                      macro-F1=0.932  Benign=0.99  Bot=0.99  BruteForce=0.99  DDoS=1.00  DoS=0.97  Infiltration=0.88  Infiltration-Portscan=0.99  PortScan=0.86  Web=0.72
+  without identifiers and Init Win Bytes   macro-F1=0.908  Benign=0.98  Bot=0.95  BruteForce=0.99  DDoS=1.00  DoS=0.95  Infiltration=1.00  Infiltration-Portscan=0.99  PortScan=0.62  Web=0.69

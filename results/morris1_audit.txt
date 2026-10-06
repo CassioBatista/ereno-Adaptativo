@@ -1,0 +1,44 @@
+
+=== (i) STRUCTURE — 15 files (binary set; 15 sets x 37 scenarios, 1% random sample) ===
+  data1.csv    rows= 4,966 fields per line={129: 4966}
+  data2.csv    rows= 5,069 fields per line={129: 5069}
+  data3.csv    rows= 5,415 fields per line={129: 5415}
+  data4.csv    rows= 5,202 fields per line={129: 5202}
+  data5.csv    rows= 5,161 fields per line={129: 5161}
+  data6.csv    rows= 4,967 fields per line={129: 4967}
+  data7.csv    rows= 5,236 fields per line={129: 5236}
+  data8.csv    rows= 5,315 fields per line={129: 5315}
+  data9.csv    rows= 5,340 fields per line={129: 5340}
+  data10.csv   rows= 5,569 fields per line={129: 5569}
+  data11.csv   rows= 5,251 fields per line={129: 5251}
+  data12.csv   rows= 5,224 fields per line={129: 5224}
+  data13.csv   rows= 5,271 fields per line={129: 5271}
+  data14.csv   rows= 5,115 fields per line={129: 5115}
+  data15.csv   rows= 5,276 fields per line={129: 5276}
+same header in all files: True
+rows=78,377 features=128 NaN=0 inf=10906 (columns with inf: ['R1-PA:Z', 'R2-PA:Z', 'R3-PA:Z', 'R4-PA:Z'])
+PMU columns=116 (magnitudes/angles of four relays); log columns=['control_panel_log1', 'control_panel_log2', 'control_panel_log3', 'control_panel_log4', 'relay1_log', 'relay2_log', 'relay3_log', 'relay4_log', 'snort_log1', 'snort_log2', 'snort_log3', 'snort_log4']
+
+=== (ii) LABELS ===
+marker: {'Attack': 55663, 'Natural': 22714}
+feature duplicates: 9 (0.01%)
+vectors with >1 label: 0
+
+=== (iii) TIME ===
+no timestamp column; the release states that each set is a 1% random sample of the scenario recordings, so the time order of the measurements is not available
+label runs in file order (set 1): 5 of 4966
+
+=== (iv) ATTRIBUTION ===
+no address columns; relay and Snort logs are per-relay flags: {'control_panel_log1': 3, 'control_panel_log2': 3, 'control_panel_log3': 2, 'control_panel_log4': 2, 'relay1_log': 2815, 'relay2_log': 2072, 'relay3_log': 2077, 'relay4_log': 2790, 'snort_log1': 4, 'snort_log2': 4, 'snort_log3': 7, 'snort_log4': 6}
+
+=== (v) PREVALENCE ===
+  Attack      55,663  71.02%
+  Natural     22,714  28.98%
+
+=== (vi) SHORTCUT PROBE (binary marker) ===
+  [PMU + logs] random 70/30                               macro-F1=0.774  Attack=0.89  Natural=0.66
+  [PMU + logs] independent groups (10 train / 5 test)     macro-F1=0.598  Attack=0.81  Natural=0.38
+  [PMU only (physical)] random 70/30                               macro-F1=0.769  Attack=0.89  Natural=0.65
+  [PMU only (physical)] independent groups (10 train / 5 test)     macro-F1=0.595  Attack=0.81  Natural=0.38
+  [logs only] random 70/30                               macro-F1=0.478  Attack=0.83  Natural=0.13
+  [logs only] independent groups (10 train / 5 test)     macro-F1=0.483  Attack=0.83  Natural=0.13
