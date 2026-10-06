@@ -45,7 +45,7 @@
     "warnings": {
       "type": "array",
       "items": {"type": "string"},
-      "description": "Accepted, but with a consequence the commander should know. Two are expected in practice: isolating a node does NOT stop its traffic (removing it from the federation leaves its GOOSE/SV publication untouched, so containment remains a network action); and isolating the last holder of a specialist narrows what the pool can type, even though recall holds."
+      "description": "Accepted, but with a consequence the commander should know. Two are expected in practice: isolating a node does NOT stop its traffic (removing it from the federation leaves whatever it emits on the monitored network untouched, so containment remains a network action); and isolating the last holder of a specialist narrows what the pool can type, even though recall holds."
     },
     "error": {
       "type": ["object", "null"],
@@ -84,7 +84,7 @@
       "effective_round": 9,
       "event_seq": 10,
       "warnings": [
-        "node 11 remains able to publish GOOSE/SV: IDS-level isolation does not block traffic"
+        "node 11 remains able to emit traffic: IDS-level isolation does not block it"
       ],
       "state": {"mode": "federated", "round": 8, "n_active": 13, "isolated_nodes": [11], "authority_epoch": 3}
     },

@@ -15,6 +15,10 @@ cadence:
   local: {period_s: 1.0}     # node-local Disaster-FD tick: detect_lag, watchdog, event window
   federated: {every: 5}      # regional Disaster-FD ticks 5x slower than the local one
 traffic_time: frame
+profile:                     # domain binding (docs/PROFILES.md)
+  name: iec61850-goose-sv
+  label_set: ereno-7
+  attribution: protocol_source
 nodes: 14
 fusion_k: 2
 

@@ -87,6 +87,10 @@ def load_scenario(path):
     cad.setdefault("federated", {}).setdefault("every", 1)
     sc["window_seconds"] = loc.get("period_s")      # None for a count-based tick
     sc.setdefault("traffic_time", "frame")
+    prof = sc.setdefault("profile", {})
+    prof.setdefault("name", "iec61850-goose-sv")
+    prof.setdefault("label_set", "ereno-7")
+    prof.setdefault("attribution", "protocol_source")
     return sc
 
 
@@ -166,6 +170,7 @@ def main():
                "benign_cap": B["benign_cap"], "fusion_k": sc["fusion_k"]},
             stream={"selector": sc["stream"], "window_seconds": sc["window_seconds"],
                     "cadence": sc["cadence"], "traffic_time": sc["traffic_time"],
+                    "profile": sc["profile"],
                     "windows": nwin, "sim_epoch": sc["sim_epoch"],
                     "timing": sc["timing"]},
             output={**file_ref(out), "events": sum(types.values()), "types": dict(types)})
@@ -211,7 +216,9 @@ def gen(sc, ts, fired, y, nc, cv, spec_attack, t0):
 
     fail = {s["round"]: s["node"] for s in sc["schedule"] if s["event"] == "node_failure"}
     back = {s["round"]: s["node"] for s in sc["schedule"] if s["event"] == "node_recovery"}
-    attr = {k: v for k, v in (sc.get("attribution") or {}).items()}
+    # attribution exists only if the profile has a source for it
+    attr = ({} if sc["profile"]["attribution"] == "none"
+            else {k: v for k, v in (sc.get("attribution") or {}).items()})
     isol_cfg = sc.get("isolation") or {}
 
     evs, seq, active, retained = [], 0, set(range(N)), set(range(N))

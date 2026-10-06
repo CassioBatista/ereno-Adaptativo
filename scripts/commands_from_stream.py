@@ -83,8 +83,8 @@ def main():
             }
             warn = []
             if verb == "isolate_node":
-                warn.append(f"node {params['node']} remains able to publish GOOSE/SV: "
-                            "IDS-level isolation does not block traffic")
+                warn.append(f"node {params['node']} remains able to emit traffic: "
+                            "IDS-level isolation does not block it")
             res = {
                 "command_id": cmd["command_id"],
                 "cmd_seq": cmd_seq,

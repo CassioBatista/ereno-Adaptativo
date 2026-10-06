@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-10-02T11:24:53+00:00",
+  "generated_at": "2026-10-02T12:26:10+00:00",
   "scenario": {
     "file": "conf/scenarios/fd_watchdog.yaml",
-    "bytes": 2182,
-    "sha256": "be3758e162a1b582e304f15ab36d322a10e3f9eafc6ee7f8fbe8e7dc539c4a7f",
+    "bytes": 2325,
+    "sha256": "1c49d6f97781c3a06b445060c911ab501d6ea28dab693bd3c638996299ead85b",
     "name": "fd_watchdog"
   },
   "generator": {
     "file": "scripts/scenario_events.py",
-    "bytes": 20555,
-    "sha256": "6496acfcd43a3b30681eb1f986f6677a07303aa3136a26be80b3d42144186d05",
+    "bytes": 20940,
+    "sha256": "ad88550e6d422a54bb9c3d2732755b9a11a9f87eca301ac024b382cab3261d8e",
     "git": {
-      "commit": "924c825",
+      "commit": "1f42cd6",
       "dirty": true,
       "note": "working tree has uncommitted changes — the commit alone does NOT identify this generator"
     }
@@ -19,15 +19,15 @@
   "schemas": {
     "event": {
       "file": "schemas/event.schema.json",
-      "bytes": 11779,
-      "sha256": "69380ca95a2e8213775308490f8b66561b67284c49cde8f82f9d057039aca672"
+      "bytes": 12440,
+      "sha256": "12866507fa2b0f1913d12ca1ce703db961f271adf7155597e16311ac5cfaaaec"
     },
     "scenario": {
       "file": "schemas/scenario.schema.json",
-      "bytes": 10663,
-      "sha256": "97bf2d00f648c1c846b8909c3d417fb578011d9284adc8ac87b48f5e162ac478"
+      "bytes": 11972,
+      "sha256": "3c9cfe6a7c15b9ae73d6a9f525fa9abbc69a58236c36c61ddcba065988706ffb"
     },
-    "api_version": "1.5.0"
+    "api_version": "1.7.0"
   },
   "inputs": {
     "train": {
@@ -95,6 +95,11 @@
       }
     },
     "traffic_time": "frame",
+    "profile": {
+      "name": "iec61850-goose-sv",
+      "label_set": "ereno-7",
+      "attribution": "protocol_source"
+    },
     "windows": 724,
     "sim_epoch": "2026-01-01T00:00:00Z",
     "timing": {

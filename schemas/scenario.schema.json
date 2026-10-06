@@ -67,6 +67,20 @@
         }
       }
     },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Domain profile (docs/PROFILES.md): what the domain-neutral core leaves abstract. Recorded in the provenance manifest and reported by /status, so a consumer knows which vocabulary the events speak.",
+      "properties": {
+        "name": {"type": "string", "default": "iec61850-goose-sv",
+                 "description": "Profile id, e.g. iec61850-goose-sv, iot-flow, it-flow."},
+        "label_set": {"type": "string", "default": "ereno-7",
+                      "description": "Identifier of the label set the `attack` field draws from."},
+        "attribution": {"type": "string", "enum": ["protocol_source", "device_address", "none"],
+                        "default": "protocol_source",
+                        "description": "Where source_node comes from: the protocol's publisher identity (e.g. GOOSE/SV APPID, gocbRef, MAC), a device address, or nowhere -- in which case source_node is always null."}
+      }
+    },
     "traffic_time": {
       "type": "string",
       "enum": ["frame", "none"],
@@ -241,7 +255,7 @@
     "sim_epoch": {
       "type": "string",
       "format": "date-time",
-      "description": "UTC anchor for the relative simulation time. SYNTHETIC: in deployment window_start/window_end come from the GOOSE/SV frame timestamps."
+      "description": "UTC anchor for the relative simulation time. SYNTHETIC: in deployment the tick instants (window_start/window_end) come from Disaster-FD's clock, and traffic_time_start/end from the traffic itself where the profile has timestamps."
     }
   }
 }
