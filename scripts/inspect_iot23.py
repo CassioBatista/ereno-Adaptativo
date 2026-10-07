@@ -58,7 +58,11 @@ def category(d):
 
 
 def capture(path):
-    return path.split(os.sep)[-3]
+    """Directory named CTU-... (the honeypot captures add a device level: .../CTU-Honeypot-
+    Capture-7-1/Somfy-01/bro/conn.log.labeled)."""
+    parts = path.split(os.sep)
+    i = max(k for k, p in enumerate(parts) if p.startswith("CTU-"))
+    return "-".join(parts[i:-2])
 
 
 def scan(path):
@@ -111,8 +115,15 @@ def pct(a, b):
     return f"{100 * a / b:.2f}%" if b else "n/a"
 
 
+def cap_key(cap):
+    """CTU-IoT-Malware-Capture-34-1 -> (0, 34, 1); CTU-Honeypot-Capture-7-1-Somfy-01 -> (1, 7, 1)."""
+    import re
+    m = re.search(r"Capture-(\d+)-(\d+)", cap)
+    return ("Honeypot" in cap, int(m.group(1)), int(m.group(2))) if m else (True, 10**6, 0)
+
+
 def main(d, res):
-    res.sort(key=lambda r: int(r["cap"].split("-")[-2]) + (1000 if "Honeypot" in r["cap"] else 0))
+    res.sort(key=lambda r: cap_key(r["cap"]))
     section(f"(i) STRUCTURE — {len(res)} captures")
     heads = Counter(tuple(r["head"][6:7]) for r in res)
     print("identical #fields header:", len(heads) == 1)
@@ -267,9 +278,24 @@ if __name__ == "__main__":
     d = os.path.expanduser(sys.argv[1] if len(sys.argv) > 1 else "~/datasets/iot23")
     os.chdir(os.path.expanduser("~/ereno-Adaptativo"))
     files = sorted(glob.glob(os.path.join(d, "**", "bro", "conn.log.labeled"), recursive=True))
+    # the scan takes hours: each capture's result is cached, so a failure in the analysis
+    # below (or an interrupted run) never repeats it
+    import pickle
+    cache = os.path.expanduser("~/datasets/iot23/scan_cache")
+    os.makedirs(cache, exist_ok=True)
+    res, todo = [], []
+    for f in files:
+        c = os.path.join(cache, capture(f) + ".pkl")
+        if os.path.exists(c):
+            res.append(pickle.load(open(c, "rb")))
+        else:
+            todo.append(f)
+    print(f"cached captures: {len(res)}; to scan: {len(todo)}", file=sys.stderr, flush=True)
     with Pool(int(os.environ.get("IOT23_PROCS", 2))) as pool:
-        res = []
-        for r in pool.imap_unordered(scan, sorted(files, key=os.path.getsize, reverse=True)):
+        for r in pool.imap_unordered(scan, sorted(todo, key=os.path.getsize, reverse=True)):
+            r["groups"] = {k: {kk: (dict(vv) if isinstance(vv, Counter) else vv) for kk, vv in v.items()}
+                           for k, v in r["groups"].items()}
+            pickle.dump(r, open(os.path.join(cache, r["cap"] + ".pkl"), "wb"))
             print(f"scanned {r['cap']}", file=sys.stderr, flush=True)
             res.append(r)
     buf = io.StringIO()
