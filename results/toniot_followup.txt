@@ -1,0 +1,20 @@
+Network_dataset_6.csv: 47 columns; not in file 1: ['uid']; first columns ['ts', 'uid', 'src_ip']
+
+flows involving 192.168.1.30-39 (source or destination):
+  normal         0.01%  of 796,380
+  scanning     100.00%  of 7,140,161
+  dos          100.00%  of 3,375,328
+  injection    100.00%  of 452,659
+  ddos         100.00%  of 6,165,008
+  password     100.00%  of 1,718,568
+  xss          100.00%  of 2,108,944
+  ransomware   100.00%  of 72,805
+  backdoor     100.00%  of 508,116
+  mitm         100.00%  of 1,052
+
+normal flows sharing a vector with an attack type: 163,027 (20.5% of normal)
+  their connection states: {'OTH': 116352, 'S0': 25937, 'SH': 18705, 'RSTOS0': 868, 'REJ': 747, 'SHR': 270}
+  involving the attacker range: 0.0%
+  attack types sharing those vectors (distinct vectors): {'ddos': 378, 'password': 358, 'scanning': 297, 'ransomware': 227, 'backdoor': 115, 'injection': 95, 'xss': 63, 'dos': 16}
+
+attack flows NOT involving the attacker range: 0 (0.00% of attack flows)

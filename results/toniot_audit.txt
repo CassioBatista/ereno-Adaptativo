@@ -1,0 +1,182 @@
+
+=== (i) STRUCTURE — 23 files ===
+  Network_dataset_1.csv    rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_2.csv    rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_3.csv    rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_4.csv    rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_5.csv    rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_6.csv    rows=1,000,000  fields/line=['47:1000000']
+  Network_dataset_7.csv    rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_8.csv    rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_9.csv    rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_10.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_11.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_12.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_13.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_14.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_15.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_16.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_17.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_18.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_19.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_20.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_21.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_22.csv   rows=1,000,000  fields/line=['46:1000000']
+  Network_dataset_23.csv   rows=  339,021  fields/line=['46:339021']
+identical header in all files: False
+total rows=22,339,021
+  ts: epoch seconds, non-numeric 0 ; range 2019-04-02 09:45:58 .. 2019-04-29 14:45:56
+  src_port: within 0..65535 100.00%
+  dst_port: within 0..65535 100.00%
+  src_ip: IPv4-shaped 99.91%; distinct 23,414
+  dst_ip: IPv4-shaped 99.91%; distinct 6,523
+  duration                 unset=0 min=0 max=93516.9
+  src_bytes                unset=869 min=0 max=4.23525e+09
+  dst_bytes                unset=0 min=0 max=6.17267e+09
+  missed_bytes             unset=0 min=0 max=5.17297e+09
+  src_pkts                 unset=0 min=0 max=2.57018e+06
+  src_ip_bytes             unset=0 min=0 max=1.05348e+09
+  dst_pkts                 unset=0 min=0 max=3.23886e+06
+  dst_ip_bytes             unset=0 min=0 max=1.75199e+08
+  dns_qclass               unset=0 min=0 max=32769
+  dns_qtype                unset=0 min=0 max=27136
+  dns_rcode                unset=0 min=0 max=5
+  http_trans_depth         unset=22,314,692 min=1 max=10
+  http_request_body_len    unset=0 min=0 max=2338
+  http_response_body_len   unset=0 min=0 max=1.34244e+07
+  http_status_code         unset=0 min=0 max=404
+  service: {'-': 16909396, 'http': 3440744, 'dns': 1571563, 'ssl': 380012, 'ftp': 15038, 'smtp;ssl': 7245, 'ssl;smtp': 6747, 'imap;ssl': 6031}
+  conn_state: {'REJ': 5833284, 'SF': 5033733, 'S0': 4945894, 'S3': 2465176, 'S1': 2123296, 'OTH': 738263, 'SHR': 521960, 'RSTOS0': 337239}
+  proto: {'tcp': 20636782, 'udp': 1683320, 'icmp': 18919}
+
+=== (ii) LABELS ===
+label x type:
+label            0        1
+type                       
+normal      796380        0
+scanning         0  7140161
+dos              0  3375328
+injection        0   452659
+ddos             0  6165008
+password         0  1718568
+xss              0  2108944
+backdoor         0   508116
+ransomware       0    72805
+mitm             0     1052
+
+flows involving the tagged attacker range 192.168.159.30-39:
+  normal       source or destination    0.00%   as source    0.00%
+  scanning     source or destination    0.00%   as source    0.00%
+  dos          source or destination    0.00%   as source    0.00%
+  injection    source or destination    0.00%   as source    0.00%
+  ddos         source or destination    0.00%   as source    0.00%
+  password     source or destination    0.00%   as source    0.00%
+  xss          source or destination    0.00%   as source    0.00%
+  backdoor     source or destination    0.00%   as source    0.00%
+  ransomware   source or destination    0.00%   as source    0.00%
+  mitm         source or destination    0.00%   as source    0.00%
+
+exact duplicate rows: 1,791,969
+duplicates without identifiers and session strings: 16,076,928 (71.97%)
+vectors with >1 type: 33,709 (rows 11,378,216, 50.93%); types involved: {'scanning': 5679326, 'dos': 3210013, 'ddos': 1307769, 'backdoor': 506842, 'xss': 238259, 'password': 191181, 'normal': 163027, 'ransomware': 69259, 'injection': 12493, 'mitm': 47}
+
+behaviour per type:
+  normal       proto: tcp 57.30%, udp 41.06% | state: OTH 34.71%, S0 32.29%, SF 22.10% | service: - 64.26%, dns 27.57% | dst port: 53 24.37%, 80 7.67%, 15600 6.45%
+  scanning     proto: tcp 99.67%, udp 0.25% | state: S0 62.06%, REJ 25.98%, RSTOS0 4.59% | service: - 98.61%, ssl 0.46% | dst port: 443 6.12%, 80 5.11%, 22 0.35%
+  dos          proto: tcp 97.43%, udp 2.57% | state: REJ 95.39%, SF 2.58%, S0 1.89% | service: - 97.42%, dns 2.57% | dst port: 53 2.58%, 443 0.03%, 80 0.02%
+  injection    proto: tcp 97.14%, udp 2.86% | state: SF 80.90%, RSTO 8.65%, S2 3.09% | service: http 75.06%, - 12.03% | dst port: 80 86.36%, 443 10.64%, 53 2.85%
+  ddos         proto: tcp 89.78%, udp 10.22% | state: S3 39.23%, S1 33.58%, SF 14.95% | service: - 79.48%, dns 10.22% | dst port: 443 51.78%, 80 35.59%, 53 10.22%
+  password     proto: tcp 99.82%, udp 0.18% | state: SF 86.10%, S0 6.88%, REJ 5.79% | service: http 73.50%, - 25.45% | dst port: 80 88.93%, 21 10.87%, 53 0.18%
+  xss          proto: tcp 71.32%, udp 28.68% | state: SF 94.40%, S3 1.47%, S1 1.21% | service: http 66.74%, dns 28.67% | dst port: 80 71.29%, 53 28.67%, 443 0.03%
+  backdoor     proto: tcp 99.98%, udp 0.02% | state: REJ 99.94%, SF 0.03%, RSTR 0.02% | service: - 99.97%, smb 0.02% | dst port: 8080 59.16%, 80 40.78%, 445 0.02%
+  ransomware   proto: tcp 99.65%, udp 0.20% | state: OTH 89.04%, S0 3.87%, SH 3.46% | service: - 99.07%, gssapi 0.44% | dst port: 445 47.39%, 4444 9.62%, 49158 5.60%
+  mitm         proto: udp 54.09%, tcp 40.40% | state: SF 86.31%, OTH 5.61%, RSTR 3.33% | service: dns 52.47%, ssl 28.71% | dst port: 53 52.47%, 443 34.22%, 80 6.08%
+
+unique vectors per type: {'ddos': 2670399, 'xss': 1558905, 'password': 759939, 'injection': 443840, 'scanning': 432937, 'normal': 300555, 'dos': 93208, 'backdoor': 1144, 'mitm': 994, 'ransomware': 172}
+
+=== (iii) TIME ===
+                          from                  to    count
+type                                                       
+normal     2019-04-02 09:45:58 2019-04-29 14:45:56   796380
+scanning   2019-04-23 12:10:10 2019-04-24 09:22:45  7140161
+dos        2019-04-24 18:13:42 2019-04-25 02:50:21  3375328
+injection  2019-04-25 05:49:20 2019-04-25 10:14:19   452659
+ddos       2019-04-25 14:48:47 2019-04-26 07:33:32  6165008
+password   2019-04-26 13:45:48 2019-04-27 03:47:45  1718568
+xss        2019-04-27 04:54:22 2019-04-27 12:40:53  2108944
+backdoor   2019-04-28 07:29:59 2019-04-29 09:45:33   508116
+ransomware 2019-04-28 03:49:50 2019-04-28 06:05:25    72805
+mitm       2019-04-29 12:20:42 2019-04-29 14:45:29     1052
+  scanning     normal flows inside its span: 48,372 (share 0.67%); within 60 s of one of its flows: 48,369
+  dos          normal flows inside its span: 102,012 (share 2.93%); within 60 s of one of its flows: 102,012
+  injection    normal flows inside its span: 24,407 (share 5.12%); within 60 s of one of its flows: 24,402
+  ddos         normal flows inside its span: 90,365 (share 1.44%); within 60 s of one of its flows: 90,365
+  password     normal flows inside its span: 35,481 (share 2.02%); within 60 s of one of its flows: 36,879
+  xss          normal flows inside its span: 31,657 (share 1.48%); within 60 s of one of its flows: 31,657
+  backdoor     normal flows inside its span: 41,716 (share 7.59%); within 60 s of one of its flows: 40,806
+  ransomware   normal flows inside its span: 198,943 (share 73.21%); within 60 s of one of its flows: 182,253
+  mitm         normal flows inside its span: 18,657 (share 94.66%); within 60 s of one of its flows: 17,000
+
+types per file (% of rows):
+type   normal  scanning   dos  injection  ddos  password   xss  backdoor  ransomware  mitm
+_file                                                                                     
+1        20.9      79.1   0.0        0.0   0.0       0.0   0.0       0.0         0.0   0.0
+2         0.6      99.4   0.0        0.0   0.0       0.0   0.0       0.0         0.0   0.0
+3         0.3      99.7   0.0        0.0   0.0       0.0   0.0       0.0         0.0   0.0
+4         0.6      99.4   0.0        0.0   0.0       0.0   0.0       0.0         0.0   0.0
+5         0.4      99.6   0.0        0.0   0.0       0.0   0.0       0.0         0.0   0.0
+6         1.3      98.7   0.0        0.0   0.0       0.0   0.0       0.0         0.0   0.0
+7         0.7      99.3   0.0        0.0   0.0       0.0   0.0       0.0         0.0   0.0
+8         2.1      38.8  59.0        0.0   0.0       0.0   0.0       0.0         0.0   0.0
+9         2.5       0.0  97.5        0.0   0.0       0.0   0.0       0.0         0.0   0.0
+10        3.0       0.0  97.0        0.0   0.0       0.0   0.0       0.0         0.0   0.0
+11        3.5       0.0  84.0       12.5   0.0       0.0   0.0       0.0         0.0   0.0
+12        3.3       0.0   0.0       32.7  64.0       0.0   0.0       0.0         0.0   0.0
+13        0.1       0.0   0.0        0.0  99.9       0.0   0.0       0.0         0.0   0.0
+14        0.1       0.0   0.0        0.0  99.9       0.0   0.0       0.0         0.0   0.0
+15        0.1       0.0   0.0        0.0  99.9       0.0   0.0       0.0         0.0   0.0
+16        0.2       0.0   0.0        0.0  99.8       0.0   0.0       0.0         0.0   0.0
+17        3.4       0.0   0.0        0.0  96.6       0.0   0.0       0.0         0.0   0.0
+18        4.9       0.0   0.0        0.0  56.3      38.7   0.0       0.0         0.0   0.0
+19        1.3       0.0   0.0        0.0   0.0      98.7   0.0       0.0         0.0   0.0
+20        2.1       0.0   0.0        0.0   0.0      34.4  63.5       0.0         0.0   0.0
+21        1.4       0.0   0.0        0.0   0.0       0.0  98.6       0.0         0.0   0.0
+22       23.5       0.0   0.0        0.0   0.0       0.0  48.9      20.4         7.3   0.0
+23        9.9       0.0   0.0        0.0   0.0       0.0   0.0      89.8         0.0   0.3
+files in time order: True
+
+=== (iv) ATTRIBUTION ===
+  normal       src= 23,360 dst=  6,080  top src: 192.168.1.195 (20.13%), 192.168.1.190 (19.79%), 192.168.1.152 (17.19%)
+  scanning     src=     64 dst=    292  top src: 192.168.1.32 (47.30%), 192.168.1.31 (28.20%), 192.168.1.30 (19.91%)
+  dos          src=      7 dst=    128  top src: 192.168.1.30 (97.22%), 192.168.1.39 (1.50%), 192.168.1.31 (1.27%)
+  injection    src=     10 dst=     46  top src: 192.168.1.36 (36.78%), 192.168.1.33 (27.95%), 192.168.1.30 (12.47%)
+  ddos         src=     13 dst=     49  top src: 192.168.1.31 (41.40%), 192.168.1.30 (38.83%), 192.168.1.38 (15.44%)
+  password     src=      7 dst=     68  top src: 192.168.1.32 (63.21%), 192.168.1.33 (19.33%), 192.168.1.30 (5.91%)
+  xss          src=      6 dst=     56  top src: 192.168.1.35 (47.04%), 192.168.1.39 (37.99%), 192.168.1.32 (8.60%)
+  backdoor     src=      4 dst=     11  top src: 192.168.1.193 (99.95%), 192.168.1.33 (0.03%), 192.168.1.37 (0.02%)
+  ransomware   src=      5 dst=      6  top src: 192.168.1.33 (50.36%), 192.168.1.37 (33.20%), 192.168.1.193 (16.43%)
+  mitm         src=      6 dst=    121  top src: 192.168.1.34 (50.67%), 192.168.1.31 (48.48%), 192.168.1.1 (0.38%)
+source address alone -> type (majority per address): 63.13%
+
+=== (v) PREVALENCE ===
+  scanning       7,140,161  31.96%
+  ddos           6,165,008  27.60%
+  dos            3,375,328  15.11%
+  xss            2,108,944  9.44%
+  password       1,718,568  7.69%
+  normal           796,380  3.56%
+  backdoor         508,116  2.27%
+  injection        452,659  2.03%
+  ransomware        72,805  0.33%
+  mitm               1,052  0.00%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 over types (dedup; <= 100k rows per type) ===
+-- random 70/30
+  with identifiers and session strings       macro-F1=0.996  backdoor=0.99  ddos=1.00  dos=1.00  injection=1.00  mitm=0.98  normal=1.00  password=1.00  ransomware=0.99  scanning=1.00  xss=1.00
+  with session strings, no identifiers       macro-F1=0.796  backdoor=0.26  ddos=0.99  dos=0.99  injection=0.99  mitm=0.64  normal=0.99  password=0.99  ransomware=0.14  scanning=0.98  xss=0.99
+  without identifiers and session strings    macro-F1=0.796  backdoor=0.29  ddos=0.99  dos=0.98  injection=0.99  mitm=0.60  normal=0.99  password=0.99  ransomware=0.16  scanning=0.98  xss=0.99
+    top gain: ['duration', 'dst_ip_bytes', 'dst_bytes', 'src_ip_bytes', 'dns_RA', 'proto']
+-- time-ordered 70/30 per type
+  with identifiers and session strings       macro-F1=0.438  backdoor=0.19  ddos=0.59  dos=0.11  injection=0.89  mitm=0.09  normal=0.32  password=0.93  ransomware=0.00  scanning=0.37  xss=0.89
+  with session strings, no identifiers       macro-F1=0.737  backdoor=0.05  ddos=0.99  dos=0.99  injection=0.98  mitm=0.42  normal=0.95  password=0.99  ransomware=0.05  scanning=0.96  xss=0.99
+  without identifiers and session strings    macro-F1=0.735  backdoor=0.05  ddos=0.97  dos=0.99  injection=0.98  mitm=0.42  normal=0.94  password=0.99  ransomware=0.05  scanning=0.97  xss=0.99
