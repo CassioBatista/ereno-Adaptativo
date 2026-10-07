@@ -1,7 +1,15 @@
 % Paper 2 (ReSIDS v2) -- abstract, keywords and highlights for Engineering Applications
 % of Artificial Intelligence (EAAI). Impersonal style.
-% EAAI limits: abstract <= 250 words (this one: 250); 1-6 keywords; 3-5 highlights of
+% EAAI limits: abstract <= 250 words (this one: 248); 1-6 keywords; 3-5 highlights of
 % <= 85 characters.
+% 2026-10-07: three domains. Electra Modbus (label set electra-4): GL k>=2 F1 99.97%,
+% recall 99.94%, 0 FP on the test period (scripts/cross_domain_electra.py); FL k>=2 with
+% 3 nodes 42.8%, response modification 0% ("FL alone loses whole attack categories":
+% Electra RESPONSE 0% at 4 and 3 nodes; CICIDS2017-C FL k>=2 <= 7 nodes recall 15.9%;
+% ERENO exp4, only 2 of 7 attacks survive at 3 nodes). Windows: Electra 1-s windows 88.7%,
+% 0 false alarms (scripts/_electra_window_triage.py); "up to 0.17%" = CICIDS2017-C.
+% Electra caveat for the body: 0 FP holds for the test period; a 7-min process transient in
+% the training period made the response specialists flag 0.36% of normal packets.
 % CICIDS2017-C detection: GL retained union, k >= 2, all 80 features (GRASP selection still
 % running; update if it changes the figures). docs/RESULTADOS_cicids2017c.md,
 % results/cross_domain_cicids2017c.txt.
@@ -33,19 +41,19 @@ enlarges the attack surface, calling for adaptive distributed intrusion detectio
 keeps working while its own nodes fail. Federated learning (FL) has been widely adopted
 to train intrusion detectors, coordinating a shared model
 through a server; gossip learning (GL), far less explored, lets peers exchange models
-directly, without a server. This research presents ReSIDS, which combines both: it fuses
+directly. This research presents ReSIDS, which combines both: it fuses
 per-attack gradient-boosted specialists by k-of-n voting and switches between FL and GL
 at runtime. A federated failure detector monitors the nodes and commands each switch:
 the system moves to GL when nodes fail and returns to FL once they recover. Applying it
 to another network requires only retraining the specialists. Because
 attacks are rare in real traffic, individual alerts are dominated by false alarms;
 ReSIDS therefore counts them per window, network-wide and per specialist: a slow attack accumulates
-in its own specialist, whereas false alarms spread. On
-public IEC 61850 substation traffic (ERENO), detection is unchanged as membership
-shrinks from 14 to 3 nodes (F1-score 95.98\%), and windowed alarms flag 99.3\% of attack
-windows at a 0.14\% false-alarm rate. On enterprise traffic (corrected CICIDS2017),
-detection is likewise unchanged (F1-score 98.87\%), with 73.5\% of attack windows
-flagged at a 0.17\% false-alarm rate.
+in its own specialist, whereas false alarms spread. On three public datasets, IEC 61850
+substation traffic (ERENO), enterprise traffic (corrected CICIDS2017) and
+railway-substation Modbus traffic (Electra), detection is unchanged as membership shrinks
+to 3 nodes (F1-score 95.98\%, 98.87\% and 99.97\%), while FL alone loses whole attack
+categories, and windowed alarms flag 99.3\%, 73.5\% and 88.7\% of attack windows at
+false-alarm rates up to 0.17\%.
 Runtime switching makes the learning topology an operational choice rather than a
 design-time commitment.
 \end{abstract}
@@ -60,4 +68,4 @@ intrusion detection \sep federated learning \sep gossip learning \sep failure de
 %  - A federated failure detector commands every switch; agents act alone as fallback (80)
 %  - Detection is unchanged as the training membership shrinks from 14 to 3 nodes (76)
 %  - Per-specialist window triage: 99.3% of attack windows at a 0.14% false-alarm rate (81)
-%  - Domain profiles reuse one architecture for substation and enterprise traffic (76)
+%  - Domain profiles reuse one architecture for substation, enterprise and railway traffic (85)

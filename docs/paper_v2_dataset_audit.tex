@@ -17,6 +17,14 @@
 %   scripts/inspect_cps_survey4.py    -> results/{morris1,hai2007,westermo,powerduck}_audit.txt
 %                                        (+ results/cps_survey4_followup.txt)
 %   scripts/inspect_hai2305.py        -> results/hai2305_audit.txt (SHA-256 checked against GitHub LFS)
+%   scripts/inspect_electra.py        -> results/electra_audit.txt (perception.inf.um.es,
+%                                        results/electra_md5sums.txt); protocol:
+%                                        scripts/cross_domain_electra.py -> results/cross_domain_electra.txt
+%   scripts/inspect_morris_ics.py     -> results/morris_ics_audit.txt (Web Archive copies,
+%                                        results/morris_ics_md5sums.txt); protocol on Morris-4:
+%                                        scripts/cross_domain_morris4.py -> results/cross_domain_morris4.txt
+%   scripts/inspect_toniot.py         -> results/toniot_audit.txt (+ inspect_toniot_followup.py ->
+%                                        results/toniot_followup.txt; Kaggle mirror, results/toniot_md5sums.txt)
 
 \subsection{Dataset audit}
 \label{sec:dataset-audit}
@@ -31,10 +39,15 @@ system and two industrial control system datasets. The last four were shortliste
 recent survey of CPS intrusion datasets~\cite{quincozes2025cpsdatasets}, whose other
 smart-grid and ICS entries were excluded on their published description: EPIC has no
 per-sample labels, Biswas et al.\ and ICS-ADD are unlabelled packet captures, the Sahu
-dataset is not public, and ICS-Flow and Electra carry no physical data. Before use, each of
-the ten was audited with the same protocol, and none could be retained. The datasets used
-in the evaluation, ERENO and the corrected CICIDS2017, went through the same protocol, as
-did CICIoT2023, first selected as the IoT domain and rejected by it.
+dataset is not public, and ICS-Flow carries no physical data. Before use, each of
+the ten was audited with the same protocol, and none could be retained. Three more datasets
+from the survey's own experiments, the Mississippi State gas-pipeline and water-tank sets
+(Morris-2, Morris-3 and Morris-4), were audited later and rejected too. The datasets used
+in the evaluation, ERENO, the corrected CICIDS2017 and Electra, went through the same
+protocol, as did CICIoT2023, first selected as the IoT domain and rejected by it, and
+ToN\_IoT, audited to replace it and rejected as well. Electra had first been set aside on
+the survey's description because it carries no physical data; it was audited once the
+framing of this work no longer required physical data.
 Table~\ref{tab:dataset-audit} summarises the outcome; the scripts and their reports are
 released with the artifact.
 
@@ -71,9 +84,13 @@ ERENO~\cite{quincozes2023ereno} & IEC 61850 substation & A &
   attacks impersonate the single publisher & retained \\
 CICIDS2017, corrected~\cite{engelen2021troubleshooting} & enterprise network & L, X &
   scans duplicated across two labels; window-size fingerprint & retained \\
+Electra Modbus~\cite{perales2019electra} & industrial control network & L &
+  three labels mark the man-in-the-middle path, not the packet & retained$^{a}$ \\
 \midrule
 CICIoT2023~\cite{neto2023ciciot2023} & IoT network & L, T, A, P &
   four of seven categories labelled by capture session & rejected \\
+ToN\_IoT~\cite{moustafa2021toniot} & IoT/IIoT network & S, T, P, X &
+  narrow normal class; 18\% of normal flows flagged & rejected \\
 Edge-IIoTset~\cite{ferrag2022edgeiiotset} & industrial IoT & S, L, T, A, X &
   two classes shifted by one column & rejected \\
 UAV-NIDD~\cite{hadi2025uavnidd} & UAV network & S, L, T, A, P, X &
@@ -88,6 +105,12 @@ CIC IIoT 2025~\cite{firouzi2025datasense} & industrial IoT, sensors & L, T, A, X
   empty windows labelled attack; sensors carry no attack signal & rejected \\
 Morris-1~\cite{pan2015hybrid} & power system (PMU) & T, A, P &
   1\% random sample: no time order; 71\% attacks & rejected \\
+Morris-2~\cite{morris2014icsdatasets} & gas pipeline (Modbus) & L, T, A &
+  no clock; 85\% of one attack identical to normal & rejected \\
+Morris-3~\cite{morris2014icsdatasets} & water tank (Modbus) & L, T, A, X &
+  no clock; one attack identical to normal & rejected \\
+Morris-4~\cite{turnipseed2015scada} & gas pipeline (Modbus) & L, A, X &
+  27\% of normal packets identical to attacks; 65\% flagged & rejected \\
 PowerDuck~\cite{zemanek2022powerduck} & IEC 61850 substation & A, P, X &
   floods are 92.5\% of packets; no transfer across recordings & rejected \\
 Westermo~\cite{westermo2023dataset} & ICS network & L &
@@ -95,6 +118,8 @@ Westermo~\cite{westermo2023dataset} & ICS network & L &
 HAI 23.05~\cite{shin2020hai} & ICS process (HIL) & A, X &
   sound labels; supervised detection fails on unseen attacks & not used \\
 \bottomrule
+\multicolumn{5}{@{}l}{\footnotesize $^{a}$ Restricted to the four attack types visible in
+the packet content.}
 \end{tabular}
 \end{table}
 
@@ -191,6 +216,37 @@ specialist alone detects, and cannot exercise recovery from node loss. (If the f
 extractor discarded non-IP packets, the absence of ARP rows would be its effect; the
 conclusion that the rows do not contain the attack is unchanged.)
 
+\paragraph{ToN\_IoT.}
+% Verdict (2026-10-07): scripts/cross_domain_toniot.py, results/cross_domain_toniot.txt
+% (time split: FPR 22.8%) and results/cross_domain_toniot_session.txt (normal test inside
+% the attack sessions: 18.4%; late normal, Apr 28-29: 41.4%). Recall 98.6-99.9% per type.
+The network part of ToN\_IoT~\cite{moustafa2021toniot,booij2022toniot} holds 22{,}339{,}021
+Zeek flows from an IoT and industrial IoT testbed, recorded over four weeks in April 2019
+and split into 23 files in time order. Its structure is sound except that one file
+carries an extra connection-identifier column. Labels follow attacker involvement: every
+attack flow involves one of the hosts 192.168.1.30 to 192.168.1.39, against 0.01\% of the
+normal flows. The range given in the dataset documentation, 192.168.159.30 to
+192.168.159.39, never occurs in the data. Source addresses therefore point at the
+attacker. Each attack type, however, was recorded in its own session on consecutive days,
+and normal traffic, 3.6\% of the flows, makes up only 0.7 to 7.6\% of the flows inside
+the sessions of the seven largest attack types. Once identifiers are removed, 72\% of the rows are duplicates, and 20.5\%
+of the normal flows share their feature vector with attack flows. These are degenerate
+connections, mostly without a completed handshake or payload, that no host in the attacker
+range takes part in. They are benign, and no flow-level detector can separate them from
+their attack copies. Without identifiers, the probe separates six attack types and normal
+traffic on a time-ordered split (F1-score 0.94 to 0.99 each), whereas backdoor,
+ransomware and man-in-the-middle, with 172 to 1{,}144 distinct vectors each, fall to 0.05
+to 0.42. With identifiers, the time-ordered macro-F1 drops from 0.74 to 0.44, because
+addresses and times do not carry over from one session to the next. Since the audit alone
+could not decide whether the shared vectors matter in practice, the evaluation protocol
+was run on the six separable types. Attack recall stays between 98.6 and 99.9\% per type,
+but 18.4\% of the normal flows recorded inside the attack sessions are flagged, and
+41.4\% of those recorded after them. The false positives come mostly from the
+denial-of-service and scanning specialists and extend beyond the degenerate connections to
+completed ones. The normal class, 3.6\% of the flows and generated by few hosts, is too
+narrow for specialists trained against millions of attack flows to learn what normal
+traffic looks like, and the dataset is rejected.
+
 \paragraph{CIC-BCCC-NRC-IoMT-2024.}
 This release re-extracts CICIoMT2024~\cite{dadkhah2024ciciomt}, captured from 40 medical
 IoT devices, into CICFlowMeter flows with addresses and timestamps, within the
@@ -236,6 +292,31 @@ scenario recordings and carries no timestamp, so no time-ordered window can be b
 There is no address column; 71\% of the rows are attacks; and only the binary labelling
 remains online. Trained on ten sets and tested on the other five, the probe reaches a
 macro-F1 of 0.60, with physical measurements carrying almost all of the signal.
+
+The same group released Modbus datasets from laboratory gas-pipeline and water-tank
+control systems, the only entries of the survey's own experiments with network traffic
+and seven attack categories, the label structure of ERENO. The page that hosted them is
+gone, and the audited copies come from a web archive (checksums released with the
+scripts). In the 2014 releases, Morris-2 (gas pipeline, 97{,}019 packets) and Morris-3
+(water tank, 236{,}179 packets)~\cite{morris2014icsdatasets}, the column named time holds
+values between 1.0 and 1.3, an interval rather than a clock, so no time order can be
+recovered. Without it and the CRC rate, 92\% of the rows are duplicates, and the labels
+overlap with normal traffic: 85\% of the response-injection packets of Morris-2 and every
+command-injection packet of Morris-3 have a feature vector that also occurs as normal. The
+probe scores 0.98 on a random split of Morris-2 but leaves that category of Morris-3 at
+0.00, and the authors themselves report unintended patterns in these releases. Morris-4
+(gas pipeline, 274{,}628 packets)~\cite{turnipseed2015scada} was built to correct them. It
+is the only one with a clock, spanning 3.2 days in which attacks of every category are
+interleaved with normal traffic. Its labels, however, mark packets that are mostly
+indistinguishable from normal ones: 31\% of the rows lie in feature vectors that carry
+more than one category, among them 27\% of the normal packets. The probe falls from 0.70
+on a random split to 0.61 on a time-ordered one, and to 0.48 once the timestamp is kept as
+a feature, so time acts as a capture artefact. Under the evaluation protocol, the
+specialists recover 99.9\% of the attack packets but flag 65\% of the normal ones. None of
+the three carries an emitter address: the Modbus field names the slave, which is the same
+for normal and attack traffic. The three are rejected. The near-perfect scores reported for
+them in the survey come from random splits and class-weighted averages, which this audit
+shows to be misleading here.
 
 PowerDuck~\cite{zemanek2022powerduck} records GOOSE traffic in a physical substation
 testbed and labels every attacker packet; its labels agree with the published attack list
@@ -319,3 +400,30 @@ window acts as a fingerprint of the scanning host's operating system rather than
 attack, and it is therefore excluded from the features.
 Attempted flows (11{,}979), whose attacks delivered no payload, are labelled benign; the
 web and infiltration categories keep only 104 and 36 flows.
+
+Electra Modbus~\cite{perales2019electra} (16{,}289{,}277 packets) passes the structure,
+time, attribution and prevalence checks. Every line has eleven fields; packet times are in
+order for 99.94\% of the rows and span about fourteen hours; and attacks are interleaved
+with normal traffic, which makes up 99.8 to 99.99\% of the packets inside the time span of
+each retained attack type. Every attack packet has the man-in-the-middle host as its source
+or destination, and its MAC address identifies it, so attribution points at the attacker. Normal traffic is 85.3\% of the packets. The label check fails, for a reason
+that sets the condition of use. Each packet has only five content fields, 99.75\% of the
+rows are duplicates on them, and 97\% of the rows lie in vectors that carry more than one
+label. The collisions come from three labels that describe the path of a packet rather
+than its content: 83\% of the packets labelled \texttt{MITM\_UNALTERED}, relayed unchanged
+by the attacker's host, 97\% of the replayed packets and 66\% of the read requests issued
+by that host have the content of a normal packet. Only the MAC address tells them apart,
+and the address alone predicts the label of 95\% of the rows. The other four types,
+reconnaissance, unauthorised writes, forced errors and modified responses, never share a
+vector with normal traffic, and the probe separates them from it on content alone, on a
+random and on a time-ordered split (F1-score 0.97 to 1.00 each). The evaluation therefore
+keeps those four types and removes the other three from the stream. Under the evaluation
+protocol, the specialists of the four types recover 99.94\% of their packets without a
+single false positive among 4.17 million normal test packets; with read requests kept as a
+fifth category, only 33.9\% of them are recovered, as the audit predicts. The absence of
+false positives holds for the test period only. In the training period, the
+response-modification specialists flag 50{,}114 normal packets (0.36\% of the normal
+traffic of the capture), all within seven consecutive minutes and all of them responses
+from one controller with register values outside their usual range, with no involvement of
+the attacker's host. A transient of the process thus looks like a modified response to a
+detector that sees one packet at a time.

@@ -1,0 +1,32 @@
+% Paper 2 (ReSIDS v2, EAAI) -- research questions. Impersonal style.
+% 2026-10-07: five RQs. The time aggregation of alerts became its own question (RQ4),
+% separate from fusion at realistic prevalence (RQ3): per-specialist window triage,
+% CICIDS2017-C 25.9% -> 73.5% of attack windows, ERENO 97.9% -> 99.3%, same false alarms.
+% The former RQ4 (generality) is now RQ5. The dataset audit is NOT a research question:
+% it is described as methodology.
+
+% RQ1 -- adaptive switching commanded by the failure detector
+RQ1: Can a federated failure detector command runtime switching between federated and
+gossip learning, with authority split between its node-local and federated instances,
+while detection is sustained as nodes fail?
+
+% RQ2 -- time reference and protection latency
+RQ2: How does the failure detector's cadence bound protection latency, and how must
+detection thresholds be calibrated when the cadence changes?
+
+% RQ3 -- detection at realistic prevalence
+RQ3: Does decision-level fusion of per-attack specialists remain operationally usable at
+realistic attack prevalence, and what does k-of-n fusion actually contribute?
+
+% RQ4 -- aggregation of alerts over time
+RQ4: How must the specialists' alerts be aggregated over time so that slow attacks are
+detected without raising the false-alarm rate?
+
+% RQ5 -- generality of the core
+RQ5: Can the same core (event model, command interface, authority rule and cadences) run
+unchanged in other domains, with only the domain profile and the retrained detectors
+changing?
+% Plainer alternative (proposed 2026-10-07, not adopted yet):
+% RQ5: Can ReSIDS be moved to a different network domain by supplying only a domain
+% profile and retrained specialists, while its failure handling, commands and alarm rules
+% stay unchanged?
