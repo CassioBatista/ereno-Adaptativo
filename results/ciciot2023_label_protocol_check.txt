@@ -1,0 +1,67 @@
+rows=2,366,956
+
+=== protocol mix per label (mean indicator; 'any' = share of rows with indicator > 0)
+                          HTTP  HTTPS    DNS  Telnet  SMTP    SSH  IRC    TCP    UDP  DHCP    ARP   ICMP    IPv    LLC
+label                                                                                                                 
+DDoS-ICMP_Flood          0.000  0.001  0.000     0.0   0.0  0.000  0.0  0.001  0.000   0.0  0.000  0.999  1.000  1.000
+DDoS-UDP_Flood           0.000  0.000  0.000     0.0   0.0  0.000  0.0  0.001  0.999   0.0  0.000  0.000  1.000  1.000
+DDoS-TCP_Flood           0.108  0.032  0.000     0.0   0.0  0.000  0.0  1.000  0.000   0.0  0.000  0.000  1.000  1.000
+DDoS-PSHACK_Flood        0.073  0.052  0.000     0.0   0.0  0.000  0.0  1.000  0.000   0.0  0.000  0.000  1.000  1.000
+DDoS-SYN_Flood           0.115  0.053  0.000     0.0   0.0  0.000  0.0  1.000  0.000   0.0  0.000  0.000  1.000  1.000
+DDoS-RSTFINFlood         0.074  0.062  0.000     0.0   0.0  0.000  0.0  1.000  0.000   0.0  0.000  0.000  1.000  1.000
+DDoS-SynonymousIP_Flood  0.053  0.073  0.000     0.0   0.0  0.000  0.0  1.000  0.000   0.0  0.000  0.000  1.000  1.000
+DoS-UDP_Flood            0.000  0.001  0.000     0.0   0.0  0.000  0.0  0.001  0.995   0.0  0.000  0.003  1.000  1.000
+DoS-TCP_Flood            0.091  0.071  0.000     0.0   0.0  0.000  0.0  1.000  0.000   0.0  0.000  0.000  1.000  1.000
+DoS-SYN_Flood            0.053  0.069  0.000     0.0   0.0  0.000  0.0  0.998  0.002   0.0  0.000  0.000  1.000  1.000
+BenignTraffic            0.038  0.713  0.002     0.0   0.0  0.000  0.0  0.862  0.068   0.0  0.000  0.000  0.999  0.999
+Mirai-greeth_flood       0.000  0.003  0.000     0.0   0.0  0.000  0.0  0.004  0.001   0.0  0.000  0.000  1.000  1.000
+Mirai-udpplain           0.000  0.001  0.000     0.0   0.0  0.000  0.0  0.003  0.995   0.0  0.000  0.000  1.000  1.000
+Mirai-greip_flood        0.002  0.003  0.001     0.0   0.0  0.000  0.0  0.006  0.004   0.0  0.000  0.000  1.000  1.000
+DDoS-ICMP_Fragmentation  0.001  0.010  0.000     0.0   0.0  0.000  0.0  0.015  0.004   0.0  0.000  0.973  1.000  1.000
+MITM-ArpSpoofing         0.002  0.668  0.002     0.0   0.0  0.000  0.0  0.708  0.234   0.0  0.001  0.000  0.998  0.998
+DDoS-UDP_Fragmentation   0.000  0.008  0.000     0.0   0.0  0.000  0.0  0.011  0.120   0.0  0.000  0.000  1.000  1.000
+DDoS-ACK_Fragmentation   0.039  0.024  0.000     0.0   0.0  0.000  0.0  0.266  0.003   0.0  0.000  0.000  1.000  1.000
+DNS_Spoofing             0.168  0.281  0.002     0.0   0.0  0.000  0.0  0.550  0.364   0.0  0.004  0.000  0.995  0.995
+Recon-HostDiscovery      0.004  0.158  0.006     0.0   0.0  0.000  0.0  0.789  0.070   0.0  0.005  0.000  0.993  0.993
+Recon-OSScan             0.017  0.369  0.001     0.0   0.0  0.000  0.0  0.862  0.058   0.0  0.001  0.000  0.999  0.999
+Recon-PortScan           0.016  0.256  0.002     0.0   0.0  0.000  0.0  0.840  0.078   0.0  0.000  0.000  0.998  0.998
+DoS-HTTP_Flood           0.585  0.022  0.000     0.0   0.0  0.000  0.0  0.997  0.002   0.0  0.000  0.000  1.000  1.000
+VulnerabilityScan        0.044  0.090  0.000     0.0   0.0  0.000  0.0  0.799  0.100   0.0  0.002  0.000  0.998  0.998
+DDoS-HTTP_Flood          0.815  0.010  0.000     0.0   0.0  0.000  0.0  0.997  0.001   0.0  0.000  0.000  1.000  1.000
+DDoS-SlowLoris           0.372  0.373  0.000     0.0   0.0  0.000  0.0  0.991  0.005   0.0  0.000  0.000  1.000  1.000
+DictionaryBruteForce     0.017  0.323  0.000     0.0   0.0  0.168  0.0  0.779  0.102   0.0  0.000  0.000  0.997  0.997
+BrowserHijacking         0.024  0.329  0.014     0.0   0.0  0.000  0.0  0.722  0.122   0.0  0.000  0.000  0.993  0.993
+SqlInjection             0.129  0.181  0.016     0.0   0.0  0.000  0.0  0.593  0.185   0.0  0.000  0.000  0.996  0.996
+CommandInjection         0.247  0.251  0.008     0.0   0.0  0.000  0.0  0.634  0.148   0.0  0.000  0.000  1.000  1.000
+Backdoor_Malware         0.041  0.314  0.006     0.0   0.0  0.000  0.0  0.586  0.172   0.0  0.000  0.000  1.000  1.000
+XSS                      0.050  0.294  0.000     0.0   0.0  0.000  0.0  0.506  0.206   0.0  0.000  0.000  0.975  0.975
+Recon-PingSweep          0.040  0.386  0.010     0.0   0.0  0.000  0.0  0.634  0.129   0.0  0.109  0.000  0.851  0.851
+Uploading_Attack         0.014  0.268  0.014     0.0   0.0  0.000  0.0  0.521  0.254   0.0  0.000  0.000  1.000  1.000
+
+=== attacks with an expected protocol: share of rows that show it
+  MITM-ArpSpoofing       n=  15,618  rows with ARP                       0.1%
+  DNS_Spoofing           n=   9,142  rows with DNS                       0.2%
+  Recon-PingSweep        n=     101  rows with ICMP                      0.0%
+  Recon-HostDiscovery    n=   6,761  rows with ARP/ICMP                  0.5%
+  SqlInjection           n=     248  rows with HTTP/HTTPS               31.0%
+  CommandInjection       n=     243  rows with HTTP/HTTPS               49.8%
+  XSS                    n=     160  rows with HTTP/HTTPS               34.4%
+  Uploading_Attack       n=      71  rows with HTTP/HTTPS               28.2%
+  Backdoor_Malware       n=     169  rows with HTTP/HTTPS               35.5%
+  BrowserHijacking       n=     295  rows with HTTP/HTTPS               35.3%
+  DictionaryBruteForce   n=     656  rows with HTTP/HTTPS/Telnet/SSH    50.8%
+  DDoS-ICMP_Flood        n= 364,557  rows with ICMP                     99.9%
+  DDoS-UDP_Flood         n= 274,432  rows with UDP                      99.9%
+  DoS-UDP_Flood          n= 168,753  rows with UDP                      99.5%
+  DDoS-HTTP_Flood        n=   1,467  rows with HTTP/HTTPS               82.5%
+  DoS-HTTP_Flood         n=   3,701  rows with HTTP/HTTPS               60.7%
+  BenignTraffic          n=  55,859  rows with HTTP/HTTPS   75.1%  ARP 0.0%  DNS 0.2%  ICMP 0.0%
+
+=== nearest benign look-alikes: share of each low-volume class whose rows are closer to a benign row than to any other row of their own class (sample, standardized)
+  Recon       n= 5000  nearer to benign than to own class:  33.8%  median dist to benign 2.288 vs own 0.845
+  Web         n= 1186  nearer to benign than to own class:  56.7%  median dist to benign 1.309 vs own 1.361
+  BruteForce  n=  656  nearer to benign than to own class:  65.7%  median dist to benign 1.389 vs own 1.620
+  Spoofing    n= 5000  nearer to benign than to own class:  38.6%  median dist to benign 2.582 vs own 1.786
+  DDoS        n= 5000  nearer to benign than to own class:   0.0%  median dist to benign 8.005 vs own 0.000
+  DoS         n= 5000  nearer to benign than to own class:   0.0%  median dist to benign 7.620 vs own 0.003
+  Mirai       n= 5000  nearer to benign than to own class:   0.1%  median dist to benign 8.875 vs own 0.017

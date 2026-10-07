@@ -1,0 +1,9 @@
+test: 672,046 attack / 16,665 benign; specialists=6
+  GL union k>=1: recall 99.69%  FPR 0.120%  F1 99.84  F1@13.75 99.03
+  GL union k>=2: recall 99.64%  FPR 0.042%  F1 99.82  F1@13.75 99.53
+  FL k>=2 with 6 nodes: recall 99.64%  FPR 0.042%
+  FL k>=2 with 5 nodes: recall 99.63%  FPR 0.036%
+  FL k>=2 with 4 nodes: recall 99.41%  FPR 0.024%
+  FL k>=2 with 3 nodes: recall 99.25%  FPR 0.000%
+  FL k>=2 with 2 nodes: recall 97.06%  FPR 0.000%
+  FL k>=2 with 1 nodes: recall 0.00%  FPR 0.000%

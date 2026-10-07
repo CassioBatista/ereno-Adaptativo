@@ -1,0 +1,17 @@
+benign train=39,194 test=16,665
+variant                                               k  recall     FPR  F1@13.75
+benign 1/14 share, 10 rounds, depth 4 (protocol)      1   99.77   30.03     32.57
+benign 1/14 share, 10 rounds, depth 4 (protocol)      2   99.71   24.15     37.50
+                                                        per-specialist benign FPR: DDoS0.0 DoS0.1 Reco10.8 Web12.4 Brut12.8 Spoo16.1 Mira0.1 DDoS0.1 DoS0.1 Reco12.1 Web15.8 Brut15.0 Spoo15.9 Mira0.1
+benign 1/14 share, 100 rounds, depth 6                1   99.84   24.42     37.28
+benign 1/14 share, 100 rounds, depth 6                2   99.78   16.78     46.36
+                                                        per-specialist benign FPR: DDoS0.0 DoS0.1 Reco11.2 Web5.6 Brut3.2 Spoo13.9 Mira0.0 DDoS0.0 DoS0.0 Reco11.2 Web5.5 Brut4.0 Spoo13.7 Mira0.0
+all benign per specialist, 10 rounds, depth 4         1   99.77   29.22     33.17
+all benign per specialist, 10 rounds, depth 4         2   99.70   23.63     38.01
+                                                        per-specialist benign FPR: DDoS0.0 DoS0.0 Reco11.5 Web12.7 Brut12.6 Spoo14.0 Mira0.0 DDoS0.0 DoS0.0 Reco10.0 Web15.7 Brut14.0 Spoo13.8 Mira0.0
+all benign per specialist, 100 rounds, depth 6        1   99.78   15.80     47.85
+all benign per specialist, 100 rounds, depth 6        2   99.72   11.71     55.29
+                                                        per-specialist benign FPR: DDoS0.0 DoS0.0 Reco7.9 Web2.6 Brut1.6 Spoo8.9 Mira0.0 DDoS0.0 DoS0.0 Reco7.8 Web2.6 Brut1.7 Spoo8.5 Mira0.0
+all benign, attack capped at 20k, 100 rounds, depth 6  1   99.78   15.80     47.85
+all benign, attack capped at 20k, 100 rounds, depth 6  2   99.72   11.71     55.29
+                                                        per-specialist benign FPR: DDoS0.0 DoS0.0 Reco7.9 Web2.6 Brut1.6 Spoo8.9 Mira0.0 DDoS0.0 DoS0.0 Reco7.8 Web2.6 Brut1.7 Spoo8.5 Mira0.0

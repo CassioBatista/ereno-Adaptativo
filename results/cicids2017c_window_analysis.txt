@@ -1,0 +1,53 @@
+
+=== window 1s: calibration windows=15,680 (benign); test: 2,544 attack / 14,728 benign
+  calibration benign n_flags: max=8, 99.9%=6, 99%=2, share with >=1 flag=6.75%
+     T  cal FPR  test TPR  test FPR
+     1   6.747%     92.1%    2.981%
+     2   1.569%     61.1%    0.387%
+     3   0.695%     45.6%    0.177%
+     5   0.249%     33.1%    0.075%
+    10   0.000%     27.6%    0.048%
+    11   0.000%     26.9%    0.041%
+  per category at T=11 (margin policy) and at T=1:
+    DoS           windows=  365  median n_flags=    13  TPR@T= 56.4%  TPR@1= 98.9%
+    DDoS          windows=  319  median n_flags=    92  TPR@T= 99.1%  TPR@1=100.0%
+    PortScan      windows=  520  median n_flags=     4  TPR@T= 31.2%  TPR@1= 68.3%
+    BruteForce    windows= 1141  median n_flags=     1  TPR@T=  0.0%  TPR@1= 98.8%
+    Web           windows=   31  median n_flags=     1  TPR@T=  0.0%  TPR@1= 51.6%
+    Bot           windows=  158  median n_flags=     1  TPR@T=  0.0%  TPR@1=100.0%
+    Infiltration  windows=   10  median n_flags=     1  TPR@T=  0.0%  TPR@1= 60.0%
+
+=== window 10s: calibration windows=1,908 (benign); test: 630 attack / 1,819 benign
+  calibration benign n_flags: max=27, 99.9%=18, 99%=10, share with >=1 flag=34.28%
+     T  cal FPR  test TPR  test FPR
+     1  34.277%     89.7%   16.328%
+     2  14.203%     82.9%    2.749%
+     3   7.128%     80.5%    1.154%
+     5   3.983%     74.4%    0.550%
+    10   1.153%     45.7%    0.275%
+    35   0.000%     25.9%    0.165%
+  per category at T=35 (margin policy) and at T=1:
+    DoS           windows=   66  median n_flags=   168  TPR@T= 93.9%  TPR@1=100.0%
+    DDoS          windows=   36  median n_flags=   811  TPR@T=100.0%  TPR@1=100.0%
+    PortScan      windows=  175  median n_flags=     8  TPR@T= 37.1%  TPR@1= 74.9%
+    BruteForce    windows=  259  median n_flags=     9  TPR@T=  0.0%  TPR@1= 97.7%
+    Web           windows=   31  median n_flags=     1  TPR@T=  0.0%  TPR@1= 51.6%
+    Bot           windows=   62  median n_flags=     3  TPR@T=  0.0%  TPR@1=100.0%
+    Infiltration  windows=    1  median n_flags=     1  TPR@T=  0.0%  TPR@1=100.0%
+
+=== window 60s: calibration windows=320 (benign); test: 147 attack / 270 benign
+  calibration benign n_flags: max=49, 99.9%=45, 99%=30, share with >=1 flag=86.25%
+     T  cal FPR  test TPR  test FPR
+     1  86.250%     95.9%   68.889%
+     2  64.688%     79.6%   31.111%
+     3  49.375%     78.9%   13.704%
+     5  30.000%     74.8%    3.704%
+    10  15.000%     70.7%    1.111%
+    63   0.000%     35.4%    0.370%
+  per category at T=63 (margin policy) and at T=1:
+    DoS           windows=   15  median n_flags=   849  TPR@T= 93.3%  TPR@1=100.0%
+    DDoS          windows=    7  median n_flags=  4879  TPR@T=100.0%  TPR@1=100.0%
+    PortScan      windows=   39  median n_flags=  1302  TPR@T= 76.9%  TPR@1= 97.4%
+    BruteForce    windows=   46  median n_flags=    52  TPR@T=  2.2%  TPR@1= 97.8%
+    Web           windows=   22  median n_flags=     1  TPR@T=  0.0%  TPR@1= 81.8%
+    Bot           windows=   18  median n_flags=     8  TPR@T=  0.0%  TPR@1=100.0%
