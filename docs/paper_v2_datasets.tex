@@ -117,16 +117,24 @@ and its figures are reported with confidence intervals.
 \paragraph{Datasets not used.}
 The original CICIDS2017 release is not used, because of the label errors documented
 above; neither is CSE-CIC-IDS2018, which shares its generation methodology and its error
-classes~\cite{liu2022error}. CICIoT2023~\cite{neto2023ciciot2023}, first selected as the
+classes~\cite{liu2022error}. NSL-KDD~\cite{tavallaee2009nslkdd}, still common in recent
+work, is not considered: its records carry neither timestamps nor addresses, and it
+inherits the artefacts of the 1998 DARPA traffic~\cite{mchugh2000darpa}. CICIoT2023~\cite{neto2023ciciot2023}, first selected as the
 IoT domain, was rejected: in four of its seven categories the labels mark the capture
 session rather than the attack, and specialists trained on them flag benign traffic as
 attack. ToN\_IoT~\cite{moustafa2021toniot}, audited to replace it, has consistent labels
 but a narrow normal class: under the same protocol, 18\% of its normal flows are flagged.
+Re-extractions of the same captures inherit these defects and are not considered either:
+CIC-ToN-IoT~\cite{cic2021toniot} re-extracts the ToN\_IoT captures with CICFlowMeter, and
+NF-UQ-NIDS~\cite{sarhan2021netflow} merges NetFlow versions of four releases, ToN\_IoT and
+CSE-CIC-IDS2018 among them, so that the network a flow comes from also identifies its
+source dataset.
 Thirteen further candidates, from industrial, medical, aerial, power-system, gas-pipeline,
 water and industrial-control settings, failed the audit or added no property the three
 retained datasets lack (Section~\ref{sec:dataset-audit}). One of them, HAI, has sound
-labels and genuine process data but is built for one-class anomaly detection; using it
-is left to a one-class variant of the specialists.
+labels and genuine process data but is built for one-class anomaly detection, as are SWaT
+and WADI~\cite{mathur2016swat,ahmed2017wadi}, available on request; using them is left to
+a one-class variant of the specialists.
 
 \paragraph{Threats to validity.}
 The corrected CICIDS2017 is a laboratory capture, Electra a testbed reproducing an
