@@ -25,11 +25,11 @@ from sklearn.model_selection import train_test_split
 import python.config as config
 import python.util as util
 from python.classifiers import all_classifiers
-from python.feature_subsets.ereno import ErenoFeatures
 from python.grasp.vnd import GraspVND
+from main_grasp import _get_feature_subsets
 
-DATASET = "all_in_one_ereno_train"
-GLOBAL15 = [5, 7, 8, 11, 19, 31, 33, 40, 41, 42, 44, 45, 50, 57, 58]
+DATASET = "all_in_one_ereno_train"          # override with --dataset
+GLOBAL15 = [5, 7, 8, 11, 19, 31, 33, 40, 41, 42, 44, 45, 50, 57, 58]   # ERENO; --global-file
 XGB_CLF_IDX = 5   # all_classifiers[5] == XGBoost
 
 
@@ -48,16 +48,25 @@ def main():
     out_dir     = _get("--out-dir", os.path.join("features", "por_ataque"))
     tag         = _get("--tag", "grasp")
     only        = _get("--attacks", None)
+    attack_cap  = _get("--attack-cap", None)          # None | "balanced" | integer
+    global DATASET, GLOBAL15
+    DATASET = _get("--dataset", DATASET)
+    gfile = _get("--global-file", None)
+    if gfile == "none":
+        GLOBAL15 = []                  # per-category run only; union done afterwards
+    elif gfile:
+        GLOBAL15 = json.load(open(gfile))["features"]
     os.makedirs(out_dir, exist_ok=True)
     config.FEATURE_PENALTY = lam
-    print(f"[grasp-atk] FEATURE_PENALTY (lambda) = {lam}")
+    print(f"[grasp-atk] dataset={DATASET}; FEATURE_PENALTY (lambda) = {lam}; "
+          f"global set ({len(GLOBAL15)}) = {GLOBAL15}")
 
     config.DATASET = f"{DATASET}.csv"
     config.FOLDS = 5
     config.NUM_CLASSES = 2
     config.CROSS_VALIDATION = True
     config.SINGLE_CLASSIFIER_MODE = all_classifiers[XGB_CLF_IDX]
-    rcl = ErenoFeatures().RCL_GR
+    rcl = _get_feature_subsets(DATASET).RCL_GR
 
     print(f"[grasp-atk] carregando {config.DATASET} uma vez...", flush=True)
     X, y, classes = util.load_arff(config.DATASET)
@@ -75,9 +84,21 @@ def main():
 
     for a in atk_ids:
         aname = classes[a]
+        done = os.path.join(out_dir, f"{tag}_{aname}.json")
+        if os.path.exists(done):        # resume: category finished in an earlier run
+            per_attack[aname] = json.load(open(done))["features"]
+            print(f"[grasp-atk] {aname}: retomado de {done}", flush=True)
+            continue
         a_idx = np.where(y == a)[0]
         n_sub = min(normal_cap, len(norm_idx))
         nsel = rng.choice(norm_idx, size=n_sub, replace=False)
+        # --attack-cap balanced: at most as many attack rows as normal rows, so the binary
+        # problem never has an attack majority (else F1 rewards "always attack"). ERENO
+        # never needed it (each attack <= 39k < normal cap); default keeps old behaviour.
+        if attack_cap is not None:
+            cap = n_sub if attack_cap == "balanced" else int(attack_cap)
+            if len(a_idx) > cap:
+                a_idx = rng.choice(a_idx, size=cap, replace=False)
         idx = np.concatenate([a_idx, nsel])
         Xb = X[idx]
         yb = (y[idx] == a).astype(np.int64)   # ataque->1, normal->0
@@ -107,6 +128,7 @@ def main():
                    "features": feats, "n_features": len(feats), "f1_grasp_cv": f1,
                    "iterations": grasp.iteration_number, "evaluations": grasp.number_evaluation,
                    "no_improvement": no_improve, "sample": sample, "normal_cap": normal_cap,
+                   "attack_cap": attack_cap,
                    "feature_penalty": lam,
                    "seed": config.GRASP_SEED, "elapsed_s": round(dt, 1)}
         with open(os.path.join(out_dir, f"{tag}_{aname}.json"), "w") as fh:

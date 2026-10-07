@@ -40,6 +40,12 @@ def _get_feature_subsets(dataset: str):
         case s if "kdd" in s:
             from python.feature_subsets.kdd import KddFeatures
             return KddFeatures()
+        case s if "ciciot2023" in s:
+            from python.feature_subsets.ciciot2023 import Ciciot2023Features
+            return Ciciot2023Features()
+        case s if "cicids2017c" in s:
+            from python.feature_subsets.cicids2017c import Cicids2017cFeatures
+            return Cicids2017cFeatures()
         case s if "cicid" in s:
             from python.feature_subsets.cicids import CicidsFeatures
             return CicidsFeatures()

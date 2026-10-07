@@ -26,10 +26,11 @@ def main():
     lam    = float(_get("--lambda", 0.2))
     sample = _get("--sample", "150000")
     noimp  = _get("--no-improvement", "15")
+    dataset = _get("--dataset", "all_in_one_ereno_train")
     config.FEATURE_PENALTY = lam
-    out = f"features/global_penalizado_L{lam}.json"
-    print(f"[global-pen] FEATURE_PENALTY (lambda) = {lam} -> {out}")
-    main_grasp.main(["GR-G-VND", "6", "all_in_one_ereno_train",
+    out = _get("--out", f"features/global_penalizado_L{lam}.json")
+    print(f"[global-pen] dataset={dataset}; FEATURE_PENALTY (lambda) = {lam} -> {out}")
+    main_grasp.main(["GR-G-VND", "6", dataset,
                      "--sample", str(sample), "--no-improvement", str(noimp),
                      "--out", out])
 

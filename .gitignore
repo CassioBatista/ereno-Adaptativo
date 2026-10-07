@@ -16,3 +16,8 @@ results/.input_hashes.json
 
 # Matriz de votos pontuada (derivada, ~40 MB, regenerável por scripts/scored_cache.py)
 results/.cache/
+
+# Local run artefacts: peak-memory reports, timestamp arrays, audit samples
+results/*.mem
+results/*_sample.pkl.gz
+all_in_one_*_ts.npy
