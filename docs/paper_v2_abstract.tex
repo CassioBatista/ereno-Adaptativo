@@ -1,11 +1,29 @@
 % Paper 2 (ReSIDS v2) -- abstract, keywords and highlights for Engineering Applications
 % of Artificial Intelligence (EAAI). Impersonal style.
-% EAAI limits: abstract <= 250 words (this one: 239 including the [RESULT] placeholder,
-% so about 11 words are left for it); 1-6 keywords; 3-5 highlights of <= 85 characters.
-% Framing: domain-neutral core, three audited domains (ERENO, CICIoT2023, corrected
-% CICIDS2017); the IEC 61850 substation is the case study, not the scope.
-% TODO: fill [RESULT] once CICIoT2023 and the corrected CICIDS2017 have been run.
-% TODO: confirm that F1 95.98% comes from the k >= 2 configuration used in v2.
+% EAAI limits: abstract <= 250 words (this one: 250); 1-6 keywords; 3-5 highlights of
+% <= 85 characters.
+% CICIDS2017-C detection: GL retained union, k >= 2, all 80 features (GRASP selection still
+% running; update if it changes the figures). docs/RESULTADOS_cicids2017c.md,
+% results/cross_domain_cicids2017c.txt.
+% Window triage = per-specialist counts OR the network-wide volume/fraction rule
+% (2026-10-07). Per category c: fused-flagged samples (k >= 2) on which a specialist of c
+% fired; T_c = max(ceil(1.25 * max benign) + 1, 2), calibrated on benign traffic only.
+%   ERENO: blocked-5 out of sample, margin x1.25: 280/282 = 99.3% attack windows, 1/724 =
+%   0.14% benign (network-wide rule alone: 276/282 = 97.9%). scripts/oos_specialist_triage.py,
+%   results/oos_specialist_triage_ereno.txt.
+%   CICIDS2017-C: 10-s windows, calibration on Monday's first 70%: 73.5% attack windows,
+%   3/1,819 = 0.165% benign (network-wide rule alone: 25.9%; 1-s windows: 30.8% vs 26.9%;
+%   60-s: 75.5% vs 49.0%). Web and infiltration stay at 0%. Per-source counting rejected:
+%   the gateway 172.16.0.1 is the source of 72.5% of attack flows (capture topology).
+%   scripts/_cicids_source_triage.py, results/cicids2017c_source_triage.txt.
+%   NOTE: the CICIDS figure uses 10-s windows, ERENO 1-s; state window length per profile
+%   in the body (the window is the Disaster-FD local cadence).
+% Framing: domain-neutral core, audited domains (ERENO, corrected CICIDS2017); the
+% IEC 61850 substation is the case study, not the scope. CICIoT2023 dropped on
+% 2026-10-07 (session labels, see the audit); IoT-23 under audit as the IoT domain.
+% Confirmed: F1 95.98% = k >= 2, N = 14, GL retained union, full ERENO test file
+% (scripts/redund_k2_fulltest.py, results/redund_k2_fulltest.csv).
+% Cross-domain numbers for [RESULT]: docs/RESULTADOS_cicids2017c.md, RESULTADOS_ciciot2023.md.
 
 \begin{abstract}
 The evolution of networks has increased their complexity and driven a shift toward
@@ -13,20 +31,23 @@ distributed architectures, from enterprise networks to the Internet of Things an
 cyber-physical systems. While this shift opens new landscapes and opportunities, it also
 enlarges the attack surface, calling for adaptive distributed intrusion detection that
 keeps working while its own nodes fail. Federated learning (FL) has been widely adopted
-to train intrusion detectors across distributed networks, coordinating a shared model
+to train intrusion detectors, coordinating a shared model
 through a server; gossip learning (GL), far less explored, lets peers exchange models
 directly, without a server. This research presents ReSIDS, which combines both: it fuses
 per-attack gradient-boosted specialists by k-of-n voting and switches between FL and GL
 at runtime. A federated failure detector monitors the nodes and commands each switch:
-the system moves to GL when nodes fail and returns to FL once they recover. The
-architecture is not tied to one kind of network: applying it to another requires only
-retraining the specialists. Because attacks are rare in real traffic, individual alerts
-are dominated by false alarms; ReSIDS therefore aggregates them over windows, with
-thresholds calibrated on held-out data. On public IEC 61850 substation traffic (ERENO),
-detection is unchanged as membership shrinks from 14 to 3 nodes (F1-score 95.98\%), and
-windowed alarms flag 97.9\% of attack windows at a 0.14\% false-alarm rate. On IoT
-(CICIoT2023) and enterprise (corrected CICIDS2017) traffic, [RESULT]. Runtime switching
-makes the learning topology an operational choice rather than a design-time commitment.
+the system moves to GL when nodes fail and returns to FL once they recover. Applying it
+to another network requires only retraining the specialists. Because
+attacks are rare in real traffic, individual alerts are dominated by false alarms;
+ReSIDS therefore counts them per window, network-wide and per specialist: a slow attack accumulates
+in its own specialist, whereas false alarms spread. On
+public IEC 61850 substation traffic (ERENO), detection is unchanged as membership
+shrinks from 14 to 3 nodes (F1-score 95.98\%), and windowed alarms flag 99.3\% of attack
+windows at a 0.14\% false-alarm rate. On enterprise traffic (corrected CICIDS2017),
+detection is likewise unchanged (F1-score 98.87\%), with 73.5\% of attack windows
+flagged at a 0.17\% false-alarm rate.
+Runtime switching makes the learning topology an operational choice rather than a
+design-time commitment.
 \end{abstract}
 
 \begin{keyword}
@@ -38,5 +59,5 @@ intrusion detection \sep federated learning \sep gossip learning \sep failure de
 %  - Intrusion detection switches between federated and gossip learning at runtime (77)
 %  - A federated failure detector commands every switch; agents act alone as fallback (80)
 %  - Detection is unchanged as the training membership shrinks from 14 to 3 nodes (76)
-%  - Out-of-sample window triage: 97.9% of attack windows at a 0.14% false-alarm rate (80)
-%  - Domain profiles reuse one architecture for substation, IoT and enterprise traffic (81)
+%  - Per-specialist window triage: 99.3% of attack windows at a 0.14% false-alarm rate (81)
+%  - Domain profiles reuse one architecture for substation and enterprise traffic (76)

@@ -7,6 +7,9 @@
 %   scripts/inspect_uav_hassler.py    -> results/uav_hassler_inspection.txt
 %   scripts/inspect_ereno.py          -> results/ereno_audit.txt (+ ereno_attribution.txt)
 %   scripts/inspect_ciciot2023.py     -> results/ciciot2023_audit.txt (10 of 169 parts)
+%     label finding: scripts/_ciciot_label_protocol_check.py; FPR figures:
+%     scripts/cross_domain_results.py, _ciciot_threshold_calibration.py,
+%     _ciciot_volumetric_subset.py (summary in docs/RESULTADOS_ciciot2023.md)
 % Citation keys are in docs/refs_v2.bib (section "Dataset audit").
 %   scripts/inspect_cicids2017c.py    -> results/cicids2017c_audit.txt
 %   scripts/inspect_iomt2024.py       -> results/iomt2024_audit.txt (Kaggle mirror; checksums in results/iomt2024_md5sums.txt)
@@ -29,9 +32,11 @@ recent survey of CPS intrusion datasets~\cite{quincozes2025cpsdatasets}, whose o
 smart-grid and ICS entries were excluded on their published description: EPIC has no
 per-sample labels, Biswas et al.\ and ICS-ADD are unlabelled packet captures, the Sahu
 dataset is not public, and ICS-Flow and Electra carry no physical data. Before use, each of
-the ten was audited with the same protocol, and none could be retained. The three datasets used in the evaluation,
-ERENO, CICIoT2023 and the corrected CICIDS2017, went through the same protocol. Table~\ref{tab:dataset-audit}
-summarises the outcome; the scripts and their reports are released with the artifact.
+the ten was audited with the same protocol, and none could be retained. The datasets used
+in the evaluation, ERENO and the corrected CICIDS2017, went through the same protocol, as
+did CICIoT2023, first selected as the IoT domain and rejected by it.
+Table~\ref{tab:dataset-audit} summarises the outcome; the scripts and their reports are
+released with the artifact.
 
 \paragraph{Protocol.}
 Six checks were applied to every release.
@@ -64,11 +69,11 @@ Dataset & Domain & Failed checks & Main finding & Use \\
 \midrule
 ERENO~\cite{quincozes2023ereno} & IEC 61850 substation & A &
   attacks impersonate the single publisher & retained \\
-CICIoT2023~\cite{neto2023ciciot2023} & IoT network & T, A, P &
-  no time or address; IAT acts as a capture clock & retained \\
 CICIDS2017, corrected~\cite{engelen2021troubleshooting} & enterprise network & L, X &
   scans duplicated across two labels; window-size fingerprint & retained \\
 \midrule
+CICIoT2023~\cite{neto2023ciciot2023} & IoT network & L, T, A, P &
+  four of seven categories labelled by capture session & rejected \\
 Edge-IIoTset~\cite{ferrag2022edgeiiotset} & industrial IoT & S, L, T, A, X &
   two classes shifted by one column & rejected \\
 UAV-NIDD~\cite{hadi2025uavnidd} & UAV network & S, L, T, A, P, X &
@@ -157,6 +162,34 @@ Benign traffic, de-authentication DoS and replay share schemas and can be aligne
 time, with offsets of 16 to 48~s. Yet the probe on their network features falls from a
 macro-F1 of 0.99 to 0.65 once timestamps and sequence numbers are removed, because the
 classes were recorded in separate flight sessions.
+
+\paragraph{CICIoT2023.}
+CICIoT2023~\cite{neto2023ciciot2023} was audited on 10 of the 169 files of its CSV
+release (2{,}366{,}956 rows). Its structure is sound: one header, 47 fields per line, no
+missing or infinite values, no duplicate rows and no feature vector with two labels. It
+has neither timestamps nor addresses, benign traffic is 2.4\% of the sample, and the
+column named IAT is not an inter-arrival time: its values form narrow bands per class, as
+a capture clock would, and removing it lowers the probe's F1-score for DoS from 1.00 to
+0.73. The decisive finding concerns the labels. Each row carries protocol indicators, and
+in the low-volume classes the protocol of the attack itself is almost absent: 0.1\% of
+the ARP-spoofing rows are ARP, 0.2\% of the DNS-spoofing rows are DNS, none of the
+ping-sweep rows is ICMP, and 28 to 50\% of the web-attack rows are HTTP or HTTPS, against
+75\% of benign rows. The flooding classes, by contrast, carry their protocol in 99.5 to
+99.9\% of rows. The protocol mix of the reconnaissance, web, brute-force and spoofing
+classes is that of benign traffic, and 34 to 66\% of their rows lie closer to a benign row
+than to any row of their own class, against none for the denial-of-service and Mirai
+classes. In these four categories the labels therefore mark the capture session rather
+than the attack, the defect found in CIC-BCCC-NRC-IoMT-2024, which comes from the same
+laboratory. The consequence is measurable. Under the evaluation protocol, specialists
+trained on these categories flag 8 to 16\% of benign flows each, and the fused detector
+reaches a 23.4\% false-positive rate. Calibrating their thresholds to a 0.1\% budget
+lowers the fused rate to 0.17\% but cuts their recall to 31--52\%. Restricted to the
+denial-of-service and Mirai classes, whose labels are consistent, the same protocol gives
+a 0.042\% false-positive rate, so the false alarms come from the labels rather than from
+the detector. That subset, however, holds three similar flooding categories, which one
+specialist alone detects, and cannot exercise recovery from node loss. (If the feature
+extractor discarded non-IP packets, the absence of ARP rows would be its effect; the
+conclusion that the rows do not contain the attack is unchanged.)
 
 \paragraph{CIC-BCCC-NRC-IoMT-2024.}
 This release re-extracts CICIoMT2024~\cite{dadkhah2024ciciomt}, captured from 40 medical
@@ -267,20 +300,6 @@ the same publisher identity (one source MAC address and one \texttt{gocbRef}), b
 the attacks impersonate the legitimate publisher. Source attribution in this domain would
 therefore point at the victim, and isolation is exercised only in synthetic scenarios
 (Section~\ref{sec:api-events}).
-
-CICIoT2023~\cite{neto2023ciciot2023} was audited on 10 of the 169 files of its CSV
-release (2{,}366{,}956 rows). It passes the structure and label checks: one header, 47
-fields per line, no missing or infinite values, no duplicate rows, no feature vector with
-two labels, and rows in shuffled order. It has neither timestamps nor addresses, so the
-local tick is count-based and attribution is none (Section~\ref{sec:datasets}). The
-column named IAT is not an inter-arrival time. Its values form narrow bands per class,
-around $8.3\times10^{7}$ for denial-of-service and Mirai traffic and $1.67\times10^{8}$
-for benign, reconnaissance, spoofing and web traffic, as a capture clock would. Removing
-it lowers the probe's F1-score for DoS from 1.00 to 0.73, so the DoS/DDoS distinction
-partly rests on it, and IAT is therefore excluded from the features. Benign traffic is
-2.4\% of the sample, and the web and brute-force categories together 0.08\%: benign
-traffic must be rebalanced to a stated prevalence, and those two categories yield wide
-confidence intervals.
 
 The corrected CICIDS2017~\cite{engelen2021troubleshooting,liu2022error} (2{,}099{,}976
 flows over five days) passes the structure, time, attribution and prevalence checks.

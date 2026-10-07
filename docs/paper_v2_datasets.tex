@@ -3,7 +3,11 @@
 % (Section~\ref{sec:dataset-audit}; reports in results/*_audit.txt).
 % DECISIONS encoded below (confirm): CICIDS2017 'Infiltration - Portscan' merged into
 % PortScan; 'Attempted' flows labelled benign; Heartbleed excluded; Init Win Bytes
-% excluded; CICIoT2023 IAT excluded.
+% excluded.
+% 2026-10-07: CICIoT2023 dropped (labels mark the capture session in four of seven
+% categories; audit). Two domains remain; an IoT candidate (IoT-23) is under audit. If it
+% passes, restore "three" in the counts below and add its row and paragraph. Note that the
+% count-based tick and attribution "none" were exercised only by CICIoT2023.
 
 \subsection{Datasets and domain profiles}
 \label{sec:datasets}
@@ -21,9 +25,9 @@ traffic carries time and whether an alarm can be attributed to an emitter; and
 (iii)~\emph{verified data integrity}. Label inaccuracy and the base-rate fallacy are
 among the most frequent pitfalls of learning-based security
 evaluation~\cite{axelsson2000baserate,sommer2010outside,arp2022dos}, so every candidate
-was audited before use (Section~\ref{sec:dataset-audit}). Three public datasets passed:
-an IEC~61850 substation, a consumer IoT network and an enterprise network.
-Table~\ref{tab:datasets} summarises them.
+was audited before use (Section~\ref{sec:dataset-audit}). Two public datasets passed:
+an IEC~61850 substation and an enterprise network. Table~\ref{tab:datasets} summarises
+them.
 
 \begin{table}[t]
 \centering
@@ -36,8 +40,6 @@ Dataset & Domain & Local tick & Attribution & Label set & Role \\
 \midrule
 ERENO~\cite{quincozes2023ereno} & IEC 61850 substation & time & synthetic only$^{a}$ &
   \texttt{ereno-7} & case study \\
-CICIoT2023~\cite{neto2023ciciot2023} & consumer IoT & sample count & none &
-  \texttt{ciciot2023-7} & second domain \\
 CICIDS2017-C~\cite{engelen2021troubleshooting} & enterprise network & time &
   source address & \texttt{cicids2017c-7} & attribution and time \\
 \bottomrule
@@ -46,7 +48,7 @@ identity; see the ERENO paragraph.}
 \end{tabular}
 \end{table}
 
-All three label sets have seven categories, so the topology of $N=14$ specialists, two
+Both label sets have seven categories, so the topology of $N=14$ specialists, two
 per category, is the same in every domain. Identifiers (addresses, ports, timestamps,
 flow and message identities) feed the profile, i.e., the tick and the attribution, and
 never the features. This avoids the shortcuts that identifiers create in benchmark
@@ -56,7 +58,7 @@ datasets~\cite{flood2024smells}.
 ERENO~\cite{quincozes2023ereno} generates IEC~61850 GOOSE and Sampled Values traffic for
 digital substations, with seven attacks against the publish--subscribe messages that
 carry protection signals. It is the case study inherited from v1, the only domain whose
-traffic is time-critical, and the most demanding of the three. The authors' train/test
+traffic is time-critical, and the more demanding of the two. The authors' train/test
 split is kept: each periodic GOOSE frame accompanies thousands of SV frames, so a random
 re-split would leak. Publisher identities (MAC addresses, \texttt{gocbRef},
 \texttt{goID}) and the three absolute-time markers are removed from the features, so
@@ -66,20 +68,6 @@ so source attribution would point at the victim; intrusion-driven isolation is
 therefore exercised only in synthetic scenarios. Second, the benign volume available at
 window level, about twelve minutes, bounds the precision that can be certified at low
 prevalence (Section~\ref{sec:api-fp}).
-
-\paragraph{CICIoT2023 (second domain).}
-CICIoT2023~\cite{neto2023ciciot2023} contains 33 attacks executed against a topology of
-105 consumer IoT devices, grouped into seven categories: DDoS, DoS, reconnaissance,
-web-based, brute force, spoofing and Mirai. These categories form the label set
-\texttt{ciciot2023-7}. Its CSV release carries neither timestamps nor addresses. The
-local tick is therefore count-based and declared as simulated, and attribution is
-\texttt{none}: this profile exercises the core when no emitter exists to be isolated, so
-an intrusion raises alarms but never an isolation. Three conditions of use follow from
-the audit. The column named IAT behaves as a capture clock rather than an inter-arrival
-time and is excluded from the features. Benign flows are about 2.4\% of the release and
-are rebalanced to a stated prevalence. The web and brute-force categories are small
-(0.08\% of the audited sample together), and their per-category figures are reported
-with confidence intervals.
 
 \paragraph{CICIDS2017, corrected (attribution and time).}
 CICIDS2017~\cite{sharafaldin2018toward} is the most cited network intrusion benchmark,
@@ -105,17 +93,20 @@ reported with confidence intervals.
 \paragraph{Datasets not used.}
 The original CICIDS2017 release is not used, because of the label errors documented
 above; neither is CSE-CIC-IDS2018, which shares its generation methodology and its error
-classes~\cite{liu2022error}. Ten further candidates, from industrial, medical, aerial,
-power-system and industrial-control settings, failed the audit or added no property the
-three retained datasets lack (Section~\ref{sec:dataset-audit}). One of them, HAI, has sound
+classes~\cite{liu2022error}. CICIoT2023~\cite{neto2023ciciot2023}, first selected as the
+IoT domain, was rejected: in four of its seven categories the labels mark the capture
+session rather than the attack, and specialists trained on them flag benign traffic as
+attack. Ten further candidates, from industrial, medical, aerial, power-system and
+industrial-control settings, failed the audit or added no property the two retained
+datasets lack (Section~\ref{sec:dataset-audit}). One of them, HAI, has sound
 labels and genuine process data but is built for one-class anomaly detection; using it
 is left to a one-class variant of the specialists.
 
 \paragraph{Threats to validity.}
-All three datasets are laboratory captures or, in the case of ERENO, synthetic traffic
+Both datasets are laboratory captures or, in the case of ERENO, synthetic traffic
 generated by deterministic attack rules. A detector evaluated on them may not reflect
 operational conditions~\cite{sommer2010outside,arp2022dos}. Categories with fewer than
 about a hundred positive flows yield per-category figures with wide confidence
 intervals; they are reported, but no conclusion is drawn from them. Results are not
 compared across datasets: the claim under test is that the same core runs unchanged
-under three profiles, not that a model trained in one domain detects attacks in another.
+under different profiles, not that a model trained in one domain detects attacks in another.
