@@ -1,0 +1,32 @@
+ERENO per-specialist triage, blocked-5, margin x1.25, k>=2: 282 attack / 724 benign windows
+specialist categories: [np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5), np.int64(6), np.int64(7)]
+
+--- floor 1 ---
+  fold 0: T=324 f=0.0433 T_c=1=1, 2=1, 3=294, 4=31, 5=1, 6=26, 7=1
+  fold 1: T=208 f=0.0433 T_c=1=1, 2=1, 3=193, 4=31, 5=1, 6=26, 7=1
+  fold 2: T=324 f=0.0433 T_c=1=1, 2=1, 3=294, 4=31, 5=1, 6=26, 7=1
+  fold 3: T=324 f=0.0433 T_c=1=1, 2=1, 3=294, 4=31, 5=1, 6=26, 7=1
+  fold 4: T=324 f=0.0433 T_c=1=1, 2=1, 3=294, 4=31, 5=1, 6=26, 7=1
+  R2          attack windows 276/282 (97.9%)   benign false alarms 1/724 (0.14%)
+  SPEC        attack windows 282/282 (100.0%)   benign false alarms 1/724 (0.14%)
+  R2 OR SPEC  attack windows 282/282 (100.0%)   benign false alarms 1/724 (0.14%)
+
+--- floor 2 ---
+  fold 0: T=324 f=0.0433 T_c=1=2, 2=2, 3=294, 4=31, 5=2, 6=26, 7=2
+  fold 1: T=208 f=0.0433 T_c=1=2, 2=2, 3=193, 4=31, 5=2, 6=26, 7=2
+  fold 2: T=324 f=0.0433 T_c=1=2, 2=2, 3=294, 4=31, 5=2, 6=26, 7=2
+  fold 3: T=324 f=0.0433 T_c=1=2, 2=2, 3=294, 4=31, 5=2, 6=26, 7=2
+  fold 4: T=324 f=0.0433 T_c=1=2, 2=2, 3=294, 4=31, 5=2, 6=26, 7=2
+  R2          attack windows 276/282 (97.9%)   benign false alarms 1/724 (0.14%)
+  SPEC        attack windows 264/282 (93.6%)   benign false alarms 1/724 (0.14%)
+  R2 OR SPEC  attack windows 280/282 (99.3%)   benign false alarms 1/724 (0.14%)
+
+--- floor 3 ---
+  fold 0: T=324 f=0.0433 T_c=1=3, 2=3, 3=294, 4=31, 5=3, 6=26, 7=3
+  fold 1: T=208 f=0.0433 T_c=1=3, 2=3, 3=193, 4=31, 5=3, 6=26, 7=3
+  fold 2: T=324 f=0.0433 T_c=1=3, 2=3, 3=294, 4=31, 5=3, 6=26, 7=3
+  fold 3: T=324 f=0.0433 T_c=1=3, 2=3, 3=294, 4=31, 5=3, 6=26, 7=3
+  fold 4: T=324 f=0.0433 T_c=1=3, 2=3, 3=294, 4=31, 5=3, 6=26, 7=3
+  R2          attack windows 276/282 (97.9%)   benign false alarms 1/724 (0.14%)
+  SPEC        attack windows 263/282 (93.3%)   benign false alarms 1/724 (0.14%)
+  R2 OR SPEC  attack windows 280/282 (99.3%)   benign false alarms 1/724 (0.14%)
