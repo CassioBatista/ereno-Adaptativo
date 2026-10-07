@@ -36,6 +36,7 @@ from inspect_toniot import CATF, NUM, read  # noqa: E402
 CATS = ["scanning", "dos", "injection", "ddos", "password", "xss"]
 KEEP = CATS + ["normal"]
 TRAIN_CAP, TEST_CAP = 500_000, 300_000
+SPLIT = os.environ.get("TONIOT_SPLIT", "time")      # time | session (see normal_group)
 
 
 def main(d):
@@ -44,14 +45,32 @@ def main(d):
     # pass 1: timestamps and types only -> per-type 70 % time cut and sampling rates
     lt = pd.concat([pd.read_csv(p, usecols=["ts", "type"], dtype={"type": "category"})
                     for p in files], ignore_index=True)
+    # start of the sessions of the excluded types (backdoor, ransomware, mitm): Apr 28
+    late = float(lt.loc[~lt["type"].isin(KEEP), "ts"].min())
     lt = lt[lt["type"].isin(KEEP)]
     cut = lt.groupby("type", observed=True)["ts"].quantile(0.7)
+    tmax = lt.groupby("type", observed=True)["ts"].max()
+    wins = np.array([(cut[c], tmax[c]) for c in CATS])
+
+    def normal_group(ts):
+        """SPLIT=session: normal flows inside an attack's test interval -> 'in-session'
+        test, after the excluded sessions began -> 'late' test, otherwise train.
+        SPLIT=time (default): last 30 % of normal by time is the test."""
+        if SPLIT == "session":
+            ins = ((ts[:, None] >= wins[:, 0]) & (ts[:, None] <= wins[:, 1])).any(1)
+            return np.where(ins, "in-session", np.where(ts >= late, "late", "train"))
+        return np.where(ts >= cut["normal"], "late", "train")
+
+    if SPLIT == "session":
+        cut["normal"] = np.inf          # normal train/test is decided by normal_group
     ntr = lt[lt["ts"] < lt["type"].map(cut).astype(float)].groupby("type", observed=True).size()
     nte = lt.groupby("type", observed=True).size() - ntr
     ptr = {t: (1.0 if t == "normal" else min(1.0, TRAIN_CAP / ntr[t])) for t in KEEP}
     pte = {t: (1.0 if t == "normal" else min(1.0, TEST_CAP / nte[t])) for t in KEEP}
     del lt
-    print("70 % time cut per type:", {t: str(pd.to_datetime(cut[t], unit="s")) for t in KEEP})
+    print(f"split={SPLIT}; 70 % time cut per type:",
+          {t: str(pd.to_datetime(cut[t], unit="s")) for t in KEEP if np.isfinite(cut[t])},
+          f"; late sessions from {pd.to_datetime(late, unit='s')}")
     # pass 2: features of the sampled rows
     rng = np.random.default_rng(C.SEED)
     parts = []
@@ -59,13 +78,15 @@ def main(d):
         df = read(p)
         df = df[df["type"].isin(KEEP)]
         t = df["type"].astype(str).values
-        tr = df["ts"].values < pd.Series(t).map(cut).values
+        tsv = df["ts"].values.astype(float)
+        grp = np.where(t == "normal", normal_group(tsv), "attack")
+        tr = np.where(t == "normal", grp == "train", tsv < pd.Series(t).map(cut).values)
         pr = np.where(tr, pd.Series(t).map(ptr).values, pd.Series(t).map(pte).values)
         keep = rng.random(len(df)) < pr
         q = df.loc[keep, NUM + CATF + ["ts"]].copy()       # conn_state is already in CATF
         for c in CATF:
             q[c] = q[c].astype(str)
-        q["_type"], q["_train"] = t[keep], tr[keep]
+        q["_type"], q["_train"], q["_grp"] = t[keep], tr[keep], grp[keep]
         q["_zero"] = (df.loc[keep, "src_bytes"].fillna(0).values == 0) & (df.loc[keep, "dst_bytes"].values == 0)
         q["_state"] = q["conn_state"].values
         parts.append(q)
@@ -104,6 +125,15 @@ def main(d):
     for n in (6, 3):
         g = C.stats(V[:, :n].sum(1) >= 2, atk)
         print(f"FL k>=2 with {n} nodes: recall {g['recall']:.1f}%  FPR {g['FPR']:.3f}%")
+    f2 = V.sum(1) >= 2
+    gte = s["_grp"].values[~trm]
+    for gname in ("in-session", "late"):
+        m = gte == gname
+        if m.any():
+            sel = atk | m
+            g = C.stats(f2[sel], atk[sel])
+            print(f"normal test group '{gname}': {int(m.sum()):,} flows, FPR (k>=2) {100 * f2[m].mean():.3f}%"
+                  f"  -> with all attack test flows: F1 {g['F1']:.2f}, F1@13.75 {g['F1@13.75']:.2f}")
     nm = ~atk
     st = s["_state"].values[~trm]
     zero = s["_zero"].values[~trm]
@@ -123,5 +153,5 @@ if __name__ == "__main__":
     buf = io.StringIO()
     with redirect_stdout(buf):
         main(d)
-    open("results/cross_domain_toniot.txt", "w").write(buf.getvalue())
+    open(f"results/cross_domain_toniot{'' if SPLIT == 'time' else '_' + SPLIT}.txt", "w").write(buf.getvalue())
     print(buf.getvalue())

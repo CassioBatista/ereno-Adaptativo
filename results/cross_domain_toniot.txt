@@ -1,0 +1,13 @@
+70 % time cut per type: {'scanning': '2019-04-24 03:35:42', 'dos': '2019-04-25 00:25:18', 'injection': '2019-04-25 08:43:01', 'ddos': '2019-04-26 01:45:51', 'password': '2019-04-27 00:14:35', 'xss': '2019-04-27 10:39:19', 'normal': '2019-04-28 03:54:03'}
+train per type: {'normal': 555917, 'dos': 499860, 'scanning': 499814, 'ddos': 499537, 'password': 499534, 'xss': 499311, 'injection': 316703}
+test  per type: {'dos': 300349, 'xss': 300164, 'password': 300035, 'scanning': 299667, 'ddos': 298952, 'normal': 240463, 'injection': 135956}
+GL (union of 12) k>=1: recall 99.01%  FPR 23.291%  F1 97.82  F1@13.75 38.13
+GL (union of 12) k>=2: recall 98.97%  FPR 22.833%  F1 97.83  F1@13.75 38.59
+per type recall (GL k>=2): {'scanning': np.float64(99.9), 'dos': np.float64(98.6), 'injection': np.float64(99.7), 'ddos': np.float64(99.0), 'password': np.float64(97.3), 'xss': np.float64(99.8)}
+FL k>=2 with 6 nodes: recall 62.8%  FPR 5.680%
+FL k>=2 with 3 nodes: recall 7.2%  FPR 0.152%
+
+normal test flows: 240,463; flagged (k>=2): 54,905
+  FPR by connection state: {'OTH': '18.05% of 132,575', 'S0': '0.12% of 44,035', 'SF': '46.93% of 40,488', 'SH': '61.52% of 14,463', 'SHR': '1.59% of 5,854', 'RSTOS0': '100.00% of 899'}
+  FPR on zero-byte normal flows: 15.71% of 176,720; on the others: 42.59% of 63,743
+  specialists firing on false positives: {'scanning#0': 25817, 'dos#0': 332, 'injection#0': 13702, 'ddos#0': 6604, 'password#0': 9485, 'xss#0': 18988, 'scanning#1': 25800, 'dos#1': 170, 'injection#1': 13870, 'ddos#1': 6600, 'password#1': 9484, 'xss#1': 19791}

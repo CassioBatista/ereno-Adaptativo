@@ -1,0 +1,15 @@
+split=session; 70 % time cut per type: {'scanning': '2019-04-24 03:35:42', 'dos': '2019-04-25 00:25:18', 'injection': '2019-04-25 08:43:01', 'ddos': '2019-04-26 01:45:51', 'password': '2019-04-27 00:14:35', 'xss': '2019-04-27 10:39:19'} ; late sessions from 2019-04-28 03:49:50
+train per type: {'dos': 499860, 'scanning': 499814, 'ddos': 499537, 'password': 499534, 'xss': 499311, 'normal': 378673, 'injection': 316703}
+test  per type: {'normal': 417707, 'dos': 300349, 'xss': 300164, 'password': 300035, 'scanning': 299667, 'ddos': 298952, 'injection': 135956}
+GL (union of 12) k>=1: recall 99.66%  FPR 34.164%  F1 95.65  F1@13.75 29.77
+GL (union of 12) k>=2: recall 99.63%  FPR 32.845%  F1 95.79  F1@13.75 30.60
+per type recall (GL k>=2): {'scanning': np.float64(99.9), 'dos': np.float64(98.6), 'injection': np.float64(99.8), 'ddos': np.float64(99.8), 'password': np.float64(99.9), 'xss': np.float64(99.8)}
+FL k>=2 with 6 nodes: recall 84.4%  FPR 5.878%
+FL k>=2 with 3 nodes: recall 23.7%  FPR 0.167%
+normal test group 'in-session': 155,921 flows, FPR (k>=2) 18.406%  -> with all attack test flows: F1 98.95, F1@13.75 44.02
+normal test group 'late': 261,786 flows, FPR (k>=2) 41.445%  -> with all attack test flows: F1 96.61, F1@13.75 25.90
+
+normal test flows: 417,707; flagged (k>=2): 137,197
+  FPR by connection state: {'OTH': '39.53% of 152,286', 'SF': '29.89% of 112,856', 'S0': '8.92% of 107,194', 'SH': '99.99% of 20,578', 'SHR': '38.69% of 17,668', 'S1': '83.84% of 3,112'}
+  FPR on zero-byte normal flows: 35.92% of 264,247; on the others: 27.56% of 153,460
+  specialists firing on false positives: {'scanning#0': 44033, 'dos#0': 596, 'injection#0': 18795, 'ddos#0': 61231, 'password#0': 19374, 'xss#0': 28867, 'scanning#1': 43236, 'dos#1': 596, 'injection#1': 17968, 'ddos#1': 61091, 'password#1': 19326, 'xss#1': 27045}
