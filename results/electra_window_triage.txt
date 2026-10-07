@@ -1,0 +1,23 @@
+packets 13,951,802 (train 9,766,261); flagged: train 89,784 (on normal 50,114), test 17,780 (on normal 0)
+capture span 14.0 h; train ends at 9.8 h
+
+=== window 1 s: calibration 27,132 attack-free windows (train period); test 3,630 attack / 11,469 benign windows
+  thresholds: T=241, f=0.8696; per specialist RECOGNITION=2, WRITE=2, FORCE=2, RESPONSE=241
+  network-wide (ERENO policy)     attack windows 0/3630 (0.0%)   benign false alarms 0/11469 (0.000%)
+  per specialist                  attack windows 3218/3630 (88.7%)   benign false alarms 0/11469 (0.000%)
+  network-wide OR per specialist  attack windows 3218/3630 (88.7%)   benign false alarms 0/11469 (0.000%)
+  per category (network-wide | OR per specialist): {'RECOGNITION': '0% | 100% of 2767', 'WRITE': '0% | 100% of 419', 'FORCE': '0% | 13% of 233', 'RESPONSE': '0% | 4% of 211'}
+
+=== window 10 s: calibration 2,456 attack-free windows (train period); test 483 attack / 1,028 benign windows
+  thresholds: T=2396, f=0.8678; per specialist RECOGNITION=2, WRITE=2, FORCE=2, RESPONSE=2396
+  network-wide (ERENO policy)     attack windows 0/483 (0.0%)   benign false alarms 0/1028 (0.000%)
+  per specialist                  attack windows 414/483 (85.7%)   benign false alarms 0/1028 (0.000%)
+  network-wide OR per specialist  attack windows 414/483 (85.7%)   benign false alarms 0/1028 (0.000%)
+  per category (network-wide | OR per specialist): {'RECOGNITION': '0% | 100% of 297', 'WRITE': '0% | 100% of 44', 'FORCE': '0% | 18% of 50', 'RESPONSE': '0% | 70% of 92'}
+
+=== window 60 s: calibration 301 attack-free windows (train period); test 130 attack / 122 benign windows
+  thresholds: T=11948, f=0.7214; per specialist RECOGNITION=2, WRITE=2, FORCE=2, RESPONSE=11948
+  network-wide (ERENO policy)     attack windows 0/130 (0.0%)   benign false alarms 0/122 (0.000%)
+  per specialist                  attack windows 116/130 (89.2%)   benign false alarms 0/122 (0.000%)
+  network-wide OR per specialist  attack windows 116/130 (89.2%)   benign false alarms 0/122 (0.000%)
+  per category (network-wide | OR per specialist): {'RECOGNITION': '0% | 100% of 65', 'WRITE': '0% | 100% of 9', 'FORCE': '0% | 27% of 15', 'RESPONSE': '0% | 93% of 41'}

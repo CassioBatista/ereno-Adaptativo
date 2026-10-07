@@ -1,0 +1,86 @@
+
+=== (i) STRUCTURE ===
+fields per line: ['11:16289277']
+rows=16,289,277
+  Time     min=0 max=50333737643 distinct=537,777
+  request  min=0 max=1 distinct=2
+  fc       min=0 max=255 distinct=252
+  error    min=0 max=255 distinct=11
+  address  min=0 max=65311 distinct=413
+  data     min=0 max=65535 distinct=18,379
+  Time non-decreasing in file order: 99.94% of steps; rows with Time==0: 1
+  first values: [0, 2107, 377, 8718, 8718, 8718, 8718, 8718]
+
+=== (ii) LABELS ===
+labels: {'NORMAL': 13894323, 'MITM_UNALTERED': 1550617, 'READ_ATTACK': 785961, 'RECOGNITION_ATTACK': 30580, 'RESPONSE_ATTACK': 16353, 'WRITE_ATTACK': 9417, 'FORCE_ERROR_ATTACK': 1129, 'REPLAY_ATTACK': 897}
+distinct content vectors: 41,164; duplicates: 99.75%
+vectors with >1 label: 274 (rows 15,834,423, 97.21%)
+  NORMAL                   rows 13,894,323  in multi-label vectors 99.60%
+  MITM_UNALTERED           rows  1,550,617  in multi-label vectors 92.98%
+  READ_ATTACK              rows    785,961  in multi-label vectors 70.30%
+  RECOGNITION_ATTACK       rows     30,580  in multi-label vectors 0.00%
+  RESPONSE_ATTACK          rows     16,353  in multi-label vectors 3.01%
+  WRITE_ATTACK             rows      9,417  in multi-label vectors 0.00%
+  FORCE_ERROR_ATTACK       rows      1,129  in multi-label vectors 0.00%
+  REPLAY_ATTACK            rows        897  in multi-label vectors 97.10%
+  MITM_UNALTERED           rows whose content vector also occurs as NORMAL: 83.02%
+  READ_ATTACK              rows whose content vector also occurs as NORMAL: 65.78%
+  RECOGNITION_ATTACK       rows whose content vector also occurs as NORMAL: 0.00%
+  RESPONSE_ATTACK          rows whose content vector also occurs as NORMAL: 0.18%
+  WRITE_ATTACK             rows whose content vector also occurs as NORMAL: 0.00%
+  FORCE_ERROR_ATTACK       rows whose content vector also occurs as NORMAL: 0.00%
+  REPLAY_ATTACK            rows whose content vector also occurs as NORMAL: 97.10%
+
+=== (iii) TIME ===
+                           min          max     count
+label                                                
+FORCE_ERROR_ATTACK     3260308  50046780350      1129
+MITM_UNALTERED               0  50197004307   1550617
+NORMAL                     377  50333737643  13894323
+RESPONSE_ATTACK        1011777  50047038741     16353
+RECOGNITION_ATTACK   285872158  49888429879     30580
+WRITE_ATTACK         291732002  49825822881      9417
+READ_ATTACK          420728389  50333050246    785961
+REPLAY_ATTACK       5746112372  46803024126       897
+  MITM_UNALTERED           NORMAL rows inside its span: 13,856,580 (share 89.94%)
+  READ_ATTACK              NORMAL rows inside its span: 13,777,920 (share 94.60%)
+  RECOGNITION_ATTACK       NORMAL rows inside its span: 13,692,429 (share 99.78%)
+  RESPONSE_ATTACK          NORMAL rows inside its span: 13,814,835 (share 99.88%)
+  WRITE_ATTACK             NORMAL rows inside its span: 13,673,523 (share 99.93%)
+  FORCE_ERROR_ATTACK       NORMAL rows inside its span: 13,814,145 (share 99.99%)
+  REPLAY_ATTACK            NORMAL rows inside its span: 11,333,457 (share 99.99%)
+
+=== (iv) ATTRIBUTION ===
+  NORMAL                   src MAC: 00:0e:8c:e1:de:9c 98.55%, 00:1b:1b:c1:41:1b 1.45%, 00:0e:8c:e1:dd:58 0.00% | dst MAC: 00:1b:1b:c1:41:1b 98.55%, 00:0e:8c:e1:de:9c 1.45%, 00:0e:8c:e1:dd:58 0.00%
+  MITM_UNALTERED           src MAC: 08:00:27:79:b0:4a 56.39%, 00:0e:8c:e1:dd:58 42.75%, 00:1b:1b:c1:41:1b 0.87% | dst MAC: 00:1b:1b:c1:41:1b 55.52%, 08:00:27:79:b0:4a 43.61%, 00:0e:8c:e1:dd:58 0.87%
+  READ_ATTACK              src MAC: 00:0e:8c:e1:dd:58 97.32%, 08:00:27:79:b0:4a 2.68%, 00:0e:8c:e1:de:9c 0.00% | dst MAC: 08:00:27:79:b0:4a 97.32%, 00:0e:8c:e1:dd:58 2.68%, 00:0e:8c:e1:de:9c 0.00%
+  RECOGNITION_ATTACK       src MAC: 08:00:27:79:b0:4a 54.28%, 00:0e:8c:e1:dd:58 45.72%, 00:0e:8c:e1:de:9c 0.00% | dst MAC: 00:0e:8c:e1:dd:58 54.28%, 08:00:27:79:b0:4a 45.72%, 00:0e:8c:e1:de:9c 0.00%
+  RESPONSE_ATTACK          src MAC: 08:00:27:79:b0:4a 100.00%, 00:0e:8c:e1:dd:58 0.00%, 00:0e:8c:e1:de:9c 0.00% | dst MAC: 00:1b:1b:c1:41:1b 100.00%, 00:0e:8c:e1:dd:58 0.00%, 00:0e:8c:e1:de:9c 0.00%
+  WRITE_ATTACK             src MAC: 00:0e:8c:e1:dd:58 64.08%, 08:00:27:79:b0:4a 35.92%, 00:0e:8c:e1:de:9c 0.00% | dst MAC: 08:00:27:79:b0:4a 64.08%, 00:0e:8c:e1:dd:58 35.92%, 00:0e:8c:e1:de:9c 0.00%
+  FORCE_ERROR_ATTACK       src MAC: 08:00:27:79:b0:4a 100.00%, 00:0e:8c:e1:dd:58 0.00%, 00:0e:8c:e1:de:9c 0.00% | dst MAC: 00:1b:1b:c1:41:1b 100.00%, 00:0e:8c:e1:dd:58 0.00%, 00:0e:8c:e1:de:9c 0.00%
+  REPLAY_ATTACK            src MAC: 00:0e:8c:e1:dd:58 98.55%, 08:00:27:79:b0:4a 1.45%, 00:0e:8c:e1:de:9c 0.00% | dst MAC: 08:00:27:79:b0:4a 98.55%, 00:0e:8c:e1:dd:58 1.45%, 00:0e:8c:e1:de:9c 0.00%
+  smac alone -> label (majority per value): 95.36%
+  dmac alone -> label (majority per value): 90.12%
+  sip alone -> label (majority per value): 94.78%
+  dip alone -> label (majority per value): 90.16%
+  (smac, dmac) pair alone -> label: 95.49%
+
+=== (v) PREVALENCE ===
+  NORMAL                    13,894,323  85.30%
+  MITM_UNALTERED             1,550,617  9.52%
+  READ_ATTACK                  785,961  4.83%
+  RECOGNITION_ATTACK            30,580  0.19%
+  RESPONSE_ATTACK               16,353  0.10%
+  WRITE_ATTACK                   9,417  0.06%
+  FORCE_ERROR_ATTACK             1,129  0.01%
+  REPLAY_ATTACK                    897  0.01%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (dedup per label on all fields; <= 100k rows per label) ===
+-- random 70/30
+  content only               macro-F1=0.670  FORCE_ERROR_ATTACK=1.00  MITM_UNALTERED=0.28  NORMAL=0.57  READ_ATTACK=0.50  RECOGNITION_ATTACK=1.00  REPLAY_ATTACK=0.02  RESPONSE_ATTACK=0.98  WRITE_ATTACK=1.00
+  content + MAC/IP           macro-F1=0.875  FORCE_ERROR_ATTACK=1.00  MITM_UNALTERED=1.00  NORMAL=1.00  READ_ATTACK=1.00  RECOGNITION_ATTACK=1.00  REPLAY_ATTACK=0.02  RESPONSE_ATTACK=0.98  WRITE_ATTACK=1.00
+  content + MAC/IP + Time    macro-F1=0.977  FORCE_ERROR_ATTACK=1.00  MITM_UNALTERED=1.00  NORMAL=1.00  READ_ATTACK=1.00  RECOGNITION_ATTACK=1.00  REPLAY_ATTACK=0.84  RESPONSE_ATTACK=0.98  WRITE_ATTACK=1.00
+-- time-ordered 70/30 per label
+  content only               macro-F1=0.672  FORCE_ERROR_ATTACK=1.00  MITM_UNALTERED=0.27  NORMAL=0.57  READ_ATTACK=0.51  RECOGNITION_ATTACK=1.00  REPLAY_ATTACK=0.06  RESPONSE_ATTACK=0.97  WRITE_ATTACK=1.00
+  content + MAC/IP           macro-F1=0.877  FORCE_ERROR_ATTACK=1.00  MITM_UNALTERED=1.00  NORMAL=1.00  READ_ATTACK=1.00  RECOGNITION_ATTACK=1.00  REPLAY_ATTACK=0.06  RESPONSE_ATTACK=0.97  WRITE_ATTACK=1.00
+  content + MAC/IP + Time    macro-F1=0.730  FORCE_ERROR_ATTACK=1.00  MITM_UNALTERED=0.55  NORMAL=0.65  READ_ATTACK=0.93  RECOGNITION_ATTACK=1.00  REPLAY_ATTACK=0.00  RESPONSE_ATTACK=0.71  WRITE_ATTACK=1.00

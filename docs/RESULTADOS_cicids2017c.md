@@ -80,3 +80,5 @@ Os 3 falsos alarmes benignos a 10 s vêm do gateway em todas as regras.
 (97,9 %) → global OU especialista **280/282 (99,3 %)**, mesmo 1/724 (0,14 %) benigno.
 Com uma só chave/sem atribuição a regra global continua valendo; a chave por
 especialista existe em todo perfil.
+
+Também vale no Electra Modbus: ver `docs/RESULTADOS_electra.md`.
