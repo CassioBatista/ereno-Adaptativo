@@ -1,0 +1,4 @@
+35ba6f525da242e664f87688084005ac  IanArffDataset.arff
+137d1a9a96344e54aa6624208d598947  MSU_SCADA_Final_Report.pdf
+97de9881c2f7e59c6a0c2a9fc9d5523b  gas_final.arff
+dc48826e7faed99461847f5b66a8d11a  water_final.arff

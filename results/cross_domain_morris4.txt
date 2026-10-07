@@ -1,0 +1,9 @@
+features (15): ['address', 'function', 'length', 'setpoint', 'gain', 'reset rate', 'deadband', 'cycle time', 'rate', 'system mode', 'control scheme', 'pump', 'solenoid', 'pressure measurement', 'command response']
+train: {'normal': 149996, 'MPCI': 14792, 'CMRI': 8977, 'MSCI': 5822, 'NMRI': 5317, 'MFCI': 3296, 'Recon': 2635, 'DoS': 1404}
+test:  {'normal': 64584, 'MPCI': 5620, 'CMRI': 4058, 'NMRI': 2436, 'MSCI': 2078, 'MFCI': 1602, 'Recon': 1239, 'DoS': 772}
+GL (union of 14) k>=1: recall 99.93%  FPR 65.750%  F1 45.58  F1@13.75 18.10
+GL (union of 14) k>=2: recall 99.92%  FPR 65.174%  F1 45.80  F1@13.75 18.23
+per category recall (GL k>=2): {'NMRI': np.float64(99.5), 'CMRI': np.float64(100.0), 'MSCI': np.float64(100.0), 'MPCI': np.float64(100.0), 'MFCI': np.float64(100.0), 'DoS': np.float64(100.0), 'Recon': np.float64(100.0)}
+FL k>=2 with 7 nodes: recall 91.6%  FPR 61.410%
+FL k>=2 with 3 nodes: recall 34.9%  FPR 18.488%
+specialists firing on false positives: {'NMRI#0': 12328, 'CMRI#0': 11940, 'MSCI#0': 22089, 'MPCI#0': 29764, 'MFCI#0': 0, 'DoS#0': 25436, 'Recon#0': 0, 'NMRI#1': 12328, 'CMRI#1': 11028, 'MSCI#1': 21755, 'MPCI#1': 29764, 'MFCI#1': 0, 'DoS#1': 24785, 'Recon#1': 0}
