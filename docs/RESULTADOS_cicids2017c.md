@@ -82,3 +82,23 @@ Com uma só chave/sem atribuição a regra global continua valendo; a chave por
 especialista existe em todo perfil.
 
 Também vale no Electra Modbus: ver `docs/RESULTADOS_electra.md`.
+
+## Ablação de perfil (2026-10-07) — perfil sem tempo e sem atribuição (RQ5)
+
+`scripts/_cicids_profile_ablation.py` → `results/cicids2017c_profile_ablation.txt`.
+Mesmos dados, especialistas e divisão; só o perfil muda. `it-flow-blind`: tick a cada M
+fluxos em ordem de chegada, atribuição `none` (alarme sem emissor → sem isolamento).
+Detecção por fluxo idêntica (recall 98,36 %, FPR 0,388 %).
+
+| perfil | duração mediana | rede inteira | rede inteira OU especialista | FA benignos |
+|---|---:|---:|---:|---:|
+| `it-flow`, tempo 10 s | 8,7 s | 25,9 % | 73,5 % | 3 / 1.819 (0,165 %) |
+| `it-flow-blind`, M = 100 | 1,2 s | 78,2 % | **85,6 %** | 3 / 2.160 (0,139 %) |
+| `it-flow-blind`, M = 300 | 5,0 s | 77,2 % | 87,2 % | 2 / 632 (0,316 %) |
+| `it-flow-blind`, M = 1000 | 34 s | 84,2 % | 90,7 % | 1 / 164 (0,610 %) |
+| `it-flow-blind`, M = 3000 | 146 s | 88,5 % | 92,3 % | 1 / 48 (2,08 %) |
+
+Leitura: com janelas de contagem o denominador é fixo e a **regra de fração volta a
+funcionar** (em janelas de tempo, uma janela benigna com 1 fluxo marcado tem fração 1,0).
+As colunas não são diretamente comparáveis (a unidade de janela muda: 100 fluxos ≈ 1 s
+durante ataque); com M grande há poucas janelas benignas e 1 FA vira 2 %.

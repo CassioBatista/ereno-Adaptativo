@@ -77,3 +77,23 @@ F1 @ 13,75:1 **99,53**. Mas o encolhimento quase não pesa: com 3 nós (um por
 categoria) o FL k≥2 ainda tem 99,25 % de recall — as três categorias são inundações
 parecidas e um especialista detecta as outras. Subconjunto fácil, pouco informativo
 sobre recuperação.
+
+## Decisão final (2026-10-07): NÃO usado; o perfil sem tempo/atribuição vai por ablação
+
+Revertida a reinclusão abaixo (opção "B", escolhida para valorizar o trabalho): um quarto
+domínio só com inundações, sem os ataques mais relevantes de IoT, enfraquece o artigo; o
+caminho sem tempo e sem atribuição é testado por **ablação controlada** no CICIDS2017-C
+(mesmos dados e especialistas, perfil `it-flow-blind`: tick por contagem, atribuição
+`none`; `scripts/_cicids_profile_ablation.py`). O subconjunto volumétrico fica como
+evidência na auditoria de que o FPR vinha dos rótulos.
+
+## Decisão intermediária (2026-10-07, revertida): reincluído como quarto domínio, restrito a `ciciot2023-3`
+
+O usuário decidiu reincluir o CICIoT2023 com **DDoS, DoS e Mirai** (N = 6), pelo mesmo
+critério aplicado ao Electra: ficam as categorias cujos rótulos a verificação de protocolo
+confirma; Recon, Web, BruteForce e Spoofing ficam fora (rótulo de sessão). Papel no artigo:
+**condição de contorno** da troca FL→GL (categorias sobrepostas: FL k≥2 com 3 nós ainda
+99,25 %, perder nós custa pouco) e **único perfil sem tempo e sem atribuição** (tick por
+contagem, `attribution: none`), o que dá experimento a esse caminho do núcleo (RQ5).
+Sem triagem por janela (não há tempo). Ressalva registrada no texto: a verificação de
+rótulos foi motivada pelos falsos positivos de uma primeira rodada com as 7 categorias.

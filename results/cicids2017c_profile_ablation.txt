@@ -1,0 +1,11 @@
+per-flow detection (identical under both profiles): recall 98.36%, FPR 0.388%, F1 98.87
+mean test flows per occupied 10-s window: 186
+
+profile                            attack win benign win  median s |             network-wide |   network-wide OR per specialist
+it-flow (time tick, 10 s)                 630      1,819      8.74 |  25.9% FA    3 (0.165%) |  73.5% FA    3 (0.165%)
+it-flow-blind (count tick, M=100)       2,384      2,160      1.17 |  78.2% FA    3 (0.139%) |  85.6% FA    3 (0.139%)
+it-flow-blind (count tick, M=300)         883        632      5.02 |  77.2% FA    2 (0.316%) |  87.2% FA    2 (0.316%)
+it-flow-blind (count tick, M=1000)        291        164     34.07 |  84.2% FA    1 (0.610%) |  90.7% FA    1 (0.610%)
+it-flow-blind (count tick, M=3000)        104         48    146.15 |  88.5% FA    1 (2.083%) |  92.3% FA    1 (2.083%)
+
+attribution: it-flow names the source address of every alarm; it-flow-blind names none, so intrusion-driven isolation cannot be exercised under it.
