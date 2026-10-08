@@ -1,0 +1,84 @@
+=== (i) STRUCTURE ===
+  00166cab6b88: 70,363 minutes, 2018-05-28 .. 2018-07-17; gaps > 2 min: 85
+  0017882b9a25: 43,728 minutes, 2018-09-24 .. 2018-10-26; gaps > 2 min: 57
+  44650d56ccd3: 43,728 minutes, 2018-09-24 .. 2018-10-26; gaps > 2 min: 57
+  50c7bf005639: 70,371 minutes, 2018-05-28 .. 2018-07-17; gaps > 2 min: 87
+  70ee50183443: 70,358 minutes, 2018-05-28 .. 2018-07-17; gaps > 2 min: 85
+  74c63b29d71d: 43,735 minutes, 2018-09-24 .. 2018-10-26; gaps > 2 min: 58
+  d073d5018308: 43,730 minutes, 2018-09-24 .. 2018-10-26; gaps > 2 min: 58
+  ec1a5979f489: 70,360 minutes, 2018-05-28 .. 2018-07-17; gaps > 2 min: 87
+  ec1a59832811: 70,358 minutes, 2018-05-28 .. 2018-07-17; gaps > 2 min: 87
+  f4f5d88f0a3c: 43,729 minutes, 2018-09-24 .. 2018-10-26; gaps > 2 min: 58
+total device-minutes 570,460; features 41
+
+=== (ii) LABELS: affected protocol counters inside each interval vs the hour before ===
+                       intervals  median_ratio  median_rise_pkt_min  expected_pkt_min  visible_share
+cat              rate                                                                               
+ArpSpoof         1            10         29.31                49.33                60           1.00
+                 10           10         21.89               251.96               600           1.00
+                 100          10          7.76               413.28              6000           1.00
+PingOfDeath      1             6         52.95                75.40                60           1.00
+                 10            6         32.05               542.44               600           1.00
+                 100           6          9.01               908.12              6000           1.00
+Smurf            1             4         50.55                49.55                60           1.00
+                 10            4         33.20               343.24               600           1.00
+                 100           4         10.77               772.90              6000           1.00
+TcpSynDevice     1            19         10.04               149.81                60           0.68
+                 10           18         24.99              1082.79               600           0.78
+                 100          19         11.18              2476.29              6000           0.74
+TcpSynReflection 1            20          3.09               147.31                60           0.60
+                 10           19          9.17              1000.94               600           0.79
+                 100          20         10.24              2543.70              6000           0.70
+UdpDevice        1             7         25.16                97.03                60           0.86
+                 10            7         14.19               496.46               600           0.71
+                 100           7          7.22               763.60              6000           0.71
+UdpReflection    1            13          4.05               165.57                60           0.62
+                 10           12          4.76               472.33               600           0.67
+                 100          12          2.86               931.94              6000           0.58
+annotated minutes found in the data: 2,300 (intervals 234, x10 min = 2,340)
+
+=== (iii) TIME ===
+days with data 83, with attacks 9; normal minutes on attack days 55,596
+intervals per category: {'TcpSynReflection': 59, 'TcpSynDevice': 57, 'UdpReflection': 37, 'ArpSpoof': 30, 'UdpDevice': 21, 'PingOfDeath': 18, 'Smurf': 12}
+
+=== (iv) ATTRIBUTION ===
+victim device per interval: known (annotation per device); origin: {'local': 138, 'internet': 96} ; devices: 10
+
+=== (v) PREVALENCE ===
+  Normal              568,160  99.60%
+  TcpSynReflection        579  0.10%
+  TcpSynDevice            558  0.10%
+  UdpReflection           357  0.06%
+  ArpSpoof                297  0.05%
+  UdpDevice               209  0.04%
+  PingOfDeath             180  0.03%
+  Smurf                   120  0.02%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 over categories ===
+  counters                   random 70/30           macro-F1=0.845  ArpSpoof=0.93  Normal=0.99  PingOfDea=0.89  Smurf=0.90  TcpSynDev=0.64  TcpSynRef=0.67  UdpDevice=0.83  UdpReflec=0.90
+  counters                   time, intervals whole  macro-F1=0.368  ArpSpoof=0.91  Normal=0.98  PingOfDea=0.00  Smurf=0.52  TcpSynDev=0.14  TcpSynRef=0.10  UdpDevice=0.06  UdpReflec=0.24
+  counters + device + time   random 70/30           macro-F1=0.937  ArpSpoof=0.92  Normal=1.00  PingOfDea=0.96  Smurf=0.94  TcpSynDev=0.91  TcpSynRef=0.90  UdpDevice=0.91  UdpReflec=0.95
+  counters + device + time   time, intervals whole  macro-F1=0.407  ArpSpoof=0.88  Normal=0.94  PingOfDea=0.49  Smurf=0.21  TcpSynDev=0.00  TcpSynRef=0.32  UdpDevice=0.18  UdpReflec=0.24
+
+=== ReSIDS PROTOCOL — all seven categories (14 specialists, time split with intervals whole) ===
+test: {'Normal': 170324, 'TcpSynReflection': 170, 'TcpSynDevice': 168, 'UdpReflection': 109, 'ArpSpoof': 90, 'UdpDevice': 59, 'PingOfDeath': 50, 'Smurf': 40}
+  GL (union of 14) k>=1: recall 82.36%  FPR 23.5680% (FP 40142)  F1 2.73  F1@13.75 32.53
+  GL (union of 14) k>=2: recall 76.82%  FPR 5.4326% (FP 9253)  F1 10.07  F1@13.75 61.09
+  per category minute recall (GL k>=2): {'TcpSynReflection': np.float64(68.2), 'TcpSynDevice': np.float64(93.5), 'ArpSpoof': np.float64(90.0), 'UdpReflection': np.float64(74.3), 'UdpDevice': np.float64(20.3), 'PingOfDeath': np.float64(86.0), 'Smurf': np.float64(92.5)}
+  minute recall by attack rate (pkt/s): {1: np.float64(81.4), 10: np.float64(74.2), 100: np.float64(75.1)}
+  attack intervals detected (any minute flagged): 63/70 (90.0%)  per category {'TcpSynReflection': '14/18', 'TcpSynDevice': '17/17', 'ArpSpoof': '9/9', 'UdpReflection': '11/11', 'UdpDevice': '3/6', 'PingOfDeath': '5/5', 'Smurf': '4/4'}
+  false alarms per device-day: 78.23 (9253 alarmed normal minutes over 118 device-days)
+  FL k>=2 with 7 nodes: recall 46.6%  FPR 1.1960%  per category {'TcpSynRef': np.float64(30.6), 'TcpSynDev': np.float64(74.4), 'ArpSpoof': np.float64(88.9), 'UdpReflec': np.float64(2.8), 'UdpDevice': np.float64(20.3), 'PingOfDea': np.float64(60.0), 'Smurf': np.float64(45.0)}
+  FL k>=2 with 3 nodes: recall 35.7%  FPR 0.9206%  per category {'TcpSynRef': np.float64(29.4), 'TcpSynDev': np.float64(67.9), 'ArpSpoof': np.float64(88.9), 'UdpReflec': np.float64(0.9), 'UdpDevice': np.float64(0.0), 'PingOfDea': np.float64(0.0), 'Smurf': np.float64(0.0)}
+  FL k>=2 with 2 nodes: recall 29.0%  FPR 0.9130%  per category {'TcpSynRef': np.float64(28.8), 'TcpSynDev': np.float64(67.9), 'ArpSpoof': np.float64(38.9), 'UdpReflec': np.float64(0.9), 'UdpDevice': np.float64(0.0), 'PingOfDea': np.float64(0.0), 'Smurf': np.float64(0.0)}
+
+=== ReSIDS PROTOCOL — label set unsw-iot-3 (6 specialists, time split with intervals whole) ===
+test: {'Normal': 170324, 'ArpSpoof': 90, 'PingOfDeath': 50, 'Smurf': 40}
+  GL (union of 6) k>=1: recall 87.78%  FPR 4.6864% (FP 7982)  F1 3.80  F1@13.75 69.61
+  GL (union of 6) k>=2: recall 71.11%  FPR 0.0258% (FP 44)  F1 72.73  F1@13.75 82.94
+  per category minute recall (GL k>=2): {'ArpSpoof': np.float64(74.4), 'PingOfDeath': np.float64(68.0), 'Smurf': np.float64(67.5)}
+  minute recall by attack rate (pkt/s): {1: np.float64(64.0), 10: np.float64(70.0), 100: np.float64(77.1)}
+  attack intervals detected (any minute flagged): 18/18 (100.0%)  per category {'ArpSpoof': '9/9', 'PingOfDeath': '5/5', 'Smurf': '4/4'}
+  false alarms per device-day: 0.37 (44 alarmed normal minutes over 118 device-days)
+  FL k>=2 with 3 nodes: recall 23.3%  FPR 0.0065%  per category {'ArpSpoof': np.float64(0.0), 'PingOfDea': np.float64(48.0), 'Smurf': np.float64(45.0)}
+  FL k>=2 with 2 nodes: recall 0.0%  FPR 0.0000%  per category {'ArpSpoof': np.float64(0.0), 'PingOfDea': np.float64(0.0), 'Smurf': np.float64(0.0)}
