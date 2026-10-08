@@ -1,0 +1,29 @@
+% Paper 2 (ReSIDS v2) -- limitations (discussion section). Impersonal style.
+% Evidence: docs/RESULTADOS_ciciot2023.md (label/protocol check), docs/RESULTADOS_electra.md
+% (path labels, process transient), docs/paper_v2_dataset_audit.tex (Morris-4, ERENO).
+% Decided 2026-10-07: context-aware detection (per-source state, benign model of
+% communication relations, Tier-2 specification rules) stays OUT of Paper 2; cited as
+% future work only.
+
+\paragraph{Limitations.}
+The specialists judge one sample at a time, from its content. Attacks defined by their
+context rather than their content therefore escape them: the spoofing and
+man-in-the-middle attacks of CICIoT2023, whose ARP packets never reach the flow records;
+the replayed packets and the read requests relayed by the attacker's host in Electra,
+which carry the content of normal packets; and the masquerade attacks of ERENO, which
+mimic the legitimate publisher. Detecting them requires state kept per source, such as
+rates, sequence numbers and repeated content, or a model of the communication relations
+learned from benign traffic alone, in which a new path is itself the anomaly. Neither is
+part of this work. The specialists are also supervised, and they reproduce the errors of
+their labels: in CICIoT2023, labels that mark the capture session taught them to flag
+benign traffic as attack, and nothing inside ReSIDS revealed it. The external audit did,
+prompted by the false-positive rate that the evaluation at realistic prevalence exposed.
+Process transients are a third source of error: in Electra, seven minutes of legitimate
+register values outside their usual range were taken for modified responses. Finally, the IoT
+domain rests on one dataset and three attack categories. Of the eight public IoT and
+industrial IoT datasets audited, only the UNSW IoT traces support a sound evaluation, and
+there, at one-minute resolution, TCP and UDP floods against busy devices fall within normal
+variation; reconnaissance, web and brute-force attacks on IoT devices remain without a
+dataset that would allow their evaluation. ARP spoofing, by contrast, is detected there:
+counters aggregated per device and minute already carry the context that a single packet
+lacks.

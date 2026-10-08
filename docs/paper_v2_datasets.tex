@@ -4,12 +4,12 @@
 % DECISIONS encoded below (confirm): CICIDS2017 'Infiltration - Portscan' merged into
 % PortScan; 'Attempted' flows labelled benign; Heartbleed excluded; Init Win Bytes
 % excluded.
-% 2026-10-07: CICIoT2023 dropped (labels mark the capture session in four of seven
-% categories; audit). ToN_IoT and Morris-2/3/4 rejected. Electra Modbus retained as the
-% third domain with four content-observable categories (scripts/cross_domain_electra.py:
-% GL k>=2 recall 99.94%, 0 false positives on 4.17 M normal packets; FL 51.7% with 4 nodes).
-% IoT-23 still under audit. The count-based tick and attribution "none" were exercised
-% only by CICIoT2023.
+% 2026-10-08: four domains, ERENO, corrected CICIDS2017, Electra Modbus (electra-4) and the
+% UNSW IoT attack traces (unsw-iot-3; scripts/inspect_unsw_iot.py, docs/RESULTADOS_unsw_iot.md):
+% the IoT domain of Disaster-FD. CICIoT2023 rejected (a volumetric-only 4th domain was
+% considered and reverted). The profile without time and attribution is exercised by
+% ablation on CICIDS2017-C (it-flow-blind). ToN_IoT, Morris-2/3/4, IoT-23, X-IIoTID and
+% Kitsune rejected.
 
 \subsection{Datasets and domain profiles}
 \label{sec:datasets}
@@ -27,9 +27,12 @@ traffic carries time and whether an alarm can be attributed to an emitter; and
 (iii)~\emph{verified data integrity}. Label inaccuracy and the base-rate fallacy are
 among the most frequent pitfalls of learning-based security
 evaluation~\cite{axelsson2000baserate,sommer2010outside,arp2022dos}, so every candidate
-was audited before use (Section~\ref{sec:dataset-audit}). Three public datasets passed:
-an IEC~61850 substation, an enterprise network and the Modbus control network of a
-railway traction substation. Table~\ref{tab:datasets} summarises them.
+was audited before use (Section~\ref{sec:dataset-audit}). Four public datasets are used:
+an IEC~61850 substation, an enterprise network, the Modbus control network of a railway
+traction substation and a network of consumer IoT devices, the last two only for the
+attack categories whose labels the audit could verify. A further profile, without traffic
+time or attribution, is exercised by an ablation on the enterprise traffic.
+Table~\ref{tab:datasets} summarises them.
 
 \begin{table}[t]
 \centering
@@ -46,6 +49,10 @@ CICIDS2017-C~\cite{engelen2021troubleshooting} & enterprise network & time &
   source address & \texttt{cicids2017c-7} & attribution and time \\
 Electra Modbus~\cite{perales2019electra} & industrial control network & time &
   source MAC address & \texttt{electra-4} & industrial traffic \\
+UNSW IoT~\cite{hamza2019unsw} & consumer IoT devices & time & none &
+  \texttt{unsw-iot-3} & IoT devices \\
+CICIDS2017-C, ablation & enterprise network & sample count & none &
+  \texttt{cicids2017c-7} & profile without time \\
 \bottomrule
 \multicolumn{6}{@{}l}{\footnotesize $^{a}$ All messages carry the legitimate publisher's
 identity; see the ERENO paragraph.}
@@ -53,16 +60,16 @@ identity; see the ERENO paragraph.}
 \end{table}
 
 Every domain uses two specialists per category of its label set: $N=14$ for ERENO and
-the corrected CICIDS2017, $N=8$ for Electra. Identifiers (addresses, ports, timestamps,
-flow and message identities) feed the profile, i.e., the tick and the attribution, and
-never the features. This avoids the shortcuts that identifiers create in benchmark
-datasets~\cite{flood2024smells}.
+the corrected CICIDS2017, $N=8$ for Electra and $N=6$ for the UNSW IoT traces. Identifiers
+(addresses, ports, timestamps, flow and message identities) feed the profile, i.e., the
+tick and the attribution, and never the features. This avoids the shortcuts that
+identifiers create in benchmark datasets~\cite{flood2024smells}.
 
 \paragraph{ERENO (case study).}
 ERENO~\cite{quincozes2023ereno} generates IEC~61850 GOOSE and Sampled Values traffic for
 digital substations, with seven attacks against the publish--subscribe messages that
 carry protection signals. It is the case study inherited from v1, the only domain whose
-traffic is time-critical, and the most demanding of the three. The authors' train/test
+traffic is time-critical, and the most demanding of the four. The authors' train/test
 split is kept: each periodic GOOSE frame accompanies thousands of SV frames, so a random
 re-split would leak. Publisher identities (MAC addresses, \texttt{gocbRef},
 \texttt{goID}) and the three absolute-time markers are removed from the features, so
@@ -78,71 +85,118 @@ CICIDS2017~\cite{sharafaldin2018toward} is the most cited network intrusion benc
 but its original labels and flow features contain errors that change detection
 results~\cite{engelen2021troubleshooting,lanvin2023errors,liu2022error}. The corrected
 re-extraction of Engelen et al.~\cite{engelen2021troubleshooting,liu2022error} is used,
-with its five days (2{,}099{,}976 flows). It is the only domain that provides, on
-captured traffic, three properties the core needs. Real flow timestamps let the
-time-based local tick run on live traffic. Source addresses point at the emitter, either
-the attacker's gateway or a compromised internal host, so the \texttt{device\_address}
-attribution, and therefore intrusion-driven isolation, can be exercised. A benign-only
-day (Monday, eight hours) extends the benign volume available for the prevalence
-analysis well beyond that of ERENO. The label set \texttt{cicids2017c-7} groups the
-classes into DoS, DDoS, port scan, FTP/SSH brute force, web attack, botnet and
-infiltration; Heartbleed (11 flows) is excluded. The audit sets three conditions of use.
-Flows labelled ``Infiltration -- Portscan'' are merged into port scan, because 91{,}253
-of the scan flows are identical under both labels. The initial TCP window sizes are
-excluded from the features, because they fingerprint the scanning host. And the 11{,}979
-flows marked \emph{Attempted}, whose attacks delivered no payload, are labelled benign.
-The web and infiltration categories keep only 104 and 36 flows, and their figures are
-reported with confidence intervals.
+with its five days (2{,}099{,}976 flows). It provides, on captured traffic, three
+properties the core needs. Real flow timestamps let the time-based local tick run on live
+traffic. Source addresses point at the emitter, either the attacker's gateway or a
+compromised internal host, so the \texttt{device\_address} attribution, and therefore
+intrusion-driven isolation, can be exercised. A benign-only day (Monday, eight hours)
+extends the benign volume available for the prevalence analysis well beyond that of
+ERENO. The label set \texttt{cicids2017c-7} groups the classes into DoS, DDoS, port scan,
+FTP/SSH brute force, web attack, botnet and infiltration; Heartbleed (11 flows) is
+excluded. The audit sets three conditions of use. Flows labelled ``Infiltration --
+Portscan'' are merged into port scan, because 91{,}253 of the scan flows are identical
+under both labels. The initial TCP window sizes are excluded from the features, because
+they fingerprint the scanning host. And the 11{,}979 flows marked \emph{Attempted}, whose
+attacks delivered no payload, are labelled benign. The web and infiltration categories
+keep only 104 and 36 flows, and their figures are reported with confidence intervals.
 
 \paragraph{Electra Modbus (industrial traffic).}
 Electra~\cite{perales2019electra} records the control network of an electric traction
 substation built after one in service on a high-speed railway: five programmable logic
 controllers and a SCADA system that communicate over Modbus/TCP and S7Comm. The Modbus
-release is used, with 16{,}289{,}277 packets over about fourteen hours. It adds the
-domain the other two lack, industrial control traffic with request--response polling, and
-it is the dataset closest to operational prevalence: the attacks retained below make up
-0.41\% of the packets once the excluded types are removed. Packet timestamps drive the time-based tick, and every attack packet has the
-man-in-the-middle host as its source or destination, identified by its MAC address, so
-\texttt{device\_address} attribution is exercised in a second domain. The audit sets one condition of use. Three of the seven
-attack labels mark the path of a packet rather than its content: packets relayed
-unchanged by the man-in-the-middle host (\texttt{MITM\_UNALTERED}), replayed packets and
-most read requests issued by that host have the same content as normal packets and are
-told apart only by the host's MAC address. Those three types are excluded. The label set
-\texttt{electra-4} keeps the four types visible in the packet content: reconnaissance,
-unauthorised writes, forced errors and modified responses. Features are the content fields
-of each packet (request flag, function code, error code, register address and value);
-addresses and time feed the profile only. The forced-error category keeps 1{,}129 packets,
-and its figures are reported with confidence intervals.
+release is used, with 16{,}289{,}277 packets over about fourteen hours. It adds
+industrial control traffic with request--response polling, and it is the dataset closest
+to operational prevalence: the attacks retained below make up 0.41\% of the packets once
+the excluded types are removed. Packet timestamps drive the time-based tick, and every
+attack packet has the man-in-the-middle host as its source or destination, identified by
+its MAC address, so \texttt{device\_address} attribution is exercised in a second domain.
+The audit sets one condition of use. Three of the seven attack labels mark the path of a
+packet rather than its content: packets relayed unchanged by the man-in-the-middle host
+(\texttt{MITM\_UNALTERED}), replayed packets and most read requests issued by that host
+have the same content as normal packets and are told apart only by the host's MAC
+address. Those three types are excluded. The label set \texttt{electra-4} keeps the four
+types visible in the packet content: reconnaissance, unauthorised writes, forced errors
+and modified responses. Features are the content fields of each packet (request flag,
+function code, error code, register address and value); addresses and time feed the
+profile only. The forced-error category keeps 1{,}129 packets, and its figures are
+reported with confidence intervals.
+
+\paragraph{UNSW IoT attack traces (IoT devices).}
+The UNSW IoT attack traces~\cite{hamza2019unsw} follow ten consumer IoT devices, cameras,
+smart plugs and sensors, for 32 to 49 days each, the setting Disaster-FD is designed for.
+Each sample describes one device during one minute, by the packet and byte counters of the
+flows of its MUD profile, summed per direction, reach and protocol into 41 features. The
+234 annotated attacks, of ten minutes each, are interleaved with the devices' normal
+traffic and make up 0.40\% of the device-minutes, a realistic prevalence. One agent watches
+one device, and the minute is its local tick. The counters belong to the victim device,
+not to the emitter, so attribution is \texttt{none}: this domain exercises the core with
+time but without an emitter to isolate. The audit sets one condition of use. In every
+annotated interval of ARP spoofing, ping of death and Smurf attacks, the counters of the
+protocol the attack uses rise above the hour before, but in TCP and UDP floods and
+reflections they do so in only 58 to 86\% of the intervals: at one-minute resolution,
+those attacks are within the normal variation of a busy device, and specialists trained on
+them flag 5.4\% of the normal device-minutes. The label set \texttt{unsw-iot-3} keeps the
+three categories visible in every interval; this criterion was set after that first run.
+Attack intervals are kept whole across the time-ordered split. The test holds 180 attack
+minutes, and the figures are reported with confidence intervals.
+
+\paragraph{Profile without time or attribution (ablation).}
+Some releases carry neither timestamps nor addresses; CICIoT2023, rejected by the audit,
+is one. Their profile has a count-based local tick, one tick every $M$ samples in arrival
+order, and attribution \texttt{none}, under which an intrusion raises alarms but never an
+isolation. Rather than a fourth dataset, which would change the data and the profile at
+once, this profile is exercised by an ablation: the corrected CICIDS2017 is run under it
+(\texttt{it-flow-blind}) with the same specialists and the same split, so that only the
+profile changes. Per-flow detection is identical by construction, since the features do
+not change. The window triage and the alarms differ: count windows replace time windows,
+and alarms carry no emitter.
 
 \paragraph{Datasets not used.}
 The original CICIDS2017 release is not used, because of the label errors documented
 above; neither is CSE-CIC-IDS2018, which shares its generation methodology and its error
 classes~\cite{liu2022error}. NSL-KDD~\cite{tavallaee2009nslkdd}, still common in recent
 work, is not considered: its records carry neither timestamps nor addresses, and it
-inherits the artefacts of the 1998 DARPA traffic~\cite{mchugh2000darpa}. CICIoT2023~\cite{neto2023ciciot2023}, first selected as the
-IoT domain, was rejected: in four of its seven categories the labels mark the capture
-session rather than the attack, and specialists trained on them flag benign traffic as
-attack. ToN\_IoT~\cite{moustafa2021toniot}, audited to replace it, has consistent labels
-but a narrow normal class: under the same protocol, 18\% of its normal flows are flagged.
-Re-extractions of the same captures inherit these defects and are not considered either:
+inherits the artefacts of the 1998 DARPA traffic~\cite{mchugh2000darpa}.
+CICIoT2023~\cite{neto2023ciciot2023}, first selected as the IoT domain, was rejected: in
+four of its seven categories (reconnaissance, web, brute force and spoofing) the labels
+mark the capture session rather than the attack, and specialists trained on them flag
+benign traffic as attack. Its three volumetric categories have consistent labels, but
+they leave out the attacks that matter most in IoT networks. The IoT and industrial IoT
+datasets audited to replace it were rejected as well.
+ToN\_IoT~\cite{moustafa2021toniot} has consistent labels but a narrow normal class: under
+the same protocol, 18\% of its normal flows are flagged. Re-extractions of the same
+captures inherit these defects and are not considered either:
 CIC-ToN-IoT~\cite{cic2021toniot} re-extracts the ToN\_IoT captures with CICFlowMeter, and
 NF-UQ-NIDS~\cite{sarhan2021netflow} merges NetFlow versions of four releases, ToN\_IoT and
 CSE-CIC-IDS2018 among them, so that the network a flow comes from also identifies its
-source dataset.
-Thirteen further candidates, from industrial, medical, aerial, power-system, gas-pipeline,
-water and industrial-control settings, failed the audit or added no property the three
-retained datasets lack (Section~\ref{sec:dataset-audit}). One of them, HAI, has sound
-labels and genuine process data but is built for one-class anomaly detection, as are SWaT
-and WADI~\cite{mathur2016swat,ahmed2017wadi}, available on request; using them is left to
-a one-class variant of the specialists.
+source dataset. In IoT-23~\cite{garcia2020iot23}, the ``benign'' flows of the malware
+captures are mostly the infected host's unlabelled scanning, and in
+X-IIoTID~\cite{alhawawreh2022xiiotid} the classes are recorded in separate sessions and
+13\% of the normal connections are flagged. In Kitsune~\cite{mirsky2018kitsune}, each
+attack lies in its own capture, the features carry the capture time, and normal packets
+identify the capture they come from, so that specialists flag up to 92\% of the normal
+traffic of one capture. Thirteen further candidates, from industrial,
+medical, aerial, power-system, gas-pipeline, water and industrial-control settings, failed
+the audit or added no property the four retained datasets lack
+(Section~\ref{sec:dataset-audit}). One of them, HAI, has sound labels and genuine process
+data but is built for one-class anomaly detection, as are SWaT and
+WADI~\cite{mathur2016swat,ahmed2017wadi}, available on request; using them is left to a
+one-class variant of the specialists.
 
 \paragraph{Threats to validity.}
 The corrected CICIDS2017 is a laboratory capture, Electra a testbed reproducing an
-industrial installation, and ERENO synthetic traffic generated by deterministic attack
-rules. The four Electra categories are separable by packet content, so that domain tests
-the architecture under node loss rather than the difficulty of detection. A detector evaluated on them may not reflect
-operational conditions~\cite{sommer2010outside,arp2022dos}. Categories with fewer than
-about a hundred positive flows yield per-category figures with wide confidence
-intervals; they are reported, but no conclusion is drawn from them. Results are not
-compared across datasets: the claim under test is that the same core runs unchanged
-under different profiles, not that a model trained in one domain detects attacks in another.
+industrial installation, the UNSW IoT traces a deployment of real consumer devices in a
+laboratory, and ERENO synthetic traffic generated by deterministic attack rules. A detector
+evaluated on them may not reflect operational
+conditions~\cite{sommer2010outside,arp2022dos}. Two label sets are restricted. The four
+Electra categories are separable by packet content, so that domain tests the architecture
+under node loss rather than the difficulty of detection; their selection follows the label
+check of the audit (the path of each packet), made before the evaluation protocol was run
+on Electra. The three UNSW IoT categories follow a check of the counters against each
+annotated interval, which does not depend on detector output but was applied after a first
+run with all seven categories; the excluded floods are real attacks that one-minute
+counters cannot separate from normal variation, not label errors. Categories with fewer than about a hundred positive flows yield
+per-category figures with wide confidence intervals; they are reported, but no conclusion
+is drawn from them. Results are not compared across datasets: the claim under test is
+that the same core runs unchanged under different profiles, not that a model trained in
+one domain detects attacks in another.

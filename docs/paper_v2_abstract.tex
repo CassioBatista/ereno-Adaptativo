@@ -1,7 +1,13 @@
 % Paper 2 (ReSIDS v2) -- abstract, keywords and highlights for Engineering Applications
 % of Artificial Intelligence (EAAI). Impersonal style.
-% EAAI limits: abstract <= 250 words (this one: 248); 1-6 keywords; 3-5 highlights of
+% EAAI limits: abstract <= 250 words (this one: 249); 1-6 keywords; 3-5 highlights of
 % <= 85 characters.
+% 2026-10-08: fourth domain, consumer IoT (UNSW IoT attack traces, label set unsw-iot-3;
+% scripts/inspect_unsw_iot.py, docs/RESULTADOS_unsw_iot.md): GL k>=2 detects 18/18 test
+% attacks (any minute of the 10-min interval flagged; 71.1% of attack minutes), 44 alarmed
+% normal device-minutes over 118 device-days = 0.37/device-day ("one false alarm every
+% three device-days"); FPR 0.026%. Restricted label set: say so in the body.
+% Cuts to fit: "coordinating a shared model", "in real traffic", closing sentence shortened.
 % 2026-10-07: three domains. Electra Modbus (label set electra-4): GL k>=2 F1 99.97%,
 % recall 99.94%, 0 FP on the test period (scripts/cross_domain_electra.py); FL k>=2 with
 % 3 nodes 42.8%, response modification 0% ("FL alone loses whole attack categories":
@@ -39,23 +45,21 @@ distributed architectures, from enterprise networks to the Internet of Things an
 cyber-physical systems. While this shift opens new landscapes and opportunities, it also
 enlarges the attack surface, calling for adaptive distributed intrusion detection that
 keeps working while its own nodes fail. Federated learning (FL) has been widely adopted
-to train intrusion detectors, coordinating a shared model
-through a server; gossip learning (GL), far less explored, lets peers exchange models
-directly. This research presents ReSIDS, which combines both: it fuses
+to train intrusion detectors through a server; gossip learning (GL), far less explored,
+lets peers exchange models directly. This research presents ReSIDS, which combines both: it fuses
 per-attack gradient-boosted specialists by k-of-n voting and switches between FL and GL
 at runtime. A federated failure detector monitors the nodes and commands each switch:
 the system moves to GL when nodes fail and returns to FL once they recover. Applying it
-to another network requires only retraining the specialists. Because
-attacks are rare in real traffic, individual alerts are dominated by false alarms;
-ReSIDS therefore counts them per window, network-wide and per specialist: a slow attack accumulates
-in its own specialist, whereas false alarms spread. On three public datasets, IEC 61850
-substation traffic (ERENO), enterprise traffic (corrected CICIDS2017) and
-railway-substation Modbus traffic (Electra), detection is unchanged as membership shrinks
-to 3 nodes (F1-score 95.98\%, 98.87\% and 99.97\%), while FL alone loses whole attack
-categories, and windowed alarms flag 99.3\%, 73.5\% and 88.7\% of attack windows at
-false-alarm rates up to 0.17\%.
-Runtime switching makes the learning topology an operational choice rather than a
-design-time commitment.
+to another network requires only retraining the specialists. Since attacks are rare,
+individual alerts are mostly false alarms; ReSIDS therefore counts them per window,
+network-wide and per specialist: a slow attack accumulates in its own specialist, whereas
+false alarms spread. On public IEC 61850 substation (ERENO), enterprise (corrected
+CICIDS2017) and railway Modbus (Electra) traffic, detection is unchanged as membership
+shrinks to 3 nodes (F1-score 95.98\%, 98.87\% and 99.97\%), while FL alone loses whole
+attack categories, and windowed alarms flag 99.3\%, 73.5\% and 88.7\% of attack windows at
+false-alarm rates up to 0.17\%. On consumer IoT devices (UNSW), every test attack is
+detected, at one false alarm every three device-days. Runtime switching turns the
+learning topology into an operational choice.
 \end{abstract}
 
 \begin{keyword}
@@ -68,4 +72,4 @@ intrusion detection \sep federated learning \sep gossip learning \sep failure de
 %  - A federated failure detector commands every switch; agents act alone as fallback (80)
 %  - Detection is unchanged as the training membership shrinks from 14 to 3 nodes (76)
 %  - Per-specialist window triage: 99.3% of attack windows at a 0.14% false-alarm rate (81)
-%  - Domain profiles reuse one architecture for substation, enterprise and railway traffic (85)
+%  - One architecture for substation, enterprise, railway Modbus and IoT traffic (75)

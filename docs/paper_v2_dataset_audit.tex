@@ -17,6 +17,15 @@
 %   scripts/inspect_cps_survey4.py    -> results/{morris1,hai2007,westermo,powerduck}_audit.txt
 %                                        (+ results/cps_survey4_followup.txt)
 %   scripts/inspect_hai2305.py        -> results/hai2305_audit.txt (SHA-256 checked against GitHub LFS)
+%   scripts/inspect_iot23.py          -> results/iot23_audit.txt (Stratosphere archive,
+%                                        results/iot23_md5sums.txt)
+%   scripts/inspect_xiiotid.py        -> results/xiiotid_audit.txt (author's Kaggle upload,
+%                                        results/xiiotid_md5sums.txt); protocol:
+%                                        scripts/cross_domain_xiiotid.py -> results/cross_domain_xiiotid.txt
+%   scripts/inspect_unsw_iot.py       -> results/unsw_iot_audit.txt (audit + protocol;
+%                                        iotanalytics.unsw.edu.au, results/unsw_iot_attack_md5sums.txt)
+%   scripts/inspect_kitsune.py        -> results/kitsune_audit.txt (audit + protocol; author's
+%                                        Kaggle upload, per file, results/kitsune_md5sums.txt)
 %   scripts/inspect_electra.py        -> results/electra_audit.txt (perception.inf.um.es,
 %                                        results/electra_md5sums.txt); protocol:
 %                                        scripts/cross_domain_electra.py -> results/cross_domain_electra.txt
@@ -43,9 +52,11 @@ dataset is not public, and ICS-Flow carries no physical data. Before use, each o
 the ten was audited with the same protocol, and none could be retained. Three more datasets
 from the survey's own experiments, the Mississippi State gas-pipeline and water-tank sets
 (Morris-2, Morris-3 and Morris-4), were audited later and rejected too. The datasets used
-in the evaluation, ERENO, the corrected CICIDS2017 and Electra, went through the same
-protocol, as did CICIoT2023, first selected as the IoT domain and rejected by it, and
-ToN\_IoT, audited to replace it and rejected as well. Electra had first been set aside on
+in the evaluation, ERENO, the corrected CICIDS2017, Electra and the UNSW IoT attack traces,
+went through the same protocol, as did CICIoT2023, first selected as the IoT domain and
+rejected by it, and five further IoT and industrial IoT candidates audited to replace it:
+ToN\_IoT, IoT-23, X-IIoTID and Kitsune were rejected, and the UNSW IoT attack traces were
+retained. Electra had first been set aside on
 the survey's description because it carries no physical data; it was audited once the
 framing of this work no longer required physical data.
 Table~\ref{tab:dataset-audit} summarises the outcome; the scripts and their reports are
@@ -86,11 +97,19 @@ CICIDS2017, corrected~\cite{engelen2021troubleshooting} & enterprise network & L
   scans duplicated across two labels; window-size fingerprint & retained \\
 Electra Modbus~\cite{perales2019electra} & industrial control network & L &
   three labels mark the man-in-the-middle path, not the packet & retained$^{a}$ \\
+UNSW IoT~\cite{hamza2019unsw} & consumer IoT devices & L, A, X &
+  TCP/UDP floods invisible in minute counters & retained$^{b}$ \\
 \midrule
 CICIoT2023~\cite{neto2023ciciot2023} & IoT network & L, T, A, P &
   four of seven categories labelled by capture session & rejected \\
 ToN\_IoT~\cite{moustafa2021toniot} & IoT/IIoT network & S, T, P, X &
   narrow normal class; 18\% of normal flows flagged & rejected \\
+IoT-23~\cite{garcia2020iot23} & IoT network (malware) & L, T, P, X &
+  ``benign'' is the infected host's unlabelled traffic & rejected \\
+X-IIoTID~\cite{alhawawreh2022xiiotid} & industrial IoT & T, A, X &
+  host statistics act as a session clock; 13\% of normal flagged & rejected \\
+Kitsune~\cite{mirsky2018kitsune} & IoT and IP cameras & S, L, T, A, X &
+  timestamps in features; normal traffic identifies the capture & rejected \\
 Edge-IIoTset~\cite{ferrag2022edgeiiotset} & industrial IoT & S, L, T, A, X &
   two classes shifted by one column & rejected \\
 UAV-NIDD~\cite{hadi2025uavnidd} & UAV network & S, L, T, A, P, X &
@@ -119,7 +138,8 @@ HAI 23.05~\cite{shin2020hai} & ICS process (HIL) & A, X &
   sound labels; supervised detection fails on unseen attacks & not used \\
 \bottomrule
 \multicolumn{5}{@{}l}{\footnotesize $^{a}$ Restricted to the four attack types visible in
-the packet content.}
+the packet content. $^{b}$ Restricted to the three attack types visible in every annotated
+interval.}
 \end{tabular}
 \end{table}
 
@@ -211,10 +231,11 @@ reaches a 23.4\% false-positive rate. Calibrating their thresholds to a 0.1\% bu
 lowers the fused rate to 0.17\% but cuts their recall to 31--52\%. Restricted to the
 denial-of-service and Mirai classes, whose labels are consistent, the same protocol gives
 a 0.042\% false-positive rate, so the false alarms come from the labels rather than from
-the detector. That subset, however, holds three similar flooding categories, which one
-specialist alone detects, and cannot exercise recovery from node loss. (If the feature
-extractor discarded non-IP packets, the absence of ARP rows would be its effect; the
-conclusion that the rows do not contain the attack is unchanged.)
+the detector. That subset, however, leaves out the attacks that matter most in IoT
+networks, and its three similar floods, which one specialist alone detects, cannot
+exercise recovery from node loss; the dataset is therefore not used. (If the
+feature extractor discarded non-IP packets, the absence of ARP rows would be its effect;
+the conclusion that the rows do not contain the attack is unchanged.)
 
 \paragraph{ToN\_IoT.}
 % Verdict (2026-10-07): scripts/cross_domain_toniot.py, results/cross_domain_toniot.txt
@@ -246,6 +267,56 @@ denial-of-service and scanning specialists and extend beyond the degenerate conn
 completed ones. The normal class, 3.6\% of the flows and generated by few hosts, is too
 narrow for specialists trained against millions of attack flows to learn what normal
 traffic looks like, and the dataset is rejected.
+
+\paragraph{IoT-23.}
+IoT-23~\cite{garcia2020iot23} holds 325{,}309{,}946 Zeek flows from 20 captures of IoT
+devices infected by malware and three captures of benign devices, labelled per flow by
+analyst rules. Its structure is sound. Its labels are not. Within each malware capture,
+the flows that no rule marks keep the default label ``benign'': 99.6\% of them are
+connection attempts left unanswered, 93\% to the telnet port, the scanning pattern of the
+very botnets recorded, and the infected host originates 80 to 100\% of them in most
+captures. Benign traffic from uninfected devices, in the three benign captures, amounts to
+1{,}956 flows, against 90.5\% of attack flows in the release. Labels also mix behaviour
+with malware family: Okiru flows are single connection attempts to one port, identical to
+scanning flows. In a sample of up to 20{,}000 flows per capture and label, 65\% of the rows
+share their feature vector with another category. Each malware was recorded in its own
+capture, and the probe, without identifiers, falls from a macro-F1 of 0.70 on a random
+split to 0.51 on a time-ordered one and to 0.19 when whole captures are held out, where
+malicious and benign flows are told apart with an F1-score of 0.44. The labels describe
+the rules applied rather than the traffic, and the dataset is rejected.
+
+\paragraph{X-IIoTID.}
+X-IIoTID~\cite{alhawawreh2022xiiotid} joins, for 820{,}834 connections of an industrial
+IoT testbed, flow fields with host statistics (processor, input/output, memory), host
+alerts and log events, labelled at three levels along the attack life cycle. Its labels
+are consistent across levels, and on flow fields alone only 6\% of the rows share a vector
+with another class. The time check fails: each attack class was recorded on a few days of
+its own (the whole remote denial-of-service class within 16 minutes), the 451
+ransomware records have no timestamp or source address, and the source address alone
+predicts the class of 88\% of the rows. The host statistics drift with time and act as a
+session clock: on them alone, reconnaissance falls from an F1-score of 0.96 on a random
+split to 0.01 on a time-ordered one. On flow fields, the probe falls from 0.90 to 0.71,
+and the normal class from 0.96 to 0.59. Under the evaluation protocol, with the seven
+classes large enough for two specialists each and flow fields only, attack recall reaches
+94.5\%, but 13.1\% of the normal connections are flagged, mostly by the lateral-movement
+and reconnaissance specialists. The dataset is rejected.
+
+\paragraph{Kitsune.}
+Kitsune~\cite{mirsky2018kitsune} records IP-camera and IoT networks, one capture per attack,
+with per-packet labels and 115 incremental statistics per source address, channel and
+socket. Five attacks whose labels are not path labels were audited (Mirai, OS scan,
+fuzzing, SYN flood and SSDP flood; 11.6 million packets, read with a uniform stride). The
+OS-scan, fuzzing and SYN-flood labels are per packet, with tens of thousands of label runs,
+but every Mirai packet after the onset of the attack is labelled malicious, and 98\% of the
+SSDP ones. The fifteen jitter statistics carry the absolute capture time, an epoch value or
+its square, in 54 to 100\% of the rows. More decisively, normal packets identify the
+capture they come from: on a time-ordered split, a classifier assigns them to their capture
+with a macro-F1 of 0.85, 1.00 for Mirai, which was recorded on another network, and
+removing the jitter statistics does not change it. Under the evaluation protocol, with a
+time-ordered split per class inside each capture, attack recall is above 99\% but 7.5\%
+of the normal packets are flagged without the jitter statistics, and 25.6\% with them;
+on the Mirai capture, 78 to 92\% of the normal packets are flagged. The feature files carry
+no addresses. The dataset is rejected.
 
 \paragraph{CIC-BCCC-NRC-IoMT-2024.}
 This release re-extracts CICIoMT2024~\cite{dadkhah2024ciciomt}, captured from 40 medical
@@ -427,3 +498,25 @@ traffic of the capture), all within seven consecutive minutes and all of them re
 from one controller with register values outside their usual range, with no involvement of
 the attacker's host. A transient of the process thus looks like a modified response to a
 detector that sees one packet at a time.
+
+The UNSW IoT attack traces~\cite{hamza2019unsw} describe ten consumer IoT devices, cameras,
+smart plugs and sensors, by one row per device and minute that counts the packets and
+bytes of each flow of the device's MUD profile, over 32 to 49 days per device (570{,}460
+device-minutes). The 234 annotated attacks, of ten minutes each, at 1, 10 or 100 packets
+per second and from the local network or the Internet, fall on 9 of the 83 days and are
+interleaved with normal traffic: those days hold 55{,}596 normal device-minutes, and
+attacks make up 0.40\% of all device-minutes. Because each device has its own flows, the
+counters are summed per direction, reach and protocol into 41 common features. The label
+check compares, for every annotated interval, the counters of the protocol the attack uses
+with the hour before. They rise in every interval of ARP spoofing, ping of death and Smurf,
+by a median factor of 8 to 53 and even at one packet per second, but only in 58 to 86\% of
+the intervals of the TCP SYN floods and reflections, UDP floods and SSDP and SNMP
+reflections. At a resolution of one minute, those attacks add a few hundred packets, the
+size of the normal variation of a busy device. Under the evaluation protocol with all
+seven categories, the specialists of those floods flag 5.4\% of the normal device-minutes,
+half of them on one device. The label set \texttt{unsw-iot-3} keeps the three categories
+visible in every interval; this criterion was applied after that first run. The counters
+belong to the victim device, so the profile has no attribution. Under the protocol, with
+attack intervals kept whole across a time-ordered split, the six specialists flag 71.1\%
+of the attack minutes and every one of the 18 test attacks, at 0.026\% of the normal
+device-minutes, about one false alarm every three device-days.
