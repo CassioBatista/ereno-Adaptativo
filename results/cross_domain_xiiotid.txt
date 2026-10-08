@@ -1,0 +1,9 @@
+flow features (26): ['Protocol', 'Service', 'Duration', 'Scr_bytes', 'Des_bytes', 'Conn_state', 'missed_bytes', 'is_syn_only', 'Is_SYN_ACK', 'is_pure_ack', 'is_with_payload', 'FIN or RST', 'Bad_checksum', 'is_SYN_with_RST', 'Scr_pkts', 'Scr_ip_bytes', 'Des_pkts', 'Des_ip_bytes', 'total_bytes', 'total_packet', 'paket_rate', 'byte_rate', 'Scr_packts_ratio', 'Des_pkts_ratio', 'Scr_bytes_ratio', 'Des_bytes_ratio']
+train: {'Normal': 294991, 'RDOS': 98882, 'Reconnaissance': 89313, 'Weaponization': 47082, 'Lateral _movement': 22117, 'Exfiltration': 15493, 'Tampering': 3585, 'C&C': 2004}
+test:  {'Normal': 126426, 'RDOS': 42379, 'Reconnaissance': 38277, 'Weaponization': 20178, 'Lateral _movement': 9479, 'Exfiltration': 6641, 'Tampering': 1537, 'C&C': 859}
+GL (union of 14) k>=1: recall 94.94%  FPR 14.287%  F1 90.39  F1@13.75 48.51
+GL (union of 14) k>=2: recall 94.48%  FPR 13.108%  F1 90.69  F1@13.75 50.43
+per category recall (GL k>=2): {'RDOS': np.float64(100.0), 'Reconnaissance': np.float64(85.9), 'Weaponization': np.float64(97.1), 'Lateral _movement': np.float64(93.6), 'Exfiltration': np.float64(100.0), 'Tampering': np.float64(99.9), 'C&C': np.float64(97.9)}
+FL k>=2 with 7 nodes: recall 66.2%  FPR 0.800%
+FL k>=2 with 3 nodes: recall 0.0%  FPR 0.002%
+specialists firing on false positives: {'RDOS#0': 304, 'Reconnai#0': 4988, 'Weaponiz#0': 241, 'Lateral #0': 9449, 'Exfiltra#0': 686, 'Tamperin#0': 1372, 'C&C#0': 684, 'RDOS#1': 286, 'Reconnai#1': 4985, 'Weaponiz#1': 70, 'Lateral #1': 9466, 'Exfiltra#1': 534, 'Tamperin#1': 1358, 'C&C#1': 695}

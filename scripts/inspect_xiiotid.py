@@ -136,8 +136,12 @@ def main(path):
     for c in ("Scr_port", "Des_port"):
         Xi[c] = pd.to_numeric(df[c], errors="coerce").fillna(-1)
     ded = ~pd.util.hash_pandas_object(Xi[flow + host + alert], index=False).duplicated().values
-    idx = np.where(ded)[0]
     y, names = pd.factorize(df["class2"].values, sort=True)
+    rng = np.random.RandomState(42)          # <= 60k deduplicated rows per class
+    idx = np.sort(np.concatenate([rng.choice(np.where(ded & (y == c))[0],
+                                             min(60_000, int((ded & (y == c)).sum())), replace=False)
+                                  for c in range(len(names))]))
+    print("probe rows per class:", dict(zip(names, np.bincount(y[idx]))))
     sets = {"flow": flow, "host only": host, "alert/log only": alert, "flow + host": flow + host,
             "flow + host + alert": flow + host + alert,
             "all + identifiers": flow + host + alert + ["Timestamp", "Scr_IP", "Des_IP", "Scr_port", "Des_port"]}

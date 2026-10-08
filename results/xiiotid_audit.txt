@@ -1,0 +1,84 @@
+=== (i) STRUCTURE ===
+fields per line: ['68:820834']
+rows=820,834; flow=26, host=24, alert/log=9
+  Timestamp non-numeric: 451 rows; examples ['?', nan]; their classes {'crypto-ransomware': 451}
+  Date parsed 99.96%; Timestamp parsed 99.95%; Date == Timestamp's day (UTC) 75.38%, (+10 h, Australia) 93.53%
+  Timestamp range 2019-05-09 09:39:16 .. 2020-03-07 08:30:03; rows in time order: 50.01%
+  Scr_port: numeric 99.98%, within 0..65535 99.98%
+  Des_port: numeric 99.98%, within 0..65535 99.98%
+  non-numeric feature columns: {}
+
+=== (ii) LABELS ===
+class1 with more than one class2: {}
+class1 -> class2: {'BruteForce': 'Weaponization', 'C&C': 'C&C', 'Dictionary': 'Weaponization', 'Discovering_resources': 'Reconnaissance', 'Exfiltration': 'Exfiltration', 'Fake_notification': 'Tampering', 'False_data_injection': 'Tampering', 'Generic_scanning': 'Reconnaissance', 'MQTT_cloud_broker_subscription': 'Lateral _movement', 'MitM': 'Exploitation', 'Modbus_register_reading': 'Lateral _movement', 'Normal': 'Normal', 'RDOS': 'RDOS', 'Reverse_shell': 'Exploitation', 'Scanning_vulnerability': 'Reconnaissance', 'TCP Relay': 'Lateral _movement', 'crypto-ransomware': 'crypto-ransomware', 'fuzzing': 'Reconnaissance', 'insider_malcious': 'Weaponization'}
+  [flow] duplicates 49.48%; rows in vectors with >1 class2 6.00%; classes: {'Reconnaissance': 17228, 'Normal': 16219, 'Lateral _movement': 9871, 'Weaponization': 3619, 'Tampering': 1274, 'C&C': 514}
+  [flow+host+alert] duplicates 14.77%; rows in vectors with >1 class2 0.00%; classes: {'Normal': 4, 'Reconnaissance': 3, 'C&C': 1}
+exact duplicate rows: 6,222
+
+=== (iii) TIME ===
+                                 from                  to   count  days
+class2                                                                 
+C&C               2020-02-13 23:50:38 2020-02-24 08:20:14    2863     8
+Exfiltration      2020-02-25 03:08:09 2020-02-27 08:10:03   22134     3
+Exploitation      2019-08-13 08:27:59 2020-01-28 06:53:41    1133     4
+Lateral _movement 2020-01-30 22:20:09 2020-02-12 08:37:23   31596     9
+Normal            2019-12-11 21:25:06 2020-03-07 02:42:19  421417    42
+RDOS              2020-02-24 00:20:21 2020-02-24 00:36:16  141261     1
+Reconnaissance    2020-01-07 04:45:33 2020-01-20 01:41:40  127590     8
+Tampering         2019-05-09 09:39:16 2020-03-07 08:30:03    5122     5
+Weaponization     2020-01-10 01:10:42 2020-01-22 02:22:27   67260     7
+crypto-ransomware 1969-12-31 23:59:59 2020-03-02 05:50:39     458     6
+  C&C                normal inside its span 48,088 (share 94.38%); normal within 60 s of one of its records 45,452
+  Exfiltration       normal inside its span 16,202 (share 42.26%); normal within 60 s of one of its records 15,737
+  Exploitation       normal inside its span 266,460 (share 99.58%); normal within 60 s of one of its records 30,117
+  Lateral _movement  normal inside its span 62,081 (share 66.27%); normal within 60 s of one of its records 61,574
+  RDOS               normal inside its span 1,725 (share 1.21%); normal within 60 s of one of its records 1,773
+  Reconnaissance     normal inside its span 97,058 (share 43.20%); normal within 60 s of one of its records 54,929
+  Tampering          normal inside its span 421,417 (share 98.80%); normal within 60 s of one of its records 28,541
+  Weaponization      normal inside its span 91,926 (share 57.75%); normal within 60 s of one of its records 54,403
+  crypto-ransomware  normal inside its span 399,342 (share 99.89%); normal within 60 s of one of its records 272
+normal records per date: {'10/01/2020': 9302, '10/02/2020': 16526, '11/02/2020': 5390, '12/02/2020': 6340, '12/12/2019': 10868, '13/01/2020': 16070, '14/01/2020': 7271, '14/02/2020': 6043, '15/01/2020': 6584, '15/02/2020': 4692, '16/01/2020': 8753, '16/12/2019': 94639, '17/01/2020': 8366, '17/02/2020': 4942, '18/02/2020': 5274, '19/02/2020': 6129, '2/03/2020': 10201, '20/01/2020': 9792, '21/01/2020': 14353, '21/02/2020': 6526, '22/01/2020': 12302, '22/02/2020': 8323, '23/01/2020': 5130, '24/01/2020': 5074, '24/02/2020': 6192, '25/02/2020': 7205, '26/02/2020': 4343, '27/01/2020': 9180, '27/02/2020': 4658, '28/01/2020': 11133, '3/02/2020': 5928, '3/03/2020': 6762, '31/01/2020': 6446, '4/02/2020': 4918, '5/02/2020': 5366, '5/03/2020': 6641, '6/02/2020': 5358, '6/03/2020': 4937, '7/01/2020': 10216, '8/01/2020': 14464, '8/02/2020': 5815, '9/01/2020': 12965}
+attack records per date: {'10/01/2020': 626, '10/02/2020': 6096, '11/02/2020': 6600, '12/02/2020': 1362, '13/01/2020': 553, '14/01/2020': 833, '14/02/2020': 131, '15/01/2020': 47371, '15/02/2020': 192, '16/01/2020': 305, '17/01/2020': 439, '17/02/2020': 543, '18/02/2020': 492, '19/02/2020': 463, '2/03/2020': 1024, '20/01/2020': 1491, '21/01/2020': 12803, '21/02/2020': 506, '22/01/2020': 4152, '22/02/2020': 368, '23/01/2020': 212, '23/03/2020': 7, '24/01/2020': 102, '24/02/2020': 141429, '24/03/2020': 28, '25/02/2020': 3800, '25/03/2020': 20, '26/02/2020': 6405, '26/03/2020': 50, '27/01/2020': 372, '27/02/2020': 11929, '27/03/2020': 49, '28/01/2020': 447, '3/02/2020': 2067, '3/03/2020': 1083, '31/01/2020': 1784, '4/02/2020': 1011, '5/02/2020': 6916, '5/03/2020': 1136, '6/02/2020': 5005, '6/03/2020': 853, '7/01/2020': 50277, '7/03/2020': 998, '8/01/2020': 18033, '8/02/2020': 755, '9/01/2020': 57967, '?': 1}
+
+=== (iv) ATTRIBUTION ===
+  C&C                src=     2 dst=     2  top src: 192.168.2.10 (64.09%), 192.168.2.199 (35.91%)
+  Exfiltration       src=     1 dst=     1  top src: 192.168.2.10 (100.00%)
+  Exploitation       src=     3 dst=     2  top src: 192.168.2.10 (88.70%), 192.168.10.155 (10.33%), 192.168.2.199 (0.97%)
+  Lateral _movement  src=     4 dst=     4  top src: 192.168.2.10 (74.46%), 10.0.1.1 (18.84%), 172.24.1.1 (4.38%)
+  Normal             src=    31 dst=    95  top src: 172.24.1.80 (24.53%), 192.168.10.153 (16.24%), 10.0.1.5 (15.07%)
+  RDOS               src=     2 dst=     1  top src: 172.24.1.244 (53.34%), 172.24.1.233 (46.66%)
+  Reconnaissance     src=     3 dst=     3  top src: 192.168.2.199 (81.86%), 172.24.1.33 (18.13%), 172.24.1.1 (0.01%)
+  Tampering          src=     3 dst=     2  top src: 192.168.2.10 (99.45%), 172.24.1.34 (0.33%), 172.24.1.1 (0.21%)
+  Weaponization      src=     4 dst=     2  top src: 192.168.2.199 (74.06%), 192.168.2.10 (25.94%), 192.168.10.155 (0.00%)
+  crypto-ransomware  src=     2 dst=     2  top src: 172.24.1.1 (66.38%), ? (33.62%)
+source address alone -> class2: 87.59%
+
+=== (v) PREVALENCE ===
+  Normal              421,417  51.34%
+  RDOS                141,261  17.21%
+  Reconnaissance      127,590  15.54%
+  Weaponization        67,260  8.19%
+  Lateral _movement    31,596  3.85%
+  Exfiltration         22,134  2.70%
+  Tampering             5,122  0.62%
+  C&C                   2,863  0.35%
+  Exploitation          1,133  0.14%
+  crypto-ransomware       458  0.06%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 over class2 (dedup on all features) ===
+probe rows per class: {'C&C': np.int64(2848), 'Exfiltration': np.int64(22133), 'Exploitation': np.int64(1127), 'Lateral _movement': np.int64(28873), 'Normal': np.int64(60000), 'RDOS': np.int64(60000), 'Reconnaissance': np.int64(60000), 'Tampering': np.int64(5101), 'Weaponization': np.int64(60000), 'crypto-ransomware': np.int64(458)}
+-- random 70/30
+  flow                   macro-F1=0.902  C&C=0.96  Exfiltra=0.99  Exploita=0.74  Lateral =0.92  Normal=0.96  RDOS=1.00  Reconnai=0.94  Tamperin=0.93  Weaponiz=0.97  crypto-r=0.60
+  host only              macro-F1=0.737  C&C=0.30  Exfiltra=0.94  Exploita=0.29  Lateral =0.80  Normal=0.74  RDOS=1.00  Reconnai=0.96  Tamperin=0.46  Weaponiz=0.95  crypto-r=0.93
+  alert/log only         macro-F1=0.257  C&C=0.00  Exfiltra=0.67  Exploita=0.00  Lateral =0.00  Normal=0.07  RDOS=0.72  Reconnai=0.56  Tamperin=0.00  Weaponiz=0.56  crypto-r=0.00
+  flow + host            macro-F1=0.977  C&C=0.96  Exfiltra=1.00  Exploita=0.91  Lateral =0.98  Normal=0.98  RDOS=1.00  Reconnai=0.99  Tamperin=0.98  Weaponiz=1.00  crypto-r=0.97
+  flow + host + alert    macro-F1=0.986  C&C=0.97  Exfiltra=1.00  Exploita=0.93  Lateral =0.98  Normal=0.99  RDOS=1.00  Reconnai=0.99  Tamperin=1.00  Weaponiz=1.00  crypto-r=1.00
+    top gain: ['Login_attempt', 'Avg_num_cswch/s', 'is_pure_ack', 'Conn_state', 'Des_bytes_ratio', 'is_with_payload', 'missed_bytes', 'Duration']
+  all + identifiers      macro-F1=0.999  C&C=1.00  Exfiltra=1.00  Exploita=1.00  Lateral =1.00  Normal=1.00  RDOS=1.00  Reconnai=1.00  Tamperin=1.00  Weaponiz=1.00  crypto-r=0.99
+-- time-ordered 70/30 per class
+  flow                   macro-F1=0.705  C&C=0.96  Exfiltra=0.97  Exploita=0.32  Lateral =0.86  Normal=0.59  RDOS=1.00  Reconnai=0.49  Tamperin=0.94  Weaponiz=0.36  crypto-r=0.55
+  host only              macro-F1=0.419  C&C=0.16  Exfiltra=0.82  Exploita=0.00  Lateral =0.71  Normal=0.28  RDOS=0.99  Reconnai=0.01  Tamperin=0.36  Weaponiz=0.03  crypto-r=0.84
+  alert/log only         macro-F1=0.183  C&C=0.00  Exfiltra=0.47  Exploita=0.00  Lateral =0.00  Normal=0.10  RDOS=0.68  Reconnai=0.41  Tamperin=0.00  Weaponiz=0.17  crypto-r=0.00
+  flow + host            macro-F1=0.711  C&C=0.96  Exfiltra=0.94  Exploita=0.31  Lateral =0.94  Normal=0.54  RDOS=0.99  Reconnai=0.16  Tamperin=0.97  Weaponiz=0.37  crypto-r=0.93
+  flow + host + alert    macro-F1=0.725  C&C=0.96  Exfiltra=0.87  Exploita=0.33  Lateral =0.94  Normal=0.65  RDOS=0.99  Reconnai=0.33  Tamperin=0.98  Weaponiz=0.31  crypto-r=0.88
+  all + identifiers      macro-F1=0.570  C&C=0.36  Exfiltra=0.80  Exploita=0.19  Lateral =0.86  Normal=0.58  RDOS=0.99  Reconnai=0.28  Tamperin=0.42  Weaponiz=0.24  crypto-r=0.97

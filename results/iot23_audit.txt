@@ -1,0 +1,165 @@
+
+=== (i) STRUCTURE — 23 captures ===
+identical #fields header: True
+  CTU-IoT-Malware-Capture-1-1      flows=  1,008,748  fields/line={'21': '1008748'}  bad tail=0  bad ts=0  duration unset=78.94%
+  CTU-IoT-Malware-Capture-3-1      flows=    156,103  fields/line={'21': '156103'}  bad tail=0  bad ts=0  duration unset=47.37%
+  CTU-IoT-Malware-Capture-7-1      flows= 11,454,714  fields/line={'21': '11454714'}  bad tail=0  bad ts=0  duration unset=99.69%
+  CTU-IoT-Malware-Capture-8-1      flows=     10,403  fields/line={'21': '10403'}  bad tail=0  bad ts=0  duration unset=59.45%
+  CTU-IoT-Malware-Capture-9-1      flows=  6,378,293  fields/line={'21': '6378293'}  bad tail=0  bad ts=0  duration unset=99.74%
+  CTU-IoT-Malware-Capture-17-1     flows= 54,659,855  fields/line={'21': '54659855'}  bad tail=0  bad ts=0  duration unset=0.00%
+  CTU-IoT-Malware-Capture-20-1     flows=      3,209  fields/line={'21': '3209'}  bad tail=0  bad ts=0  duration unset=27.58%
+  CTU-IoT-Malware-Capture-21-1     flows=      3,286  fields/line={'21': '3286'}  bad tail=0  bad ts=0  duration unset=35.33%
+  CTU-IoT-Malware-Capture-33-1     flows= 54,454,591  fields/line={'21': '54454591'}  bad tail=0  bad ts=0  duration unset=99.97%
+  CTU-IoT-Malware-Capture-34-1     flows=     23,145  fields/line={'21': '23145'}  bad tail=0  bad ts=0  duration unset=77.01%
+  CTU-IoT-Malware-Capture-35-1     flows= 10,447,787  fields/line={'21': '10447787'}  bad tail=0  bad ts=0  duration unset=42.43%
+  CTU-IoT-Malware-Capture-36-1     flows= 13,645,098  fields/line={'21': '13645098'}  bad tail=0  bad ts=0  duration unset=99.93%
+  CTU-IoT-Malware-Capture-39-1     flows= 73,568,981  fields/line={'21': '73568981'}  bad tail=0  bad ts=0  duration unset=99.99%
+  CTU-IoT-Malware-Capture-42-1     flows=      4,426  fields/line={'21': '4426'}  bad tail=0  bad ts=0  duration unset=22.41%
+  CTU-IoT-Malware-Capture-43-1     flows= 67,321,809  fields/line={'21': '67321809'}  bad tail=0  bad ts=0  duration unset=99.89%
+  CTU-IoT-Malware-Capture-44-1     flows=        237  fields/line={'21': '237'}  bad tail=0  bad ts=0  duration unset=34.18%
+  CTU-IoT-Malware-Capture-48-1     flows=  3,394,338  fields/line={'21': '3394338'}  bad tail=0  bad ts=0  duration unset=0.00%
+  CTU-IoT-Malware-Capture-49-1     flows=  5,410,561  fields/line={'21': '5410561'}  bad tail=0  bad ts=0  duration unset=0.00%
+  CTU-IoT-Malware-Capture-52-1     flows= 19,781,378  fields/line={'21': '19781378'}  bad tail=0  bad ts=0  duration unset=0.00%
+  CTU-IoT-Malware-Capture-60-1     flows=  3,581,028  fields/line={'21': '3581028'}  bad tail=0  bad ts=0  duration unset=99.98%
+  CTU-Honeypot-Capture-4-1         flows=        452  fields/line={'21': '452'}  bad tail=0  bad ts=0  duration unset=0.22%
+  CTU-Honeypot-Capture-5-1         flows=      1,374  fields/line={'21': '1374'}  bad tail=0  bad ts=0  duration unset=21.69%
+  CTU-Honeypot-Capture-7-1-Somfy-01 flows=        130  fields/line={'21': '130'}  bad tail=0  bad ts=0  duration unset=0.00%
+total flows=325,309,946
+
+=== (ii) LABELS — exact counts ===
+  PartOfAHorizontalPortScan            cat=PortScan     flows=213,852,924  captures=11  label={'Malicious': 213852924}
+      proto: tcp 100.00%, udp 0.00% | state: S0 99.99%, SF 0.00%, REJ 0.00% | resp port: 22 34.45%, 52869 24.09%, 8081 15.28% | service: - 100.00%, http 0.00%
+  Okiru                                cat=Okiru        flows= 60,990,708  captures= 5  label={'Malicious': 60990708}
+      proto: tcp 100.00% | state: S0 99.97%, REJ 0.02%, RSTO 0.00% | resp port: 37215 100.00% | service: - 100.00%
+  -                                    cat=Benign       flows= 30,860,691  captures=23  label={'Benign': 30858735, 'benign': 1956}
+      proto: tcp 98.09%, udp 1.73%, icmp 0.18% | state: S0 99.58%, OTH 0.18%, SF 0.12% | resp port: 23 93.43%, 8080 4.41%, 53 0.29% | service: - 99.92%, dns 0.07%
+  DDoS                                 cat=DDoS         flows= 19,538,713  captures= 7  label={'Malicious': 19538713}
+      proto: tcp 99.46%, udp 0.54% | state: S0 70.43%, OTH 18.72%, RSTOS0 10.85% | resp port: 52869 69.89%, 62336 18.31%, 80 5.96% | service: - 100.00%, http 0.00%
+  C&C-HeartBeat                        cat=C&C          flows=     33,673  captures= 5  label={'Malicious': 33673}
+      proto: tcp 100.00% | state: S0 89.69%, REJ 10.11%, RSTR 0.15% | resp port: 57722 63.75%, 666 35.97%, 17769 0.28% | service: - 100.00%
+  C&C                                  cat=C&C          flows=     21,995  captures=10  label={'Malicious': 21995}
+      proto: tcp 99.96%, udp 0.04% | state: S0 81.68%, SF 9.35%, S3 7.20% | resp port: 6667 37.44%, 50 37.38%, 45 15.75% | service: - 88.34%, irc 11.64%
+  Attack                               cat=Attack       flows=      9,398  captures= 5  label={'Malicious': 9398}
+      proto: tcp 100.00% | state: SF 70.95%, REJ 26.71%, RSTO 1.01% | resp port: 22 70.64%, 23 29.31%, 8080 0.04% | service: ssh 67.57%, - 32.42%
+  C&C-PartOfAHorizontalPortScan        cat=C&C          flows=        888  captures= 1  label={'Malicious': 888}
+      proto: tcp 100.00% | state: S0 100.00% | resp port: 23 100.00% | service: - 100.00%
+  C&C-HeartBeat-Attack                 cat=C&C          flows=        834  captures= 1  label={'Malicious': 834}
+      proto: tcp 100.00% | state: REJ 99.88%, RSTR 0.12% | resp port: 23 100.00% | service: - 100.00%
+  C&C-FileDownload                     cat=C&C          flows=         53  captures= 6  label={'Malicious': 53}
+      proto: tcp 100.00% | state: SF 96.23%, S1 3.77% | resp port: 80 96.23%, 23 1.89%, 4554 1.89% | service: http 96.23%, - 3.77%
+  C&C-Torii                            cat=C&C          flows=         30  captures= 2  label={'Malicious': 30}
+      proto: tcp 100.00% | state: S0 76.67%, SF 6.67%, S1 6.67% | resp port: 443 100.00% | service: - 100.00%
+  FileDownload                         cat=FileDownload flows=         18  captures= 3  label={'Malicious': 18}
+      proto: tcp 100.00% | state: SF 94.44%, OTH 5.56% | resp port: 80 88.89%, 22 11.11% | service: http 88.89%, - 11.11%
+  C&C-HeartBeat-FileDownload           cat=C&C          flows=         11  captures= 1  label={'Malicious': 11}
+      proto: tcp 100.00% | state: SF 100.00% | resp port: 80 100.00% | service: http 100.00%
+  PartOfAHorizontalPortScan-Attack     cat=PortScan     flows=          5  captures= 1  label={'Malicious': 5}
+      proto: tcp 100.00% | state: S0 100.00% | resp port: 8080 100.00% | service: - 100.00%
+  Okiru-Attack                         cat=Okiru        flows=          3  captures= 1  label={'Malicious': 3}
+      proto: tcp 100.00% | state: RSTO 33.33%, S0 33.33%, S2 33.33% | resp port: 37215 100.00% | service: - 100.00%
+  C&C-Mirai                            cat=C&C          flows=          2  captures= 1  label={'Malicious': 2}
+      proto: tcp 100.00% | state: RSTO 50.00%, S1 50.00% | resp port: 4441 100.00% | service: - 100.00%
+
+sample: 664,788 flows (<= 20,000 per capture and detailed label)
+duplicates without identifiers (in sample): 81.37%
+vectors with >1 category: 5,031 (rows 434,738, 65.39%); categories involved: {'PortScan': 172958, 'Okiru': 99985, 'Benign': 91724, 'C&C': 37797, 'DDoS': 32254, 'Attack': 20}
+  most frequent conflicts: {('Benign', 'C&C'): 3811, ('C&C', 'PortScan'): 925, ('Benign', 'PortScan'): 217, ('DDoS', 'Okiru', 'PortScan'): 41, ('Attack', 'C&C'): 18}
+
+=== (iii) TIME ===
+  CTU-IoT-Malware-Capture-1-1      2018-05-09 15:30 .. 2018-05-14 07:24 (111.9 h); benign in sample 20,000, inside malicious window 100.0%
+  CTU-IoT-Malware-Capture-3-1      2018-05-19 18:57 .. 2018-05-21 07:04 (36.1 h); benign in sample 4,536, inside malicious window 99.9%
+  CTU-IoT-Malware-Capture-7-1      2018-07-20 15:31 .. 2018-07-21 15:31 (24.0 h); benign in sample 20,000, inside malicious window 99.9%
+  CTU-IoT-Malware-Capture-8-1      2018-07-31 13:15 .. 2018-08-01 13:15 (24.0 h); benign in sample 2,181, inside malicious window 94.8%
+  CTU-IoT-Malware-Capture-9-1      2018-07-25 08:53 .. 2018-07-26 08:53 (24.0 h); benign in sample 20,000, inside malicious window 97.1%
+  CTU-IoT-Malware-Capture-17-1     2018-09-06 09:43 .. 2018-09-07 09:43 (24.0 h); benign in sample 20,000, inside malicious window 100.0%
+  CTU-IoT-Malware-Capture-20-1     2018-10-02 11:12 .. 2018-10-03 11:11 (24.0 h); benign in sample 3,193, inside malicious window 55.5%
+  CTU-IoT-Malware-Capture-21-1     2018-10-03 13:22 .. 2018-10-04 13:16 (23.9 h); benign in sample 3,272, inside malicious window 95.0%
+  CTU-IoT-Malware-Capture-33-1     2018-12-20 20:10 .. 2018-12-21 20:09 (24.0 h); benign in sample 20,000, inside malicious window 100.0%
+  CTU-IoT-Malware-Capture-34-1     2018-12-21 14:50 .. 2018-12-22 14:50 (24.0 h); benign in sample 1,923, inside malicious window 98.6%
+  CTU-IoT-Malware-Capture-35-1     2018-12-21 14:34 .. 2018-12-22 14:33 (24.0 h); benign in sample 20,000, inside malicious window 86.2%
+  CTU-IoT-Malware-Capture-36-1     2018-12-21 12:36 .. 2018-12-22 12:36 (24.0 h); benign in sample 2,663, inside malicious window 100.0%
+  CTU-IoT-Malware-Capture-39-1     2019-01-09 20:25 .. 2019-01-10 04:00 (7.6 h); benign in sample 7,337, inside malicious window 100.0%
+  CTU-IoT-Malware-Capture-42-1     2019-01-10 13:34 .. 2019-01-10 21:55 (8.3 h); benign in sample 4,420, inside malicious window 0.2%
+  CTU-IoT-Malware-Capture-43-1     2019-01-10 18:22 .. 2019-01-10 19:28 (1.1 h); benign in sample 20,000, inside malicious window 100.0%
+  CTU-IoT-Malware-Capture-44-1     2019-01-10 20:06 .. 2019-01-10 22:01 (1.9 h); benign in sample 211, inside malicious window 96.2%
+  CTU-IoT-Malware-Capture-48-1     2019-02-28 18:15 .. 2019-03-01 04:01 (9.8 h); benign in sample 3,734, inside malicious window 100.0%
+  CTU-IoT-Malware-Capture-49-1     2019-02-28 19:50 .. 2019-03-01 03:10 (7.3 h); benign in sample 3,665, inside malicious window 100.0%
+  CTU-IoT-Malware-Capture-52-1     2019-03-08 12:24 .. 2019-03-09 03:08 (14.7 h); benign in sample 1,794, inside malicious window 99.9%
+  CTU-IoT-Malware-Capture-60-1     2019-09-20 00:40 .. 2019-09-21 00:39 (24.0 h); benign in sample 2,476, inside malicious window 99.4%
+  CTU-Honeypot-Capture-4-1         2018-10-25 12:06 .. 2018-10-26 09:58 (21.9 h)
+  CTU-Honeypot-Capture-5-1         2018-09-21 09:40 .. 2018-09-21 15:09 (5.5 h)
+  CTU-Honeypot-Capture-7-1-Somfy-01 2019-07-03 13:16 .. 2019-07-03 14:39 (1.4 h)
+
+=== (iv) ATTRIBUTION — source of malicious flows ===
+  CTU-IoT-Malware-Capture-1-1      malicious=    539,473  top source 192.168.100.103 (100.00%); that host's share of benign flows: 99.55%; benign flows unanswered (S0): 94.74%
+  CTU-IoT-Malware-Capture-3-1      malicious=    151,567  top source 192.168.2.5 (100.00%); that host's share of benign flows: 92.50%; benign flows unanswered (S0): 0.26%
+  CTU-IoT-Malware-Capture-7-1      malicious= 11,378,759  top source 192.168.100.108 (100.00%); that host's share of benign flows: 4.39%; benign flows unanswered (S0): 87.47%
+  CTU-IoT-Malware-Capture-8-1      malicious=      8,222  top source 192.168.100.113 (100.00%); that host's share of benign flows: 99.91%; benign flows unanswered (S0): 0.78%
+  CTU-IoT-Malware-Capture-9-1      malicious=  6,355,745  top source 192.168.100.111 (100.00%); that host's share of benign flows: 97.99%; benign flows unanswered (S0): 61.49%
+  CTU-IoT-Malware-Capture-17-1     malicious= 54,628,417  top source 192.168.100.111 (100.00%); that host's share of benign flows: 85.44%; benign flows unanswered (S0): 19.41%
+  CTU-IoT-Malware-Capture-20-1     malicious=         16  top source 192.168.100.103 (100.00%); that host's share of benign flows: 99.94%; benign flows unanswered (S0): 33.23%
+  CTU-IoT-Malware-Capture-21-1     malicious=         14  top source 192.168.100.113 (100.00%); that host's share of benign flows: 99.94%; benign flows unanswered (S0): 52.96%
+  CTU-IoT-Malware-Capture-33-1     malicious= 53,073,800  top source 192.168.1.197 (100.00%); that host's share of benign flows: 99.78%; benign flows unanswered (S0): 98.46%
+  CTU-IoT-Malware-Capture-34-1     malicious=     21,222  top source 192.168.1.195 (100.00%); that host's share of benign flows: 99.95%; benign flows unanswered (S0): 55.85%
+  CTU-IoT-Malware-Capture-35-1     malicious=  2,185,398  top source 192.168.1.196 (100.00%); that host's share of benign flows: 99.99%; benign flows unanswered (S0): 99.95%
+  CTU-IoT-Malware-Capture-36-1     malicious= 13,642,435  top source 192.168.1.198 (100.00%); that host's share of benign flows: 86.61%; benign flows unanswered (S0): 62.30%
+  CTU-IoT-Malware-Capture-39-1     malicious= 73,561,644  top source 192.168.1.194 (100.00%); that host's share of benign flows: 79.34%; benign flows unanswered (S0): 11.12%
+  CTU-IoT-Malware-Capture-42-1     malicious=          6  top source 192.168.1.197 (100.00%); that host's share of benign flows: 99.89%; benign flows unanswered (S0): 35.41%
+  CTU-IoT-Malware-Capture-43-1     malicious= 46,746,875  top source 192.168.1.198 (100.00%); that host's share of benign flows: 100.00%; benign flows unanswered (S0): 100.00%
+  CTU-IoT-Malware-Capture-44-1     malicious=         26  top source 192.168.1.199 (100.00%); that host's share of benign flows: 99.05%; benign flows unanswered (S0): 34.12%
+  CTU-IoT-Malware-Capture-48-1     malicious=  3,390,604  top source 192.168.1.200 (100.00%); that host's share of benign flows: 83.32%; benign flows unanswered (S0): 4.61%
+  CTU-IoT-Malware-Capture-49-1     malicious=  5,406,896  top source 192.168.1.193 (100.00%); that host's share of benign flows: 80.56%; benign flows unanswered (S0): 2.86%
+  CTU-IoT-Malware-Capture-52-1     malicious= 19,779,584  top source 192.168.1.197 (100.00%); that host's share of benign flows: 28.47%; benign flows unanswered (S0): 15.33%
+  CTU-IoT-Malware-Capture-60-1     malicious=  3,578,552  top source 192.168.1.195 (100.00%); that host's share of benign flows: 20.23%; benign flows unanswered (S0): 6.10%
+
+=== (v) PREVALENCE ===
+  PortScan       213,852,929  65.74%
+  Okiru           60,990,711  18.75%
+  Benign          30,860,691  9.49%
+  DDoS            19,538,713  6.01%
+  C&C                 57,486  0.02%
+  Attack               9,398  0.00%
+  FileDownload            18  0.00%
+  CTU-IoT-Malware-Capture-1-1      benign    469,275 (46.52%)
+  CTU-IoT-Malware-Capture-3-1      benign      4,536 (2.91%)
+  CTU-IoT-Malware-Capture-7-1      benign     75,955 (0.66%)
+  CTU-IoT-Malware-Capture-8-1      benign      2,181 (20.97%)
+  CTU-IoT-Malware-Capture-9-1      benign     22,548 (0.35%)
+  CTU-IoT-Malware-Capture-17-1     benign     31,438 (0.06%)
+  CTU-IoT-Malware-Capture-20-1     benign      3,193 (99.50%)
+  CTU-IoT-Malware-Capture-21-1     benign      3,272 (99.57%)
+  CTU-IoT-Malware-Capture-33-1     benign  1,380,791 (2.54%)
+  CTU-IoT-Malware-Capture-34-1     benign      1,923 (8.31%)
+  CTU-IoT-Malware-Capture-35-1     benign  8,262,389 (79.08%)
+  CTU-IoT-Malware-Capture-36-1     benign      2,663 (0.02%)
+  CTU-IoT-Malware-Capture-39-1     benign      7,337 (0.01%)
+  CTU-IoT-Malware-Capture-42-1     benign      4,420 (99.86%)
+  CTU-IoT-Malware-Capture-43-1     benign 20,574,934 (30.56%)
+  CTU-IoT-Malware-Capture-44-1     benign        211 (89.03%)
+  CTU-IoT-Malware-Capture-48-1     benign      3,734 (0.11%)
+  CTU-IoT-Malware-Capture-49-1     benign      3,665 (0.07%)
+  CTU-IoT-Malware-Capture-52-1     benign      1,794 (0.01%)
+  CTU-IoT-Malware-Capture-60-1     benign      2,476 (0.07%)
+  CTU-Honeypot-Capture-4-1         benign        452 (100.00%)
+  CTU-Honeypot-Capture-5-1         benign      1,374 (100.00%)
+  CTU-Honeypot-Capture-7-1-Somfy-01 benign        130 (100.00%)
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 over categories (sample, dedup per capture) ===
+rows per category: {'DDoS': 45212, 'Benign': 43204, 'C&C': 22331, 'PortScan': 15609, 'Attack': 9355, 'Okiru': 33, 'FileDownload': 18}
+-- with identifiers (hosts, ports)
+  random 70/30                       macro-F1=0.999  Attack=1.00  Benign=1.00  C&C=1.00  DDoS=1.00  FileDownload=1.00  Okiru=1.00  PortScan=1.00
+  time-ordered 70/30 per category    macro-F1=0.590  Attack=0.15  Benign=0.82  C&C=0.68  DDoS=1.00  FileDownload=0.22  Okiru=0.40  PortScan=0.85
+  leave-capture-out (5 folds)        macro-F1=0.162  Attack=0.00  Benign=0.35  C&C=0.48  DDoS=0.00  FileDownload=0.00  Okiru=0.18  PortScan=0.12
+    malicious-vs-benign F1 across captures: 0.363
+-- with ports only
+  random 70/30                       macro-F1=0.972  Attack=0.98  Benign=1.00  C&C=0.99  DDoS=1.00  FileDownload=0.89  Okiru=0.95  PortScan=0.99
+  time-ordered 70/30 per category    macro-F1=0.628  Attack=0.07  Benign=0.85  C&C=0.69  DDoS=1.00  FileDownload=0.46  Okiru=0.57  PortScan=0.76
+  leave-capture-out (5 folds)        macro-F1=0.223  Attack=0.01  Benign=0.37  C&C=0.78  DDoS=0.00  FileDownload=0.00  Okiru=0.07  PortScan=0.33
+    malicious-vs-benign F1 across captures: 0.416
+-- without identifiers
+  random 70/30                       macro-F1=0.695  Attack=0.98  Benign=0.89  C&C=0.79  DDoS=1.00  FileDownload=0.29  Okiru=0.00  PortScan=0.93
+    top gain: ['proto', 'history', 'resp_bytes', 'orig_bytes', 'resp_pkts', 'orig_pkts']
+  time-ordered 70/30 per category    macro-F1=0.513  Attack=0.07  Benign=0.67  C&C=0.50  DDoS=1.00  FileDownload=0.42  Okiru=0.00  PortScan=0.93
+  leave-capture-out (5 folds)        macro-F1=0.191  Attack=0.01  Benign=0.37  C&C=0.41  DDoS=0.00  FileDownload=0.00  Okiru=0.00  PortScan=0.55
+    malicious-vs-benign F1 across captures: 0.436
+captures per category: {'Attack': 5, 'Benign': 23, 'C&C': 18, 'DDoS': 7, 'FileDownload': 3, 'Okiru': 4, 'PortScan': 11}
