@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 """Sequence diagram: decentralized observability (RD + Observe + since=), Disaster-FD roles.
+API 1.7.0.
 
 Architecture of 2026-10-02 (docs/decentralized_monitoring.md 1.1): two roles only,
-Disaster-FD and the ReSIDS agent. Four lifelines: the agent (one per IED), its node-local
-Disaster-FD monitor, the CoAP Resource Directory (RFC 9176), and the federated Disaster-FD
-that reconciles all agents. Five phases: discovery, subscription, steady state, gap
-recovery by contiguous seq, and partition / local-FD failure.
+Disaster-FD and the ReSIDS agent. Four lifelines: the agent (one per monitored node), its
+node-local Disaster-FD monitor, the CoAP Resource Directory (RFC 9176), and the federated
+Disaster-FD that reconciles all agents. Five phases: discovery, subscription, steady state,
+gap recovery by contiguous seq, and partition / local-FD failure.
+1.6.0: Disaster-FD is the time reference, in two cadences -- `round` (local tick) and
+`fed_round` (federated tick); an event's window is what the agent scored between two local
+ticks; federated decisions (isolation, GL->FL) land on a federated tick.
+1.7.0: the domain profile (label set, attribution, traffic time) is reported in /status;
+`attack` comes from its label set and `source_node` from its attribution (null with none).
 
 Solid arrow = request / notification, dashed = response or ACK, red X = lost message.
 Out: results/decentralized_monitoring_sequence.{png,pdf}
@@ -22,38 +28,41 @@ STY = {"AG": dict(fc="#e8eef7", ec="#3b5b92"),
        "LF": dict(fc="#e6f4ea", ec="#3a7d4f"),
        "RD": dict(fc="#f2f2f2", ec="#6b6b6b"),
        "FF": dict(fc="#f3ecf7", ec="#6a3d9a")}
-LABEL = {"AG": "ReSIDS agent\n(one per IED)",
+LABEL = {"AG": "ReSIDS agent\n(one per monitored node)",
          "LF": "Disaster-FD\n(node-local)",
          "RD": "Resource Directory\n(RFC 9176)",
          "FF": "Disaster-FD\n(federated)"}
 RED, GREEN, PURPLE = "#b2182b", "#3a7d4f", "#6a3d9a"
 
 rows = [
-    ("banner", "DTLS 1.3 / coaps:// 5684  ·  +~11 B per record (1.2 floor: +29 B)  ·  Observe (RFC 7641)  ·  RD (RFC 9176)  ·  TLS path: RFC 8323 where IEC 62351-3 governs"),
+    ("banner", "API 1.7.0  ·  DTLS 1.3 / coaps:// 5684  ·  +~11 B per record  ·  Observe (RFC 7641)  ·  RD (RFC 9176)  ·  TLS path: RFC 8323 (per profile)"),
     ("note", "TRANSPORT IS AN OPEN DECISION — this is the CoAP binding; REST/TLS is the alternative for the Disaster-FD path"),
+    ("note", "two clocks, both from Disaster-FD:  round = local tick (detect_lag, watchdog D, event window)  ·  fed_round = federated tick (dwell, isolation)"),
     ("phase", "1 · Discovery  —  rare (only on provisioning or re-addressing)"),
-    ("msg", "AG", "RD", "POST /rd?ep=SUB1_PROT_G&lt=3600&base=coaps://10.0.1.17:5684", "req"),
+    ("msg", "AG", "RD", "POST /rd?ep=node-07&lt=3600&base=coaps://10.0.1.17:5684", "req"),
     ("msg", "RD", "AG", "2.01 Created", "ack"),
-    ("msg", "FF", "RD", "GET /rd-lookup/ep?ep=SUB1_PROT_G", "req"),
+    ("msg", "FF", "RD", "GET /rd-lookup/ep?ep=node-07", "req"),
     ("msg", "RD", "FF", "base = coaps://10.0.1.17:5684   (cached)", "ack"),
     ("phase", "2 · Subscription  —  once"),
     ("msg", "FF", "AG", "GET /events   (Observe: 0)", "req"),
     ("msg", "AG", "FF", "2.05 Content  ·  Observe registered", "ack"),
     ("phase", "3 · Steady state  —  events on occurrence, decisions by Disaster-FD"),
     ("msg", "FF", "AG", "GET /status   —  once, at start-up: state bootstrap", "req"),
-    ("msg", "AG", "FF", "2.05 {current_mode, round, active_nodes, last_seq}", "ack"),
-    ("msg", "AG", "FF", "notify (CON) · intrusion_detected {attack, k_votes, n_flags, window_samples}", "req"),
+    ("msg", "AG", "FF", "2.05 {api_version, current_mode, round, active_nodes, last_seq, profile{name, label_set, attribution, traffic_time}}", "ack"),
+    ("msg", "AG", "FF", "notify (CON) · intrusion_detected {attack ∈ label_set, k_votes, n_flags, window_start/end = local ticks, window_samples}", "req"),
     ("msg", "FF", "AG", "ACK", "ack"),
+    ("note", "source_node comes from the profile's attribution (MAC, IP, publisher) — null with attribution none, and then no isolation can follow"),
     ("note", "the five event types share this one channel — each CON is ACKed; the ACKs are omitted below"),
     ("msg", "AG", "FF", "notify · node_failure {failed_nodes:[13]}        — observation, no decided_by", "req"),
     ("cmd", "LF", "AG", "set_mode {to: gossip}   (local evidence)", GREEN),
     ("msg", "AG", "FF", "notify · architecture_change {FL→GL, reason: node_failure}   [decided_by: monitor — node-local]", "req"),
     ("msg", "AG", "FF", "notify · node_recovery {recovered_nodes:[13]}    — observation, no decided_by", "req"),
-    ("cmd", "FF", "AG", "isolate_node {node: 9, reason: intrusion}   (regional evidence)", PURPLE),
-    ("msg", "AG", "FF", "notify · node_isolated {source_node:9, reason: intrusion}   [decided_by: monitor — federated]", "req"),
-    ("cmd", "FF", "AG", "set_mode {to: federated}   (full membership for dwell rounds · unanimity)", PURPLE),
-    ("msg", "AG", "FF", "notify · architecture_change {GL→FL, reason: recovery}   [decided_by: monitor — federated]", "req"),
-    ("note", "every transition is decided by Disaster-FD: local to go down, federated to come back up"),
+    ("cmd", "FF", "AG", "isolate_node {node: 9, reason: intrusion}   (regional evidence · on the next fed_round tick)", PURPLE),
+    ("msg", "AG", "FF", "notify · node_isolated {source_node:9, reason: intrusion, fed_round}   [decided_by: monitor — federated]", "req"),
+    ("cmd", "FF", "AG", "set_mode {to: federated}   (full membership for dwell fed_rounds · unanimity · on a fed_round tick)", PURPLE),
+    ("msg", "AG", "FF", "notify · architecture_change {GL→FL, reason: recovery, fed_round}   [decided_by: monitor — federated]", "req"),
+    ("note", "every transition is decided by Disaster-FD: local to go down, federated to come back up — in clocks as in authority"),
+    ("note", "measured, federated tick every 5 local rounds: FL→GL still round 102 · GL→FL 606 → 630 · isolations 8→10, 21→25, 39→40"),
     ("note", "no event in the window → nothing is sent   (measured: 88.9% of rounds carry no event at all)"),
     ("msg", "FF", "AG", "GET /events?since=388   (periodic reconciliation)", "req"),
     ("msg", "AG", "FF", "2.05  []   →  alive  ·  no gap  ·  nothing to recover", "ack"),
@@ -144,7 +153,7 @@ for kind, y0, rest in laid:
         frm, to, text, k = rest
         arrow(y0, X[frm], X[to], text, k, lost=(kind == "lost"))
 
-ax.set_title("Decentralized observability with Disaster-FD: Resource Directory + Observe + since=",
+ax.set_title("Decentralized observability with Disaster-FD (API 1.7.0): Resource Directory + Observe + since=",
              fontsize=15, fontweight="bold")
 fig.tight_layout()
 os.makedirs("results", exist_ok=True)

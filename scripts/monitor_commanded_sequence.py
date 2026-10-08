@@ -11,7 +11,9 @@ federated Disaster-FD.
                             (decided_by=autonomous, reason=autonomous_fallback)
   later  GL->FL          -> federated FD decides (fan-out, unanimity), NO fallback
 
-Round numbers are the measured ones from conf/scenarios/{availability,fd_watchdog}.yaml.
+Round numbers are the measured ones from conf/scenarios/{availability,fd_watchdog,two_cadences}.yaml.
+API 1.7.0: the two clocks of 1.6.0 are shown -- the fail-fast and the watchdog count LOCAL
+ticks (round); the dwell and the GL->FL command count and land on FEDERATED ticks (fed_round).
 Out: results/monitor_commanded_sequence.{png,pdf}
 """
 import os
@@ -56,14 +58,17 @@ def msg(x0, x1, text, color="0.1", style="-"):
 
 
 # ---------------------------------------------------------------- common prefix
-note(XL, "round r: inactivity observed by the node-local Disaster-FD\n"
+center("two clocks from Disaster-FD:  round = local tick  ·  fed_round = federated tick "
+       "(here every 5 local ticks)")
+note(XL, "local tick r: inactivity observed by the node-local Disaster-FD\n"
          "local evidence only — no regional quorum", h=0.62)
 
 # ---------------------------------------------------------------- alt A
 adv(0.45); top = y
 msg(XL, XA, "set_mode {to: gossip, reason: node_failure}    (local IPC)", CMD)
 msg(XA, XL, "result {applied, effective at the next round boundary}", "0.45", "ack")
-note(XA, "commit FL→GL @ r + detect_lag\n(measured: round 102)", h=0.62)
+note(XA, "commit FL→GL @ r + detect_lag  (local ticks)\n"
+         "(measured: round 102, with or without a slower federated tick)", h=0.62)
 msg(XA, XL, "architecture_change {FL→GL}   decided_by: monitor")
 msg(XL, XF, "event federated to the regional view", "0.45", "ack")
 frames.append((top, y - 0.08, "alt", "[node-local Disaster-FD alive]", CMD))
@@ -71,7 +76,7 @@ frames.append((top, y - 0.08, "alt", "[node-local Disaster-FD alive]", CMD))
 # ---------------------------------------------------------------- alt B
 adv(0.55); top = y
 note(XL, "✗  local FD process crashed / hung", color=RED, fc="#fdeceb", ec="#e6a3a0")
-note(XA, "watchdog: no command from its own FD for D rounds", h=0.52)
+note(XA, "watchdog: no command from its own FD for D local ticks", h=0.52)
 note(XA, "commit FL→GL @ r + detect_lag + D\n(measured: round 105, D = 3)", h=0.62)
 msg(XA, XF, "architecture_change {FL→GL, reason: autonomous_fallback}   decided_by: autonomous",
     RED)
@@ -81,9 +86,11 @@ frames.append((top, y - 0.08, "alt", "[node-local Disaster-FD down]", RED))
 
 # ---------------------------------------------------------------- later: GL -> FL
 adv(0.55); top = y
-note(XF, "membership full for dwell rounds\n(regional evidence)", h=0.62)
-msg(XF, XA, "set_mode {to: federated, reason: recovery}    (fan-out to all 15 · unanimity)",
+note(XF, "membership full for dwell FEDERATED ticks\n(regional evidence)", h=0.62)
+msg(XF, XA, "set_mode {to: federated, reason: recovery}    (fan-out to all 15 · unanimity · on a fed_round tick)",
     "#6a3d9a")
+note(XA, "commit GL→FL on a federated tick\n(measured: 606 with every tick federated → 630 with a tick every 5)",
+     h=0.62)
 msg(XA, XF, "result {applied}", "0.45", "ack")
 center("no fallback of any kind: if the federation cannot decide, the system rests in GL")
 frames.append((top, y - 0.08, "later", "[GL→FL — federated Disaster-FD decides]", "#6a3d9a"))
@@ -137,7 +144,7 @@ for op in ops:
         ax.text(6.7, yy + 0.1, text, ha="center", va="center", fontsize=9.8, color=color,
                 style="italic")
 
-ax.set_title("FL→GL commanded by the node-local Disaster-FD, with the agent's watchdog",
+ax.set_title("FL→GL commanded by the node-local Disaster-FD, with the agent's watchdog (API 1.7.0)",
              fontsize=14.5, fontweight="bold")
 fig.tight_layout()
 os.makedirs("results", exist_ok=True)
