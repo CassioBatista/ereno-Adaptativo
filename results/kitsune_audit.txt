@@ -1,0 +1,54 @@
+=== (i) STRUCTURE / (ii) LABELS / (iii) TIME / (v) PREVALENCE ===
+  Mirai       packets    764,137  malicious 84.08%  onset at packet 121,621 (15.92%)  benign share after onset 0.00%  label runs 2  non-finite values in sample 0
+  OS_Scan     packets  1,697,851  malicious 3.87%  onset at packet 1,314,658 (77.43%)  benign share after onset 82.85%  label runs 68,139  non-finite values in sample 0
+  Fuzzing     packets  2,244,139  malicious 19.29%  onset at packet 1,300,005 (57.93%)  benign share after onset 54.16%  label runs 84,725  non-finite values in sample 0
+  SYN_DoS     packets  2,771,276  malicious 0.25%  onset at packet 2,682,349 (96.79%)  benign share after onset 92.09%  label runs 2,226  non-finite values in sample 0
+  SSDP_Flood  packets  4,077,266  malicious 35.31%  onset at packet 2,613,442 (64.10%)  benign share after onset 1.65%  label runs 20,648  non-finite values in sample 0
+
+duplicates and vectors with both labels (per capture sample):
+  Mirai       duplicates 0.00%; rows in vectors with both labels 0.00%
+  OS_Scan     duplicates 0.00%; rows in vectors with both labels 0.00%
+  Fuzzing     duplicates 0.00%; rows in vectors with both labels 0.00%
+  SYN_DoS     duplicates 0.00%; rows in vectors with both labels 0.00%
+  SSDP_Flood  duplicates 0.00%; rows in vectors with both labels 0.00%
+
+=== (iv) ATTRIBUTION === the feature files carry no addresses; attribution needs the pcaps
+
+=== timestamp leak: share of rows whose jitter columns hold an epoch-like value (> 1e8) ===
+  Mirai       83.64%
+  OS_Scan     65.93%
+  Fuzzing     100.00%
+  SYN_DoS     62.47%
+  SSDP_Flood  54.04%
+
+################ all 115 features ################
+
+=== (vi) SHORTCUT PROBE: assign NORMAL packets to their capture (5 classes) ===
+  time-ordered within each capture: macro-F1 0.853  Mirai=1.00  OS_Scan=0.93  Fuzzing=0.94  SYN_DoS=0.74  SSDP_Flood=0.66
+  (near 1.0 = normal traffic identifies its capture: a specialist can learn the capture)
+
+=== ReSIDS PROTOCOL (10 specialists, time-ordered split inside each capture) ===
+train: {'Normal': 926681, 'Mirai': 224880, 'SSDP_Flood': 91646, 'Fuzzing': 50511, 'OS_Scan': 9151, 'SYN_DoS': 681}
+test:  {'Normal': 397153, 'Mirai': 96378, 'SSDP_Flood': 39277, 'Fuzzing': 21648, 'OS_Scan': 3923, 'SYN_DoS': 293}
+  GL (union of 10) k>=1: recall 99.97%  FPR 48.622%  F1 62.57  F1@13.75 23.02
+  GL (union of 10) k>=2: recall 99.97%  FPR 25.589%  F1 76.05  F1@13.75 36.23
+  per attack recall (GL k>=2): {'Mirai': np.float64(100.0), 'OS_Scan': np.float64(99.7), 'Fuzzing': np.float64(100.0), 'SYN_DoS': np.float64(91.5), 'SSDP_Flood': np.float64(100.0)}
+  FPR on the normal packets of each capture (GL k>=2): {'Mirai': np.float64(92.26), 'OS_Scan': np.float64(10.273), 'Fuzzing': np.float64(82.329), 'SYN_DoS': np.float64(0.115), 'SSDP_Flood': np.float64(0.057)}
+  FL k>=2 with 5 nodes: recall 26.1%  FPR 0.072%  {'Mirai': np.float64(0.1), 'OS_Scan': np.float64(69.8), 'Fuzzing': np.float64(0.0), 'SYN_DoS': np.float64(25.3), 'SSDP_Flood': np.float64(100.0)}
+  FL k>=2 with 3 nodes: recall 1.7%  FPR 0.000%  {'Mirai': np.float64(0.0), 'OS_Scan': np.float64(69.8), 'Fuzzing': np.float64(0.0), 'SYN_DoS': np.float64(25.3), 'SSDP_Flood': np.float64(0.0)}
+
+################ without the 15 jitter features ################
+
+=== (vi) SHORTCUT PROBE: assign NORMAL packets to their capture (5 classes) ===
+  time-ordered within each capture: macro-F1 0.852  Mirai=1.00  OS_Scan=0.93  Fuzzing=0.94  SYN_DoS=0.74  SSDP_Flood=0.65
+  (near 1.0 = normal traffic identifies its capture: a specialist can learn the capture)
+
+=== ReSIDS PROTOCOL (10 specialists, time-ordered split inside each capture) ===
+train: {'Normal': 926681, 'Mirai': 224880, 'SSDP_Flood': 91646, 'Fuzzing': 50511, 'OS_Scan': 9151, 'SYN_DoS': 681}
+test:  {'Normal': 397153, 'Mirai': 96378, 'SSDP_Flood': 39277, 'Fuzzing': 21648, 'OS_Scan': 3923, 'SYN_DoS': 293}
+  GL (union of 10) k>=1: recall 100.00%  FPR 7.761%  F1 91.29  F1@13.75 65.21
+  GL (union of 10) k>=2: recall 99.96%  FPR 7.475%  F1 91.56  F1@13.75 66.04
+  per attack recall (GL k>=2): {'Mirai': np.float64(99.9), 'OS_Scan': np.float64(99.9), 'Fuzzing': np.float64(100.0), 'SYN_DoS': np.float64(100.0), 'SSDP_Flood': np.float64(100.0)}
+  FPR on the normal packets of each capture (GL k>=2): {'Mirai': np.float64(78.042), 'OS_Scan': np.float64(13.36), 'Fuzzing': np.float64(2.269), 'SYN_DoS': np.float64(0.17), 'SSDP_Flood': np.float64(0.15)}
+  FL k>=2 with 5 nodes: recall 2.5%  FPR 2.825%  {'Mirai': np.float64(0.1), 'OS_Scan': np.float64(99.8), 'Fuzzing': np.float64(0.1), 'SYN_DoS': np.float64(25.3), 'SSDP_Flood': np.float64(0.0)}
+  FL k>=2 with 3 nodes: recall 2.5%  FPR 0.005%  {'Mirai': np.float64(0.1), 'OS_Scan': np.float64(99.8), 'Fuzzing': np.float64(0.1), 'SYN_DoS': np.float64(25.3), 'SSDP_Flood': np.float64(0.0)}
