@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Sequence diagram: decentralized observability (RD + Observe + since=), Disaster-FD roles.
-API 1.7.0.
+API 1.9.0 (docs/TRUST_LEVEL.md): the colocated Disaster-FD sends the trust level, the agent
+decides each switch (decided_by: agent); a stale TL sends it to local. Intrusion events,
+isolation and the command surface are future work. Earlier versions below.
 
 Architecture of 2026-10-02 (docs/decentralized_monitoring.md 1.1): two roles only,
 Disaster-FD and the ReSIDS agent. Four lifelines: the agent (one per monitored node), its
@@ -35,9 +37,9 @@ LABEL = {"AG": "ReSIDS agent\n(one per monitored node)",
 RED, GREEN, PURPLE = "#b2182b", "#3a7d4f", "#6a3d9a"
 
 rows = [
-    ("banner", "API 1.7.0  ·  DTLS 1.3 / coaps:// 5684  ·  +~11 B per record  ·  Observe (RFC 7641)  ·  RD (RFC 9176)  ·  TLS path: RFC 8323 (per profile)"),
+    ("banner", "API 1.9.0  ·  DTLS 1.3 / coaps:// 5684  ·  +~11 B per record  ·  Observe (RFC 7641)  ·  RD (RFC 9176)  ·  TLS path: RFC 8323 (per profile)"),
     ("note", "TRANSPORT IS AN OPEN DECISION — this is the CoAP binding; REST/TLS is the alternative for the Disaster-FD path"),
-    ("note", "two clocks, both from Disaster-FD:  round = local tick (detect_lag, watchdog D, event window)  ·  fed_round = federated tick (dwell, isolation)"),
+    ("note", "time reference from Disaster-FD:  round = index of its 5-s probe cycle  ·  the trust level arrives on the host-local channel, never over the network"),
     ("phase", "1 · Discovery  —  rare (only on provisioning or re-addressing)"),
     ("msg", "AG", "RD", "POST /rd?ep=node-07&lt=3600&base=coaps://10.0.1.17:5684", "req"),
     ("msg", "RD", "AG", "2.01 Created", "ack"),
@@ -46,24 +48,20 @@ rows = [
     ("phase", "2 · Subscription  —  once"),
     ("msg", "FF", "AG", "GET /events   (Observe: 0)", "req"),
     ("msg", "AG", "FF", "2.05 Content  ·  Observe registered", "ack"),
-    ("phase", "3 · Steady state  —  events on occurrence, decisions by Disaster-FD"),
+    ("phase", "3 · Steady state  —  trust level from Disaster-FD, decisions by the agent"),
     ("msg", "FF", "AG", "GET /status   —  once, at start-up: state bootstrap", "req"),
-    ("msg", "AG", "FF", "2.05 {api_version, current_mode, round, active_nodes, last_seq, profile{name, label_set, attribution, traffic_time}}", "ack"),
-    ("msg", "AG", "FF", "notify (CON) · intrusion_detected {attack ∈ label_set, k_votes, n_flags, window_start/end = local ticks, window_samples}", "req"),
-    ("msg", "FF", "AG", "ACK", "ack"),
-    ("note", "source_node comes from the profile's attribution (MAC, IP, publisher) — null with attribution none, and then no isolation can follow"),
-    ("note", "the five event types share this one channel — each CON is ACKed; the ACKs are omitted below"),
-    ("msg", "AG", "FF", "notify · node_failure {failed_nodes:[13]}        — observation, no decided_by", "req"),
-    ("cmd", "LF", "AG", "set_mode {to: gossip}   (local evidence)", GREEN),
-    ("msg", "AG", "FF", "notify · architecture_change {FL→GL, reason: node_failure}   [decided_by: monitor — node-local]", "req"),
-    ("msg", "AG", "FF", "notify · node_recovery {recovered_nodes:[13]}    — observation, no decided_by", "req"),
-    ("cmd", "FF", "AG", "isolate_node {node: 9, reason: intrusion}   (regional evidence · on the next fed_round tick)", PURPLE),
-    ("msg", "AG", "FF", "notify · node_isolated {source_node:9, reason: intrusion, fed_round}   [decided_by: monitor — federated]", "req"),
-    ("cmd", "FF", "AG", "set_mode {to: federated}   (full membership for dwell fed_rounds · unanimity · on a fed_round tick)", PURPLE),
-    ("msg", "AG", "FF", "notify · architecture_change {GL→FL, reason: recovery, fed_round}   [decided_by: monitor — federated]", "req"),
-    ("note", "every transition is decided by Disaster-FD: local to go down, federated to come back up — in clocks as in authority"),
-    ("note", "measured, federated tick every 5 local rounds: FL→GL still round 102 · GL→FL 606 → 630 · isolations 8→10, 21→25, 39→40"),
-    ("note", "no event in the window → nothing is sent   (measured: 88.9% of rounds carry no event at all)"),
+    ("msg", "AG", "FF", "2.05 {api_version, current_mode, round, last_seq, profile{…}, trust{trust_level, band, candidate, stale}}", "ack"),
+    ("note", "the event types share this one channel — each CON is ACKed; the ACKs are omitted below"),
+    ("cmd", "LF", "AG", "trust_level {target: aggregator, trusted: false, TL 30}   (one per probe)", GREEN),
+    ("msg", "AG", "FF", "notify · node_failure {failed_nodes:[0]}        — relayed observation, no decided_by", "req"),
+    ("self", "AG", "band gossip held S = 5 s  →  commit FL→GL", "#3b5b92"),
+    ("msg", "AG", "FF", "notify · architecture_change {FL→GL, reason: trust_level, trust_level: 30}   [decided_by: agent]", "req"),
+    ("cmd", "LF", "AG", "trust_level {target: aggregator, trusted: true, TL 80}", GREEN),
+    ("self", "AG", "band federated held S = 5 s  →  commit GL→FL", "#3b5b92"),
+    ("msg", "AG", "FF", "notify · architecture_change {GL→FL, reason: trust_level, trust_level: 80}   [decided_by: agent]", "req"),
+    ("note", "every transition is decided by the agent from its own monitor's TL — Disaster-FD supplies evidence, never a mode"),
+    ("note", "pilot run, 14 clients: 4 switches each, all 14 within 4.9 s of each other  ·  intrusion events and isolation: future work"),
+    ("note", "no event in the window → nothing is sent"),
     ("msg", "FF", "AG", "GET /events?since=388   (periodic reconciliation)", "req"),
     ("msg", "AG", "FF", "2.05  []   →  alive  ·  no gap  ·  nothing to recover", "ack"),
     ("phase", "4 · Gap recovery  —  one round trip, on the contiguous seq"),
@@ -75,10 +73,10 @@ rows = [
     ("lost", "FF", "AG", "GET /events?since=…   (times out)", "req"),
     ("msg", "FF", "RD", "GET /rd-lookup/ep   —  address changed, or really gone?", "req"),
     ("msg", "RD", "FF", "registration still valid  →  partition, not a dead node", "ack"),
-    ("self", "LF", "co-located with the agent: on the same side of every partition → still commands FL→GL", GREEN),
-    ("self", "LF", "✗  if the node-local FD process itself crashes or hangs …", RED),
-    ("self", "AG", "… the agent's watchdog switches FL→GL after D rounds  [decided_by: autonomous]  —  FL→GL only", RED),
-    ("note", "measured: commanded FL→GL 2 rounds after the inactivity (round 102) · watchdog D = 3 later (round 105)"),
+    ("self", "LF", "co-located with the agent: on the same side of every partition → its TL drops → the agent goes local", GREEN),
+    ("self", "LF", "✗  if the colocated FD process itself crashes or hangs …", RED),
+    ("self", "AG", "… no TL for F = 15 s → the agent goes local  [reason: tl_stale, decided_by: agent]", RED),
+    ("note", "replaces the watchdog D of 1.5.0 · in the pilot run the largest gap between observations is 4.8 s, so it never fires"),
 ]
 
 H = {"msg": 0.56, "lost": 0.56, "cmd": 0.56, "note": 0.46, "banner": 0.50, "phase": 0.52,
@@ -153,7 +151,7 @@ for kind, y0, rest in laid:
         frm, to, text, k = rest
         arrow(y0, X[frm], X[to], text, k, lost=(kind == "lost"))
 
-ax.set_title("Decentralized observability with Disaster-FD (API 1.7.0): Resource Directory + Observe + since=",
+ax.set_title("Decentralized observability with Disaster-FD (API 1.9.0): Resource Directory + Observe + since=",
              fontsize=15, fontweight="bold")
 fig.tight_layout()
 os.makedirs("results", exist_ok=True)
