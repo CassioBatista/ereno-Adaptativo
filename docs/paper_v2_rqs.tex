@@ -5,10 +5,14 @@
 % The former RQ4 (generality) is now RQ5. The dataset audit is NOT a research question:
 % it is described as methodology.
 
-% RQ1 -- adaptive switching commanded by the failure detector
-RQ1: Can a federated failure detector command runtime switching between federated and
-gossip learning, with authority split between its node-local and federated instances,
-while detection is sustained as nodes fail?
+% RQ1 -- adaptive switching on the failure detector's trust level
+% 2026-10-09 (API 1.9.0, docs/TRUST_LEVEL.md): Disaster-FD supplies the trust level, each
+% node decides; three modes. Replaces "Can a federated failure detector command runtime
+% switching between federated and gossip learning, with authority split between its
+% node-local and federated instances, while detection is sustained as nodes fail?"
+RQ1: Can each node switch at runtime between local, gossip and federated learning on the
+trust level supplied by a federated failure detector, while detection is sustained as
+nodes fail?
 
 % RQ2 -- time reference and protection latency
 RQ2: How does the failure detector's cadence bound protection latency, and how must
@@ -23,10 +27,12 @@ RQ4: How must the specialists' alerts be aggregated over time so that slow attac
 detected without raising the false-alarm rate?
 
 % RQ5 -- generality of the core
-RQ5: Can the same core (event model, command interface, authority rule and cadences) run
-unchanged in other domains, with only the domain profile and the retrained detectors
-changing?
-% Plainer alternative (proposed 2026-10-07, not adopted yet):
-% RQ5: Can ReSIDS be moved to a different network domain by supplying only a domain
-% profile and retrained specialists, while its failure handling, commands and alarm rules
-% stay unchanged?
+% 2026-10-09: plainer wording adopted, "commands" -> "switching policy" (API 1.9.0), and the
+% recalibration of thresholds stated (the window rule is the same in every domain; its
+% thresholds are calibrated on each domain's benign traffic and the window length follows
+% the profile). Replaces "Can the same core (event model, command interface, authority rule
+% and cadences) run unchanged in other domains, with only the domain profile and the
+% retrained detectors changing?"
+RQ5: Can ReSIDS be moved to a different network domain by supplying only a domain profile
+and retrained specialists, while its failure handling, switching policy and alarm rules
+stay unchanged and only their thresholds are recalibrated?

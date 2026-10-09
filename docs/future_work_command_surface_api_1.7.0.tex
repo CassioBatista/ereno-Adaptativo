@@ -1,0 +1,413 @@
+% ============================================================================
+% FUTURE WORK -- not part of Paper 2. The API section as it stood at API 1.7.0
+% (Disaster-FD commands every transition; intrusion notification, isolation and the
+% command surface; the fifteen-instance corroboration measurement). Superseded on
+% 2026-10-09 by API 1.9.0 (docs/TRUST_LEVEL.md): Disaster-FD supplies a trust level
+% and the agent decides. Kept verbatim (from commit d9abf73) as the
+% starting point of the intrusion API and the Byzantine model.
+% ============================================================================
+
+% ============================================================================
+% ReSIDS v2.0 -- Failure detection, authority and the control interface
+% Section for the v2 paper. \input{} it; requires booktabs only.
+%
+% Generated alongside docs/decentralized_monitoring.md (authority rule, sec. 1.1),
+% docs/API.md, docs/COMMANDS.md and docs/MULTI_INSTANCE.md, which remain the
+% normative documents; this is the paper-facing summary.
+%
+% CITATION KEY: \cite{disasterfd2025} must match the Disaster-FD entry in the paper's
+% bibliography (de Paulo Silva et al., "Disaster-FD: Federated failure detection in
+% disaster scenarios", JISA 16(1), 2025).
+% ============================================================================
+
+\section{Failure detection, authority and the control interface}
+\label{sec:api}
+
+A runtime-switchable IDS is only operable if its switching is observable and authorised.
+ReSIDS delegates both to Disaster-FD~\cite{disasterfd2025}, a federated failure detector
+with one monitor process per node and per server, federated by region. The architecture
+therefore has exactly two roles: \emph{Disaster-FD}, which detects failures and decides
+every transition, and the \emph{ReSIDS agent} on each node, which executes those decisions
+and protects itself only when its own detector is gone. This section specifies the
+interface between the two as a contract, and separates what is implemented from what is
+specified (Section~\ref{sec:api-status}).
+
+\subsection{Authority: Disaster-FD decides, the agent only protects itself}
+\label{sec:api-authority}
+
+\begin{table}[htbp]
+\centering
+\caption{Authority rule. Every transition is decided by Disaster-FD: the fail-fast one by
+the node-local instance from local evidence, every other by the federated detector. The
+agent acts alone only as a watchdog on its own detector, and only towards the safe mode.}
+\label{tab:authority}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Situation & Decides & Evidence & Fallback \\
+\midrule
+Node inactive while in FL $\rightarrow$ GL & \textbf{node-local Disaster-FD} & local only & watchdog $D$ \\
+Further node loss while in GL & federated Disaster-FD & regional & none \\
+Node with attributed intrusion & federated Disaster-FD & regional & none \\
+GL $\rightarrow$ FL return & \textbf{federated Disaster-FD} & regional & \textbf{none, by design} \\
+Node-local Disaster-FD down & \textbf{agent watchdog} (FL $\rightarrow$ GL only) & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The objection to letting a detector command the fail-fast transition is the single point of
+failure: a \emph{central} monitor may sit on the far side of the very partition that took
+the aggregator down, leaving the node in FL with a dead hub. A Disaster-FD monitor
+\emph{co-located with the node} cannot---it shares every partition with its own agent.
+Disaster-FD can therefore hold authority over every transition without reintroducing the
+failure mode GL exists to survive, provided the fail-fast decision uses the local
+instance's own evidence. Waiting for regional agreement would import the federation's
+latency and its exposure to partitions into the one transition whose value is speed. Hence
+the split in Table~\ref{tab:authority}: \emph{local to go down, federated to come back up}.
+
+The asymmetry is driven by measurement. In GL, recall is unaffected by node loss---it holds
+at 100\% from 14 nodes down to 3, because the retained booster union keeps every
+specialist. In FL the same loss removes a specialist from the aggregate and degrades
+detection (96.02 $\rightarrow$ 86.33 F1 under cascading loss), and the aggregator is a
+single point of failure. GL is thus the resting state, and the return to FL deliberately has
+\emph{no} fallback: if the federated detector cannot decide, the system stays in the
+degraded-but-safe mode. Returning to FL means re-accepting the hub, which is a trust
+decision---and trust, through the reliability threshold, trust level and impact factor
+Disaster-FD inherits from Impact-FD, is precisely what the federated detector quantifies.
+The recovery gates (dwell and unanimity of local health) consequently serve as
+\emph{evidence} for that decision, not as a commit rule of the agent.
+
+The agent's only autonomy is a \emph{watchdog on its own detector}: if the node-local
+Disaster-FD process crashes or hangs, the agent switches FL $\rightarrow$ GL by itself
+after $D$ rounds. It is a safety net for a process failure, not a decision competing with
+Disaster-FD, and it acts only in the fail-safe direction. In our scenarios, with the local
+detector alive the commanded switch follows an inactivity after two rounds; with it down,
+the watchdog lands $D=3$ rounds later---bounded, and the switch always happens.
+
+\paragraph{Time reference.} The agent infers no time from the traffic: the time reference
+is also Disaster-FD's, and the window of an event is whatever the agent scored between two
+ticks. Traffic timestamps, where the protocol carries them, travel only as optional
+metadata for correlation with the monitored system's own event logs, so the same contract
+applies to timestamped protocols and to datasets with no time at all. There are two
+cadences, matching the two
+halves of Table~\ref{tab:authority}: the \emph{local} tick of the node's own detector counts
+the detection lag and the watchdog, and the \emph{federated} tick counts the dwell and the
+decision latency of the regional detector, which takes federated decisions only on that
+tick. A false suspicion towards GL merely moves the node to the safe mode, so the local
+cadence can be short and aggressive while the federated one stays slow and careful; when
+the federation slows down under degradation, protection does not. With the federated tick
+five times slower than the local one, the commanded FL $\rightarrow$ GL is unchanged while
+the return to FL is delayed by the corresponding federated rounds. Protection latency is
+thus the local detector's detection time plus at most one local tick: co-location removes
+the command delay, but not the time needed to perceive that a remote node has failed.
+
+Every action records who took it: \texttt{decided\_by} is \texttt{monitor} for a
+Disaster-FD decision and \texttt{autonomous} only for the watchdog (cause
+\texttt{autonomous\_fallback}). This makes the rule machine-checkable: a conformance
+script rejects any stream that claims autonomy anywhere else.
+
+Making Disaster-FD the decider is an extension: as published it detects failures
+(suspicion, trust and reliability) and federates monitors by region, but does not command
+an IDS. We present that extension as such.
+
+\subsection{Observation surface}
+\label{sec:api-events}
+
+Five event types (Table~\ref{tab:events}) carry every state change Disaster-FD needs. Two
+are actions; three are observations. An event refers to a closed window between two local
+ticks and carries its bounds: \texttt{window\_start} and \texttt{window\_end} are the
+window, distinct from \texttt{ts}, the emission instant.
+
+The interface is domain-neutral. What a domain fixes is bound by a \emph{profile}: the label
+set from which \texttt{attack} is drawn, the source of attribution for
+\texttt{source\_node}---a protocol's publisher identity, a device address, or none, in which
+case the field is always null---and whether the traffic carries timestamps. The profile in
+force is reported with the stream, so no field depends on an implicit vocabulary; our
+evaluation instantiates it on ERENO, whose seven attack classes form its label set.
+
+\begin{table}[htbp]
+\centering
+\caption{Event types. Only the two actions carry \texttt{decided\_by}; attaching it to an
+observation would assert a decision that was never taken.}
+\label{tab:events}
+\begin{tabular}{@{}llp{0.42\linewidth}@{}}
+\toprule
+Type & Kind & Payload beyond the common fields \\
+\midrule
+\texttt{architecture\_change} & action & \texttt{from\_mode}, \texttt{to\_mode}, \texttt{reason}, \texttt{decided\_by} \\
+\texttt{node\_isolated} & action & \texttt{source\_node}, \texttt{reason}, \texttt{decided\_by} \\
+\texttt{node\_failure} & observation & \texttt{failed\_nodes} \\
+\texttt{node\_recovery} & observation & \texttt{recovered\_nodes} \\
+\texttt{intrusion\_detected} & observation & \texttt{attack}, \texttt{k\_votes}, \texttt{n\_flags}, \texttt{detector\_specialists}, \texttt{source\_node} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two naming decisions encode architectural facts. \texttt{detector\_specialists} names
+boosters, not nodes: every node holds the same diffused union and reaches the same verdict,
+so a per-node reading would suggest a corroboration the architecture does not have.
+\texttt{n\_flags} is the alarm's \emph{volume} (flagged samples in the window) while
+\texttt{k\_votes} is its \emph{corroboration strength} (concurring specialists on the
+strongest single sample); together with \texttt{window\_samples} they let the detector
+triage alarms (Section~\ref{sec:api-fp}).
+
+\subsubsection{Behavioural contract}
+
+What a consumer may rely on is not expressible in a schema, so it is stated separately:
+events are ordered by \texttt{seq} ascending; \texttt{seq} starts at 1, has no gaps, and
+continues across restarts; \texttt{since} is exclusive; retention is bounded and a
+\texttt{since} below it yields \texttt{410 Gone} rather than a silently short answer.
+
+The operative rule is that a consumer must reconcile using the highest \emph{contiguous}
+\texttt{seq} it has received, never the highest \emph{seen}. The difference is not
+cosmetic. Once a later notification arrives, the tail is current while an earlier event is
+still missing, and the hole becomes invisible. Measured on the replay harness at 20\%
+notification loss: \textbf{33 events permanently lost} with the tail test, \textbf{zero}
+with the contiguous one. The same request subsumes liveness---an empty answer means alive,
+no gap, and nothing to recover---so a separate periodic probe costs a round trip and buys
+nothing.
+
+\subsubsection{False positives size the interface}
+\label{sec:api-fp}
+
+The interface must be sized for the alarm load it will actually carry. Replaying a
+benign-only stream, in which every alarm is by construction a false positive, 252 of 724
+one-second windows raise one (34.8\%). The two populations separate on volume rather than
+on corroboration: median \texttt{n\_flags} of 56 for false positives against 973 for true
+alarms. Triaging on volume, plus the flagged \emph{fraction}
+$\texttt{n\_flags}/\texttt{window\_samples}$---which recovers sparse attack windows of one
+or two samples, where no volume threshold can be met---keeps 97.9\% of attack windows at a
+window false-positive rate of 0.14\%, with thresholds selected out of sample on earlier
+blocks of the trace and a 25\% safety margin over the benign maximum. Each of the three
+fields resolves a case the others cannot, which is why the event carries three numbers and
+no verdict.
+
+Because the window is the detector's tick, its length is not fixed, and thresholds are
+calibrated once. Calibrated at a 1-s tick and then held fixed, the rule keeps 98.1--98.6\%
+of attack windows with no false window when the tick is \emph{stretched} to 2, 5 and
+10\,s---the direction in which degradation pushes the detector. \emph{Shortening} it is not
+safe: false positives cluster in time, so a short window that lands on a cluster carries a
+high flagged fraction, and at 0.25\,s 6.7\% of benign windows alarm. Neither the volume nor
+the fraction is invariant to the window length, and neither alone holds across cadences;
+the rule is therefore calibrated at the shortest cadence the detector may use.
+
+\subsection{Command surface}
+\label{sec:api-commands}
+
+Three commands---and no more---carry every Disaster-FD decision of
+Table~\ref{tab:authority}: \texttt{set\_mode} for both transitions, \texttt{isolate\_node}
+and \texttt{readmit\_node} for membership. Readmission is not symmetry for its own sake:
+with a 34.8\% false-positive rate on benign windows, wrongful isolation is expected, and a
+surface that can isolate but not readmit would force a node restart to undo the IDS's own
+mistake.
+
+Four envelope fields carry the semantics, each answering a failure mode rather than a
+convention. \texttt{command\_id}, a client-generated UUID, makes execution \emph{at most
+once}: the channel that loses messages also duplicates them, and a duplicated isolation or
+mode switch is not idempotent by nature. \texttt{authority\_epoch}, monotonic, refuses a
+commander whose epoch has been superseded, without which two detector instances during a
+failover are indistinguishable from legitimate traffic. \texttt{not\_after} bounds replay of
+a captured command. \texttt{expect} states the view Disaster-FD decided on, and a mismatch
+refuses the command outright---the same argument as contiguous-seq reconciliation, one layer
+up: a decision taken on a polled view is already in the past, and an actuation surface must
+not let a stale view act.
+
+Three properties are not negotiable.
+
+\begin{enumerate}
+\item \textbf{The watchdog $D$ is not commandable.} No verb cancels, holds or extends it. A
+commander able to postpone $D$ could keep a node in FL with a dead aggregator and a dead
+detector, reintroducing through the control channel the single point of failure GL exists
+to survive. $D$ is configuration, changed by redeploying policy, not by a message in
+flight.
+
+\item \textbf{Disaster-FD decides \emph{whether}; the agent verifies whether it is
+\emph{possible}.} A GL $\rightarrow$ FL return is refused while membership is incomplete,
+and an isolation is refused below $\texttt{min\_nodes} = 3$---the floor at which the
+measurement stops supporting the claim, since recall is verified from 14 nodes down to 3 and
+no further. An explicit \texttt{force} flag overrides both and is recorded in the resulting
+event.
+
+\item \textbf{The response is not the commit record.} A response can be lost; the
+authoritative record is the event, carrying \texttt{decided\_by} and \texttt{command\_id}.
+Rejected commands produce no event, so every answered command also receives a position in a
+command log that reconciles exactly like the event stream---otherwise a refused actuation
+attempt would leave no trace at all.
+\end{enumerate}
+
+Isolation removes a node from the federation and the booster pool; it does \emph{not}
+disconnect it from the monitored network. An isolated node keeps emitting traffic and keeps
+being attributed as the source of alarms. Containment is a network action that ReSIDS
+neither performs nor claims, and the command result says so on every accepted isolation.
+
+What the surface deliberately omits is as much a part of the specification as what it
+offers: no booster upload (a commander able to inject a model can poison detection), no
+runtime change of $k$ or of the decision thresholds (a silent way to blind the IDS), no
+supply of labels or training data (a commander able to label traffic can teach the system
+that an attack is benign), and no traffic blocking.
+
+\subsection{Deployment: fifteen instances}
+\label{sec:api-instances}
+
+In the decentralised deployment each agent serves the interface independently: the FL
+aggregator plus the 14 clients, fifteen endpoints in all, each paired with its own
+node-local Disaster-FD monitor. The federated detector reconciles all fifteen. Four things
+change relative to a single endpoint, and three of them are places where a uniform
+treatment of the fifteen is wrong.
+
+\paragraph{Fifteen watermarks.} Each instance has its own \texttt{seq} space, so a
+\texttt{since} from one endpoint is meaningless on another. The federated detector holds one
+contiguous watermark per instance; a shared counter would be silently wrong rather than
+merely lossy.
+
+\paragraph{The aggregator's silence is not a fault.} In GL the aggregator has no role and
+stops emitting. A detector treating its fifteen endpoints uniformly declares it dead
+immediately after the FL $\rightarrow$ GL switch it has just observed---precisely when the
+regional picture most needs to be unambiguous. The rule is derived from the stream rather
+than special-cased: while the mode is \texttt{gossip}, the aggregator is expected quiet.
+
+\paragraph{Agreement is not corroboration.} Alarms for one window arrive from many
+instances, and what that means depends on what the instances observe. When every agent
+scores the whole window with the same diffused union, all live agents reach the same
+verdict \emph{by construction}; fourteen identical alarms are agreement, and counting them
+as corroboration would inflate confidence with replication. The useful signal there is the
+converse---divergence---and an isolated-but-live node is exactly that case, its membership
+view frozen at the moment of isolation while its agent continues. When instead each agent
+observes its own network segment, alarms from different instances are independent evidence and
+$k$-of-$n$ fusion \emph{across instances} becomes a second, outer layer above the
+$k$-of-$n$ already running inside each node's pool. Section~\ref{sec:api-corrob} quantifies
+the difference. We report both because only the first is faithful to the single-trace
+evaluation used throughout this paper; the second is a declared modelling premise.
+
+\paragraph{Fan-out, with asymmetric unanimity.} The fail-fast FL $\rightarrow$ GL needs no
+fan-out: each node-local detector commands its own agent, and nodes switching a round or two
+apart is harmless because they all converge on GL. Decisions of the federated detector are a
+fan-out---one decision, fifteen commands---and can partially fail. A partial
+FL $\rightarrow$ GL is safe: the stragglers converge on GL, the resting state. A partial
+GL $\rightarrow$ FL splits the federation, leaving some instances aggregating through a hub
+the others have abandoned. The return therefore requires unanimity and is aborted otherwise.
+The commands of one decision share an \texttt{intent\_id} so the audit trail records them as
+a single act, each retaining its own \texttt{command\_id}.
+
+\subsection{Measured: agreement is not evidence}
+\label{sec:api-corrob}
+
+We instantiated the deployment of Section~\ref{sec:api-instances}---fifteen endpoints served
+by the reference implementation, polled over HTTP by a simulated federated detector---and
+measured how many instances report the same traffic window, on attack traffic and on
+benign-only traffic in which every alarm is by construction a false positive. Every instance
+was reconciled on its own contiguous sequence number, with no gap on any.
+Table~\ref{tab:corrob} gives the result.
+
+\begin{table}[htbp]
+\centering
+\caption{Client instances reporting the same window. Requiring corroboration across
+instances costs 6.4\% of true detections and filters no false positive at all: a false
+positive is a property of the traffic window, not an idiosyncrasy of an agent.}
+\label{tab:corrob}
+\begin{tabular}{@{}llrr@{}}
+\toprule
+Window class & View & $\geq 2$ inst. & $\geq 5$ inst. \\
+\midrule
+Attack ($n=282$) & \texttt{replicated} & 100.0\% & 100.0\% \\
+                 & \texttt{sharded} & \textbf{93.6\%} & 93.3\% \\
+\addlinespace
+Benign ($n=252$), all false positives & \texttt{replicated} & 100.0\% & 100.0\% \\
+                 & \texttt{sharded} & \textbf{100.0\%} & 100.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The replicated rows are uninformative by construction, and that is itself the first result.
+Fourteen identical alarms are not fourteen corroborations: every agent holds the same
+diffused union and scores the same samples, so fusing them as independent evidence would
+report a confidence never independently obtained.
+
+The two emphasised figures are the second and more consequential result:
+\textbf{instance-level corroboration is strictly harmful as a filter}. Requiring $k \geq 2$
+\emph{instances} discards 6.4\% of true detections while removing no false positive
+whatsoever---every false positive is corroborated by at least seven instances even when each
+agent observes only its own slice. The reason is structural: a false positive is a property
+of the traffic window rather than an idiosyncrasy of an agent, so a benign window that
+resembles an attack resembles one to everybody, and partitioning the observation does not
+decorrelate the error. Triage must therefore remain volume-based, as
+Section~\ref{sec:api-fp} indicated. Fanning out to fifteen endpoints buys reconciliation,
+attribution and divergence detection; it does not buy a second opinion.
+
+On the attack side the sharded distribution is bimodal---either all fourteen instances fire
+or exactly one does---and the single-instance tail consists of the sparse windows, in which
+so few samples fall inside the second that only one agent's slice contains any. One artifact
+must be declared: those windows concentrate on a single instance, because round-robin slice
+assignment gives index 0 the first sample of every window. A deployment partitioned by network
+segment would not carry that bias, so the 6.4\% figure stands while its attribution to one
+agent does not.
+
+\paragraph{Divergence as a detector.} Because agreement is uninformative under replication,
+the useful signal is its absence. Of the five nodes isolated during the scenario, the
+federated detector identified \textbf{four from divergence alone}, without reading a single
+\texttt{node\_isolated} event: each isolated instance continues to report, carrying the
+membership view frozen at the moment it was cut out of the federation, which places it in
+the minority against the others. No instance ever disagreed about \emph{which} attack was
+present; the divergence was entirely in membership. The fifth isolation is invisible to this
+signal for a structural reason worth stating---it froze at what was already the final
+membership, so no subsequent change exposed the staleness. Divergence therefore detects
+isolation only while membership continues to change, and cannot be the sole mechanism.
+
+\subsection{Security}
+\label{sec:api-security}
+
+Two channels differ in exposure. Between an agent and its \emph{own} node-local Disaster-FD
+process the channel is local to the host and never crosses the network. Commands from the
+\emph{federated} detector do, and for them mutual authentication is mandatory and each
+command additionally carries a detached signature. The reason for the second mechanism is
+that channel authentication proves the \emph{connection}, not the \emph{decision}: with a
+TLS-terminating proxy or an IoT hub in the path---which a CoAP deployment explicitly
+introduces---that intermediary becomes an implicit commander, and an audit trail based on
+channel identity alone cannot tell. The observation surface, read-only and bound to
+loopback, does not require this; the command surface does, because it changes the behaviour
+of the detector itself.
+
+Where a domain prescribes its own transport security, the interface follows it: the REST
+binding runs over TLS directly, and the CoAP binding moves to CoAP over TLS without changing
+the event model or the reconciliation contract. Transport cost is not the deciding factor
+at our volume: DTLS 1.3 adds roughly 11 bytes per record, which still fits inside Ethernet
+minimum padding, so a protected datagram occupies the same 84 bytes on the wire as an
+unprotected one.
+
+A detector that also commands creates an attack surface a pure detector does not have. A
+compromised Disaster-FD instance can force GL, force FL, isolate honest nodes, or readmit an
+isolated one. The mechanisms above are bounds rather than solutions---epoch for failover,
+membership floor, flap limit, signature for attribution, and the deliberate absence of any
+veto over the watchdog so that the worst case remains \emph{degraded} rather than
+\emph{disarmed}. Byzantine-aware trust of the decider itself is outside the scope of this
+version.
+
+\subsection{Implementation status}
+\label{sec:api-status}
+
+\begin{table}[htbp]
+\centering
+\caption{What is implemented, and what is specified. The separation is stated here because
+an interface paper that blurs it is not actionable.}
+\label{tab:api-status}
+\begin{tabular}{@{}lp{0.52\linewidth}@{}}
+\toprule
+State & Component \\
+\midrule
+Implemented & event emission; \texttt{/events}, \texttt{/status}, \texttt{/health}; the
+JSONL audit trail; contiguous-seq reconciliation; the fifteen endpoints and the simulated
+federated detector; scenario streams under the authority rule, including the watchdog, with
+conformance checks \\
+Specified only & \texttt{/commands} and the command log; at-most-once execution; mutual
+authentication, per-command signature and epoch enforcement; \texttt{switch\_pending} and
+the evidence fields of \texttt{/status}; Disaster-FD as the decider (an extension of the
+published detector); the watchdog $D$ in the live agent \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The event half of the loop is verifiable today: the three scenario streams---inactivity,
+inactivity with the node-local detector down, and attributed intrusion---conform to the
+schema and to the authority rule, and the command log they \emph{imply} is derived
+mechanically from their Disaster-FD-decided events---eight commands for eight actions, plus
+the one watchdog action that, by design, no command caused. This demonstrates that the
+command surface is sufficient for the scenarios without claiming it is built.
