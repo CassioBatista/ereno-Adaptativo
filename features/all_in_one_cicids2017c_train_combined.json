@@ -1,0 +1,148 @@
+{
+  "dataset": "all_in_one_cicids2017c_train",
+  "method": "GRASP lambda=0.05: penalized global (multiclass) U binary per category",
+  "global": [
+    6,
+    7,
+    19,
+    50,
+    69
+  ],
+  "per_category": {
+    "DoS": [
+      6,
+      7,
+      38
+    ],
+    "DDoS": [
+      4,
+      7
+    ],
+    "PortScan": [
+      2,
+      5,
+      47,
+      69
+    ],
+    "BruteForce": [
+      11,
+      16,
+      43
+    ],
+    "Web": [
+      57,
+      67,
+      68
+    ],
+    "Bot": [
+      11,
+      42,
+      47,
+      48,
+      66,
+      79
+    ],
+    "Infiltration": [
+      31,
+      46,
+      59,
+      62,
+      67
+    ]
+  },
+  "features": [
+    2,
+    4,
+    5,
+    6,
+    7,
+    11,
+    16,
+    19,
+    31,
+    38,
+    42,
+    43,
+    46,
+    47,
+    48,
+    50,
+    57,
+    59,
+    62,
+    66,
+    67,
+    68,
+    69,
+    79
+  ],
+  "n_features": 24,
+  "names": [
+    "Flow Duration",
+    "Total Bwd packets",
+    "Total Length of Fwd Packet",
+    "Total Length of Bwd Packet",
+    "Fwd Packet Length Max",
+    "Bwd Packet Length Max",
+    "Flow Packets/s",
+    "Flow IAT Max",
+    "Fwd PSH Flags",
+    "Bwd Header Length",
+    "Packet Length Max",
+    "Packet Length Mean",
+    "FIN Flag Count",
+    "SYN Flag Count",
+    "RST Flag Count",
+    "ACK Flag Count",
+    "Bwd Segment Size Avg",
+    "Fwd Packet/Bulk Avg",
+    "Bwd Packet/Bulk Avg",
+    "Subflow Bwd Packets",
+    "Subflow Bwd Bytes",
+    "Fwd Act Data Pkts",
+    "Fwd Seg Size Min",
+    "ICMP Type"
+  ],
+  "per_category_names": {
+    "DoS": [
+      "Total Length of Bwd Packet",
+      "Fwd Packet Length Max",
+      "Bwd Header Length"
+    ],
+    "DDoS": [
+      "Total Bwd packets",
+      "Fwd Packet Length Max"
+    ],
+    "PortScan": [
+      "Flow Duration",
+      "Total Length of Fwd Packet",
+      "SYN Flag Count",
+      "Fwd Seg Size Min"
+    ],
+    "BruteForce": [
+      "Bwd Packet Length Max",
+      "Flow Packets/s",
+      "Packet Length Mean"
+    ],
+    "Web": [
+      "Bwd Segment Size Avg",
+      "Subflow Bwd Bytes",
+      "Fwd Act Data Pkts"
+    ],
+    "Bot": [
+      "Bwd Packet Length Max",
+      "Packet Length Max",
+      "SYN Flag Count",
+      "RST Flag Count",
+      "Subflow Bwd Packets",
+      "ICMP Type"
+    ],
+    "Infiltration": [
+      "Fwd PSH Flags",
+      "FIN Flag Count",
+      "Fwd Packet/Bulk Avg",
+      "Bwd Packet/Bulk Avg",
+      "Subflow Bwd Bytes"
+    ]
+  }
+}
