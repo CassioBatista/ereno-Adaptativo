@@ -1,0 +1,34 @@
+# Disaster-FD trust-level scenario (team description, 2026-10-08): phase-composed ERENO trace.
+# Input of scripts/build_disaster_fd_trace.py. Values marked CONFIRM are proposals awaiting
+# the Disaster-FD team.
+name: disaster_fd_tl
+seed: 42
+data:
+  train: all_in_one_ereno_train
+  test: all_in_one_ereno_test
+  benign_cap: 500000          # training cap of the specialists (scenario files); the benign
+                              # TRAIN rows beyond it were never seen by any specialist and
+                              # join the benign pool of the trace
+duration_min: 83              # span of the original test trace (00:00:13 -> 01:23:16)
+rate: original                # samples per minute: the mean rate of the original test trace
+prevalence: original          # attack share per phase: the share of the original test trace
+calibration_min: 10           # benign-only block, NOT part of the 83 min, for window thresholds
+
+# Attacks known to the federation, by the minute they are distributed to clients. CONFIRM.
+known_from:
+  0:  [random_replay, inverse_replay, injection, high_StNum]
+  30: [masquerade_fake_fault, poisoned_high_rate]
+  60: [masquerade_fake_normal]
+
+# Which attacks appear in the traffic of each phase:
+#   known     only the attacks already known (the team's "test sets with 4 / 6 / 7 attacks")
+#   all       all seven from the start: not-yet-known attacks are present and go undetected
+#             until their specialist exists (zero-day view)
+traffic: known                # CONFIRM
+
+phases:                       # minutes; mode is what Disaster-FD's trust level selects
+  - {name: P1, start: 0,  end: 15, mode: local,     trust: "TL < 30 (all clients isolated)"}
+  - {name: P2, start: 15, end: 30, mode: federated, trust: "TL >= 50"}
+  - {name: P3, start: 30, end: 45, mode: local,     trust: "TL < 30 (network instability)"}
+  - {name: P4, start: 45, end: 60, mode: gossip,    trust: "30 <= TL < 50 (partial recovery)"}
+  - {name: P5, start: 60, end: 83, mode: federated, trust: "TL >= 50 (aggregator back)"}

@@ -1,0 +1,234 @@
+{
+  "scenario": "disaster_fd_tl",
+  "config": "conf/scenarios/disaster_fd_trace.yaml",
+  "inputs": [
+    {
+      "file": "all_in_one_ereno_test.csv",
+      "bytes": 1735656671,
+      "sha256": "a8e7f0dd135392285d10f46f316501cc301f2c3e65094e4dcf628bf0735bb256"
+    },
+    {
+      "file": "all_in_one_ereno_train.csv",
+      "bytes": 1748176548,
+      "sha256": "0ad1bef524aa47def9ead2038a53afff5fbe9f40b15a29cdee3fcff2d5bd1fca"
+    }
+  ],
+  "original_test_trace": {
+    "rows": 2955648,
+    "span_min": 83.07,
+    "attack_share": 0.06784,
+    "class_share": {
+      "random_replay": 0.0132,
+      "inverse_replay": 0.01026,
+      "masquerade_fake_fault": 0.00582,
+      "masquerade_fake_normal": 0.00589,
+      "injection": 0.0132,
+      "high_StNum": 0.0132,
+      "poisoned_high_rate": 0.00628
+    }
+  },
+  "rate_per_min": 35581.6,
+  "benign_pool": {
+    "test_benign": 2755139,
+    "unused_train_benign": 2259425,
+    "used_in_trace": 2772113,
+    "calibration": 355816
+  },
+  "attack_rows_used": {
+    "random_replay": 36117,
+    "inverse_replay": 28076,
+    "masquerade_fake_fault": 15207,
+    "masquerade_fake_normal": 13111,
+    "injection": 36117,
+    "high_StNum": 36117,
+    "poisoned_high_rate": 16420
+  },
+  "attack_rows_available": {
+    "random_replay": 39000,
+    "inverse_replay": 30319,
+    "masquerade_fake_fault": 17200,
+    "masquerade_fake_normal": 17420,
+    "injection": 39000,
+    "high_StNum": 39000,
+    "poisoned_high_rate": 18570
+  },
+  "phases": [
+    {
+      "phase": "P1",
+      "minutes": [
+        0,
+        15
+      ],
+      "mode": "local",
+      "trust": "TL < 30 (all clients isolated)",
+      "known": [
+        "random_replay",
+        "inverse_replay",
+        "injection",
+        "high_StNum"
+      ],
+      "in_traffic": [
+        "random_replay",
+        "inverse_replay",
+        "injection",
+        "high_StNum"
+      ],
+      "samples": 533725,
+      "benign": 507102,
+      "attack": {
+        "random_replay": 7048,
+        "inverse_replay": 5479,
+        "injection": 7048,
+        "high_StNum": 7048
+      },
+      "attack_share": 0.04988,
+      "shortfall": {}
+    },
+    {
+      "phase": "P2",
+      "minutes": [
+        15,
+        30
+      ],
+      "mode": "federated",
+      "trust": "TL >= 50",
+      "known": [
+        "random_replay",
+        "inverse_replay",
+        "injection",
+        "high_StNum"
+      ],
+      "in_traffic": [
+        "random_replay",
+        "inverse_replay",
+        "injection",
+        "high_StNum"
+      ],
+      "samples": 533725,
+      "benign": 507102,
+      "attack": {
+        "random_replay": 7048,
+        "inverse_replay": 5479,
+        "injection": 7048,
+        "high_StNum": 7048
+      },
+      "attack_share": 0.04988,
+      "shortfall": {}
+    },
+    {
+      "phase": "P3",
+      "minutes": [
+        30,
+        45
+      ],
+      "mode": "local",
+      "trust": "TL < 30 (network instability)",
+      "known": [
+        "random_replay",
+        "inverse_replay",
+        "injection",
+        "high_StNum",
+        "masquerade_fake_fault",
+        "poisoned_high_rate"
+      ],
+      "in_traffic": [
+        "random_replay",
+        "inverse_replay",
+        "injection",
+        "high_StNum",
+        "masquerade_fake_fault",
+        "poisoned_high_rate"
+      ],
+      "samples": 533725,
+      "benign": 497522,
+      "attack": {
+        "random_replay": 6944,
+        "inverse_replay": 5398,
+        "injection": 6944,
+        "high_StNum": 6944,
+        "masquerade_fake_fault": 4795,
+        "poisoned_high_rate": 5178
+      },
+      "attack_share": 0.06783,
+      "shortfall": {}
+    },
+    {
+      "phase": "P4",
+      "minutes": [
+        45,
+        60
+      ],
+      "mode": "gossip",
+      "trust": "30 <= TL < 50 (partial recovery)",
+      "known": [
+        "random_replay",
+        "inverse_replay",
+        "injection",
+        "high_StNum",
+        "masquerade_fake_fault",
+        "poisoned_high_rate"
+      ],
+      "in_traffic": [
+        "random_replay",
+        "inverse_replay",
+        "injection",
+        "high_StNum",
+        "masquerade_fake_fault",
+        "poisoned_high_rate"
+      ],
+      "samples": 533725,
+      "benign": 497522,
+      "attack": {
+        "random_replay": 6944,
+        "inverse_replay": 5398,
+        "injection": 6944,
+        "high_StNum": 6944,
+        "masquerade_fake_fault": 4795,
+        "poisoned_high_rate": 5178
+      },
+      "attack_share": 0.06783,
+      "shortfall": {}
+    },
+    {
+      "phase": "P5",
+      "minutes": [
+        60,
+        83
+      ],
+      "mode": "federated",
+      "trust": "TL >= 50 (aggregator back)",
+      "known": [
+        "random_replay",
+        "inverse_replay",
+        "injection",
+        "high_StNum",
+        "masquerade_fake_fault",
+        "poisoned_high_rate",
+        "masquerade_fake_normal"
+      ],
+      "in_traffic": [
+        "random_replay",
+        "inverse_replay",
+        "injection",
+        "high_StNum",
+        "masquerade_fake_fault",
+        "poisoned_high_rate",
+        "masquerade_fake_normal"
+      ],
+      "samples": 818378,
+      "benign": 762865,
+      "attack": {
+        "random_replay": 8133,
+        "inverse_replay": 6322,
+        "injection": 8133,
+        "high_StNum": 8133,
+        "masquerade_fake_fault": 5617,
+        "poisoned_high_rate": 6064,
+        "masquerade_fake_normal": 13111
+      },
+      "attack_share": 0.06783,
+      "shortfall": {}
+    }
+  ],
+  "note": "rows unchanged (features, labels, per-sample scores); order and time axis synthetic"
+}
