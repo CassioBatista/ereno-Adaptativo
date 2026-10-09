@@ -52,7 +52,7 @@ dataset is not public, and ICS-Flow carries no physical data. Before use, each o
 the ten was audited with the same protocol, and none could be retained. Three more datasets
 from the survey's own experiments, the Mississippi State gas-pipeline and water-tank sets
 (Morris-2, Morris-3 and Morris-4), were audited later and rejected too. The datasets used
-in the evaluation, ERENO, the corrected CICIDS2017, Electra and the UNSW IoT attack traces,
+in the evaluation, ERENO, the improved CICIDS2017, Electra and the UNSW IoT attack traces,
 went through the same protocol, as did CICIoT2023, first selected as the IoT domain and
 rejected by it, and five further IoT and industrial IoT candidates audited to replace it:
 ToN\_IoT, IoT-23, X-IIoTID and Kitsune were rejected, and the UNSW IoT attack traces were
@@ -93,7 +93,7 @@ Dataset & Domain & Failed checks & Main finding & Use \\
 \midrule
 ERENO~\cite{quincozes2023ereno} & IEC 61850 substation & A &
   attacks impersonate the single publisher & retained \\
-CICIDS2017, corrected~\cite{engelen2021troubleshooting} & enterprise network & L, X &
+CICIDS2017, improved~\cite{liu2022error} & enterprise network & L, X &
   scans duplicated across two labels; window-size fingerprint & retained \\
 Electra Modbus~\cite{perales2019electra} & industrial control network & L &
   three labels mark the man-in-the-middle path, not the packet & retained$^{a}$ \\
@@ -407,7 +407,7 @@ attacker. The attacker-involvement labelling is sound and needs no session short
 probe scores the same on random and time-ordered splits (macro-F1 0.61 and 0.60). The
 flow files carry no process data, however, and two of the six events are
 misconfigurations invisible in flow statistics (F1-score near zero). The dataset therefore
-adds no property beyond the corrected CICIDS2017.
+adds no property beyond the improved CICIDS2017.
 
 HAI 23.05~\cite{shin2020hai}, the latest release of the HIL-based augmented ICS dataset
 (steam-turbine and pumped-storage generation emulated in the loop), is the soundest of the
@@ -453,8 +453,8 @@ the attacks impersonate the legitimate publisher. Source attribution in this dom
 therefore point at the victim, and isolation is exercised only in synthetic scenarios
 (Section~\ref{sec:api-events}).
 
-The corrected CICIDS2017~\cite{engelen2021troubleshooting,liu2022error} (2{,}099{,}976
-flows over five days) passes the structure, time, attribution and prevalence checks.
+The improved CICIDS2017 of Liu et al.~\cite{liu2022error} (version dated 27 April 2023,
+2{,}099{,}976 flows over five days) passes the structure, time, attribution and prevalence checks.
 Every line has 91 fields; addresses, ports and timestamps are well formed; and attacks
 run concurrently with benign traffic, which makes up 15 to 99.8\% of the flows inside
 each attack's time window. Attack flows come from the external attacker's gateway

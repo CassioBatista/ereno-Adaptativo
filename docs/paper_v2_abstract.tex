@@ -1,5 +1,8 @@
 % Paper 2 (ReSIDS v2) -- abstract, keywords and highlights for Engineering Applications
 % of Artificial Intelligence (EAAI). Impersonal style.
+% 2026-10-09: "improved CICIDS2017" = Liu et al., CNS 2022 (CICIDS2017_improved.zip,
+% intrusion-detection.distrinet-research.be/CNS2022/Datasets, dated 2023-04-27); NOT the
+% WTMC2021 version of Engelen et al. (1,657,069 benign vs 1,582,566 here). Cite liu2022error.
 % EAAI limits: abstract <= 250 words (this one: 250); 1-6 keywords; 3-5 highlights of
 % <= 85 characters.
 % 2026-10-09: API 1.9.0 (docs/TRUST_LEVEL.md) -- Disaster-FD supplies the trust level and
@@ -68,7 +71,7 @@ local learning when it is cut off. Applying it elsewhere requires only retrainin
 specialists. Since attacks are rare,
 individual alerts are mostly false alarms; ReSIDS therefore counts them per window,
 network-wide and per specialist: a slow attack accumulates in its own specialist, whereas
-false alarms spread. On public IEC 61850 substation (ERENO), enterprise (corrected CICIDS2017), railway
+false alarms spread. On public IEC 61850 substation (ERENO), enterprise (improved CICIDS2017), railway
 Modbus (Electra) and consumer IoT (UNSW) traffic, detection is unchanged as membership
 shrinks to 3 nodes (F1-score 95.98\%, 98.87\%, 99.97\% and 72.7\%), while FL alone loses
 whole categories, and windowed alarms flag 99.3\%, 73.5\%, 88.7\% and 71.1\% of attack
