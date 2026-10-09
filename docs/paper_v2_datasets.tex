@@ -75,8 +75,8 @@ re-split would leak. Publisher identities (MAC addresses, \texttt{gocbRef},
 \texttt{goID}) and the three absolute-time markers are removed from the features, so
 that a specialist learns how an attack behaves and not who performs it or when. The
 audit sets two limits. First, the attacks impersonate the single legitimate publisher,
-so source attribution would point at the victim; intrusion-driven isolation is
-therefore exercised only in synthetic scenarios. Second, the benign volume available at
+so source attribution would point at the victim and cannot name the emitter of an
+alarm. Second, the benign volume available at
 window level, about twelve minutes, bounds the precision that can be certified at low
 prevalence (Section~\ref{sec:api-fp}).
 
@@ -91,8 +91,8 @@ labelling of Engelen et al.~\cite{engelen2021troubleshooting}, with five days
 CICIDS2017-C. It provides, on captured traffic, three
 properties the core needs. Real flow timestamps let the time-based local tick run on live
 traffic. Source addresses point at the emitter, either the attacker's gateway or a
-compromised internal host, so the \texttt{device\_address} attribution, and therefore
-intrusion-driven isolation, can be exercised. A benign-only day (Monday, eight hours)
+compromised internal host, so the \texttt{device\_address} attribution names the emitter of
+each alarm. A benign-only day (Monday, eight hours)
 extends the benign volume available for the prevalence analysis well beyond that of
 ERENO. The label set \texttt{cicids2017c-7} groups the classes into DoS, DDoS, port scan,
 FTP/SSH brute force, web attack, botnet and infiltration; Heartbleed (11 flows) is
@@ -133,7 +133,7 @@ flows of its MUD profile, summed per direction, reach and protocol into 41 featu
 traffic and make up 0.40\% of the device-minutes, a realistic prevalence. One agent watches
 one device, and the minute is its local tick. The counters belong to the victim device,
 not to the emitter, so attribution is \texttt{none}: this domain exercises the core with
-time but without an emitter to isolate. The audit sets one condition of use. In every
+time but without attribution. The audit sets one condition of use. In every
 annotated interval of ARP spoofing, ping of death and Smurf attacks, the counters of the
 protocol the attack uses rise above the hour before, but in TCP and UDP floods and
 reflections they do so in only 58 to 86\% of the intervals: at one-minute resolution,
@@ -146,8 +146,8 @@ minutes, and the figures are reported with confidence intervals.
 \paragraph{Profile without time or attribution (ablation).}
 Some releases carry neither timestamps nor addresses; CICIoT2023, rejected by the audit,
 is one. Their profile has a count-based local tick, one tick every $M$ samples in arrival
-order, and attribution \texttt{none}, under which an intrusion raises alarms but never an
-isolation. Rather than a fourth dataset, which would change the data and the profile at
+order, and attribution \texttt{none}, under which an alarm names no
+emitter. Rather than a fourth dataset, which would change the data and the profile at
 once, this profile is exercised by an ablation: CICIDS2017-C is run under it
 (\texttt{it-flow-blind}) with the same specialists and the same split, so that only the
 profile changes. Per-flow detection is identical by construction, since the features do
