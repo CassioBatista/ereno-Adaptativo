@@ -1,0 +1,37 @@
+=== (a) false positives needed to reach a recall (thresholds tuned alike) ===
+  benign samples: 2,755,139; attack samples: 200,509
+  option                                        FP@rec 99.90%  FP@rec 99.95%  FP@rec 99.96%
+  one per attack (half 0), k=1                           6,275          13,129          13,129
+  one per attack (half 1), k=1                           5,815           5,815           5,815
+  mean of the pair, k=1                                  6,140           8,937           8,937
+  min of the pair (= k>=2 within the pair)               5,556          10,136          10,136
+  all 14, k=1 (max)                                      6,280           6,534           6,534
+  all 14, k>=2 (2nd highest score)                       5,556          10,175          10,175
+  (k>=2 over the 14 = flag when the 2nd-highest score passes the threshold; 'min of the pair' = both specialists of one attack agree)
+
+=== (b) FL keeps the first n nodes (k at 0.5): absence vs veto ===
+  GL union k>=2 recall 99.96% at every n (retained union)
+   n | rec k>=2 | rec k=1 | absence = GL - k=1 | veto = k=1 - k>=2 | per-attack recall k=1 / k>=2
+  14 |   99.96 |   99.97 |  -0.00 |   0.00 | random_replay[2] 100.0/100.0  inverse_replay[2] 100.0/100.0  masquerade_fake_[2]  99.6/ 99.6  masquerade_fake_[2] 100.0/100.0  injection[2] 100.0/100.0  high_StNum[2] 100.0/100.0  poisoned_high_ra[2] 100.0/100.0
+  13 |   91.74 |   99.97 |  -0.00 |   8.23 | random_replay[2] 100.0/100.0  inverse_replay[2] 100.0/100.0  masquerade_fake_[1]  99.6/  3.8  masquerade_fake_[2] 100.0/100.0  injection[2] 100.0/100.0  high_StNum[2] 100.0/100.0  poisoned_high_ra[2] 100.0/100.0
+  12 |   91.74 |   91.75 |   8.22 |   0.00 | random_replay[2] 100.0/100.0  inverse_replay[2] 100.0/100.0  masquerade_fake_[0]   3.8/  3.8  masquerade_fake_[2] 100.0/100.0  injection[2] 100.0/100.0  high_StNum[2] 100.0/100.0  poisoned_high_ra[2] 100.0/100.0
+  11 |   83.06 |   91.75 |   8.22 |   8.69 | random_replay[2] 100.0/100.0  inverse_replay[2] 100.0/100.0  masquerade_fake_[0]   3.8/  3.8  masquerade_fake_[1] 100.0/  0.0  injection[2] 100.0/100.0  high_StNum[2] 100.0/100.0  poisoned_high_ra[2] 100.0/100.0
+  10 |   83.06 |   83.06 |  16.90 |   0.00 | random_replay[2] 100.0/100.0  inverse_replay[2] 100.0/100.0  masquerade_fake_[0]   3.8/  3.8  masquerade_fake_[0]   0.0/  0.0  injection[2] 100.0/100.0  high_StNum[2] 100.0/100.0  poisoned_high_ra[2] 100.0/100.0
+   9 |   82.71 |   83.06 |  16.91 |   0.35 | random_replay[2] 100.0/100.0  inverse_replay[2] 100.0/100.0  masquerade_fake_[0]   3.8/  0.2  masquerade_fake_[0]   0.0/  0.0  injection[2] 100.0/100.0  high_StNum[2] 100.0/100.0  poisoned_high_ra[1] 100.0/ 99.5
+   8 |   82.70 |   82.71 |  17.26 |   0.01 | random_replay[2] 100.0/100.0  inverse_replay[2] 100.0/100.0  masquerade_fake_[0]   0.2/  0.1  masquerade_fake_[0]   0.0/  0.0  injection[2] 100.0/100.0  high_StNum[2] 100.0/100.0  poisoned_high_ra[0]  99.5/ 99.5
+   7 |   74.97 |   82.71 |  17.26 |   7.74 | random_replay[2] 100.0/100.0  inverse_replay[1] 100.0/ 48.9  masquerade_fake_[0]   0.2/  0.1  masquerade_fake_[0]   0.0/  0.0  injection[2] 100.0/100.0  high_StNum[2] 100.0/100.0  poisoned_high_ra[0]  99.5/ 99.5
+   6 |   74.65 |   74.98 |  24.99 |   0.33 | random_replay[2] 100.0/100.0  inverse_replay[0]  48.9/ 46.8  masquerade_fake_[0]   0.2/  0.1  masquerade_fake_[0]   0.0/  0.0  injection[2] 100.0/100.0  high_StNum[2] 100.0/100.0  poisoned_high_ra[0]  99.5/ 99.5
+   5 |   74.64 |   74.98 |  24.99 |   0.34 | random_replay[2] 100.0/100.0  inverse_replay[0]  48.9/ 46.8  masquerade_fake_[0]   0.2/  0.0  masquerade_fake_[0]   0.0/  0.0  injection[2] 100.0/100.0  high_StNum[1] 100.0/100.0  poisoned_high_ra[0]  99.5/ 99.5
+   4 |   74.64 |   74.64 |  25.33 |   0.00 | random_replay[2] 100.0/100.0  inverse_replay[0]  46.8/ 46.8  masquerade_fake_[0]   0.0/  0.0  masquerade_fake_[0]   0.0/  0.0  injection[2] 100.0/100.0  high_StNum[0] 100.0/100.0  poisoned_high_ra[0]  99.5/ 99.5
+   3 |   36.85 |   74.64 |  25.33 |  37.79 | random_replay[2] 100.0/100.0  inverse_replay[0]  46.8/ 46.8  masquerade_fake_[0]   0.0/  0.0  masquerade_fake_[0]   0.0/  0.0  injection[1] 100.0/  0.0  high_StNum[0] 100.0/  5.7  poisoned_high_ra[0]  99.5/ 99.5
+
+=== (c) the 16,708 false positives of k>=2 @0.5 (GL union, 14) ===
+  false positives on which BOTH specialists of an attack fired (the pair alone closes k>=2):
+    random_replay      both       0   at least one       0
+    inverse_replay     both       0   at least one       0
+    masquerade_fake_   both  12,056   at least one  12,056
+    masquerade_fake_   both   4,621   at least one   4,621
+    injection          both       0   at least one       0
+    high_StNum         both      60   at least one      99
+    poisoned_high_ra   both       0   at least one       1
+  false positives whose votes come from a single attack's pair: 16,639 (99.6%); from two or more attacks: 69

@@ -1,0 +1,48 @@
+ERENO full test, N=14 (2 specialists per attack), tau=0.5
+  healthy OR    F1  95.45  recall  99.97  FPR   0.691%
+  healthy k>=2  F1  95.98  recall  99.96  FPR   0.606%
+
+=== stuck-1: fires on every sample (one booster faulty; min / mean / max over the 14) ===
+  OR    F1  12.71 /  12.71 /  12.71   recall 100.00 / 100.00 / 100.00   FPR 100.000 / 100.000 / 100.000%
+  k>=2  F1  95.45 /  95.49 /  95.98   recall  99.96 /  99.97 /  99.97   FPR   0.607 /   0.685 /   0.691%
+
+=== noise: fires at random on 10% of samples (one booster faulty; min / mean / max over the 14) ===
+  OR    F1  57.71 /  57.82 /  58.02   recall  99.97 /  99.97 /  99.97   FPR  10.528 /  10.611 /  10.659%
+  k>=2  F1  88.73 /  93.79 /  95.94   recall  86.48 /  94.91 /  99.96   FPR   0.224 /   0.536 /   0.616%
+
+=== noise: fires at random on 1% of samples (one booster faulty; min / mean / max over the 14) ===
+  OR    F1  89.57 /  89.65 /  90.12   recall  99.96 /  99.97 /  99.97   FPR   1.592 /   1.678 /   1.691%
+  k>=2  F1  88.00 /  93.61 /  95.98   recall  85.13 /  94.40 /  99.96   FPR   0.177 /   0.522 /   0.608%
+
+=== noise: fires at random on 0.1% of samples (one booster faulty; min / mean / max over the 14) ===
+  OR    F1  94.82 /  94.87 /  95.37   recall  99.96 /  99.97 /  99.97   FPR   0.703 /   0.784 /   0.793%
+  k>=2  F1  87.93 /  93.59 /  95.99   recall  84.99 /  94.35 /  99.96   FPR   0.172 /   0.520 /   0.607%
+
+=== stuck-0: never fires (silent) (one booster faulty; min / mean / max over the 14) ===
+  OR    F1  95.45 /  95.49 /  95.98   recall  99.96 /  99.97 /  99.97   FPR   0.607 /   0.685 /   0.691%
+  k>=2  F1  87.92 /  93.59 /  95.99   recall  84.98 /  94.34 /  99.96   FPR   0.171 /   0.520 /   0.606%
+
+  stuck-0 under k>=2, recall of the attack whose booster went silent:
+    booster  0 (random_replay         ) recall of its attack  89.90%  (healthy 100.00%; OR 100.00%)
+    booster  1 (random_replay         ) recall of its attack  89.90%  (healthy 100.00%; OR 100.00%)
+    booster  2 (injection             ) recall of its attack  22.97%  (healthy 100.00%; OR 100.00%)
+    booster  3 (injection             ) recall of its attack  22.97%  (healthy 100.00%; OR 100.00%)
+    booster  4 (high_StNum            ) recall of its attack 100.00%  (healthy 100.00%; OR 100.00%)
+    booster  5 (high_StNum            ) recall of its attack 100.00%  (healthy 100.00%; OR 100.00%)
+    booster  6 (inverse_replay        ) recall of its attack  67.33%  (healthy 100.00%; OR 100.00%)
+    booster  7 (inverse_replay        ) recall of its attack  67.33%  (healthy 100.00%; OR 100.00%)
+    booster  8 (poisoned_high_rate    ) recall of its attack 100.00%  (healthy 100.00%; OR 100.00%)
+    booster  9 (poisoned_high_rate    ) recall of its attack 100.00%  (healthy 100.00%; OR 100.00%)
+    booster 10 (masquerade_fake_normal) recall of its attack   0.01%  (healthy  99.95%; OR  99.95%)
+    booster 11 (masquerade_fake_normal) recall of its attack   0.01%  (healthy  99.95%; OR 100.00%)
+    booster 12 (masquerade_fake_fault ) recall of its attack   3.81%  (healthy  99.64%; OR  99.64%)
+    booster 13 (masquerade_fake_fault ) recall of its attack   3.81%  (healthy  99.64%; OR  99.64%)
+
+=== limit: BOTH boosters of one attack stuck-1 (fault shared by the pair) ===
+  random_replay          k>=2: FPR 100.000%  (F1  12.71)
+  inverse_replay         k>=2: FPR 100.000%  (F1  12.71)
+  masquerade_fake_fault  k>=2: FPR 100.000%  (F1  12.71)
+  masquerade_fake_normal k>=2: FPR 100.000%  (F1  12.71)
+  injection              k>=2: FPR 100.000%  (F1  12.71)
+  high_StNum             k>=2: FPR 100.000%  (F1  12.71)
+  poisoned_high_rate     k>=2: FPR 100.000%  (F1  12.71)
