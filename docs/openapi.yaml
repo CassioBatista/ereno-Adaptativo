@@ -1,28 +1,38 @@
 openapi: 3.1.0
 info:
   title: ReSIDS Monitor API (REST)
-  version: "1.7.0"
+  version: "1.9.0"
   description: >
-    Observability AND command API between a ReSIDS agent and its Disaster-FD monitor
+    Observability and trust-level API between a ReSIDS agent and its Disaster-FD monitor
     process (fd/monitor.py simulates the latter). The architecture has two roles only:
-    Disaster-FD (one monitor process per node and per server, federated by region) and the
-    agent; there is no external monitor or supervisor. The Disaster-FD monitor POLLS the
-    event endpoints and POSTS commands. The same events can also be pushed over CoAP (see
-    docs/API.md, "CoAP push"); this spec covers the REST/HTTP surface only.
+    Disaster-FD (one monitor process colocated with each node, federated by region) and the
+    agent; there is no external monitor or supervisor. The same events can also be pushed
+    over CoAP (see docs/API.md, "CoAP push"); this spec covers the REST/HTTP surface only.
 
 
-    IMPLEMENTATION STATUS: the /events, /status and /health endpoints are implemented
-    (with the gaps noted in docs/API.md 2.1). The /commands endpoints are SPECIFIED AND
-    NOT IMPLEMENTED -- see docs/COMMANDS.md 9. They are included here because the
-    authority rule (docs/decentralized_monitoring.md 1.1) puts EVERY transition in
-    Disaster-FD's hands: the fail-fast FL->GL in the node-local instance's, everything
-    else in the federated one's. The agent acts alone only as a watchdog when its own
-    node-local Disaster-FD process is down.
+    API 1.9.0 (docs/TRUST_LEVEL.md): Disaster-FD detects failures and PUSHES a trust level
+    (TL) per observation to POST /trust_level; the agent decides its learning mode from it
+    (TL < 30 local, 30 <= TL < 50 gossip, TL >= 50 federated; settle time 5 s; no TL for
+    15 s -> local) and records each switch as an architecture_change with
+    decided_by: agent. Disaster-FD supplies evidence, never a mode. The monitor still POLLS
+    /events to observe what the agent decided.
 
 
-    The two surfaces differ in one respect that must not be blurred: /events is read-only
-    and unauthenticated on loopback, while /commands actuates a protection system and
-    REQUIRES mutual authentication plus a per-command signature (docs/COMMANDS.md 6).
+    IMPLEMENTATION STATUS: /events, /status and /health are implemented (with the gaps
+    noted in docs/API.md 2.1). POST /trust_level and /status.trust are SPECIFIED AND NOT
+    IMPLEMENTED in fd/monitor.py; the policy is implemented offline in
+    scripts/tl_policy_replay.py and validated on the Disaster-FD pilot run.
+
+
+    The /commands endpoints (1.4.0-1.7.0, never implemented) are DEPRECATED: set_mode is
+    replaced by the trust-level policy, and isolate_node / readmit_node return with the
+    intrusion API and the Byzantine model (future work). They are kept below, marked
+    deprecated, as the starting point of that work (docs/COMMANDS.md).
+
+
+    The surfaces differ in exposure: /events is read-only and unauthenticated on loopback;
+    /trust_level changes the mode of a protection system, so it is HOST-LOCAL only (loopback
+    or a Unix socket, never routed), as the monitor is colocated with the agent.
 
 
     The Event payload is NOT redefined here: it is $ref'd from
@@ -91,6 +101,9 @@ paths:
           description: Filter by event type.
           schema:
             type: string
+            description: >
+              node_isolated and intrusion_detected are accepted for pre-1.9.0 trails; a
+              1.9.0 agent does not emit them.
             enum: [architecture_change, node_failure, node_recovery, node_isolated, intrusion_detected]
       responses:
         "200":
@@ -113,9 +126,40 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Error" }
+  /trust_level:
+    post:
+      summary: Disaster-FD trust-level observation (1.9.0; NOT IMPLEMENTED in fd/monitor.py)
+      description: >
+        One observation per probe of the colocated monitor (schemas/trust_level.schema.json,
+        a one-to-one map of a row of the Disaster-FD monitor CSV). The agent keeps the
+        latest TL, maps it to a band and commits a new band once it has held for the
+        settle time S; if no observation arrives for F seconds it falls back to local
+        (reason tl_stale). The response carries no decision: what the agent did, and when,
+        is the architecture_change event on /events. Host-local only (see info).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/TrustLevel" }
+      responses:
+        "204":
+          description: Observation accepted.
+        "400":
+          description: Malformed — fails schemas/trust_level.schema.json.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "409":
+          description: >
+            `wrong_monitor`: the observation names a monitor or client other than the one
+            this agent is paired with. A client switches only on its own monitor's TL.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
   /commands:
     post:
-      summary: Issue a command (NOT IMPLEMENTED — see docs/COMMANDS.md §9)
+      deprecated: true
+      summary: Issue a command (DEPRECATED in 1.9.0; never implemented — see docs/COMMANDS.md)
       description: >
         The actuation surface. Execution is AT MOST ONCE, keyed by the client-generated
         `command_id`: re-submitting the same id returns the stored outcome with
@@ -203,7 +247,8 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/CommandResult" }
     get:
-      summary: Command log, incremental (NOT IMPLEMENTED)
+      deprecated: true
+      summary: Command log, incremental (DEPRECATED in 1.9.0; never implemented)
       description: >
         Mirrors GET /events exactly: `since` is EXCLUSIVE, results ascend by `cmd_seq`,
         which is gap-free, and the consumer polls with its highest CONTIGUOUS value.
@@ -237,7 +282,8 @@ paths:
               schema: { $ref: "#/components/schemas/Error" }
   /commands/{command_id}:
     get:
-      summary: Stored outcome of one command (NOT IMPLEMENTED)
+      deprecated: true
+      summary: Stored outcome of one command (DEPRECATED in 1.9.0; never implemented)
       description: >
         Lets a monitor that lost a response find out what happened without reissuing.
         Reissuing is also safe (at-most-once), so this is a convenience, not the only
@@ -273,6 +319,8 @@ components:
   schemas:
     Event:
       $ref: "../schemas/event.schema.json"
+    TrustLevel:
+      $ref: "../schemas/trust_level.schema.json"
     Command:
       $ref: "../schemas/command.schema.json"
     CommandResult:
@@ -284,8 +332,31 @@ components:
         api_version:
           type: string
           description: API version this endpoint implements, for in-band discovery.
-          examples: ["1.3.0"]
-        current_mode: { type: [string, "null"], enum: [federated, gossip, null] }
+          examples: ["1.9.0"]
+        current_mode: { type: [string, "null"], enum: [local, federated, gossip, null] }
+        trust:
+          type: [object, "null"]
+          description: >
+            1.9.0: the evidence the mode follows, so a consumer sees a pending band before
+            it commits (docs/TRUST_LEVEL.md 5).
+          properties:
+            fd_monitor: { type: string, examples: ["monitor07"] }
+            trust_level: { type: [number, "null"], minimum: 0 }
+            tl_ts: { type: [string, "null"], format: date-time }
+            band: { type: [string, "null"], enum: [local, gossip, federated, null] }
+            candidate:
+              type: [string, "null"]
+              enum: [local, gossip, federated, null]
+              description: Band that differs from the current mode and is waiting out the settle time.
+            candidate_since: { type: [string, "null"], format: date-time }
+            stale: { type: boolean, description: "No observation for longer than the freshness limit F." }
+            tl_bands:
+              type: object
+              properties:
+                gl: { type: number, examples: [30] }
+                fl: { type: number, examples: [50] }
+            settle_s: { type: number, examples: [5] }
+            stale_after_s: { type: number, examples: [15] }
         round: { type: integer, minimum: 0 }
         active_nodes:
           type: [array, "null"]
@@ -295,6 +366,7 @@ components:
           type: array
           items: { type: integer, minimum: 0 }
         isolated_nodes:
+          deprecated: true    # 1.9.0: command surface superseded (docs/TRUST_LEVEL.md 7)
           type: array
           items: { type: integer, minimum: 0 }
           description: >
@@ -314,6 +386,7 @@ components:
             attribution: { type: string, enum: [protocol_source, device_address, none] }
             traffic_time: { type: string, enum: [frame, none] }
         switch_pending:
+          deprecated: true    # 1.9.0: command surface superseded (docs/TRUST_LEVEL.md 7)
           type: [object, "null"]
           description: >
             Non-null while inactivity has been observed and the agent awaits the set_mode
@@ -331,12 +404,14 @@ components:
                 node-local Disaster-FD monitor has not commanded it (reason
                 autonomous_fallback).
         authority_epoch:
+          deprecated: true    # 1.9.0: command surface superseded (docs/TRUST_LEVEL.md 7)
           type: integer
           minimum: 0
           description: >
             Highest epoch accepted. A commander must carry at least this value; lower is
             refused with stale_epoch. Bumped on monitor failover.
         evidence:
+          deprecated: true    # 1.9.0: command surface superseded (docs/TRUST_LEVEL.md 7)
           type: [object, "null"]
           description: >
             What the agent will check a command against. Without this a monitor cannot know
@@ -345,6 +420,7 @@ components:
             membership_full_for_rounds: { type: integer, minimum: 0 }
             dwell_required: { type: integer, minimum: 0 }
         last_cmd_seq:
+          deprecated: true    # 1.9.0: command surface superseded (docs/TRUST_LEVEL.md 7)
           type: integer
           minimum: 0
           description: Highest cmd_seq answered. Compare with your contiguous value, as with last_seq.

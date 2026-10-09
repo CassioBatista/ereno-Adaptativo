@@ -8,6 +8,14 @@ Observability / notification interface of the ReSIDS adaptation plane
 > "Monitor" in this API always means a Disaster-FD monitor process; there is no external
 > monitor or supervisor, and the monitor in this repository is a simulation of it.
 >
+> **API 1.9.0 changes the authority.** Disaster-FD detects failures and publishes a trust
+> level (TL); each agent decides its learning mode (`local`, `gossip`, `federated`) from the
+> TL of its colocated monitor, and records the switch with `decided_by: agent`. The TL
+> input and the policy are in [`TRUST_LEVEL.md`](TRUST_LEVEL.md). The intrusion events
+> (`intrusion_detected`, `node_isolated`) and the command surface below are deferred to
+> future work with the Byzantine model. The rest of this document describes 1.7.0, whose
+> event surface 1.9.0 keeps.
+>
 > **This document is the OBSERVATION half.** Disaster-FD also *decides*: under the
 > authority rule ([`decentralized_monitoring.md`](decentralized_monitoring.md) §1.1) every
 > transition is its call — the fail-fast FL→GL by the node-local instance, everything else
@@ -250,6 +258,19 @@ or endpoints bump the major version; additive fields bump the minor. The `type`
 and `reason` enums may gain values in minor versions — consumers must ignore
 unknown enum values gracefully.
 
+**v1.9.0** splits the roles by competence ([`TRUST_LEVEL.md`](TRUST_LEVEL.md)): Disaster-FD
+detects failures and publishes a **trust level** per observation
+(`schemas/trust_level.schema.json`, new); the agent decides its mode from the TL — bands
+TL < 30 local, 30 ≤ TL < 50 gossip, TL ≥ 50 federated, a settle time of 5 s, and a fallback
+to local when no TL arrives for 15 s. Schema changes are additive: `local` in the mode
+enums, `reason` `trust_level` and `tl_stale`, `decided_by` `agent`, and the fields
+`trust_level`, `tl_bands`, `tl_ts`, `fd_monitor`; every older stream still validates. What
+changes in meaning is the decider: in a 1.9.0 stream every transition is `decided_by:
+agent`, and `monitor` / `autonomous` do not appear. `intrusion_detected`, `node_isolated`
+and the command surface ([`COMMANDS.md`](COMMANDS.md)) are not emitted or served; intrusion
+notification and isolation return with the Byzantine-resilient version (future work).
+There is no 1.8.0.
+
 **v1.7.0** makes the **domain binding explicit** ([`PROFILES.md`](PROFILES.md)): a `profile`
 (name, label set, attribution source, traffic time) in the scenario, the manifest and
 `/status`. `attack` is a label from the profile's label set and `source_node` comes from the
@@ -305,7 +326,10 @@ architecture does not have.
 ## 7. Files
 
 - [`schemas/event.schema.json`](../schemas/event.schema.json) — authoritative payload schema (JSON Schema 2020-12).
-- [`openapi.yaml`](openapi.yaml) — REST endpoints, events and commands (OpenAPI 3.1).
+- [`schemas/trust_level.schema.json`](../schemas/trust_level.schema.json) — Disaster-FD trust-level observation (1.9.0).
+- [`TRUST_LEVEL.md`](TRUST_LEVEL.md) — the 1.9.0 input surface and agent policy.
+- [`scripts/tl_policy_replay.py`](../scripts/tl_policy_replay.py) — replay of the policy over a Disaster-FD run.
+- [`openapi.yaml`](openapi.yaml) — REST endpoints, events and commands (OpenAPI 3.1; 1.9.0, `/commands` deprecated).
 - [`COMMANDS.md`](COMMANDS.md) — the command surface: the half that lets the monitor decide.
 - [`fd/monitor.py`](../fd/monitor.py) — reference implementation (events only).
 - [`scripts/validate_events.py`](../scripts/validate_events.py) — stream conformance, including the authority rule.

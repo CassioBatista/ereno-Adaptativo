@@ -1,5 +1,11 @@
 # ReSIDS command surface (Disaster-FD → agent)
 
+> **Superseded in API 1.9.0.** Disaster-FD no longer commands transitions: it publishes a
+> trust level, and the agent decides ([`TRUST_LEVEL.md`](TRUST_LEVEL.md)). `set_mode` is
+> replaced by the TL policy; `isolate_node` and `readmit_node` are deferred to future work
+> with the Byzantine model. This document is kept as the 1.4.0–1.7.0 specification and as
+> the starting point of that work.
+
 **Status: specification. NOT implemented.** `fd/monitor.py` serves the read-only event
 surface only ([`API.md`](API.md)); nothing here exists in code yet. §9 states the gap
 precisely.

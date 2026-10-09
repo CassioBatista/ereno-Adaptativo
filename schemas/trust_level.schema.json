@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/CassioBatista/ereno-Adaptativo/schemas/trust_level.schema.json",
+  "title": "ReSIDS trust-level observation",
+  "description": "API 1.9.0, Disaster-FD -> agent. One Disaster-FD observation, published by the monitor colocated with a ReSIDS client after probing one of its targets (the aggregator or a ring neighbour). It maps one row of the Disaster-FD monitor CSV (Algorithm 1). trust_level is the monitor-wide value after this observation; the agent decides its learning mode from it (docs/TRUST_LEVEL.md). Disaster-FD supplies evidence, never a mode.",
+  "type": "object",
+  "required": ["monitor", "client", "ts", "target", "trust_level"],
+  "additionalProperties": false,
+  "properties": {
+    "monitor": {"type": "string", "description": "Monitor identity, e.g. monitor07."},
+    "client": {"type": "integer", "minimum": 1, "description": "ReSIDS client the monitor is colocated with."},
+    "msg_id": {"type": "integer", "minimum": 0, "description": "Per-target probe sequence number (CSV msg_id)."},
+    "ts": {"type": "string", "format": "date-time", "description": "Time the observation was made (CSV ts_arrival, microseconds since the epoch, as UTC ISO 8601)."},
+    "target": {
+      "type": "object",
+      "required": ["dev_id", "role", "impact_factor", "trusted"],
+      "additionalProperties": false,
+      "properties": {
+        "dev_id": {"type": "integer", "minimum": 0, "description": "0 = aggregator (server); otherwise a client id."},
+        "role": {"enum": ["server", "predecessor", "successor"]},
+        "impact_factor": {"type": "number", "minimum": 0, "description": "50 for the server, 15 for each ring peer in the pilot."},
+        "trusted": {"type": "boolean", "description": "Target trusted after this observation (CSV trusted)."},
+        "is_timeout": {"type": "boolean", "description": "This probe timed out (CSV is_timeout)."}
+      }
+    },
+    "trust_level": {"type": "number", "minimum": 0, "description": "Sum of the impact factors of the targets trusted after this observation (CSV trust_level)."},
+    "threshold": {"type": "number", "description": "Disaster-FD region threshold (30 in the pilot)."},
+    "trusted_system": {"type": "boolean", "description": "trust_level >= threshold. Not the same as federated: the agent applies its own bands."}
+  }
+}

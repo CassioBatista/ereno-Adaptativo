@@ -1,0 +1,24 @@
+run: /home/cassi/datasets/disaster_fd_run1
+monitors: 14  run_t0 (estimated) 2026-10-08T18:47:15.688688+00:00
+policy: bands gl=30.0 fl=50.0; settle S=5.0 s; stale after F=15.0 s -> local
+
+  client 01: 4 switches [l>f@907 f>l@1804 l>g@2703 g>f@3602]  max obs gap 4.6 s  in expected mode per phase 100.0 99.1 99.6 99.6 99.8 %
+  client 02: 4 switches [l>f@904 f>l@1801 l>g@2700 g>f@3599]  max obs gap 4.4 s  in expected mode per phase 100.0 99.4 99.9 99.9 100.0 %
+  client 03: 4 switches [l>f@904 f>l@1800 l>g@2699 g>f@3599]  max obs gap 3.1 s  in expected mode per phase 100.0 99.6 100.0 99.9 100.0 %
+  client 04: 4 switches [l>f@908 f>l@1804 l>g@2704 g>f@3603]  max obs gap 4.8 s  in expected mode per phase 100.0 99.0 99.4 99.6 99.7 %
+  client 05: 4 switches [l>f@907 f>l@1802 l>g@2701 g>f@3602]  max obs gap 3.0 s  in expected mode per phase 100.0 99.2 99.7 99.9 99.9 %
+  client 06: 4 switches [l>f@904 f>l@1804 l>g@2703 g>f@3599]  max obs gap 3.2 s  in expected mode per phase 100.0 99.4 99.6 99.6 100.0 %
+  client 07: 4 switches [l>f@907 f>l@1802 l>g@2701 g>f@3602]  max obs gap 2.8 s  in expected mode per phase 100.0 99.2 99.7 99.8 99.9 %
+  client 08: 4 switches [l>f@905 f>l@1802 l>g@2702 g>f@3600]  max obs gap 3.0 s  in expected mode per phase 100.0 99.3 99.7 99.8 99.9 %
+  client 09: 4 switches [l>f@907 f>l@1803 l>g@2701 g>f@3602]  max obs gap 2.4 s  in expected mode per phase 100.0 99.1 99.7 99.8 99.8 %
+  client 10: 4 switches [l>f@906 f>l@1803 l>g@2703 g>f@3601]  max obs gap 3.4 s  in expected mode per phase 100.0 99.3 99.6 99.7 99.9 %
+  client 11: 4 switches [l>f@905 f>l@1804 l>g@2703 g>f@3600]  max obs gap 2.6 s  in expected mode per phase 100.0 99.3 99.6 99.6 99.9 %
+  client 12: 4 switches [l>f@909 f>l@1804 l>g@2700 g>f@3604]  max obs gap 2.4 s  in expected mode per phase 100.0 99.0 99.4 100.0 99.7 %
+  client 13: 4 switches [l>f@905 f>l@1801 l>g@2700 g>f@3600]  max obs gap 4.1 s  in expected mode per phase 100.0 99.4 99.9 99.9 100.0 %
+  client 14: 4 switches [l>f@907 f>l@1802 l>g@2703 g>f@3602]  max obs gap 3.6 s  in expected mode per phase 100.0 99.2 99.7 99.6 99.9 %
+
+trust-level observations: 41,802, schema-valid 41,802
+switch latency after a phase boundary (last switch - boundary): median 2.8 s, max 8.7 s, missing 0
+
+=== conformance (scripts/validate_events.py) ===
+  14/14 client streams CONFORMANT

@@ -14,6 +14,10 @@ is entitled to rely on but which JSON Schema cannot express:
     watchdog FL->GL (reason autonomous_fallback), when its node-local Disaster-FD monitor is
     unavailable. Every other decision is Disaster-FD's (decided_by: monitor)
     (docs/decentralized_monitoring.md §1.1);
+  * 1.9.0 streams (decided_by: agent): the agent decides every transition from the
+    Disaster-FD trust level (reason trust_level, to_mode = the band of trust_level) or
+    falls back to local on a stale TL (reason tl_stale); monitor/autonomous decisions and
+    the intrusion events, reserved for future work, do not appear (docs/TRUST_LEVEL.md);
   * per-type required fields (failed_nodes on node_failure, recovered_nodes on
     node_recovery, from/to_mode on architecture_change, source_node on node_isolated).
 
@@ -118,6 +122,30 @@ def check_events(path):
         if e.get("reason") == "autonomous_fallback" and e.get("decided_by") != "autonomous":
             fail(errs, f"seq {e['seq']}: reason autonomous_fallback must be decided_by "
                        f"autonomous (it is the agent's watchdog, not a Disaster-FD decision)")
+        # 1.9.0: Disaster-FD supplies the trust level, the agent decides (docs/TRUST_LEVEL.md)
+        if e.get("decided_by") == "agent":
+            if e["type"] != "architecture_change" or e.get("reason") not in ("trust_level", "tl_stale"):
+                fail(errs, f"seq {e['seq']}: decided_by=agent only on architecture_change with "
+                           f"reason trust_level or tl_stale")
+        if e.get("reason") in ("trust_level", "tl_stale") and e.get("decided_by") != "agent":
+            fail(errs, f"seq {e['seq']}: reason {e['reason']} must be decided_by agent")
+        if e.get("reason") == "tl_stale" and e.get("to_mode") != "local":
+            fail(errs, f"seq {e['seq']}: a stale trust level falls back to local, not {e.get('to_mode')}")
+        if e.get("reason") == "trust_level":
+            tl, b = e.get("trust_level"), e.get("tl_bands") or {"gl": 30, "fl": 50}
+            if tl is None:
+                fail(errs, f"seq {e['seq']}: reason trust_level without the trust_level it used")
+            else:
+                band = "federated" if tl >= b["fl"] else "gossip" if tl >= b["gl"] else "local"
+                if band != e.get("to_mode"):
+                    fail(errs, f"seq {e['seq']}: TL {tl} selects {band}, event switches to {e.get('to_mode')}")
+    if any(e.get("decided_by") == "agent" for e in evs):
+        for e in evs:
+            if e.get("decided_by") in ("monitor", "autonomous"):
+                fail(errs, f"seq {e['seq']}: decided_by={e['decided_by']} in a 1.9.0 stream, where "
+                           f"the agent decides every transition")
+            if e["type"] in ("intrusion_detected", "node_isolated"):
+                fail(errs, f"seq {e['seq']}: {e['type']} is reserved for future work from 1.9.0")
     print(f"events: {len(evs)} | types: {dict(Counter(e['type'] for e in evs))}")
     print(f"seq range: {seqs[0] if seqs else '-'}..{seqs[-1] if seqs else '-'} | "
           f"decided_by: {dict(Counter(e.get('decided_by') for e in evs))}")

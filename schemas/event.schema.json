@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/CassioBatista/ereno-Adaptativo/schemas/event.schema.json",
   "title": "ReSIDS adaptation event",
-  "description": "One observability event emitted by the ReSIDS adaptation plane. Served as an element of GET /events (REST pull) and pushed to the monitor as CoAP telemetry (values object).",
+  "description": "One observability event emitted by the ReSIDS adaptation plane. Served as an element of GET /events (REST pull) and pushed to the monitor as CoAP telemetry (values object). API 1.9.0: Disaster-FD detects failures and publishes a trust level (TL) per monitored node; the agent decides its learning mode from the TL (local, gossip or federated). intrusion_detected and node_isolated are not emitted from 1.9.0 on: intrusion notification and isolation return with the Byzantine-resilient version (future work).",
   "type": "object",
   "required": [
     "seq",
@@ -31,7 +31,7 @@
         "node_isolated",
         "intrusion_detected"
       ],
-      "description": "Event kind."
+      "description": "Event kind. From 1.9.0 the agent emits architecture_change only; node_failure and node_recovery are Disaster-FD's own observations (per-target trust flips) and may be relayed; intrusion_detected and node_isolated are kept in the enum for older streams and are reserved for future work."
     },
     "round": {
       "type": "integer",
@@ -39,17 +39,26 @@
       "description": "LOCAL round: the tick count of the node-local Disaster-FD cadence, which counts detect_lag and the watchdog D. The time reference comes from Disaster-FD; the agent infers no time from the traffic. (In the scenario simulations it is re-indexed over the windows the scenario selects.)"
     },
     "fed_round": {
-      "type": ["integer", "null"],
+      "type": [
+        "integer",
+        "null"
+      ],
       "minimum": 0,
       "description": "FEDERATED round: the tick count of the regional Disaster-FD cadence (one federated tick every N local rounds), which counts dwell and cmd_latency and is the only cadence at which federated decisions are taken."
     },
     "traffic_time_start": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "date-time",
       "description": "Optional, profile-dependent: time of the FIRST traffic frame scored in the window, when the protocol carries one (IEC 61850 GOOSE/SV). For correlation with sequence-of-event records. Absent where the data has no time (CICIoT2023). Never used to define the window."
     },
     "traffic_time_end": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "format": "date-time",
       "description": "Optional, profile-dependent: time of the LAST traffic frame scored in the window. See traffic_time_start."
     },
@@ -59,6 +68,7 @@
         "null"
       ],
       "enum": [
+        "local",
         "federated",
         "gossip",
         null
@@ -71,6 +81,7 @@
         "null"
       ],
       "enum": [
+        "local",
         "federated",
         "gossip",
         null
@@ -88,9 +99,11 @@
         "scheduled",
         "intrusion",
         "commanded",
-        "autonomous_fallback"
+        "autonomous_fallback",
+        "trust_level",
+        "tl_stale"
       ],
-      "description": "CAUSE of the event; who decided is in decided_by. architecture_change: node_failure | recovery | scheduled | intrusion | autonomous_fallback. node_failure: node_failure. node_recovery: recovery. node_isolated: intrusion. 'autonomous_fallback' marks the agent's watchdog: its node-local Disaster-FD monitor was unavailable for D rounds, so the agent switched FL->GL on its own (always with decided_by=autonomous). 'commanded' is retained for compatibility with streams produced before 1.5.0 and is not emitted any more: the decider is stated by decided_by, the cause by this field."
+      "description": "CAUSE of the event; who decided is in decided_by. architecture_change: node_failure | recovery | scheduled | intrusion | autonomous_fallback. node_failure: node_failure. node_recovery: recovery. node_isolated: intrusion. 'autonomous_fallback' marks the agent's watchdog: its node-local Disaster-FD monitor was unavailable for D rounds, so the agent switched FL->GL on its own (always with decided_by=autonomous). 'commanded' is retained for compatibility with streams produced before 1.5.0 and is not emitted any more: the decider is stated by decided_by, the cause by this field. 1.9.0: trust_level = the mode band of the Disaster-FD trust level changed and held for the settle time; tl_stale = no fresh TL within the freshness limit, the agent falls back to local."
     },
     "failed_nodes": {
       "type": "array",
@@ -178,11 +191,12 @@
         "null"
       ],
       "enum": [
+        "local",
         "federated",
         "gossip",
         null
       ],
-      "description": "Aggregation mode in effect for this event, so the monitor never infers state."
+      "description": "Learning mode in effect: local (each node trains and detects with its own models only; 1.9.0), gossip, or federated."
     },
     "n_active": {
       "type": [
@@ -222,12 +236,13 @@
         "null"
       ],
       "enum": [
+        "agent",
         "autonomous",
         "monitor",
         "operator",
         null
       ],
-      "description": "Who took the ACTION. Present only on events that ARE an action: architecture_change and node_isolated. Pure observations (node_failure, node_recovery, intrusion_detected) carry no decision and omit it. 'monitor' = a Disaster-FD monitor process (one per node and per server): the NODE-LOCAL instance for the fail-fast FL->GL on inactivity (local evidence, no regional quorum), the FEDERATED Disaster-FD for everything else (losses while in GL, intrusion-driven isolation, the GL->FL return). 'autonomous' = the ReSIDS agent acting alone, which happens ONLY as its watchdog FL->GL (reason autonomous_fallback) when its own node-local Disaster-FD process is unavailable -- the fail-safe direction only. 'operator' is retained for a human decision recorded through Disaster-FD."
+      "description": "Who took the ACTION. Present only on events that ARE an action: architecture_change and node_isolated. Pure observations (node_failure, node_recovery, intrusion_detected) carry no decision and omit it. 'monitor' = a Disaster-FD monitor process (one per node and per server): the NODE-LOCAL instance for the fail-fast FL->GL on inactivity (local evidence, no regional quorum), the FEDERATED Disaster-FD for everything else (losses while in GL, intrusion-driven isolation, the GL->FL return). 'autonomous' = the ReSIDS agent acting alone, which happens ONLY as its watchdog FL->GL (reason autonomous_fallback) when its own node-local Disaster-FD process is unavailable -- the fail-safe direction only. 'operator' is retained for a human decision recorded through Disaster-FD. 1.9.0: agent = the agent's own TL policy decided (Disaster-FD supplies evidence, not commands)."
     },
     "command_id": {
       "type": [
@@ -235,6 +250,45 @@
         "null"
       ],
       "description": "The command that caused this action, when one did (docs/COMMANDS.md). Present only where decided_by is 'monitor' or 'operator'; null or absent on the agent's watchdog action, which no command caused. This field is what closes the loop between the two surfaces: the command result can be lost in transit, so the EVENT carrying command_id is the authoritative commit record, and the Disaster-FD monitor correlates on it rather than trusting its response."
+    },
+    "trust_level": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "1.9.0: Disaster-FD trust level of the node's colocated monitor that the decision used (sum of the impact factors of the targets currently trusted; 80 = server + both ring peers in the 50/15/15 weighting)."
+    },
+    "tl_bands": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "gl": {
+          "type": "number"
+        },
+        "fl": {
+          "type": "number"
+        }
+      },
+      "description": "1.9.0: mode cutoffs in force: TL < gl -> local, gl <= TL < fl -> gossip, TL >= fl -> federated (default gl = 30, fl = 50)."
+    },
+    "tl_ts": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "1.9.0: time of the Disaster-FD observation that produced trust_level."
+    },
+    "fd_monitor": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "1.9.0: identity of the colocated Disaster-FD monitor (e.g. monitor07)."
     }
   },
   "examples": [
