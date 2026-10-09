@@ -60,14 +60,14 @@
 The evolution of networks has increased their complexity and driven a shift toward
 distributed cyber and cyber-physical systems, from enterprise networks to the Internet of
 Things and critical infrastructure. While this shift opens new landscapes and opportunities, it also
-enlarges the attack surface, calling for adaptive distributed intrusion detection that
+enlarges the attack surface, calling for resilient, adaptive intrusion detection that
 keeps working while its own nodes fail. Federated learning (FL) is widely adopted
 to train intrusion detectors through a server; gossip learning (GL), far less explored,
 lets peers exchange models directly. This research presents ReSIDS, an adaptive intrusion detection system that combines both: it fuses
 per-attack gradient-boosted specialists by k-of-n voting and switches its learning mode
 at runtime. A federated failure detector, Disaster-FD, supplies a trust level from which
 each node switches by itself: to GL when nodes fail, back to FL once they recover, and to
-local learning when it is cut off. Applying it elsewhere requires only retraining the
+local learning when it is cut off. Applying ReSIDS elsewhere requires only retraining the
 specialists. Since attacks are rare,
 individual alerts are mostly false alarms; ReSIDS therefore counts them per window,
 network-wide and per specialist: a slow attack accumulates in its own specialist, whereas
