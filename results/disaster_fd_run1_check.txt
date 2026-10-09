@@ -1,0 +1,42 @@
+monitor files: 14
+run_t0 (ESTIMATED from the 15-min all-clear): 2026-10-08 18:47:15.688688 UTC (spread of the 14 jumps: 3.8 s)
+
+=== checklist (guide.md section 10) ===
+  M01: rows 2,985  targets [np.int64(0), np.int64(2), np.int64(14)] OK  cadence {0: 5.0, 2: 5.0, 14: 5.0} s
+  M02: rows 2,987  targets [np.int64(0), np.int64(1), np.int64(3)] OK  cadence {0: 5.0, 1: 5.0, 3: 5.0} s
+  M03: rows 2,987  targets [np.int64(0), np.int64(2), np.int64(4)] OK  cadence {0: 5.0, 2: 5.0, 4: 5.0} s
+  M04: rows 2,985  targets [np.int64(0), np.int64(3), np.int64(5)] OK  cadence {0: 5.0, 3: 5.0, 5: 5.0} s
+  M05: rows 2,985  targets [np.int64(0), np.int64(4), np.int64(6)] OK  cadence {0: 5.0, 4: 5.0, 6: 5.0} s
+  M06: rows 2,986  targets [np.int64(0), np.int64(5), np.int64(7)] OK  cadence {0: 5.0, 5: 5.0, 7: 5.0} s
+  M07: rows 2,986  targets [np.int64(0), np.int64(6), np.int64(8)] OK  cadence {0: 5.0, 6: 5.0, 8: 5.0} s
+  M08: rows 2,986  targets [np.int64(0), np.int64(7), np.int64(9)] OK  cadence {0: 5.0, 7: 5.0, 9: 5.0} s
+  M09: rows 2,986  targets [np.int64(0), np.int64(8), np.int64(10)] OK  cadence {0: 5.0, 8: 5.0, 10: 5.0} s
+  M10: rows 2,985  targets [np.int64(0), np.int64(9), np.int64(11)] OK  cadence {0: 5.0, 9: 5.0, 11: 5.0} s
+  M11: rows 2,986  targets [np.int64(0), np.int64(10), np.int64(12)] OK  cadence {0: 5.0, 10: 5.0, 12: 5.0} s
+  M12: rows 2,985  targets [np.int64(0), np.int64(11), np.int64(13)] OK  cadence {0: 5.0, 11: 5.0, 13: 5.0} s
+  M13: rows 2,987  targets [np.int64(0), np.int64(12), np.int64(14)] OK  cadence {0: 5.0, 12: 5.0, 14: 5.0} s
+  M14: rows 2,986  targets [np.int64(0), np.int64(1), np.int64(13)] OK  cadence {0: 5.0, 1: 5.0, 13: 5.0} s
+  server in 14 files; clients appear in [np.int64(2)] files each
+
+=== TL per phase (rows with |offset - boundary| > 10 s) ===
+  isolated          share of rows at the expected TL: min 1.000, mean 1.000
+  healthy           share of rows at the expected TL: min 1.000, mean 1.000
+  outage            share of rows at the expected TL: min 1.000, mean 1.000
+  partial recovery  share of rows at the expected TL: min 1.000, mean 1.000
+  full recovery     share of rows at the expected TL: min 1.000, mean 1.000
+
+=== mode timeline under the API 1.9.0 bands (1-s resolution) ===
+  M01: mode changes   6; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M02: mode changes   5; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M03: mode changes   6; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M04: mode changes   8; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M05: mode changes   7; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M06: mode changes   5; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M07: mode changes   6; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M08: mode changes   5; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M09: mode changes   5; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M10: mode changes   8; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M11: mode changes   5; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M12: mode changes   7; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M13: mode changes   6; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
+  M14: mode changes   6; in the GL phase 100.0% gossip,  0.0% local (transient flips to TL 15)
