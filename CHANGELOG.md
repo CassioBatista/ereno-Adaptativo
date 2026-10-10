@@ -8,6 +8,34 @@ This is the **v1.x (Paper 1 / JPDC) maintenance lineage**, kept separate from th
 v2 adaptive line. See the [`v2.0.0`](https://github.com/CassioBatista/ereno-Adaptativo/releases/tag/v2.0.0)
 release for the autonomous, decentralized FL↔GL switch and the external monitor.
 
+## [v1.3] — 2026-10-10
+
+Artifact of the **Paper 1 (JPDC) revision**. The headline results are unchanged:
+`python reproduce.py` still reproduces F1-score 95.72 at 17,881 false positives (OR) and
+87.69 at 49 (k ≥ 2), with the same confusion matrix.
+
+### Added
+- **Fault containment of k-of-n fusion** (RQ4), on the redundant operating point (N = 14,
+  two specialists per attack), reproducing Table 13 (k ≥ 2: F1-score 95.98, 16,708 FP):
+  - `scripts/k_fusion_audit.py` — trains and scores the 14 specialists (separate
+    processes, lean ARFF reader); shows that 99.6% of the k ≥ 2 false positives come from
+    the two specialists of one attack firing together, and splits the FL recall loss under
+    node shrinking into missing specialists and quorum veto;
+  - `scripts/k_fusion_fault_containment.py` — one booster faulty at a time: a booster that
+    fires on every sample is contained by k ≥ 2 (FPR 0.61–0.69% versus 100% under OR),
+    but a silent one vetoes its class under k ≥ 2 (overall recall down to 84.98%), while
+    OR loses nothing; a fault shared by both specialists of a class is contained by neither;
+  - `scripts/k_fusion_audit_followup.py` — exploratory comparison of fusion rules at equal
+    recall (thresholds tuned on the test set; not reported in the paper).
+- **Figures 3 and 4 of the revision** — `scripts/plot_new_attack_convergence_pair.py` and
+  `scripts/plot_new_attack_scaling_pair.py` (inputs from `scripts/new_attack_convergence.py`
+  and `scripts/new_attack_scaling.py`).
+
+### Note
+- `reproduce.py` loads the full 1.7 GB ARFF files through `python.util.load_arff`, which
+  peaks near 9 GB of RAM; the fault-containment scripts use a lean reader (selected
+  columns, float32, chunked) with identical outputs.
+
 ## [v1.2] — 2026-09-17
 
 Adds a **two-tier detection** capability. Alongside the Tier-1 per-attack XGBoost

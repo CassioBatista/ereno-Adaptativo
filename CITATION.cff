@@ -12,9 +12,13 @@ abstract: >-
   a Tier-2 protocol-specification detector learned from benign traffic only (zero
   attack examples) flags novel attacks that violate IEC 61850 invariants; Tier 2 is
   monolithic/replicated and therefore mode-independent (identical under FL and GL).
+  Version 1.3 is the artifact of the Paper 1 revision: it adds the fault-injection
+  test of k-of-n fusion under redundant specialists (k >= 2 contains a specialist
+  that fires on every sample but vetoes the class of a silent one) and the scripts
+  of the new-attack convergence and scaling figures.
 type: software
-version: 1.2.0
-date-released: 2026-09-17
+version: 1.3.0
+date-released: 2026-10-10
 license: MIT
 repository-code: "https://github.com/CassioBatista/ereno-Adaptativo"
 keywords:
