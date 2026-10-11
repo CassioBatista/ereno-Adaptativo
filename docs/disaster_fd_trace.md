@@ -3,8 +3,9 @@
 Generator: [`scripts/build_disaster_fd_trace.py`](../scripts/build_disaster_fd_trace.py);
 configuration: [`conf/scenarios/disaster_fd_trace.yaml`](../conf/scenarios/disaster_fd_trace.yaml);
 output: `results/disaster_fd_trace/{trace,calibration}.npz` and `manifest.json` (SHA-256 of
-the inputs, configuration, per-phase composition). Items marked **(to confirm)** await the
-Disaster-FD team.
+the inputs, configuration, per-phase composition). Attack injection is the IDS side's
+responsibility, not the Disaster-FD team's (`scenario.md`); items marked **(to confirm)**
+are IDS-side choices still open.
 
 ## Description (for the simulation section)
 
@@ -26,8 +27,8 @@ isolated clients using their local models (0-15 min, TL < 30), federated learnin
 gossip learning after a partial recovery (45-60 min, 30 <= TL < 50) and federated learning
 once the aggregator returns (60-83 min). Four attacks are known from the start, two are
 distributed to clients at minute 30 and one at minute 60 **(to confirm: which ones)**, and
-the traffic of each phase contains the attacks already known **(to confirm: or all seven,
-so that the not-yet-known ones go undetected until their specialist exists)**.
+the traffic of each phase contains the attacks already known, as in the scenario's test
+sets of four, six and seven attacks.
 
 Each phase keeps the mean rate of the original trace, 35,582 messages per minute. Attack
 messages come from the test file only, in contiguous chunks taken in their original order,
@@ -75,10 +76,24 @@ high-rate poisoning 16,420 / 18,570; masquerade as normal 13,111 / 17,420.
   four attacks are present; masquerade as normal is present only in P5, where it makes up
   1.6% of the messages.
 
-## Open choices (Disaster-FD team)
+## Decided
 
-1. Which attacks are known at minute 0, 30 and 60 (configuration `known_from`).
-2. Attacks in the traffic: only the known ones (`traffic: known`, current) or all seven
-   (`traffic: all`).
+* Attacks in the traffic: only the known ones (`traffic: known`), as in the scenario's
+  test sets of four, six and seven attacks. A "new attack" is the arrival of its
+  specialist at one client, not a zero-day detection: the detector is supervised, so with
+  all seven attacks present from the start (`traffic: all`) those without a specialist go
+  undetected by construction. That option measures only the absence of the specialist and
+  is not used.
+
+## Open choices (IDS side)
+
+1. Which attacks are known at minute 0, 30 and 60 (configuration `known_from`); the
+   scenario fixes only their number (4, +2, +1).
+2. Which clients receive each attack: the scenario distributes the four initial attacks at
+   most one or two per client, and each new one to a single client. `known_from` is global;
+   the per-client assignment belongs to the simulation configuration, not to the trace.
+   This is the choice that gives the scenario its content: what it measures is how long a
+   specialist that arrives at one client takes to reach the others in each mode (never in
+   local, hop by hop in gossip, one round in federated).
 3. Attack share per phase: the original 6.78% (current) or another target (`prevalence`).
 4. Uniform arrival times (current) or a bursty arrival that imitates the original trace.

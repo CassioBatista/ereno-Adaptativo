@@ -1,6 +1,6 @@
 # Disaster-FD trust-level scenario (team description, 2026-10-08): phase-composed ERENO trace.
-# Input of scripts/build_disaster_fd_trace.py. Values marked CONFIRM are proposals awaiting
-# the Disaster-FD team.
+# Input of scripts/build_disaster_fd_trace.py. Attack injection is the IDS side's
+# responsibility (scenario.md); values marked CONFIRM are IDS-side choices still open.
 name: disaster_fd_tl
 seed: 42
 data:
@@ -22,9 +22,12 @@ known_from:
 
 # Which attacks appear in the traffic of each phase:
 #   known     only the attacks already known (the team's "test sets with 4 / 6 / 7 attacks")
-#   all       all seven from the start: not-yet-known attacks are present and go undetected
-#             until their specialist exists (zero-day view)
-traffic: known                # CONFIRM
+#   all       all seven from the start: attacks without a specialist yet go undetected by
+#             construction (the detector is supervised), so this measures only the absence
+#             of the specialist; not used
+# 2026-10-09 (user decision): known = the scenario as described by the Disaster-FD team.
+# A "new attack" is the arrival of its specialist at one client, not a zero-day detection.
+traffic: known
 
 phases:                       # minutes; mode is what Disaster-FD's trust level selects
   - {name: P1, start: 0,  end: 15, mode: local,     trust: "TL < 30 (all clients isolated)"}
