@@ -15,10 +15,12 @@ abstract: >-
   Version 1.3 is the artifact of the Paper 1 revision: it adds the fault-injection
   test of k-of-n fusion under redundant specialists (k >= 2 contains a specialist
   that fires on every sample but vetoes the class of a silent one) and the scripts
-  of the new-attack convergence and scaling figures.
+  of the new-attack convergence and scaling figures. Version 1.4 adds the local baseline
+  (each node alone), the retained-versus-re-formed pool figure, and the dissemination of a
+  new specialist under a server outage (FL-only, GL-only, switching).
 type: software
-version: 1.3.0
-date-released: 2026-10-10
+version: 1.4.0
+date-released: 2026-10-12
 license: MIT
 repository-code: "https://github.com/CassioBatista/ereno-Adaptativo"
 keywords:

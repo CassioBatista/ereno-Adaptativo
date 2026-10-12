@@ -8,6 +8,28 @@ This is the **v1.x (Paper 1 / JPDC) maintenance lineage**, kept separate from th
 v2 adaptive line. See the [`v2.0.0`](https://github.com/CassioBatista/ereno-Adaptativo/releases/tag/v2.0.0)
 release for the autonomous, decentralized FL↔GL switch and the external monitor.
 
+## [v1.4] — 2026-10-12
+
+Second artifact of the **Paper 1 (JPDC) revision**. The revision restates what the evidence
+supports: every node retains the union of specialists, which keeps detection invariant to
+node loss; gossip keeps disseminating new specialists when the server is unavailable; and
+federation remains the normal mode because it disseminates in one round. Headline results
+are unchanged (`python reproduce.py`: F1-score 95.72 at 17,881 false positives).
+
+### Added
+- **`scripts/local_baseline.py`** — third reference level for Table 7 (N = 10, full test):
+  each node alone with the specialist it trained (F1-score 32.8–57.4, recall 19.6–42.7%),
+  against the shared union (95.72, 99.97%) and the pooled centralized model (99.23).
+- **`scripts/plot_retention_vs_reformed.py`** — replaces the four-curve adaptation figure,
+  which compared FL→GL with GL→FL (different start, pool size and retention at once), by two
+  panels with one variable: the booster pool retained at every node or re-formed each round
+  from the nodes present. Same data (`results/conv_adapt_shrink1.csv`).
+- **`scripts/new_attack_server_outage.py`** — dissemination of a new specialist when the
+  server is unavailable for D rounds, under FL-only, GL-only and switching: exposure in
+  node-rounds for every D (switching is never above the better of the two fixed modes). A
+  model of the dissemination with measured recall levels, like
+  `scripts/new_attack_convergence.py`, whose `results/new_attack_convergence_1src.csv` it reads.
+
 ## [v1.3] — 2026-10-10
 
 Artifact of the **Paper 1 (JPDC) revision**. The headline results are unchanged:
