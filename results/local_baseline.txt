@@ -1,0 +1,18 @@
+ERENO full test: 2,955,648 samples, 200,509 attack, 2,755,139 benign
+N = 10 nodes, one specialist each, threshold 0.5
+
+node | attack of its specialist | F1 | recall (all attacks) | recall (own attack) | precision | FPR % | #FP
+   0 | random_replay            |  53.85 |  36.85 |  99.99 | 100.00 | 0.000 | 0
+   1 | random_replay            |  53.85 |  36.85 |  99.99 | 100.00 | 0.000 | 0
+   2 | injection                |  56.01 |  38.90 | 100.00 | 100.00 | 0.000 | 0
+   3 | injection                |  56.01 |  38.90 | 100.00 | 100.00 | 0.000 | 0
+   4 | high_StNum               |  32.79 |  19.62 | 100.00 |  99.80 | 0.003 | 80
+   5 | high_StNum               |  46.29 |  30.12 | 100.00 | 100.00 | 0.000 | 0
+   6 | inverse_replay           |  56.30 |  39.17 |  95.95 | 100.00 | 0.000 | 0
+   7 | poisoned_high_rate       |  51.64 |  34.81 | 100.00 | 100.00 | 0.000 | 0
+   8 | masquerade_fake_normal   |  39.11 |  24.97 | 100.00 |  90.10 | 0.200 | 5,500
+   9 | masquerade_fake_fault    |  57.38 |  42.71 |  99.52 |  87.40 | 0.448 | 12,350
+
+local (one node alone): F1 32.79-57.38 (median 53.85); recall 19.62-42.71 (median 36.85); FPR 0.000-0.448%
+shared (union of the 10, OR): F1 95.72; recall 99.97; precision 91.81; FPR 0.649%; #FP 17,881
+pooled (centralized, Table 7): F1 99.23; recall 99.96; precision 98.52; FPR 0.110%; #FP 3,017
