@@ -29,6 +29,11 @@ are unchanged (`python reproduce.py`: F1-score 95.72 at 17,881 false positives).
   node-rounds for every D (switching is never above the better of the two fixed modes). A
   model of the dissemination with measured recall levels, like
   `scripts/new_attack_convergence.py`, whose `results/new_attack_convergence_1src.csv` it reads.
+- **`scripts/specialist_feature_groups.py`** — gain share of the ten specialists by feature
+  group: protocol behaviour 69.7%, configuration-dependent fields 29.3%, electrical
+  quantities 1.0%. Injection relies on `confRev` (96%) and inverse replay on `gooseLen`
+  (88%), which each substation configures, so those two specialists would not transfer to
+  another substation as they are.
 
 ## [v1.3] — 2026-10-10
 

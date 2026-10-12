@@ -1,0 +1,15 @@
+gain share by feature group, 10 specialists (N = 10, GRASP-24, seed 42)
+
+node attack                    protocol   config.  electrical   top features
+   0 random_replay                98.2%      1.8%        0.0%   timestampDiff 78%, timeFromLastChange 20%, gooseLen 2%
+   1 random_replay                97.9%      2.1%        0.0%   timestampDiff 78%, timeFromLastChange 20%, gooseLen 2%
+   2 injection                     0.0%    100.0%        0.0%   confRev 96%, gooseTimeAllowedToLive 4%
+   3 injection                     0.0%    100.0%        0.0%   confRev 96%, gooseTimeAllowedToLive 4%
+   4 high_StNum                  100.0%      0.0%        0.0%   SqNum 100%, StNum 0%
+   5 high_StNum                  100.0%      0.0%        0.0%   SqNum 100%, sqDiff 0%
+   6 inverse_replay               10.9%     89.1%        0.0%   gooseLen 88%, timeFromLastChange 7%, SqNum 4%
+   7 poisoned_high_rate           99.6%      0.0%        0.4%   SqNum 100%, ismA 0%
+   8 masquerade_fake_normal      100.0%      0.0%        0.0%   SqNum 73%, cbStatus 17%, delay 10%
+   9 masquerade_fake_fault        90.9%      0.0%        9.1%   cbStatus 82%, delay 9%, vsbARmsValue 6%
+
+mean over the specialists: protocol 69.7%, configuration 29.3%, electrical 1.0%
