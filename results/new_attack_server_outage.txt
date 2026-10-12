@@ -1,0 +1,24 @@
+N = 12, ring; new specialist ready at node 0 in round 11; k >= 1
+recall on the new attack: 3.81% without the specialist, 99.64% with it
+exposure = node-rounds without the specialist, from the round it is ready
+
+  D (rounds without server) | FL-only | GL-only | switching | all nodes hold it at round: FL / GL / switching
+                           0 |       0 |      76 |         0 | 11 / 23 / 11
+                           1 |      11 |      76 |        11 | 12 / 23 / 12
+                           2 |      22 |      76 |        21 | 13 / 23 / 13
+                           3 |      33 |      76 |        31 | 14 / 23 / 14
+                           4 |      44 |      76 |        40 | 15 / 23 / 15
+                           5 |      55 |      76 |        48 | 16 / 23 / 16
+                           6 |      66 |      76 |        55 | 17 / 23 / 17
+                           7 |      77 |      76 |        61 | 18 / 23 / 18
+                           8 |      88 |      76 |        66 | 19 / 23 / 19
+                           9 |      99 |      76 |        70 | 20 / 23 / 20
+                          10 |     110 |      76 |        73 | 21 / 23 / 21
+                          11 |     121 |      76 |        75 | 22 / 23 / 22
+                          12 |     132 |      76 |        76 | 23 / 23 / 23
+                          13 |     143 |      76 |        76 | 24 / 23 / 23
+                          14 |     154 |      76 |        76 | 25 / 23 / 23
+                          15 |     165 |      76 |        76 | 26 / 23 / 23
+                          16 |     176 |      76 |        76 | 27 / 23 / 23
+
+switching above the better of FL-only and GL-only for D in: none
