@@ -118,6 +118,7 @@ class HybridStrategy(Strategy):
         from_mode: str,
         to_mode:   str,
         parameters: Parameters,
+        active:    list[int] | None = None,
     ) -> Parameters:
         """Adapt global model state when switching paradigms.
 
@@ -135,11 +136,21 @@ class HybridStrategy(Strategy):
                 agg = str(getattr(glow, "aggregation", ""))
                 if agg.startswith("xgb"):
                     # XGBoost: boosters não são promediáveis — a transferência
-                    # é a UNIÃO (deduplicada) do conhecimento acumulado nos nós
-                    parameters = dedup_union(list(glow.pool_parameters.values()))
+                    # é a UNIÃO (deduplicada) do conhecimento acumulado nos nós.
+                    # Only the nodes PRESENT at the switch can hand their pool to the
+                    # returning server: a booster held only by absent nodes is not
+                    # recovered.
+                    pools = [p for node, p in glow.pool_parameters.items()
+                             if active is None or node in active]
+                    parameters = dedup_union(pools)
                     print(f"[Hybrid] gossip→federated (xgb): união do pool de "
-                          f"{len(glow.pool_parameters)} nós → "
+                          f"{len(pools)} nós presentes → "
                           f"{len(parameters.tensors)} boosters")
+                    # with retention, the server (empty after its outage) starts from
+                    # the union those nodes hold, instead of from the round's boosters
+                    fed = self._strategies["federated"]
+                    if hasattr(fed, "seed_retained"):
+                        fed.seed_retained(parameters)
                 else:
                     arrays_list = [
                         parameters_to_ndarrays(p)
@@ -164,6 +175,11 @@ class HybridStrategy(Strategy):
                     glow.pool_parameters[node_id] = parameters
                 print(f"[Hybrid] federated→gossip: global model seeded to "
                       f"{len(nodes)} nodes")
+            # the switch to gossip stands for an unavailable server: whatever it
+            # retained is taken as lost (worst case), so a later return starts empty
+            fed = self._strategies["federated"]
+            if hasattr(fed, "reset_retained"):
+                fed.reset_retained()
 
         return parameters
 
@@ -183,7 +199,9 @@ class HybridStrategy(Strategy):
         self.arch_manager.notify_round_start(server_round, mode)
 
         if self._prev_mode is not None and mode != self._prev_mode:
-            parameters = self._transfer_model(self._prev_mode, mode, parameters)
+            parameters = self._transfer_model(
+                self._prev_mode, mode, parameters,
+                active=self.arch_manager.get_active_clients(server_round))
             print(f"[Hybrid] mode switch: {self._prev_mode} → {mode} at round {server_round}")
 
         self._prev_mode   = mode

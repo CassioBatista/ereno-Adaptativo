@@ -165,6 +165,7 @@ def _build_fed_strategy(
     y_tr:          np.ndarray,
     seed:          int = 42,
     xgb_fusion:    str = "sum",
+    xgb_retain:    bool = False,
 ):
     fit_config   = {"mode": strategy_name}
     config_fn    = lambda _: fit_config
@@ -187,7 +188,7 @@ def _build_fed_strategy(
         if strategy_name == "xgb_cyclic":
             return XgbCyclicStrategy(num_clients=num_clients, **common_kw)
         return XgbBaggingStrategy(num_features=num_features,
-                                  fusion=xgb_fusion, **common_kw)
+                                  fusion=xgb_fusion, retain=xgb_retain, **common_kw)
 
     # ensemble (default)
     dummy = clone(base_clf)
@@ -471,10 +472,11 @@ def main(args: list[str] | None = None) -> None:
     # ── ④ Estratégias ─────────────────────────────────────────────────────────
     xgb_fusion  = sim_conf.get("xgb_fusion", "sum")   # sum | or
     fusion_k    = int(sim_conf.get("xgb_fusion_k", 1))  # k-de-n: alarme se >=k boosters
+    xgb_retain  = bool(sim_conf.get("xgb_retain", False))  # server keeps the boosters received
     base_clf    = _build_base_clf(strategy_name, seed)
     fed_strategy = _build_fed_strategy(
         strategy_name, num_clients, len(features), base_clf, X_tr, y_tr, seed,
-        xgb_fusion=xgb_fusion,
+        xgb_fusion=xgb_fusion, xgb_retain=xgb_retain,
     )
     glow_strategy = GlowStrategy(
         topology    = topology,
