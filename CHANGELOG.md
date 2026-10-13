@@ -16,7 +16,28 @@ node loss; gossip keeps disseminating new specialists when the server is unavail
 federation remains the normal mode because it disseminates in one round. Headline results
 are unchanged (`python reproduce.py`: F1-score 95.72 at 17,881 false positives).
 
+### Changed
+- **Retention at the federated server** (`simulation.xgb_retain`, off by default so that
+  every earlier configuration reproduces its published numbers; verified on
+  `ereno_adapt_gl_fl_shrink1_k1.yaml`, 90 rounds, difference 0.0000). With it, the server
+  keeps the boosters it has received: the aggregate is the content-deduplicated union of
+  the retained set and the round's boosters, so a client that leaves does not take its
+  booster with it (`fd/strategy/xgb_bagging.py`). The switch to gossip stands for an
+  unavailable server, whose retained set is taken as lost; on the return, the server is
+  seeded with the pools of the nodes present at that round, and only those
+  (`fd/strategy/hybrid_strategy.py`).
+
 ### Added
+- **Federation with retention, four runs** (`scripts/fl_retention_check.py`,
+  `results/fl_retention_check.txt`, `results/conv_adapt_fl_retain.csv`):
+  - `ereno_adapt_fl_retain_shrink1_k{1,2}.yaml` — federated throughout, 10 → 3 nodes: F1
+    95.74 (k = 1) and 87.63 (k ≥ 2) in all 90 rounds, identical to the pool retained after
+    the FL→GL switch (the re-formed aggregate ends at 85.38 and 53.24);
+  - `ereno_adapt_fl_gl_fl_retain_early_return_k1.yaml` — the server returns empty with 3
+    nodes left and receives 10 boosters from them: F1 95.74 throughout;
+  - `ereno_adapt_gl_fl_retain_lost_before_diffusion_k1.yaml` — 7 of 10 nodes lost after 3
+    gossip rounds from scratch: the survivors hold 8 boosters and F1 stays at 88.99, also
+    after the server returns. Retention cannot recover what was never spread.
 - **`scripts/local_baseline.py`** — third reference level for Table 7 (N = 10, full test):
   each node alone with the specialist it trained (F1-score 32.8–57.4, recall 19.6–42.7%),
   against the shared union (95.72, 99.97%) and the pooled centralized model (99.23).
