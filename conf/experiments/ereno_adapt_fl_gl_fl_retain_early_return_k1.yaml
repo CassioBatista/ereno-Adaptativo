@@ -1,0 +1,42 @@
+# ERENO — FL -> GL -> FL with retention at the server, returning to federation with only
+# 3 nodes left (k>=1). Checks the gossip->federated switch: the server is seeded with the
+# union the nodes hold, so the return does not re-form the aggregate from the 3 survivors.
+#   1-10 FED/10 | 11-20 GL/10 | 21-30 GL/6 | 31-40 GL/3 | 41-60 FED/3
+# Uso: ~/venv-ereno314/bin/python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
+#        --conf conf/experiments/ereno_adapt_fl_gl_fl_retain_early_return_k1.yaml --clients 10
+
+run_name: ereno-adapt-fl-gl-fl-retain-early-return-k1
+seed: 42
+
+grasp:
+  features_file: features/all_in_one_ereno_train_combined.json
+
+dataset:
+  name: all_in_one_ereno_train
+  test_file: all_in_one_ereno_test
+  partitioner: attack
+  benign_cap: 500000
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 10
+
+simulation:
+  num_rounds: 60
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 1
+  xgb_retain: true
+  eval_sample: 500000
+
+architecture:
+  manager: fixed
+  default_mode: federated
+  aggregation: xgb_union
+  schedule:
+    - {from: 1,  to: 10, mode: federated, active_clients: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
+    - {from: 11, to: 20, mode: gossip,    active_clients: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
+    - {from: 21, to: 30, mode: gossip,    active_clients: [0, 1, 2, 3, 4, 5]}
+    - {from: 31, to: 40, mode: gossip,    active_clients: [0, 1, 2]}
+    - {from: 41, to: 60, mode: federated, active_clients: [0, 1, 2]}

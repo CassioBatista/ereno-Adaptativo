@@ -1,0 +1,20 @@
+Federation with retention at the server (N = 10, ERENO, 500k test subsample per round)
+
+flret_k1: 90 rounds | r1-90 federated F1 95.74
+    max |F1 - pool retained (flgl_k1)| over rounds 11-90: 0.0000
+    re-formed aggregate (glfl_k1) at round 90: 85.38
+
+flret_k2: 90 rounds | r1-90 federated F1 87.63
+    max |F1 - pool retained (flgl_k2)| over rounds 11-90: 0.0000
+    re-formed aggregate (glfl_k2) at round 90: 53.24
+
+flglfl_ret_k1: 60 rounds | r1-10 federated F1 95.74; r11-40 gossip F1 95.74; r41-60 federated F1 95.74
+    [Hybrid] federated→gossip: global model seeded to 10 nodes
+    [Hybrid] mode switch: federated → gossip at round 11
+    [Hybrid] gossip→federated (xgb): união do pool de 3 nós presentes → 10 boosters
+    [Hybrid] mode switch: gossip → federated at round 41
+
+glfl_ret_lost_k1: 20 rounds | r1-1 gossip F1 72.28; r2-10 gossip F1 88.99; r11-20 federated F1 88.99
+    [Hybrid] gossip→federated (xgb): união do pool de 3 nós presentes → 8 boosters
+    [Hybrid] mode switch: gossip → federated at round 11
+
