@@ -1,0 +1,51 @@
+# ERENO — runtime switching scenario, 14 nodes (two specialists per attack), ring.
+#   1-10  FED, 12 nodes: the pair of masquerade-as-fault specialists (nodes 12, 13) is not yet
+#         deployed; no other specialist detects that attack
+#  11-20  GL, 14 nodes: the server is unavailable; nodes 12 and 13 join, and gossip spreads
+#         their boosters around the ring
+#  21-30  GL, 6 nodes: network instability; nodes 0, 1, 4, 5, 8, 9, 12, 13 (clients 1, 2, 5, 6,
+#         9, 10, 13, 14 counted from 1) are unreachable, which splits the ring into three pairs
+#  31-35  GL, 14 nodes: the unreachable nodes recover; gossip resumes
+#  36-50  FED, 14 nodes: the server returns, seeded with the pools of the nodes present
+# Retention at the server and at every node. The fusion rule affects only the decision, so
+# one run serves k = 1 and k >= 2: every node's pool is dumped each round
+# (simulation.pool_dump_dir) and scored offline by scripts/switching_scenario.py.
+# Uso: ~/venv-ereno314/bin/python ereno.py distributed GR-G-VND 6 all_in_one_ereno_train \
+#        --conf conf/experiments/ereno_switching_scenario_n14.yaml --clients 14
+
+run_name: ereno-switching-scenario-n14
+seed: 42
+
+grasp:
+  features_file: features/all_in_one_ereno_train_combined.json
+
+dataset:
+  name: all_in_one_ereno_train
+  test_file: all_in_one_ereno_test
+  partitioner: attack
+  benign_cap: 500000
+  partitioner_arg: null
+
+topology:
+  type: ring
+  num_nodes: 14
+
+simulation:
+  num_rounds: 50
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 1
+  xgb_retain: true
+  eval_sample: 200000
+  pool_dump_dir: results/switching_scenario_n14
+
+architecture:
+  manager: fixed
+  default_mode: federated
+  aggregation: xgb_union
+  schedule:
+    - {from: 1,  to: 10, mode: federated, active_clients: [0,1,2,3,4,5,6,7,8,9,10,11]}
+    - {from: 11, to: 20, mode: gossip,    active_clients: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]}
+    - {from: 21, to: 30, mode: gossip,    active_clients: [2,3,6,7,10,11]}
+    - {from: 31, to: 35, mode: gossip,    active_clients: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]}
+    - {from: 36, to: 50, mode: federated, active_clients: [0,1,2,3,4,5,6,7,8,9,10,11,12,13]}
