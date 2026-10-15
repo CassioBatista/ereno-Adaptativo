@@ -17,10 +17,13 @@ abstract: >-
   that fires on every sample but vetoes the class of a silent one) and the scripts
   of the new-attack convergence and scaling figures. Version 1.4 adds the local baseline
   (each node alone), the retained-versus-re-formed pool figure, and the dissemination of a
-  new specialist under a server outage (FL-only, GL-only, switching).
+  new specialist under a server outage (FL-only, GL-only, switching). Version 1.5 adds a
+  14-node runtime-switching scenario (server outage, network partition, recovery) scored
+  per node, and fixes the mapping of clients to partitions when only part of the nodes
+  is active.
 type: software
-version: 1.4.0
-date-released: 2026-10-12
+version: 1.5.0
+date-released: 2026-10-15
 license: MIT
 repository-code: "https://github.com/CassioBatista/ereno-Adaptativo"
 keywords:

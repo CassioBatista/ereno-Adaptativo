@@ -8,6 +8,44 @@ This is the **v1.x (Paper 1 / JPDC) maintenance lineage**, kept separate from th
 v2 adaptive line. See the [`v2.0.0`](https://github.com/CassioBatista/ereno-Adaptativo/releases/tag/v2.0.0)
 release for the autonomous, decentralized FL↔GL switch and the external monitor.
 
+## [v1.5] — 2026-10-15
+
+Third artifact of the **Paper 1 (JPDC) revision**: the runtime-switching scenario of the
+revised Section 4.4, and two fixes it exposed. Headline results are unchanged, and earlier
+configurations reproduce their published per-round lines exactly (checked on
+`ereno_adapt_fl_gl_fl_retain_early_return_k1.yaml`).
+
+### Fixed
+- **Clients mapped to their partitions before they first take part**
+  (`fd/strategy/hybrid_strategy.py`, `fd/client_xgb.py`). Under Flower's simulation the
+  server learns which partition a proxy carries only from round results; with a partial
+  set of active nodes in round 1, the filter fell back to a positional guess, which could
+  admit the wrong nodes and then cancel the federated rounds ("no clients selected"). The
+  server now asks unmapped clients for their partition (`get_properties`) whenever the
+  active set is partial. Runs where every node is active from round 1 are unaffected.
+- **Federated→gossip seeding limited to the nodes of the last federated round.** A node
+  that never took part in federation (for instance one that joins while the server is
+  down) no longer receives the federated aggregate; it starts from what it holds, or from
+  nothing.
+
+### Added
+- **Runtime-switching scenario, 14 nodes** (`conf/experiments/ereno_switching_scenario_n14.yaml`):
+  federated with 12 nodes; the server becomes unavailable and the two masquerade-as-fault
+  specialists join under gossip; 8 nodes become unreachable, splitting the ring into three
+  pairs; they recover; the server returns and the system switches back to federation.
+  Optional `simulation.pool_dump_dir` records every node's pool each round
+  (`results/switching_scenario_n14/`), scored offline for OR and k ≥ 2 by
+  `scripts/switching_scenario.py` (`results/switching_scenario_n14.{csv,txt}`) and plotted
+  by `scripts/plot_switching_scenario.py`. Mean recall: 91.75% (federated, 12 nodes) →
+  97.03% (gossip, round 20) → 97.62% (partition) → 99.97% one round after the server
+  returns; F1-score 95.45% (OR) and 95.98% (k ≥ 2) from round 36.
+- **`scripts/plot_conv_cliente_en.py`** — English per-node convergence figure (Figure 2),
+  sized like the retention figure; reads `results/conv_por_cliente.csv`.
+
+### Changed
+- **`scripts/plot_retention_vs_reformed.py`** — one panel, OR fusion: the quorum k ≥ 2 is
+  discussed with redundancy.
+
 ## [v1.4] — 2026-10-12
 
 Second artifact of the **Paper 1 (JPDC) revision**. The revision restates what the evidence
