@@ -505,6 +505,7 @@ def main(args: list[str] | None = None) -> None:
             strategy_name, X_te, y_te,
             eval_sample=int(eval_sample) if eval_sample else None, k=fusion_k,
             spec_detector=spec_detector),
+        pool_dump_dir=sim_conf.get("pool_dump_dir"),
     )
 
     print(f"\n  ④ Strategy: {strategy_name}  |  ArchManager: {arch_manager.__class__.__name__}")

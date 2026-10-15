@@ -107,6 +107,12 @@ class XgbClient(NumPyClient):
         return [np.frombuffer(raw, dtype=np.uint8)], len(self.dtrain.get_label()), {"cid": self.cid}
 
     # ------------------------------------------------------------------
+    def get_properties(self, config: dict[str, Any]) -> dict[str, Any]:
+        """Report the partition id, so the server can map its opaque proxy cid before the
+        client has taken part in any round."""
+        return {"cid": self.cid}
+
+    # ------------------------------------------------------------------
     def evaluate(self, parameters: NDArrays, config: dict[str, Any]) -> tuple[float, int, dict]:
         if self.booster is None or parameters[0].size == 0:
             return 1.0, len(self.y_test), {"local_accuracy": 0.0, "cid": self.cid}

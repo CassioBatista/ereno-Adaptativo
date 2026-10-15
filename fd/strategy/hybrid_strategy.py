@@ -7,6 +7,7 @@ so training continuity is preserved across paradigm switches.
 
 from __future__ import annotations
 
+import numpy as np
 from flwr.common import Parameters, Scalar, NDArrays, ndarrays_to_parameters, parameters_to_ndarrays
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
@@ -52,6 +53,7 @@ class HybridStrategy(Strategy):
         glow_strategy: Strategy,
         arch_manager:  ArchitectureManager,
         round_eval_fn=None,
+        pool_dump_dir: str | None = None,
     ) -> None:
         self._strategies  = {"federated": fed_strategy, "gossip": glow_strategy}
         self.arch_manager = arch_manager
@@ -59,6 +61,16 @@ class HybridStrategy(Strategy):
         self._prev_mode:  str | None = None
         self._last_params: Parameters | None = None
         self.final_parameters: Parameters | None = None
+        # what each node holds after each round: the aggregate it received (federated)
+        # or its gossip pool. Nodes absent from the last federated round never received
+        # that aggregate, so the switch to gossip does not seed them with it.
+        self._node_pool: dict[int, Parameters] = {}
+        self._last_fed_active: list[int] | None = None
+        # optional per-round dump of every node's pool, for per-node evaluation offline
+        self.pool_dump_dir = pool_dump_dir
+        if pool_dump_dir:
+            import os
+            os.makedirs(os.path.join(pool_dump_dir, "boosters"), exist_ok=True)
         # proxy cid -> partition id, learned from client metrics and shared
         # with the gossip strategy (proxy cids are opaque under flwr sim)
         self.cid_map: dict[str, int] = {}
@@ -78,7 +90,32 @@ class HybridStrategy(Strategy):
         active = self.arch_manager.get_active_clients(round)
         if active is None:
             return client_manager
+        self._map_unseen_clients(client_manager, active, round)
         return _FilteredClientManager(client_manager, active, self.cid_map)
+
+    def _map_unseen_clients(self, client_manager: ClientManager, active: list[int],
+                            round: int) -> None:
+        """Ask clients never seen in a round for their partition id.
+
+        The proxy -> partition map is otherwise learned from round results, so before a
+        client has taken part, the filter falls back to a positional guess that need not be
+        its partition: a partial active set could then admit the wrong nodes. Only needed
+        when the set is partial; with every node active the guess is never used to exclude.
+        """
+        proxies = list(client_manager.all().values())
+        if len(set(active)) >= len(proxies):
+            return
+        from flwr.common import GetPropertiesIns
+        for proxy in proxies:
+            if proxy.cid in self.cid_map:
+                continue
+            try:
+                res = proxy.get_properties(GetPropertiesIns(config={}), timeout=None,
+                                           group_id=round)
+                if "cid" in res.properties:
+                    self.cid_map[proxy.cid] = int(res.properties["cid"])
+            except Exception as exc:  # a client that cannot answer keeps the fallback
+                print(f"[Hybrid] get_properties failed for proxy {proxy.cid}: {exc}")
 
     def _sync_participation(self, strategy: Strategy, active: list[int] | None) -> None:
         """Align the sub-strategy's expectations with the round's active clients.
@@ -167,14 +204,25 @@ class HybridStrategy(Strategy):
         elif from_mode == "federated" and to_mode == "gossip":
             glow = self._strategies["gossip"]
             if hasattr(glow, "pool_parameters"):
-                # semeia TODOS os nós da topologia com o modelo global —
-                # iterar o pool (vazio na primeira comutação) era um no-op
+                # semeia os nós da topologia com o modelo global — iterar o pool
+                # (vazio na primeira comutação) era um no-op. Only the nodes present
+                # in the last federated round received that model; a node that never
+                # took part (e.g. one that joins while the server is down) starts
+                # from what it holds, or from nothing.
                 nodes = (glow.topology.all_nodes()
                          if hasattr(glow, "topology") else list(glow.pool_parameters))
+                seeded = 0
                 for node_id in nodes:
-                    glow.pool_parameters[node_id] = parameters
+                    if self._last_fed_active is None or node_id in self._last_fed_active:
+                        glow.pool_parameters[node_id] = parameters
+                        seeded += 1
+                    elif node_id in self._node_pool:
+                        glow.pool_parameters[node_id] = self._node_pool[node_id]
+                    else:
+                        glow.pool_parameters[node_id] = ndarrays_to_parameters(
+                            [np.empty(0, dtype=np.uint8)])
                 print(f"[Hybrid] federated→gossip: global model seeded to "
-                      f"{len(nodes)} nodes")
+                      f"{seeded} of {len(nodes)} nodes")
             # the switch to gossip stands for an unavailable server: whatever it
             # retained is taken as lost (worst case), so a later return starts empty
             fed = self._strategies["federated"]
@@ -217,11 +265,48 @@ class HybridStrategy(Strategy):
         failures:     FitFailures,
     ) -> tuple[Parameters | None, dict[str, Scalar]]:
         learn_cid_map(self.cid_map, results)
-        _, strategy = self._active(server_round)
+        mode, strategy = self._active(server_round)
         params, metrics = strategy.aggregate_fit(server_round, results, failures)
         if params is not None:
             self.final_parameters = params
+        self._track_node_pools(server_round, mode, params)
         return params, metrics
+
+    def _track_node_pools(self, server_round: int, mode: str, params: Parameters | None) -> None:
+        """Record what each node holds after the round (and dump it, if configured)."""
+        active = self.arch_manager.get_active_clients(server_round)
+        glow = self._strategies["gossip"]
+        nodes = glow.topology.all_nodes() if hasattr(glow, "topology") else []
+        if mode == "federated":
+            present = list(nodes) if active is None else list(active)
+            self._last_fed_active = present
+            if params is not None:
+                for n in present:
+                    self._node_pool[n] = params
+        else:
+            for n, p in getattr(glow, "pool_parameters", {}).items():
+                self._node_pool[n] = p
+        if not self.pool_dump_dir:
+            return
+        import hashlib
+        import json
+        import os
+        members: dict[str, list[str]] = {}
+        for n, p in sorted(self._node_pool.items()):
+            keys = []
+            for a in parameters_to_ndarrays(p):
+                if a.size == 0:
+                    continue
+                h = hashlib.sha1(a.tobytes()).hexdigest()[:16]
+                path = os.path.join(self.pool_dump_dir, "boosters", h + ".bin")
+                if not os.path.exists(path):
+                    with open(path, "wb") as fh:
+                        fh.write(a.tobytes())
+                keys.append(h)
+            members[str(n)] = keys
+        with open(os.path.join(self.pool_dump_dir, "pools.jsonl"), "a") as fh:
+            fh.write(json.dumps({"round": server_round, "mode": mode,
+                                 "active": active, "pools": members}) + "\n")
 
     def configure_evaluate(
         self,
