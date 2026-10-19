@@ -20,10 +20,11 @@ abstract: >-
   new specialist under a server outage (FL-only, GL-only, switching). Version 1.5 adds a
   14-node runtime-switching scenario (server outage, network partition, recovery) scored
   per node, and fixes the mapping of clients to partitions when only part of the nodes
-  is active.
+  is active. Version 1.6 adds the scalability data and its generator, and the figures of
+  the condensed revision (switching scenario by node group, scalability in two panels).
 type: software
-version: 1.5.0
-date-released: 2026-10-15
+version: 1.6.0
+date-released: 2026-10-19
 license: MIT
 repository-code: "https://github.com/CassioBatista/ereno-Adaptativo"
 keywords:

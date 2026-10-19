@@ -8,6 +8,28 @@ This is the **v1.x (Paper 1 / JPDC) maintenance lineage**, kept separate from th
 v2 adaptive line. See the [`v2.0.0`](https://github.com/CassioBatista/ereno-Adaptativo/releases/tag/v2.0.0)
 release for the autonomous, decentralized FL↔GL switch and the external monitor.
 
+## [v1.6] — 2026-10-19
+
+Fourth artifact of the **Paper 1 (JPDC) revision**: the figures of the condensed Sections
+4.4 and 4.5, and the scalability data with the script that produced it. No experiment was
+rerun; headline results are unchanged.
+
+### Added
+- **`scripts/escalabilidade.py`** — generator of `results/escalabilidade.csv` (N = 10 to 100:
+  pool sizes, bytes, diffusion rounds, OR and k ≥ 2 detection for FL and GL, FL/GL
+  agreement), recovered unchanged from the untracked files of the original run; it had
+  never been committed. The CSV is now in the artifact as well.
+- **`scripts/plot_scaling_pair.py`** — Section 4.5 as one two-panel figure
+  (`results/scaling_pair.{pdf,png}`): detection under OR and communication/storage vs N. It
+  replaces the four panels of the former scalability figures; the k ≥ 2 curve is left out
+  because the file scores the gossip pool built from a cold start (about 2N − 1 boosters),
+  and the k sweep at N = 98 is dropped (its best k was read on the test set).
+- **`scripts/plot_switching_scenario.py --split`** — the switching scenario with the 12
+  nodes deployed from the start and the 2 joining nodes averaged separately
+  (`results/switching_scenario_n14_split.{pdf,png}`, Figure 6 of the revision): the dip of
+  the overall mean at rounds 11–13 comes from the joining nodes, which hold only their own
+  specialist until gossip reaches them.
+
 ## [v1.5] — 2026-10-15
 
 Third artifact of the **Paper 1 (JPDC) revision**: the runtime-switching scenario of the
