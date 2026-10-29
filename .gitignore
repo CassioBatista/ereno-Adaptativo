@@ -10,3 +10,7 @@ all_in_one_ereno_test.csv
 
 # Logs de experimentos (regeneraveis) — ficam locais
 results/*.log
+
+# Credentials and app config: never commit
+*firebase-adminsdk*.json
+google-services.json
