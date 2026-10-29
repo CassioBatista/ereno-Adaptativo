@@ -1,0 +1,28 @@
+[tb] load train...
+[tb] load test...
+[attack] 10 clientes para 7 classes — sensores redundantes (classe: nº de sensores): {1: 2, 5: 2, 6: 2}
+[attack] cliente 0: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 1: classes de ataque [1] (19500 amostras) + 50000 benignas
+[attack] cliente 2: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 3: classes de ataque [5] (19500 amostras) + 50000 benignas
+[attack] cliente 4: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 5: classes de ataque [6] (19500 amostras) + 50000 benignas
+[attack] cliente 6: classes de ataque [2] (26033 amostras) + 50000 benignas
+[attack] cliente 7: classes de ataque [7] (18574 amostras) + 50000 benignas
+[attack] cliente 8: classes de ataque [4] (17419 amostras) + 50000 benignas
+[attack] cliente 9: classes de ataque [3] (17287 amostras) + 50000 benignas
+
+===== DISTRIBUTED (specialist N=10) — num_boost_round sweep =====
+  nbr= 5 (total 50 trees)  k>=1:  F1= 95.72 recall= 99.97 FPR= 0.649 #FP=17,881
+  nbr= 5 (total 50 trees)  k>=2:  F1= 87.69 recall= 78.09 FPR= 0.002 #FP=49
+  nbr=10 (total 100 trees)  k>=1:  F1= 95.72 recall= 99.97 FPR= 0.649 #FP=17,881
+  nbr=10 (total 100 trees)  k>=2:  F1= 87.69 recall= 78.09 FPR= 0.002 #FP=49
+  nbr=20 (total 200 trees)  k>=1:  F1= 96.34 recall= 99.97 FPR= 0.550 #FP=15,159
+  nbr=20 (total 200 trees)  k>=2:  F1= 87.69 recall= 78.09 FPR= 0.002 #FP=49
+
+===== CENTRALIZED (single XGBoost over the pool) — trees sweep =====
+  trees= 50:  F1= 90.94 recall= 99.91 FPR= 1.443 #FP=39,758
+  trees=100:  F1= 99.23 recall= 99.96 FPR= 0.110 #FP=3,017
+  trees=200:  F1= 99.90 recall= 99.96 FPR= 0.011 #FP=309
+
+[tb] CSV -> results/tree_budget_sensitivity.csv

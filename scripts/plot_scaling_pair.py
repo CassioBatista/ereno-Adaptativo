@@ -49,7 +49,11 @@ def main():
     a.set_title("(a) detection, OR fusion", fontsize=15)
 
     cold = [v / 1e6 for v in col("GL_comm_bytes")]
-    a_kb = sum(col("avg_booster_KB")) / len(d)
+    # one 10-tree booster, from the federated pool (N boosters); avg_booster_KB averages the
+    # cold-start gossip pool, whose 20-tree warm-start variants inflate it to about 13 KB
+    per_b = [fb / nb / 1e3 for fb, nb in zip(col("FL_bytes"), col("FL_b"))]
+    a_kb = sum(per_b) / len(per_b)
+    print("10-tree booster KB per N:", [round(v, 2) for v in per_b])
     b.plot(N, cold, "-o", color="#b87318", lw=2.4, ms=6, label="gossip diffusion from a cold start")
     b.plot(N, [v / 1e6 for v in col("GL_bytes")], "-s", color="#2a78d6", lw=2.4, ms=6,
            label="per-node pool")

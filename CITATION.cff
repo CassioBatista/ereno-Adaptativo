@@ -22,9 +22,11 @@ abstract: >-
   per node, and fixes the mapping of clients to partitions when only part of the nodes
   is active. Version 1.6 adds the scalability data and its generator, and the figures of
   the condensed revision (switching scenario by node group, scalability in two panels).
+  Version 1.7 adds the tree-budget sensitivity study and the full-test node-loss run of
+  the redundant k >= 2 detector, and corrects the booster size in the scalability figure.
 type: software
-version: 1.6.0
-date-released: 2026-10-19
+version: 1.7.0
+date-released: 2026-10-29
 license: MIT
 repository-code: "https://github.com/CassioBatista/ereno-Adaptativo"
 keywords:

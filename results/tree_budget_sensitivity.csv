@@ -1,0 +1,10 @@
+arch,config,total_trees,F1,recall,FPR,FP
+distributed,"nbr=5,k>=1",50,95.7152,99.9676,0.6490,17881
+distributed,"nbr=5,k>=2",50,87.6882,78.0947,0.0018,49
+distributed,"nbr=10,k>=1",100,95.7152,99.9676,0.6490,17881
+distributed,"nbr=10,k>=2",100,87.6882,78.0947,0.0018,49
+distributed,"nbr=20,k>=1",200,96.3414,99.9676,0.5502,15159
+distributed,"nbr=20,k>=2",200,87.6882,78.0947,0.0018,49
+centralized,"trees=50",50,90.9367,99.9127,1.4430,39758
+centralized,"trees=100",100,99.2321,99.9576,0.1095,3017
+centralized,"trees=200",200,99.9045,99.9631,0.0112,309

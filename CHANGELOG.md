@@ -8,6 +8,30 @@ This is the **v1.x (Paper 1 / JPDC) maintenance lineage**, kept separate from th
 v2 adaptive line. See the [`v2.0.0`](https://github.com/CassioBatista/ereno-Adaptativo/releases/tag/v2.0.0)
 release for the autonomous, decentralized FL↔GL switch and the external monitor.
 
+## [v1.7] — 2026-10-29
+
+Fifth artifact of the **Paper 1 (JPDC) revision**: the evidence behind two claims of the
+revised text that the artifact did not yet contain, and a corrected figure label. Headline
+results are unchanged.
+
+### Added
+- **`scripts/tree_budget_sensitivity.py`** — the tree-budget sweep of Section 3
+  (`results/tree_budget_sensitivity.{csv,out}`): specialists of 5, 10 and 20 trees
+  (N = 10, OR and k ≥ 2) and a centralized model of 50, 100 and 200 trees, on the full
+  test set. Five trees per specialist give the same detector as ten (F1-score 95.72,
+  17,881 false positives under OR); twenty add 0.62 points under OR; the centralized model
+  gives 90.94 / 99.23 / 99.90.
+- **`results/redund_k2_fulltest.csv`** — output of the existing
+  `scripts/redund_k2_fulltest.py`: the redundant detector (N = 14, two specialists per
+  attack) on the full test set as nodes are lost from 14 to 3, with the pool retained and
+  re-formed, for OR and k ≥ 2 (Section 4.3: k ≥ 2 stays at 95.98 with the pool retained).
+
+### Fixed
+- **Booster size in the scalability figure** (`scripts/plot_scaling_pair.py`,
+  `results/scaling_pair.{pdf,png}`): the annotation now gives the size of one 10-tree
+  booster, taken from the federated pool (about 9 KB). It previously averaged the
+  cold-start gossip pool, whose 20-tree warm-start variants raise the mean to about 13 KB.
+
 ## [v1.6] — 2026-10-19
 
 Fourth artifact of the **Paper 1 (JPDC) revision**: the figures of the condensed Sections
