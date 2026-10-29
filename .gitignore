@@ -21,3 +21,7 @@ results/.cache/
 results/*.mem
 results/*_sample.pkl.gz
 all_in_one_*_ts.npy
+
+# Credentials and app config: never commit
+*firebase-adminsdk*.json
+google-services.json
