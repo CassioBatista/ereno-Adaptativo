@@ -483,9 +483,10 @@ label. The collisions come from three labels that describe the path of a packet 
 than its content: 83\% of the packets labelled \texttt{MITM\_UNALTERED}, relayed unchanged
 by the attacker's host, 97\% of the replayed packets and 66\% of the read requests issued
 by that host have the content of a normal packet. Only the MAC address tells them apart,
-and the address alone predicts the label of 95\% of the rows. The other four types,
-reconnaissance, unauthorised writes, forced errors and modified responses, never share a
-vector with normal traffic, and the probe separates them from it on content alone, on a
+and the address alone predicts the label of 95\% of the rows, against 85\% for the
+majority class. The other four types, reconnaissance, unauthorised writes, forced errors
+and modified responses, share almost no vector with normal traffic (none for three of
+them, 0.18\% of the modified responses), and the probe separates them from it on content alone, on a
 random and on a time-ordered split (F1-score 0.97 to 1.00 each). The evaluation therefore
 keeps those four types and removes the other three from the stream. Under the evaluation
 protocol, the specialists of the four types recover 99.94\% of their packets without a
