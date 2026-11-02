@@ -1,0 +1,25 @@
+=== (a) multiclass probe, counters, time split with intervals whole ===
+macro-F1=0.368  ArpSpoof=0.91  Normal=0.98  PingOfDea=0.00  Smurf=0.52  TcpSynDev=0.14  TcpSynRef=0.10  UdpDevice=0.06  UdpReflec=0.24
+                       ArpSpoof  Normal  PingOfDea  Smurf  TcpSynDev  TcpSynRef  UdpDevice  UdpReflec
+true ArpSpoof                77      12          0      1          0          0          0          0
+true Normal                   1    8869          0      0          1          1          0          6
+true PingOfDeath              0      24          0     25          0          0          1          0
+true Smurf                    0      16          1     23          0          0          0          0
+true TcpSynDevice             0      95          0      0         15         45          0         13
+true TcpSynReflection         2     124          0      0         32         11          0          1
+true UdpDevice                0      57          0      0          0          0          2          0
+true UdpReflection            0      91          0      0          0          0          0         18
+  PingOfDeath: 50 test minutes -> Normal 24, Smurf 25, UdpDevice 1
+  Smurf: 40 test minutes -> Normal 16, PingOfDea 1, Smurf 23
+
+=== (b) ping of death and Smurf merged into one ICMP category ===
+macro-F1=0.508  ArpSpoof=0.94  Icmp=0.94  Normal=0.98  TcpSynDev=0.20  TcpSynRef=0.15  UdpDevice=0.10  UdpReflec=0.25
+
+=== (c) binary probe per category against normal (other attacks removed) ===
+  TcpSynReflection   test minutes  170  recall  27.6%  FP    6 of 8,878 normal  F1=0.42
+  TcpSynDevice       test minutes  168  recall  35.7%  FP    7 of 8,878 normal  F1=0.51
+  ArpSpoof           test minutes   90  recall  91.1%  FP    1 of 8,878 normal  F1=0.95
+  UdpReflection      test minutes  109  recall  20.2%  FP    6 of 8,878 normal  F1=0.32
+  UdpDevice          test minutes   59  recall   1.7%  FP    3 of 8,878 normal  F1=0.03
+  PingOfDeath        test minutes   50  recall  36.0%  FP    1 of 8,878 normal  F1=0.52
+  Smurf              test minutes   40  recall  70.0%  FP    0 of 8,878 normal  F1=0.82

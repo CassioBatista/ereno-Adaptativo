@@ -511,7 +511,11 @@ with the hour before. They rise in every interval of ARP spoofing, ping of death
 by a median factor of 8 to 53 and even at one packet per second, but only in 58 to 86\% of
 the intervals of the TCP SYN floods and reflections, UDP floods and SSDP and SNMP
 reflections. At a resolution of one minute, those attacks add a few hundred packets, the
-size of the normal variation of a busy device. Under the evaluation protocol with all
+size of the normal variation of a busy device. The probe falls from a macro-F1 of 0.85 on
+a random split to 0.37 on a time-ordered one with attack intervals kept whole: the TCP and
+UDP categories fall to 0.06--0.24, ARP spoofing holds at 0.91, and ping of death and
+Smurf, both ICMP attacks, fall to 0.00 and 0.52, largely because each is taken for the
+other: merged into one ICMP category, they reach 0.94. Under the evaluation protocol with all
 seven categories, the specialists of those floods flag 5.4\% of the normal device-minutes,
 half of them on one device. The label set \texttt{unsw-iot-3} keeps the three categories
 visible in every interval; this criterion was applied after that first run. The counters

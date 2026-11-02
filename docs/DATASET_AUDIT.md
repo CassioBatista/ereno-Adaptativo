@@ -74,7 +74,9 @@ separability that holds on a random split but not on independent data.
 - **UNSW IoT attack traces** — the counters of the attacked protocol rise in every
   annotated interval of ARP spoofing, ping of death and Smurf, but only in 58–86% of the
   intervals of the TCP/UDP floods and reflections. The probe falls from 0.85 (random) to
-  0.37 (time-ordered, intervals kept whole); ARP spoofing holds at 0.91. `unsw-iot-3` keeps
+  0.37 (time-ordered, intervals kept whole): TCP/UDP categories 0.06–0.24, ARP spoofing
+  0.91, ping of death 0.00 and Smurf 0.52, largely because the two ICMP attacks are
+  taken for each other (merged into one ICMP category: 0.94). `unsw-iot-3` keeps
   the three categories visible in every interval; this criterion was applied after a first
   run of the evaluation protocol with all seven categories (5.4% of normal device-minutes
   flagged). Counters belong to the victim device: no attribution.
@@ -89,7 +91,7 @@ protocol to decide, the protocol script is listed too.
 | ERENO | `inspect_ereno.py` | `ereno_audit.txt` | — | release used by the pipeline (`build_ereno_dataset.py`) |
 | CICIDS2017, improved | `inspect_cicids2017c.py`, `inspect_cicids2017_improved.py` | `cicids2017c_audit.txt`, `cicids2017_improved_inspection.{txt,json}` | — | `CICIDS2017_improved.zip`, authors' release |
 | Electra Modbus | `inspect_electra.py`; protocol `cross_domain_electra.py` | `electra_audit.txt`, `cross_domain_electra.txt` | `electra_md5sums.txt` | perception.inf.um.es/ICS-datasets |
-| UNSW IoT attack traces | `inspect_unsw_iot.py` (audit and protocol) | `unsw_iot_audit.txt` | `unsw_iot_attack_md5sums.txt` | iotanalytics.unsw.edu.au/attack-data |
+| UNSW IoT attack traces | `inspect_unsw_iot.py` (audit and protocol); probe follow-up `_unsw_probe_confusion.py` | `unsw_iot_audit.txt`, `unsw_probe_confusion.txt` | `unsw_iot_attack_md5sums.txt` | iotanalytics.unsw.edu.au/attack-data |
 | CICIoT2023 | `inspect_ciciot2023.py`; label and protocol checks `_ciciot_label_protocol_check.py`, `_ciciot_threshold_calibration.py`, `_ciciot_volumetric_subset.py` | `ciciot2023_audit.txt` (10 of 169 files); summary in `docs/RESULTADOS_ciciot2023.md` | — | CSV release, authors' site |
 | ToN_IoT | `inspect_toniot.py`, `inspect_toniot_followup.py`; protocol `cross_domain_toniot.py` | `toniot_audit.txt`, `toniot_followup.txt`, `cross_domain_toniot.txt`, `cross_domain_toniot_session.txt` | `toniot_md5sums.txt` | Kaggle mirror (see script header) |
 | IoT-23 | `inspect_iot23.py` | `iot23_audit.txt` | `iot23_md5sums.txt` | Stratosphere Laboratory archive (labelled flows) |
