@@ -72,9 +72,9 @@ i.e. CICIoT2023); (c) the selected set is the union of (a) and (b). Types with f
 ## 4. Training and test split
 
 - **ERENO:** the release's training and test files.
-- **CICIDS2017, improved:** as in the earlier runs: on each attack day, the flows from the
-  70 % time quantile of each label to its last flow are test, all labels included; Monday
-  after its 70 % time quantile is test; the rest is training.
+- **CICIDS2017, improved:** *(corrected 2026-11-03, see the change log)* per label, its
+  first 70 % of flows in time train and the rest test; benign likewise, day by day. Windows
+  are built over the test flows in time order.
 - **Morris-3:** file order; for each label (benign included), its first 70 % of rows train,
   the rest test.
 - **CICIoT2023:** by file: the first 7 part files (name order) train, the last 3 test.
@@ -126,4 +126,14 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
 
 ## Change log
 
-- (none)
+- **2026-11-03, error correction, section 4 (CICIDS2017 split).** The registered rule ("on
+  each attack day, the flows from the 70 % time quantile of each label to its last flow are
+  test, all labels included", "as in the earlier runs") left attack types without training
+  rows once specialists are per type: the test interval of small labels spread over a day
+  (the "Attempted" ones) covered other attacks whole (DDoS 0 training rows, PortScan 344 of
+  159,066). Computing the intervals per attack category, as the earlier runs did, was tried
+  first and failed the same way (DDoS and DoS GoldenEye with 0 training rows), because one
+  specialist per category had hidden it. The rule is replaced by the one already registered
+  for Morris-3: per label, its first 70 % in time train, the rest test; benign likewise, day
+  by day. Every type now has training rows (`scripts/build_ev1_datasets.py`). No model was
+  trained and no result was seen before the correction.

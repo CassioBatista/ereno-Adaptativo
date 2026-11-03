@@ -34,6 +34,9 @@ import python.config as config
 
 def _get_feature_subsets(dataset: str):
     match dataset.lower():
+        case s if "ev1_" in s:                     # evaluation-v1 datasets (before "cicid")
+            from python.feature_subsets.ev1 import Ev1Features
+            return Ev1Features(s)
         case s if "wsn" in s:
             from python.feature_subsets.wsn import WsnFeatures
             return WsnFeatures()
