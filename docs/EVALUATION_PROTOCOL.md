@@ -12,7 +12,7 @@ Selected by `docs/DATASET_PROTOCOL.md` (tag `protocol-v1`, `results/protocol_v1/
 |---|---|---|---|---|
 | IEC 61850 substation | ERENO | 7 | time | 1 s |
 | enterprise network | CICIDS2017, improved | 26 (the qualified `Label` values, "Attempted" labels included) | time | 10 s |
-| industrial control | Morris-3 (water tank) | 6 (CMRI excluded by Q2a) | file order (no clock) | M = 100 rows |
+| industrial control | Morris-4 (gas pipeline, 2015) *(amended, see the change log; was Morris-3)* | 30 specific attacks (5 excluded by Q2a) | time | 100 s |
 | IoT | CICIoT2023, the 10 part files screened | 30 (three excluded by Q2b) | none (rows shuffled) | no window |
 
 Results on the types excluded by the screening are reported separately (protocol-v1,
@@ -36,7 +36,7 @@ the split of section 4 is applied before any feature selection.
 |---|---|---|---|---|
 | ERENO | `all_in_one_ereno_{train,test}.csv` (converted release) | class (7 attacks + normal) | 58 numeric columns minus absolute time | `Time`, `t`, `GooseTimestamp`. `SqNum` and `StNum` are GOOSE message fields that the attacks manipulate (`high_StNum`, injection, replay), so they are content |
 | CICIDS2017, improved | `CICIDS2017_improved.zip` (version of 27 April 2023), five days | `Label` (26 qualified values) | numeric flow statistics | `id`, `Flow ID`, `Src IP`, `Src Port`, `Dst IP`, `Dst Port`, `Timestamp` |
-| Morris-3 | `water_final.arff` (Web Archive copy, checksums in `results/morris_ics_md5sums.txt`) | `result` (6 qualified attack categories + normal) | Modbus and process fields | `time`, `crc_rate` |
+| Morris-4 *(amended)* | `IanArffDataset.arff` (Web Archive copy, checksums in `results/morris_ics_md5sums.txt`) | `specific result` (30 qualified attacks + normal) | Modbus and process fields | `time`, `crc rate` |
 | CICIoT2023 | 10 part files of the CSV release | the 30 qualified labels | 46 flow features | none (the release has no identifier column) |
 
 ### 2.2 Feature selection: GRASP, same recipe in every domain
@@ -52,11 +52,11 @@ i.e. CICIoT2023); (c) the selected set is the union of (a) and (b). Types with f
 
 - ERENO: the existing selection of this recipe, `features/all_in_one_ereno_train_combined.json`
   (24 features), unchanged (the fusion rule was selected on it).
-- CICIDS2017, Morris-3, CICIoT2023: new runs, per type, on the splits of section 4.
+- CICIDS2017, Morris-4, CICIoT2023: new runs, per type, on the splits of section 4.
 
 ### 2.3 Partitioning
 
-- **One node per attack type** (N = 7, 26, 6, 30). Node i holds all training rows of type i
+- **One node per attack type** (N = 7, 26, 30, 30; Morris-4 amended). Node i holds all training rows of type i
   and the i-th of N disjoint random slices of the training benign rows (seed 42); ERENO
   benign training rows capped at 500,000 before slicing.
 - Each node trains **one XGBoost specialist** on its partition, on the selected features
@@ -75,8 +75,8 @@ i.e. CICIoT2023); (c) the selected set is the union of (a) and (b). Types with f
 - **CICIDS2017, improved:** *(corrected 2026-11-03, see the change log)* per label, its
   first 70 % of flows in time train and the rest test; benign likewise, day by day. Windows
   are built over the test flows in time order.
-- **Morris-3:** file order; for each label (benign included), its first 70 % of rows train,
-  the rest test.
+- **Morris-4** *(amended; Morris-3 had the same rule in file order)*: for each label (benign
+  included), its first 70 % of samples in time train, the rest test.
 - **CICIoT2023:** by file: the first 7 part files (name order) train, the last 3 test.
 
 ## 5. Node loss
@@ -91,7 +91,7 @@ permutation drawn with seed 42), from N down to 3:
 
 Reported: overall and per-type recall, and false-positive rate, at every N.
 
-## 6. Window alarms (ERENO, CICIDS2017, Morris-3)
+## 6. Window alarms (ERENO, CICIDS2017, Morris-4)
 
 - Per window: network-wide flagged count and flagged fraction, and per specialist S_t = the
   flagged samples on which the specialist of type t fired.
@@ -101,10 +101,11 @@ Reported: overall and per-type recall, and false-positive rate, at every N.
   domain): the test period, in order, is cut into 5 contiguous blocks; each block is scored
   with thresholds calibrated on the attack-free windows of the other four; results are
   pooled over the five blocks.
-- Windows: ERENO 1 s; CICIDS2017 10 s; Morris-3 M = 100 consecutive rows in file order
-  (no clock: the order of the file, declared as such). Sensitivity reported for Morris-3
-  M = 10 and 1,000 and for CICIDS2017 1 s and 60 s; the primary values above are the
-  reported results.
+- Windows: ERENO 1 s; CICIDS2017 10 s; Morris-4 100 s *(amended: Morris-4 has a clock; at
+  about one sample per second over 76.6 h, 100 s keeps the order of magnitude of the
+  100-sample window registered for Morris-3)*. Sensitivity reported for Morris-4 10 s and
+  1,000 s and for CICIDS2017 1 s and 60 s; the primary values above are the reported
+  results.
 - CICIoT2023: no window (rows shuffled; at 2.4 % benign almost every window would hold an
   attack).
 
@@ -122,9 +123,18 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   their own types instead of benign; features by GRASP per type on the new split (the
   initial TCP window sizes are candidates like any content column; no feature is removed
   on the basis of the exploratory probe); window thresholds by blocked-5 instead of Monday.
-- Morris-3 and CICIoT2023 are new domains; Electra and UNSW are no longer evaluated.
+- Morris-4 (amended, replacing Morris-3) and CICIoT2023 are new domains; Electra and UNSW
+  are no longer evaluated.
 
 ## Change log
+
+- **2026-11-03, amendment following the screening protocol's amendment (industrial control
+  domain).** Morris-4 replaces Morris-3: its authors released it to correct the unintended
+  patterns they report in the 2014 releases (see `docs/DATASET_PROTOCOL.md`, change log).
+  Consequences, fixed before any model of the evaluation was trained: 30 specific attacks
+  (N = 30); Morris-4 has a clock, so its split is per label in time and its window is 100 s
+  (about 100 samples, as the window registered for Morris-3); sensitivity at 10 s and
+  1,000 s. The partial GRASP run on Morris-3 (one attack type) is discarded.
 
 - **2026-11-03, error correction, section 4 (CICIDS2017 split).** The registered rule ("on
   each attack day, the flows from the 70 % time quantile of each label to its last flow are

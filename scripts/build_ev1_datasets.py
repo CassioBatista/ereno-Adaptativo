@@ -5,8 +5,11 @@ the three domains that need new files (ERENO uses its existing all_in_one_ereno_
   ev1_cicids   CICIDS2017, improved: 26 Label types; per label, its first 70 % in time TRAIN
                and the rest TEST; benign likewise, day by day (correction of 2026-11-03,
                protocol change log: the interval rule left types without training rows)
-  ev1_morris3  Morris-3 (water tank): 6 attack categories (CMRI excluded by Q2a); file order,
-               first 70 % of each label TRAIN
+  ev1_morris4  Morris-4 (gas pipeline, 2015): 30 specific attacks (5 excluded by Q2a); for
+               each label its first 70 % in time TRAIN (amendment of 2026-11-03: replaces
+               Morris-3, which its authors superseded)
+  ev1_morris3  Morris-3 (water tank), kept for the record: 6 attack categories (CMRI
+               excluded by Q2a); file order, first 70 % of each label TRAIN
   ev1_ciciot   CICIoT2023, 10 screened part files: 30 labels (three excluded by Q2b); part
                files 0-6 TRAIN, 7-9 TEST
 
@@ -135,6 +138,24 @@ def build_morris3():
                   "water_final.arff (Morris and Gao 2014, Web Archive copy); evaluation-v1")
 
 
+def build_morris4():
+    """Morris-4 (amendment of 2026-11-03, replacing Morris-3): 30 specific attacks; it has a
+    clock, so for each label its first 70 % in time train."""
+    import audit_loaders as L
+    rel = L.LOADERS["morris4"]()
+    typ = rel.df["_type"].astype(str).values
+    keep, X, lab = prepare(rel, "morris4", typ)
+    t = rel.df["_t"].to_numpy(np.float64)[keep]
+    train = np.zeros(len(lab), bool)
+    for c in set(lab):
+        ii = np.flatnonzero(lab == c)
+        ii = ii[np.argsort(t[ii], kind="stable")]
+        train[ii[: int(0.7 * len(ii))]] = True
+    return finish("ev1_morris4", rel, X, lab, train, ~train, t, typ[keep],
+                  "IanArffDataset.arff (Morris, Thornton and Turnipseed 2015, Web Archive copy); "
+                  "evaluation-v1, amendment of 2026-11-03")
+
+
 def build_ciciot():
     parts = sorted(glob.glob(os.path.expanduser("~/datasets/ciciot2023/part-*.csv")))
     fr = []
@@ -188,6 +209,7 @@ def finish(ds, rel, X, lab, train, test, order, typ, note):
 
 if __name__ == "__main__":
     os.chdir(os.path.expanduser("~/ereno-Adaptativo"))
-    todo = sys.argv[1:] or ["ev1_morris3", "ev1_ciciot", "ev1_cicids"]
+    todo = sys.argv[1:] or ["ev1_morris4", "ev1_ciciot", "ev1_cicids"]
     for ds in todo:
-        {"ev1_cicids": build_cicids, "ev1_morris3": build_morris3, "ev1_ciciot": build_ciciot}[ds]()
+        {"ev1_cicids": build_cicids, "ev1_morris3": build_morris3, "ev1_morris4": build_morris4,
+         "ev1_ciciot": build_ciciot}[ds]()

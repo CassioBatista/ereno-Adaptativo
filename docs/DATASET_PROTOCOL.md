@@ -163,6 +163,17 @@ parentheses. n.i. = not indexed by OpenAlex.
 
 ## Change log
 
+- **2026-11-03, amendment (not an error correction), section 7, after the screening and
+  before any evaluation run:** *a qualified release that its authors superseded with a
+  corrected release is replaced by that release, when the corrected release also
+  qualifies.* The authors of Morris-2 and Morris-3 state on the dataset page that the 2014
+  releases "contain some unintended patterns" and released Morris-4 (2015) to fix them.
+  The citation rule had selected Morris-3 (49 citations of Morris and Gao 2014) because the
+  reference requested by Morris-4 (Morris, Thornton and Turnipseed 2015) is not indexed by
+  OpenAlex. Morris-4 qualifies (30 of 35 types) and replaces Morris-3 in the industrial
+  control class. Decided before any model of the evaluation was trained; the alternative
+  of excluding superseded releases, which would have selected Electra, was not taken.
+
 - **2026-11-03, operational definitions fixed while writing `scripts/apply_protocol.py`**
   (no criterion, threshold or selection rule changed; listed so that every choice made
   after the freeze is visible):

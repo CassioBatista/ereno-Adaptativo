@@ -11,7 +11,7 @@
 set -euo pipefail
 cd ~/ereno-Adaptativo
 PY=~/venv-ereno314/bin/python
-DATASETS=${DATASETS:-"ev1_morris3 ev1_ciciot ev1_cicids"}
+DATASETS=${DATASETS:-"ev1_morris4 ev1_ciciot ev1_cicids"}   # Morris-4 replaces Morris-3 (amendment)
 
 for ds in $DATASETS; do
   attacks=$($PY - "$ds" <<'EOF'
