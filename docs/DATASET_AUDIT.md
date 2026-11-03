@@ -1,10 +1,24 @@
-# Dataset audit — index
+# Dataset audit — index (exploratory, superseded)
 
-Every public release considered for the evaluation was audited with the same protocol
-before use. Of the **22 releases audited, 4 are retained** (two of them restricted to a
-label subset), 16 are rejected and 2 are not used. This file indexes, for each release, the
-outcome, the script that runs the audit, its report and the checksums of the audited files.
-The full discussion is in the paper (dataset audit subsection).
+> **Superseded for the selection of datasets.** This file indexes the *exploratory* audit
+> run before the screening protocol was written. The datasets evaluated in the paper are
+> selected by the frozen screening protocol, `docs/DATASET_PROTOCOL.md` (tag `protocol-v1`,
+> with an amendment recorded in its change log), applied by `scripts/apply_protocol.py`;
+> its results are in `results/protocol_v1/summary.md`. The evaluated domains are ERENO,
+> the improved CICIDS2017, Morris-4 and CICIoT2023 (`docs/EVALUATION_PROTOCOL.md`).
+>
+> The "Decision" column and the "Conditions of use" below record what the exploratory
+> audit concluded at the time (retained: ERENO, CICIDS2017, Electra, UNSW); they are **not**
+> the selection used in the paper. The exploratory checks changed during that work and its
+> shortcut probe depends on its parameters, which is why it was replaced by a protocol fixed
+> before application and decided without training any model. The scripts and reports below
+> remain as descriptive material; the uniform re-run of the probe
+> (`scripts/audit_protocol.py`, `results/audit/`) is descriptive as well.
+
+Every public release considered was examined by the exploratory audit. It concluded that
+**4 of the 22 releases** could be retained (two of them restricted to a label subset), 16
+rejected and 2 not used. This file indexes, for each release, that outcome, the script that
+runs the audit, its report and the checksums of the audited files.
 
 The datasets themselves are not redistributed; each script header states where the audited
 copy was obtained and the command that runs it.
@@ -28,7 +42,7 @@ separability that holds on a random split but not on independent data.
 
 ## Outcome
 
-| Dataset | Domain | Failed checks | Main finding | Decision |
+| Dataset | Domain | Failed checks | Main finding | Exploratory decision (superseded) |
 |---|---|---|---|---|
 | ERENO | IEC 61850 substation | A | attacks impersonate the single publisher | retained |
 | CICIDS2017, improved (Liu et al., version of 27 Apr 2023) | enterprise network | L, X | scans duplicated across two labels; initial TCP window acts as an OS fingerprint | retained, two scan labels merged, initial window excluded |
@@ -53,7 +67,11 @@ separability that holds on a random split but not on independent data.
 | Westermo | ICS network | L | timing labels mark flows not involving the attacker; adds no property beyond the improved CICIDS2017 | not used |
 | HAI 23.05 | ICS process (HIL) | A, X | sound labels; supervised detection fails on unseen attacks (one-class design needed) | not used |
 
-### Conditions of use of the retained datasets
+### Conditions of use of the retained datasets (exploratory, superseded)
+
+The evaluation does not apply these conditions: under `docs/EVALUATION_PROTOCOL.md`, types
+are excluded only by the screening criteria and no feature is removed on the basis of a
+model.
 
 - **ERENO** — passes S, L and T; the probe stays near-perfect on the authors' independent
   test file (macro-F1 0.994) without absolute time and the SqNum/StNum counters. Fails A:

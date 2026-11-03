@@ -108,6 +108,11 @@ Reported: overall and per-type recall, and false-positive rate, at every N.
   results.
 - CICIoT2023: no window (rows shuffled; at 2.4 % benign almost every window would hold an
   attack).
+- **Profile ablation** *(amended, see the change log)*: CICIDS2017 is also evaluated under
+  a profile without time or addresses: same specialists, same test flows in arrival order,
+  windows of M consecutive flows, with M = the mean number of test flows per occupied 10-s
+  window (computed on the test split), attribution none; same alarm rule and blocked-5
+  calibration. Only the profile changes.
 
 ## 7. Metrics
 
@@ -127,6 +132,14 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   are no longer evaluated.
 
 ## Change log
+
+- **2026-11-03, amendment (addition), section 6: profile ablation on CICIDS2017.** The
+  controlled ablation of the earlier runs (`scripts/_cicids_profile_ablation.py`, profile
+  `it-flow-blind`) is kept: CICIDS2017 is re-run with count windows (M = mean test flows per
+  occupied 10-s window) and no attribution, the specialists and test flows unchanged, so
+  that only the profile changes. Added before any evaluation run; after the Morris-4
+  amendment, CICIoT2023 is the only domain without time, and the ablation isolates the
+  effect of the profile on the same traffic.
 
 - **2026-11-03, amendment following the screening protocol's amendment (industrial control
   domain).** Morris-4 replaces Morris-3: its authors released it to correct the unintended
