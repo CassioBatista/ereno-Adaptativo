@@ -1,0 +1,55 @@
+{
+ "release": "unsw_iot",
+ "tables": [
+  {
+   "release": "UNSW IoT attack traces",
+   "rows": 570460,
+   "sample": "all rows",
+   "types": {
+    "TcpSynReflection": {
+     "rows": 579,
+     "excluded_by": []
+    },
+    "TcpSynDevice": {
+     "rows": 558,
+     "excluded_by": []
+    },
+    "UdpReflection": {
+     "rows": 357,
+     "excluded_by": []
+    },
+    "ArpSpoof": {
+     "rows": 297,
+     "excluded_by": []
+    },
+    "UdpDevice": {
+     "rows": 209,
+     "excluded_by": []
+    },
+    "PingOfDeath": {
+     "rows": 180,
+     "excluded_by": []
+    },
+    "Smurf": {
+     "rows": 120,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "TcpSynReflection",
+    "TcpSynDevice",
+    "UdpReflection",
+    "ArpSpoof",
+    "UdpDevice",
+    "PingOfDeath",
+    "Smurf"
+   ],
+   "benign": 568160,
+   "q3": true,
+   "qualifies": true,
+   "table": "unsw_iot"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "unsw_iot"
+}

@@ -1,0 +1,111 @@
+{
+ "release": "xiiotid",
+ "tables": [
+  {
+   "release": "X-IIoTID",
+   "rows": 820834,
+   "sample": "all rows",
+   "types": {
+    "RDOS": {
+     "rows": 141261,
+     "excluded_by": []
+    },
+    "Scanning_vulnerability": {
+     "rows": 52852,
+     "excluded_by": []
+    },
+    "Generic_scanning": {
+     "rows": 50277,
+     "excluded_by": []
+    },
+    "BruteForce": {
+     "rows": 47241,
+     "excluded_by": []
+    },
+    "MQTT_cloud_broker_subscription": {
+     "rows": 23524,
+     "excluded_by": []
+    },
+    "Discovering_resources": {
+     "rows": 23148,
+     "excluded_by": []
+    },
+    "Exfiltration": {
+     "rows": 22134,
+     "excluded_by": []
+    },
+    "insider_malcious": {
+     "rows": 17447,
+     "excluded_by": []
+    },
+    "Modbus_register_reading": {
+     "rows": 5953,
+     "excluded_by": []
+    },
+    "False_data_injection": {
+     "rows": 5094,
+     "excluded_by": []
+    },
+    "C&C": {
+     "rows": 2863,
+     "excluded_by": []
+    },
+    "Dictionary": {
+     "rows": 2572,
+     "excluded_by": []
+    },
+    "TCP Relay": {
+     "rows": 2119,
+     "excluded_by": []
+    },
+    "fuzzing": {
+     "rows": 1313,
+     "excluded_by": []
+    },
+    "Reverse_shell": {
+     "rows": 1016,
+     "excluded_by": []
+    },
+    "crypto-ransomware": {
+     "rows": 458,
+     "excluded_by": [
+      "Q1a 33.84% misaligned"
+     ]
+    },
+    "MitM": {
+     "rows": 117,
+     "excluded_by": []
+    },
+    "Fake_notification": {
+     "rows": 28,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "RDOS",
+    "Scanning_vulnerability",
+    "Generic_scanning",
+    "BruteForce",
+    "MQTT_cloud_broker_subscription",
+    "Discovering_resources",
+    "Exfiltration",
+    "insider_malcious",
+    "Modbus_register_reading",
+    "False_data_injection",
+    "C&C",
+    "Dictionary",
+    "TCP Relay",
+    "fuzzing",
+    "Reverse_shell",
+    "MitM",
+    "Fake_notification"
+   ],
+   "benign": 420825,
+   "q3": true,
+   "qualifies": true,
+   "table": "xiiotid"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "xiiotid"
+}

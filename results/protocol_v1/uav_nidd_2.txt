@@ -1,0 +1,56 @@
+SCREENING (protocol-v1) — UAV-NIDD, case2_ap
+rows 631,356 (all rows); benign label 'Normal'; content features 33; identifiers 17
+
+=== Q1a  misaligned rows ===
+columns checked: ['ip.src (holds another representation throughout: not checked)', 'ip.dst', 'udp.srcport', 'udp.dstport']; rows without a label 0; misaligned rows 249,300 (39.49%)
+  Brute-Force                                  rows    172,509  misaligned  93.79%
+  De-authentication                            rows    155,564  misaligned   0.00%
+  Scanning                                     rows     70,319  misaligned  38.63%
+  DDoS                                         rows     31,612  misaligned   0.00%
+  Fake Landing                                 rows     24,584  misaligned   0.00%
+  DoS                                          rows     23,612  misaligned   0.00%
+  Ewil Twin                                    rows     10,034  misaligned  51.21%
+  Replay                                       rows      8,525  misaligned   0.00%
+  MITM                                         rows      5,016  misaligned  47.91%
+  Reconnaissance                               rows         40  misaligned   0.00%
+  Normal                                       rows    129,541  misaligned  40.76%
+
+=== Q1b  identical files under different labels ===
+  Fake Landing: raw capture identical to folders ['deau']; Scanning: raw capture identical to folders ['reco']
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  Brute-Force                                    0.00%
+  De-authentication                              0.00%
+  Scanning                                       0.00%
+  DDoS                                           0.00%
+  Fake Landing                                   0.00%
+  DoS                                            0.00%
+  Ewil Twin                                      0.00%
+  Replay                                         0.00%
+  MITM                                           0.00%
+  Reconnaissance                                 0.00%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  76,737 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  Brute-Force                                  excluded: Q1a 93.79% misaligned
+  De-authentication                            kept
+  Scanning                                     excluded: Q1a 38.63% misaligned; Q1b raw capture identical to folders ['reco']
+  DDoS                                         kept
+  Fake Landing                                 excluded: Q1b raw capture identical to folders ['deau']
+  DoS                                          kept
+  Ewil Twin                                    excluded: Q1a 51.21% misaligned
+  Replay                                       kept
+  MITM                                         excluded: Q1a 47.91% misaligned
+  Reconnaissance                               kept
+
+  types kept 5 of 10; benign 76,737 -> QUALIFIES

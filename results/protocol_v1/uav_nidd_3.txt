@@ -1,0 +1,53 @@
+SCREENING (protocol-v1) — UAV-NIDD, case3_gcs
+rows 149,434 (all rows); benign label 'Normal'; content features 44; identifiers 0
+
+=== Q1a  misaligned rows ===
+columns checked: none (no address, port or time column); rows without a label 0; misaligned rows 0 (0.00%)
+  Scanning                                     rows     50,135  misaligned   0.00%
+  Reco                                         rows     50,135  misaligned   0.00%
+  DDoS                                         rows     14,292  misaligned   0.00%
+  DoS                                          rows     14,121  misaligned   0.00%
+  Bruteforce                                   rows      5,103  misaligned   0.00%
+  MITM                                         rows      1,164  misaligned   0.00%
+  Reply                                        rows        792  misaligned   0.00%
+  FakeLanding                                  rows        200  misaligned   0.00%
+  Evil                                         rows         48  misaligned   0.00%
+  Normal                                       rows     13,444  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  Scanning: raw capture identical to folders ['reco']; Reco: raw capture identical to folders ['scan']; MITM: raw capture identical to folders ['deau']; Reply: raw capture identical to folders ['fake']; FakeLanding: raw capture identical to folders ['repl']
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  Scanning                                      40.11%
+  Reco                                          40.11%
+  DDoS                                           0.00%
+  DoS                                            0.00%
+  Bruteforce                                     0.02%
+  MITM                                          79.04%
+  Reply                                         50.38%
+  FakeLanding                                   65.50%
+  Evil                                          83.33%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  13,444 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  Scanning                                     excluded: Q1b raw capture identical to folders ['reco']
+  Reco                                         excluded: Q1b raw capture identical to folders ['scan']
+  DDoS                                         kept
+  DoS                                          kept
+  Bruteforce                                   kept
+  MITM                                         excluded: Q1b raw capture identical to folders ['deau']; Q2a 79.0% identical to benign
+  Reply                                        excluded: Q1b raw capture identical to folders ['fake']; Q2a 50.4% identical to benign
+  FakeLanding                                  excluded: Q1b raw capture identical to folders ['repl']; Q2a 65.5% identical to benign
+  Evil                                         excluded: Q2a 83.3% identical to benign
+
+  types kept 3 of 9; benign 13,444 -> QUALIFIES

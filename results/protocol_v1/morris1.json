@@ -1,0 +1,25 @@
+{
+ "release": "morris1",
+ "tables": [
+  {
+   "release": "Morris-1 (power system, binary set)",
+   "rows": 78377,
+   "sample": "all rows",
+   "types": {
+    "Attack": {
+     "rows": 55663,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "Attack"
+   ],
+   "benign": 22714,
+   "q3": true,
+   "qualifies": false,
+   "table": "morris1"
+  }
+ ],
+ "qualifies": false,
+ "best_table": "morris1"
+}

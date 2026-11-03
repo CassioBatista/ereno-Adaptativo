@@ -1,0 +1,226 @@
+{
+ "release": "uav_nidd",
+ "tables": [
+  {
+   "release": "UAV-NIDD, case1_uav",
+   "rows": 885384,
+   "sample": "all rows",
+   "types": {
+    "DDoS": {
+     "rows": 193180,
+     "excluded_by": [
+      "Q1a 89.42% misaligned"
+     ]
+    },
+    "BruteForce": {
+     "rows": 175925,
+     "excluded_by": [
+      "Q1a 93.79% misaligned"
+     ]
+    },
+    "UDP Flooding": {
+     "rows": 152775,
+     "excluded_by": [
+      "Q2b 0.0% carry UDP"
+     ]
+    },
+    "MITM": {
+     "rows": 151586,
+     "excluded_by": []
+    },
+    "ICMP Flooding": {
+     "rows": 47544,
+     "excluded_by": [
+      "Q1a 1.24% misaligned",
+      "Q2b 0.0% carry ICMP"
+     ]
+    },
+    "Jamming": {
+     "rows": 41600,
+     "excluded_by": []
+    },
+    "replay": {
+     "rows": 25977,
+     "excluded_by": [
+      "Q1a 3.76% misaligned"
+     ]
+    },
+    "FakeLanding": {
+     "rows": 24050,
+     "excluded_by": [
+      "Q1b raw capture identical to folders ['deau']"
+     ]
+    },
+    "De-authentication": {
+     "rows": 14606,
+     "excluded_by": [
+      "Q1a 4.72% misaligned",
+      "Q1b raw capture identical to folders ['fake']"
+     ]
+    },
+    "Scanning": {
+     "rows": 9030,
+     "excluded_by": []
+    },
+    "DoS": {
+     "rows": 6424,
+     "excluded_by": [
+      "Q1a 15.12% misaligned"
+     ]
+    },
+    "Reconnassiance": {
+     "rows": 6,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "MITM",
+    "Jamming",
+    "Scanning",
+    "Reconnassiance"
+   ],
+   "benign": 17949,
+   "q3": true,
+   "qualifies": true,
+   "table": "uav_nidd_1"
+  },
+  {
+   "release": "UAV-NIDD, case2_ap",
+   "rows": 631356,
+   "sample": "all rows",
+   "types": {
+    "Brute-Force": {
+     "rows": 172509,
+     "excluded_by": [
+      "Q1a 93.79% misaligned"
+     ]
+    },
+    "De-authentication": {
+     "rows": 155564,
+     "excluded_by": []
+    },
+    "Scanning": {
+     "rows": 70319,
+     "excluded_by": [
+      "Q1a 38.63% misaligned",
+      "Q1b raw capture identical to folders ['reco']"
+     ]
+    },
+    "DDoS": {
+     "rows": 31612,
+     "excluded_by": []
+    },
+    "Fake Landing": {
+     "rows": 24584,
+     "excluded_by": [
+      "Q1b raw capture identical to folders ['deau']"
+     ]
+    },
+    "DoS": {
+     "rows": 23612,
+     "excluded_by": []
+    },
+    "Ewil Twin": {
+     "rows": 10034,
+     "excluded_by": [
+      "Q1a 51.21% misaligned"
+     ]
+    },
+    "Replay": {
+     "rows": 8525,
+     "excluded_by": []
+    },
+    "MITM": {
+     "rows": 5016,
+     "excluded_by": [
+      "Q1a 47.91% misaligned"
+     ]
+    },
+    "Reconnaissance": {
+     "rows": 40,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "De-authentication",
+    "DDoS",
+    "DoS",
+    "Replay",
+    "Reconnaissance"
+   ],
+   "benign": 76737,
+   "q3": true,
+   "qualifies": true,
+   "table": "uav_nidd_2"
+  },
+  {
+   "release": "UAV-NIDD, case3_gcs",
+   "rows": 149434,
+   "sample": "all rows",
+   "types": {
+    "Scanning": {
+     "rows": 50135,
+     "excluded_by": [
+      "Q1b raw capture identical to folders ['reco']"
+     ]
+    },
+    "Reco": {
+     "rows": 50135,
+     "excluded_by": [
+      "Q1b raw capture identical to folders ['scan']"
+     ]
+    },
+    "DDoS": {
+     "rows": 14292,
+     "excluded_by": []
+    },
+    "DoS": {
+     "rows": 14121,
+     "excluded_by": []
+    },
+    "Bruteforce": {
+     "rows": 5103,
+     "excluded_by": []
+    },
+    "MITM": {
+     "rows": 1164,
+     "excluded_by": [
+      "Q1b raw capture identical to folders ['deau']",
+      "Q2a 79.0% identical to benign"
+     ]
+    },
+    "Reply": {
+     "rows": 792,
+     "excluded_by": [
+      "Q1b raw capture identical to folders ['fake']",
+      "Q2a 50.4% identical to benign"
+     ]
+    },
+    "FakeLanding": {
+     "rows": 200,
+     "excluded_by": [
+      "Q1b raw capture identical to folders ['repl']",
+      "Q2a 65.5% identical to benign"
+     ]
+    },
+    "Evil": {
+     "rows": 48,
+     "excluded_by": [
+      "Q2a 83.3% identical to benign"
+     ]
+    }
+   },
+   "kept": [
+    "DDoS",
+    "DoS",
+    "Bruteforce"
+   ],
+   "benign": 13444,
+   "q3": true,
+   "qualifies": true,
+   "table": "uav_nidd_3"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "uav_nidd_2"
+}

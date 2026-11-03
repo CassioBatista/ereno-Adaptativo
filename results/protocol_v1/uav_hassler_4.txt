@@ -1,0 +1,29 @@
+SCREENING (protocol-v1) — Hassler et al., schema S4 (physical)
+rows 5,473 (all rows); benign label '(none)'; content features 20; identifiers 1
+
+=== Q1a  misaligned rows ===
+columns checked: none (no address, port or time column); rows without a label 0; misaligned rows 0 (0.00%)
+  evil_twin                                    rows      5,473  misaligned   0.00%
+  (none)                                       rows          0  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  evil_twin                                      0.00%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  0 benign samples after Q1-Q2d (below 10,000)
+
+=== DECISION ===
+  evil_twin                                    kept
+
+  types kept 1 of 1; benign 0 -> DOES NOT QUALIFY

@@ -1,0 +1,95 @@
+{
+ "release": "iomt2024",
+ "tables": [
+  {
+   "release": "CIC-BCCC-NRC-IoMT-2024",
+   "rows": 3385313,
+   "sample": "all rows",
+   "types": {
+    "DoS TCP Flood": {
+     "rows": 2106916,
+     "excluded_by": []
+    },
+    "Recon Port Scan": {
+     "rows": 485522,
+     "excluded_by": []
+    },
+    "MQTT DDoS Publish Flood": {
+     "rows": 413913,
+     "excluded_by": []
+    },
+    "MQTT DoS Connect Flood": {
+     "rows": 238031,
+     "excluded_by": []
+    },
+    "Recon OS Scan": {
+     "rows": 85317,
+     "excluded_by": []
+    },
+    "Recon Vulnerability Scan": {
+     "rows": 8321,
+     "excluded_by": []
+    },
+    "DoS UDP Flood": {
+     "rows": 3115,
+     "excluded_by": [
+      "Q2b 0.0% carry UDP"
+     ]
+    },
+    "DDoS UDP Flood": {
+     "rows": 2576,
+     "excluded_by": [
+      "Q2b 0.0% carry UDP"
+     ]
+    },
+    "DDoS ICMP Flood": {
+     "rows": 2552,
+     "excluded_by": [
+      "Q2b 0.0% carry ICMP"
+     ]
+    },
+    "MQTT Malformed": {
+     "rows": 2246,
+     "excluded_by": []
+    },
+    "DoS ICMP Flood": {
+     "rows": 2107,
+     "excluded_by": [
+      "Q2b 0.0% carry ICMP"
+     ]
+    },
+    "MITM ARP Spoofing": {
+     "rows": 1053,
+     "excluded_by": [
+      "Q2b 0.0% carry ARP"
+     ]
+    },
+    "MQTT DoS Publish Flood": {
+     "rows": 953,
+     "excluded_by": []
+    },
+    "Recon Ping Sweep": {
+     "rows": 71,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "DoS TCP Flood",
+    "Recon Port Scan",
+    "MQTT DDoS Publish Flood",
+    "MQTT DoS Connect Flood",
+    "Recon OS Scan",
+    "Recon Vulnerability Scan",
+    "MQTT Malformed",
+    "MQTT DoS Publish Flood",
+    "Recon Ping Sweep"
+   ],
+   "benign": 32620,
+   "q3": true,
+   "qualifies": true,
+   "table": "iomt2024"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "iomt2024"
+}

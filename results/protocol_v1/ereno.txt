@@ -1,0 +1,47 @@
+SCREENING (protocol-v1) — ERENO (converted release; attribution from the original)
+rows 5,911,386 (all rows); benign label 'normal'; content features 53; identifiers 5
+
+=== Q1a  misaligned rows ===
+columns checked: ['F39_GooseTimestamp']; rows without a label 0; misaligned rows 0 (0.00%)
+  random_replay                                rows     78,000  misaligned   0.00%
+  injection                                    rows     78,000  misaligned   0.00%
+  high_StNum                                   rows     78,000  misaligned   0.00%
+  inverse_replay                               rows     56,352  misaligned   0.00%
+  poisoned_high_rate                           rows     37,144  misaligned   0.00%
+  masquerade_fake_normal                       rows     34,839  misaligned   0.00%
+  masquerade_fake_fault                        rows     34,487  misaligned   0.00%
+  normal                                       rows  5,514,564  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  random_replay                                  0.00%
+  injection                                      0.00%
+  high_StNum                                     0.00%
+  inverse_replay                                 0.00%
+  poisoned_high_rate                             0.00%
+  masquerade_fake_normal                         0.00%
+  masquerade_fake_fault                          0.00%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  5,514,564 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  random_replay                                kept
+  injection                                    kept
+  high_StNum                                   kept
+  inverse_replay                               kept
+  poisoned_high_rate                           kept
+  masquerade_fake_normal                       kept
+  masquerade_fake_fault                        kept
+
+  types kept 7 of 7; benign 5,514,564 -> QUALIFIES

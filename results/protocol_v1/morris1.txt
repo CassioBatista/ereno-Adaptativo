@@ -1,0 +1,29 @@
+SCREENING (protocol-v1) — Morris-1 (power system, binary set)
+rows 78,377 (all rows); benign label 'Natural'; content features 128; identifiers 0
+
+=== Q1a  misaligned rows ===
+columns checked: none (no address, port or time column); rows without a label 0; misaligned rows 0 (0.00%)
+  Attack                                       rows     55,663  misaligned   0.00%
+  Natural                                      rows     22,714  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  Attack                                         0.00%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  22,714 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  Attack                                       kept
+
+  types kept 1 of 1; benign 22,714 -> DOES NOT QUALIFY

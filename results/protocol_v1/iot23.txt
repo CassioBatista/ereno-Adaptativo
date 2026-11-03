@@ -1,0 +1,71 @@
+SCREENING (protocol-v1) — IoT-23
+rows 664,788 (uniform sample of up to 20,000 flows per capture and detailed label (scan cache of inspect_iot23.py)); benign label 'Benign'; content features 12; identifiers 5
+
+=== Q1a  misaligned rows ===
+columns checked: ['ts', 'orig_h', 'resp_h']; rows without a label 0; misaligned rows 211 (0.03%)
+  PartOfAHorizontalPortScan                    rows    200,122  misaligned   0.00%
+  DDoS                                         rows    114,395  misaligned   0.00%
+  Okiru                                        rows    100,000  misaligned   0.00%
+  C&C-HeartBeat                                rows     33,673  misaligned   0.00%
+  C&C                                          rows     21,995  misaligned   0.00%
+  Attack                                       rows      9,398  misaligned   0.00%
+  C&C-PartOfAHorizontalPortScan                rows        888  misaligned   0.00%
+  C&C-HeartBeat-Attack                         rows        834  misaligned   0.00%
+  C&C-FileDownload                             rows         53  misaligned   0.00%
+  C&C-Torii                                    rows         30  misaligned   0.00%
+  FileDownload                                 rows         18  misaligned   0.00%
+  C&C-HeartBeat-FileDownload                   rows         11  misaligned   0.00%
+  PartOfAHorizontalPortScan-Attack             rows          5  misaligned   0.00%
+  Okiru-Attack                                 rows          3  misaligned   0.00%
+  C&C-Mirai                                    rows          2  misaligned   0.00%
+  Benign                                       rows    183,361  misaligned   0.12%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  PartOfAHorizontalPortScan                     54.63%
+  DDoS                                          10.72%
+  Okiru                                         79.99%
+  C&C-HeartBeat                                 56.34%
+  C&C                                           63.47%
+  Attack                                         0.01%
+  C&C-PartOfAHorizontalPortScan                 18.92%
+  C&C-HeartBeat-Attack                           0.00%
+  C&C-FileDownload                               0.00%
+  C&C-Torii                                     66.67%
+  FileDownload                                   0.00%
+  C&C-HeartBeat-FileDownload                     0.00%
+  PartOfAHorizontalPortScan-Attack               0.00%
+  Okiru-Attack                                   0.00%
+  C&C-Mirai                                      0.00%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  183,150 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  PartOfAHorizontalPortScan                    excluded: Q2a 54.6% identical to benign
+  DDoS                                         kept
+  Okiru                                        excluded: Q2a 80.0% identical to benign
+  C&C-HeartBeat                                excluded: Q2a 56.3% identical to benign
+  C&C                                          excluded: Q2a 63.5% identical to benign
+  Attack                                       kept
+  C&C-PartOfAHorizontalPortScan                kept
+  C&C-HeartBeat-Attack                         kept
+  C&C-FileDownload                             kept
+  C&C-Torii                                    excluded: Q2a 66.7% identical to benign
+  FileDownload                                 kept
+  C&C-HeartBeat-FileDownload                   kept
+  PartOfAHorizontalPortScan-Attack             kept
+  Okiru-Attack                                 kept
+  C&C-Mirai                                    kept
+
+  types kept 10 of 15; benign 183,150 -> QUALIFIES

@@ -1,0 +1,35 @@
+SCREENING (protocol-v1) — PDNet-IDS26
+rows 21,552 (all rows); benign label 'Benign'; content features 30; identifiers 8
+
+=== Q1a  misaligned rows ===
+columns checked: ['TCP_SrcPort', 'TCP_DstPort']; rows without a label 0; misaligned rows 0 (0.00%)
+  FDI                                          rows      5,388  misaligned   0.00%
+  DOS                                          rows      5,388  misaligned   0.00%
+  Replay                                       rows      5,388  misaligned   0.00%
+  Benign                                       rows      5,388  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  FDI                                            0.45%
+  DOS                                            0.00%
+  Replay                                         0.09%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  5,388 benign samples after Q1-Q2d (below 10,000)
+
+=== DECISION ===
+  FDI                                          kept
+  DOS                                          kept
+  Replay                                       kept
+
+  types kept 3 of 3; benign 5,388 -> DOES NOT QUALIFY

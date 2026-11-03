@@ -1,0 +1,47 @@
+SCREENING (protocol-v1) — Electra Modbus
+rows 16,289,277 (all rows); benign label 'NORMAL'; content features 5; identifiers 5
+
+=== Q1a  misaligned rows ===
+columns checked: ['smac', 'dmac', 'sip', 'dip']; rows without a label 0; misaligned rows 0 (0.00%)
+  MITM_UNALTERED                               rows  1,550,617  misaligned   0.00%
+  READ_ATTACK                                  rows    785,961  misaligned   0.00%
+  RECOGNITION_ATTACK                           rows     30,580  misaligned   0.00%
+  RESPONSE_ATTACK                              rows     16,353  misaligned   0.00%
+  WRITE_ATTACK                                 rows      9,417  misaligned   0.00%
+  FORCE_ERROR_ATTACK                           rows      1,129  misaligned   0.00%
+  REPLAY_ATTACK                                rows        897  misaligned   0.00%
+  NORMAL                                       rows 13,894,323  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  MITM_UNALTERED                                83.02%
+  READ_ATTACK                                   65.78%
+  RECOGNITION_ATTACK                             0.00%
+  RESPONSE_ATTACK                                0.18%
+  WRITE_ATTACK                                   0.00%
+  FORCE_ERROR_ATTACK                             0.00%
+  REPLAY_ATTACK                                 97.10%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  13,894,323 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  MITM_UNALTERED                               excluded: Q2a 83.0% identical to benign
+  READ_ATTACK                                  excluded: Q2a 65.8% identical to benign
+  RECOGNITION_ATTACK                           kept
+  RESPONSE_ATTACK                              kept
+  WRITE_ATTACK                                 kept
+  FORCE_ERROR_ATTACK                           kept
+  REPLAY_ATTACK                                excluded: Q2a 97.1% identical to benign
+
+  types kept 4 of 7; benign 13,894,323 -> QUALIFIES

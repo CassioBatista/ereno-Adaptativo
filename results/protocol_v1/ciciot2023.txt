@@ -1,0 +1,136 @@
+SCREENING (protocol-v1) — CICIoT2023
+rows 2,366,956 (10 of the 169 part files); benign label 'Benign'; content features 46; identifiers 0
+
+=== Q1a  misaligned rows ===
+columns checked: none (no address, port or time column); rows without a label 0; misaligned rows 0 (0.00%)
+  DDoS-ICMP_Flood                              rows    364,557  misaligned   0.00%
+  DDoS-UDP_Flood                               rows    274,432  misaligned   0.00%
+  DDoS-TCP_Flood                               rows    228,873  misaligned   0.00%
+  DDoS-PSHACK_Flood                            rows    207,971  misaligned   0.00%
+  DDoS-SYN_Flood                               rows    206,146  misaligned   0.00%
+  DDoS-RSTFINFlood                             rows    204,892  misaligned   0.00%
+  DDoS-SynonymousIP_Flood                      rows    182,094  misaligned   0.00%
+  DoS-UDP_Flood                                rows    168,753  misaligned   0.00%
+  DoS-TCP_Flood                                rows    135,180  misaligned   0.00%
+  DoS-SYN_Flood                                rows    102,049  misaligned   0.00%
+  Mirai-greeth_flood                           rows     49,844  misaligned   0.00%
+  Mirai-udpplain                               rows     45,219  misaligned   0.00%
+  Mirai-greip_flood                            rows     38,157  misaligned   0.00%
+  DDoS-ICMP_Fragmentation                      rows     22,890  misaligned   0.00%
+  MITM-ArpSpoofing                             rows     15,618  misaligned   0.00%
+  DDoS-UDP_Fragmentation                       rows     14,611  misaligned   0.00%
+  DDoS-ACK_Fragmentation                       rows     14,498  misaligned   0.00%
+  DNS_Spoofing                                 rows      9,142  misaligned   0.00%
+  Recon-HostDiscovery                          rows      6,761  misaligned   0.00%
+  Recon-OSScan                                 rows      5,046  misaligned   0.00%
+  Recon-PortScan                               rows      4,198  misaligned   0.00%
+  DoS-HTTP_Flood                               rows      3,701  misaligned   0.00%
+  VulnerabilityScan                            rows      1,879  misaligned   0.00%
+  DDoS-HTTP_Flood                              rows      1,467  misaligned   0.00%
+  DDoS-SlowLoris                               rows      1,176  misaligned   0.00%
+  DictionaryBruteForce                         rows        656  misaligned   0.00%
+  BrowserHijacking                             rows        295  misaligned   0.00%
+  SqlInjection                                 rows        248  misaligned   0.00%
+  CommandInjection                             rows        243  misaligned   0.00%
+  Backdoor_Malware                             rows        169  misaligned   0.00%
+  XSS                                          rows        160  misaligned   0.00%
+  Recon-PingSweep                              rows        101  misaligned   0.00%
+  Uploading_Attack                             rows         71  misaligned   0.00%
+  Benign                                       rows     55,859  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  DDoS-ICMP_Flood                                0.00%
+  DDoS-UDP_Flood                                 0.00%
+  DDoS-TCP_Flood                                 0.00%
+  DDoS-PSHACK_Flood                              0.00%
+  DDoS-SYN_Flood                                 0.00%
+  DDoS-RSTFINFlood                               0.00%
+  DDoS-SynonymousIP_Flood                        0.00%
+  DoS-UDP_Flood                                  0.00%
+  DoS-TCP_Flood                                  0.00%
+  DoS-SYN_Flood                                  0.00%
+  Mirai-greeth_flood                             0.00%
+  Mirai-udpplain                                 0.00%
+  Mirai-greip_flood                              0.00%
+  DDoS-ICMP_Fragmentation                        0.00%
+  MITM-ArpSpoofing                               0.00%
+  DDoS-UDP_Fragmentation                         0.00%
+  DDoS-ACK_Fragmentation                         0.00%
+  DNS_Spoofing                                   0.00%
+  Recon-HostDiscovery                            0.00%
+  Recon-OSScan                                   0.00%
+  Recon-PortScan                                 0.00%
+  DoS-HTTP_Flood                                 0.00%
+  VulnerabilityScan                              0.00%
+  DDoS-HTTP_Flood                                0.00%
+  DDoS-SlowLoris                                 0.00%
+  DictionaryBruteForce                           0.00%
+  BrowserHijacking                               0.00%
+  SqlInjection                                   0.00%
+  CommandInjection                               0.00%
+  Backdoor_Malware                               0.00%
+  XSS                                            0.00%
+  Recon-PingSweep                                0.00%
+  Uploading_Attack                               0.00%
+
+=== Q2b  protocol named by the type ===
+  DDoS-ICMP_Flood                              ICMP   carried by  99.89%
+  DDoS-UDP_Flood                               UDP    carried by  99.89%
+  DDoS-SYN_Flood                               SYN    carried by 100.00%
+  DoS-UDP_Flood                                UDP    carried by  99.53%
+  DoS-SYN_Flood                                SYN    carried by  99.98%
+  DDoS-ICMP_Fragmentation                      ICMP   carried by  97.34%
+  MITM-ArpSpoofing                             ARP    carried by   0.07%
+  DDoS-UDP_Fragmentation                       UDP    carried by  12.03%
+  DNS_Spoofing                                 DNS    carried by   0.18%
+  DoS-HTTP_Flood                               HTTP   carried by  60.69%
+  DDoS-HTTP_Flood                              HTTP   carried by  82.48%
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  55,859 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  DDoS-ICMP_Flood                              kept
+  DDoS-UDP_Flood                               kept
+  DDoS-TCP_Flood                               kept
+  DDoS-PSHACK_Flood                            kept
+  DDoS-SYN_Flood                               kept
+  DDoS-RSTFINFlood                             kept
+  DDoS-SynonymousIP_Flood                      kept
+  DoS-UDP_Flood                                kept
+  DoS-TCP_Flood                                kept
+  DoS-SYN_Flood                                kept
+  Mirai-greeth_flood                           kept
+  Mirai-udpplain                               kept
+  Mirai-greip_flood                            kept
+  DDoS-ICMP_Fragmentation                      kept
+  MITM-ArpSpoofing                             excluded: Q2b 0.1% carry ARP
+  DDoS-UDP_Fragmentation                       excluded: Q2b 12.0% carry UDP
+  DDoS-ACK_Fragmentation                       kept
+  DNS_Spoofing                                 excluded: Q2b 0.2% carry DNS
+  Recon-HostDiscovery                          kept
+  Recon-OSScan                                 kept
+  Recon-PortScan                               kept
+  DoS-HTTP_Flood                               kept
+  VulnerabilityScan                            kept
+  DDoS-HTTP_Flood                              kept
+  DDoS-SlowLoris                               kept
+  DictionaryBruteForce                         kept
+  BrowserHijacking                             kept
+  SqlInjection                                 kept
+  CommandInjection                             kept
+  Backdoor_Malware                             kept
+  XSS                                          kept
+  Recon-PingSweep                              kept
+  Uploading_Attack                             kept
+
+  types kept 30 of 33; benign 55,859 -> QUALIFIES

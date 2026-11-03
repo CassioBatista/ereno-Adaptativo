@@ -1,0 +1,863 @@
+{
+ "release": "cic_iiot2025",
+ "tables": [
+  {
+   "release": "CIC IIoT 2025 (DataSense), 1sec windows",
+   "rows": 227191,
+   "sample": "all rows",
+   "types": {
+    "mitm_arp-spoofing": {
+     "rows": 4196,
+     "excluded_by": []
+    },
+    "malware_mirai-udp-flood": {
+     "rows": 4010,
+     "excluded_by": []
+    },
+    "recon_os-scan": {
+     "rows": 3968,
+     "excluded_by": []
+    },
+    "recon_host-disc-tcp-ack-ping": {
+     "rows": 3947,
+     "excluded_by": []
+    },
+    "recon_vuln-scan": {
+     "rows": 3944,
+     "excluded_by": []
+    },
+    "recon_host-disc-tcp-syn-ping": {
+     "rows": 3932,
+     "excluded_by": []
+    },
+    "recon_port-scan": {
+     "rows": 3924,
+     "excluded_by": []
+    },
+    "recon_host-disc-tcp-syn-stealth": {
+     "rows": 3918,
+     "excluded_by": []
+    },
+    "recon_host-disc-arp-ping": {
+     "rows": 3911,
+     "excluded_by": []
+    },
+    "recon_host-disc-udp-ping": {
+     "rows": 3894,
+     "excluded_by": []
+    },
+    "malware_mirai-syn-flood": {
+     "rows": 3531,
+     "excluded_by": []
+    },
+    "mitm_ip-spoofing": {
+     "rows": 3040,
+     "excluded_by": []
+    },
+    "recon_ping-sweep": {
+     "rows": 2210,
+     "excluded_by": []
+    },
+    "dos_udp-flood": {
+     "rows": 1722,
+     "excluded_by": []
+    },
+    "dos_icmp-flood": {
+     "rows": 1715,
+     "excluded_by": []
+    },
+    "ddos_icmp-flood": {
+     "rows": 1599,
+     "excluded_by": []
+    },
+    "ddos_udp-frag-flood": {
+     "rows": 1598,
+     "excluded_by": []
+    },
+    "dos_icmp-frag-flood": {
+     "rows": 1597,
+     "excluded_by": []
+    },
+    "ddos_icmp-frag-flood": {
+     "rows": 1592,
+     "excluded_by": []
+    },
+    "dos_udp-frag-flood": {
+     "rows": 1591,
+     "excluded_by": []
+    },
+    "dos_rst-fin-flood-port-1883": {
+     "rows": 1290,
+     "excluded_by": []
+    },
+    "web_command-injection": {
+     "rows": 996,
+     "excluded_by": []
+    },
+    "web_sql-injection-blind": {
+     "rows": 990,
+     "excluded_by": []
+    },
+    "bruteforce_dictionary-ssh": {
+     "rows": 965,
+     "excluded_by": []
+    },
+    "ddos_rst-fin-flood-port-1883": {
+     "rows": 924,
+     "excluded_by": []
+    },
+    "ddos_synonymousip-flood-port-1883": {
+     "rows": 924,
+     "excluded_by": []
+    },
+    "ddos_ack-frag-flood-port-1883": {
+     "rows": 924,
+     "excluded_by": []
+    },
+    "ddos_syn-flood-port-1883": {
+     "rows": 923,
+     "excluded_by": []
+    },
+    "dos_push-ack-flood-port-1883": {
+     "rows": 923,
+     "excluded_by": []
+    },
+    "ddos_udp-flood-port-1883": {
+     "rows": 922,
+     "excluded_by": []
+    },
+    "ddos_tcp-flood-port-1883": {
+     "rows": 922,
+     "excluded_by": []
+    },
+    "dos_synonymousip-flood-port-1883": {
+     "rows": 922,
+     "excluded_by": []
+    },
+    "dos_ack-frag-flood-port-1883": {
+     "rows": 922,
+     "excluded_by": []
+    },
+    "ddos_push-ack-flood-port-1883": {
+     "rows": 921,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-1883": {
+     "rows": 921,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-1883": {
+     "rows": 919,
+     "excluded_by": []
+    },
+    "ddos_http-flood-port-1883": {
+     "rows": 915,
+     "excluded_by": []
+    },
+    "bruteforce_dictionary-telnet": {
+     "rows": 903,
+     "excluded_by": []
+    },
+    "mitm_impersonation": {
+     "rows": 826,
+     "excluded_by": []
+    },
+    "dos_synonymousip-flood-port-80": {
+     "rows": 735,
+     "excluded_by": []
+    },
+    "ddos_synonymousip-flood-port-80": {
+     "rows": 678,
+     "excluded_by": []
+    },
+    "ddos_rst-fin-flood-port-80": {
+     "rows": 677,
+     "excluded_by": []
+    },
+    "ddos_tcp-flood-port-80": {
+     "rows": 677,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-80": {
+     "rows": 677,
+     "excluded_by": []
+    },
+    "ddos_udp-flood-port-80": {
+     "rows": 676,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-80": {
+     "rows": 676,
+     "excluded_by": []
+    },
+    "dos_ack-frag-flood-port-80": {
+     "rows": 676,
+     "excluded_by": []
+    },
+    "ddos_push-ack-flood-port-80": {
+     "rows": 675,
+     "excluded_by": []
+    },
+    "ddos_ack-frag-flood-port-80": {
+     "rows": 675,
+     "excluded_by": []
+    },
+    "ddos_syn-flood-port-80": {
+     "rows": 673,
+     "excluded_by": []
+    },
+    "ddos_http-flood-port-80": {
+     "rows": 673,
+     "excluded_by": []
+    },
+    "dos_push-ack-flood-port-80": {
+     "rows": 672,
+     "excluded_by": []
+    },
+    "web_sql-injection": {
+     "rows": 384,
+     "excluded_by": []
+    },
+    "dos_rst-fin-flood-port-80": {
+     "rows": 306,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-80": {
+     "rows": 305,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-6668": {
+     "rows": 244,
+     "excluded_by": []
+    },
+    "web_xss": {
+     "rows": 217,
+     "excluded_by": []
+    },
+    "web_backdoor-upload": {
+     "rows": 209,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-554": {
+     "rows": 187,
+     "excluded_by": []
+    },
+    "ddos_slowloris-port-80": {
+     "rows": 183,
+     "excluded_by": []
+    },
+    "dos_slowloris-port-80": {
+     "rows": 183,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-554": {
+     "rows": 156,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-443": {
+     "rows": 125,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-443": {
+     "rows": 125,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-22": {
+     "rows": 64,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-1883": {
+     "rows": 62,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-23": {
+     "rows": 62,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-23": {
+     "rows": 62,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-22": {
+     "rows": 62,
+     "excluded_by": []
+    },
+    "ddos_mqtt-publish-flood": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "ddos_connect-flood": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "dos_connect-flood": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-9595": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "ddos_slowloris-port-1883": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "dos_mqtt-publish-flood": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "ddos_slowloris-port-8000": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "ddos_slowloris-port-554": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "dos_slowloris-port-1883": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-554": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "dos_slowloris-port-8000": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "dos_slowloris-port-554": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-443": {
+     "rows": 61,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-557": {
+     "rows": 31,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "mitm_arp-spoofing",
+    "malware_mirai-udp-flood",
+    "recon_os-scan",
+    "recon_host-disc-tcp-ack-ping",
+    "recon_vuln-scan",
+    "recon_host-disc-tcp-syn-ping",
+    "recon_port-scan",
+    "recon_host-disc-tcp-syn-stealth",
+    "recon_host-disc-arp-ping",
+    "recon_host-disc-udp-ping",
+    "malware_mirai-syn-flood",
+    "mitm_ip-spoofing",
+    "recon_ping-sweep",
+    "dos_udp-flood",
+    "dos_icmp-flood",
+    "ddos_icmp-flood",
+    "ddos_udp-frag-flood",
+    "dos_icmp-frag-flood",
+    "ddos_icmp-frag-flood",
+    "dos_udp-frag-flood",
+    "dos_rst-fin-flood-port-1883",
+    "web_command-injection",
+    "web_sql-injection-blind",
+    "bruteforce_dictionary-ssh",
+    "ddos_rst-fin-flood-port-1883",
+    "ddos_synonymousip-flood-port-1883",
+    "ddos_ack-frag-flood-port-1883",
+    "ddos_syn-flood-port-1883",
+    "dos_push-ack-flood-port-1883",
+    "ddos_udp-flood-port-1883",
+    "ddos_tcp-flood-port-1883",
+    "dos_synonymousip-flood-port-1883",
+    "dos_ack-frag-flood-port-1883",
+    "ddos_push-ack-flood-port-1883",
+    "dos_tcp-flood-port-1883",
+    "dos_syn-flood-port-1883",
+    "ddos_http-flood-port-1883",
+    "bruteforce_dictionary-telnet",
+    "mitm_impersonation",
+    "dos_synonymousip-flood-port-80",
+    "ddos_synonymousip-flood-port-80",
+    "ddos_rst-fin-flood-port-80",
+    "ddos_tcp-flood-port-80",
+    "dos_tcp-flood-port-80",
+    "ddos_udp-flood-port-80",
+    "dos_syn-flood-port-80",
+    "dos_ack-frag-flood-port-80",
+    "ddos_push-ack-flood-port-80",
+    "ddos_ack-frag-flood-port-80",
+    "ddos_syn-flood-port-80",
+    "ddos_http-flood-port-80",
+    "dos_push-ack-flood-port-80",
+    "web_sql-injection",
+    "dos_rst-fin-flood-port-80",
+    "dos_http-flood-port-80",
+    "dos_http-flood-port-6668",
+    "web_xss",
+    "web_backdoor-upload",
+    "dos_tcp-flood-port-554",
+    "ddos_slowloris-port-80",
+    "dos_slowloris-port-80",
+    "dos_syn-flood-port-554",
+    "dos_syn-flood-port-443",
+    "dos_tcp-flood-port-443",
+    "dos_syn-flood-port-22",
+    "dos_http-flood-port-1883",
+    "dos_syn-flood-port-23",
+    "dos_tcp-flood-port-23",
+    "dos_tcp-flood-port-22",
+    "ddos_mqtt-publish-flood",
+    "ddos_connect-flood",
+    "dos_connect-flood",
+    "dos_http-flood-port-9595",
+    "ddos_slowloris-port-1883",
+    "dos_mqtt-publish-flood",
+    "ddos_slowloris-port-8000",
+    "ddos_slowloris-port-554",
+    "dos_slowloris-port-1883",
+    "dos_http-flood-port-554",
+    "dos_slowloris-port-8000",
+    "dos_slowloris-port-554",
+    "dos_http-flood-port-443",
+    "dos_syn-flood-port-557"
+   ],
+   "benign": 136800,
+   "q3": true,
+   "qualifies": true,
+   "table": "cic_iiot2025_1"
+  },
+  {
+   "release": "CIC IIoT 2025 (DataSense), 10sec windows",
+   "rows": 30030,
+   "sample": "all rows",
+   "types": {
+    "mitm_arp-spoofing": {
+     "rows": 789,
+     "excluded_by": []
+    },
+    "malware_mirai-udp-flood": {
+     "rows": 771,
+     "excluded_by": []
+    },
+    "recon_os-scan": {
+     "rows": 711,
+     "excluded_by": []
+    },
+    "recon_host-disc-tcp-ack-ping": {
+     "rows": 708,
+     "excluded_by": []
+    },
+    "recon_vuln-scan": {
+     "rows": 706,
+     "excluded_by": []
+    },
+    "recon_host-disc-tcp-syn-ping": {
+     "rows": 703,
+     "excluded_by": []
+    },
+    "recon_port-scan": {
+     "rows": 699,
+     "excluded_by": []
+    },
+    "recon_host-disc-arp-ping": {
+     "rows": 696,
+     "excluded_by": []
+    },
+    "recon_host-disc-udp-ping": {
+     "rows": 695,
+     "excluded_by": []
+    },
+    "recon_host-disc-tcp-syn-stealth": {
+     "rows": 695,
+     "excluded_by": []
+    },
+    "malware_mirai-syn-flood": {
+     "rows": 673,
+     "excluded_by": []
+    },
+    "mitm_ip-spoofing": {
+     "rows": 542,
+     "excluded_by": []
+    },
+    "recon_ping-sweep": {
+     "rows": 392,
+     "excluded_by": []
+    },
+    "dos_udp-flood": {
+     "rows": 308,
+     "excluded_by": []
+    },
+    "dos_icmp-flood": {
+     "rows": 308,
+     "excluded_by": []
+    },
+    "ddos_icmp-flood": {
+     "rows": 286,
+     "excluded_by": []
+    },
+    "dos_icmp-frag-flood": {
+     "rows": 286,
+     "excluded_by": []
+    },
+    "dos_udp-frag-flood": {
+     "rows": 286,
+     "excluded_by": []
+    },
+    "ddos_icmp-frag-flood": {
+     "rows": 286,
+     "excluded_by": []
+    },
+    "ddos_udp-frag-flood": {
+     "rows": 286,
+     "excluded_by": []
+    },
+    "dos_rst-fin-flood-port-1883": {
+     "rows": 231,
+     "excluded_by": []
+    },
+    "web_command-injection": {
+     "rows": 198,
+     "excluded_by": []
+    },
+    "web_sql-injection-blind": {
+     "rows": 197,
+     "excluded_by": []
+    },
+    "bruteforce_dictionary-ssh": {
+     "rows": 187,
+     "excluded_by": []
+    },
+    "bruteforce_dictionary-telnet": {
+     "rows": 177,
+     "excluded_by": []
+    },
+    "ddos_rst-fin-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "ddos_udp-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "ddos_synonymousip-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "ddos_push-ack-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "ddos_tcp-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "ddos_syn-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "dos_push-ack-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "dos_synonymousip-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "dos_ack-frag-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "ddos_ack-frag-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "ddos_http-flood-port-1883": {
+     "rows": 165,
+     "excluded_by": []
+    },
+    "mitm_impersonation": {
+     "rows": 140,
+     "excluded_by": []
+    },
+    "dos_synonymousip-flood-port-80": {
+     "rows": 132,
+     "excluded_by": []
+    },
+    "ddos_syn-flood-port-80": {
+     "rows": 121,
+     "excluded_by": []
+    },
+    "ddos_push-ack-flood-port-80": {
+     "rows": 121,
+     "excluded_by": []
+    },
+    "ddos_rst-fin-flood-port-80": {
+     "rows": 121,
+     "excluded_by": []
+    },
+    "ddos_udp-flood-port-80": {
+     "rows": 121,
+     "excluded_by": []
+    },
+    "ddos_synonymousip-flood-port-80": {
+     "rows": 121,
+     "excluded_by": []
+    },
+    "ddos_tcp-flood-port-80": {
+     "rows": 121,
+     "excluded_by": []
+    },
+    "dos_push-ack-flood-port-80": {
+     "rows": 121,
+     "excluded_by": []
+    },
+    "dos_ack-frag-flood-port-80": {
+     "rows": 121,
+     "excluded_by": []
+    },
+    "ddos_http-flood-port-80": {
+     "rows": 121,
+     "excluded_by": []
+    },
+    "ddos_ack-frag-flood-port-80": {
+     "rows": 121,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-80": {
+     "rows": 118,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-80": {
+     "rows": 118,
+     "excluded_by": []
+    },
+    "web_sql-injection": {
+     "rows": 75,
+     "excluded_by": []
+    },
+    "dos_rst-fin-flood-port-80": {
+     "rows": 55,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-80": {
+     "rows": 55,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-6668": {
+     "rows": 44,
+     "excluded_by": []
+    },
+    "web_xss": {
+     "rows": 42,
+     "excluded_by": []
+    },
+    "web_backdoor-upload": {
+     "rows": 40,
+     "excluded_by": []
+    },
+    "ddos_slowloris-port-80": {
+     "rows": 33,
+     "excluded_by": []
+    },
+    "dos_slowloris-port-80": {
+     "rows": 33,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-554": {
+     "rows": 30,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-554": {
+     "rows": 25,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-443": {
+     "rows": 20,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-443": {
+     "rows": 20,
+     "excluded_by": []
+    },
+    "ddos_mqtt-publish-flood": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "ddos_connect-flood": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-1883": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "dos_connect-flood": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-9595": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "ddos_slowloris-port-1883": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "dos_mqtt-publish-flood": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "ddos_slowloris-port-8000": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "ddos_slowloris-port-554": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "dos_slowloris-port-1883": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-554": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "dos_slowloris-port-8000": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "dos_slowloris-port-554": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "dos_http-flood-port-443": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-22": {
+     "rows": 10,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-23": {
+     "rows": 10,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-23": {
+     "rows": 10,
+     "excluded_by": []
+    },
+    "dos_tcp-flood-port-22": {
+     "rows": 10,
+     "excluded_by": []
+    },
+    "dos_syn-flood-port-557": {
+     "rows": 5,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "mitm_arp-spoofing",
+    "malware_mirai-udp-flood",
+    "recon_os-scan",
+    "recon_host-disc-tcp-ack-ping",
+    "recon_vuln-scan",
+    "recon_host-disc-tcp-syn-ping",
+    "recon_port-scan",
+    "recon_host-disc-arp-ping",
+    "recon_host-disc-udp-ping",
+    "recon_host-disc-tcp-syn-stealth",
+    "malware_mirai-syn-flood",
+    "mitm_ip-spoofing",
+    "recon_ping-sweep",
+    "dos_udp-flood",
+    "dos_icmp-flood",
+    "ddos_icmp-flood",
+    "dos_icmp-frag-flood",
+    "dos_udp-frag-flood",
+    "ddos_icmp-frag-flood",
+    "ddos_udp-frag-flood",
+    "dos_rst-fin-flood-port-1883",
+    "web_command-injection",
+    "web_sql-injection-blind",
+    "bruteforce_dictionary-ssh",
+    "bruteforce_dictionary-telnet",
+    "ddos_rst-fin-flood-port-1883",
+    "ddos_udp-flood-port-1883",
+    "ddos_synonymousip-flood-port-1883",
+    "ddos_push-ack-flood-port-1883",
+    "ddos_tcp-flood-port-1883",
+    "ddos_syn-flood-port-1883",
+    "dos_syn-flood-port-1883",
+    "dos_push-ack-flood-port-1883",
+    "dos_synonymousip-flood-port-1883",
+    "dos_tcp-flood-port-1883",
+    "dos_ack-frag-flood-port-1883",
+    "ddos_ack-frag-flood-port-1883",
+    "ddos_http-flood-port-1883",
+    "mitm_impersonation",
+    "dos_synonymousip-flood-port-80",
+    "ddos_syn-flood-port-80",
+    "ddos_push-ack-flood-port-80",
+    "ddos_rst-fin-flood-port-80",
+    "ddos_udp-flood-port-80",
+    "ddos_synonymousip-flood-port-80",
+    "ddos_tcp-flood-port-80",
+    "dos_push-ack-flood-port-80",
+    "dos_ack-frag-flood-port-80",
+    "ddos_http-flood-port-80",
+    "ddos_ack-frag-flood-port-80",
+    "dos_syn-flood-port-80",
+    "dos_tcp-flood-port-80",
+    "web_sql-injection",
+    "dos_rst-fin-flood-port-80",
+    "dos_http-flood-port-80",
+    "dos_http-flood-port-6668",
+    "web_xss",
+    "web_backdoor-upload",
+    "ddos_slowloris-port-80",
+    "dos_slowloris-port-80",
+    "dos_tcp-flood-port-554",
+    "dos_syn-flood-port-554",
+    "dos_syn-flood-port-443",
+    "dos_tcp-flood-port-443",
+    "ddos_mqtt-publish-flood",
+    "ddos_connect-flood",
+    "dos_http-flood-port-1883",
+    "dos_connect-flood",
+    "dos_http-flood-port-9595",
+    "ddos_slowloris-port-1883",
+    "dos_mqtt-publish-flood",
+    "ddos_slowloris-port-8000",
+    "ddos_slowloris-port-554",
+    "dos_slowloris-port-1883",
+    "dos_http-flood-port-554",
+    "dos_slowloris-port-8000",
+    "dos_slowloris-port-554",
+    "dos_http-flood-port-443",
+    "dos_syn-flood-port-22",
+    "dos_syn-flood-port-23",
+    "dos_tcp-flood-port-23",
+    "dos_tcp-flood-port-22",
+    "dos_syn-flood-port-557"
+   ],
+   "benign": 13680,
+   "q3": true,
+   "qualifies": true,
+   "table": "cic_iiot2025_2"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "cic_iiot2025_1"
+}

@@ -1,0 +1,82 @@
+SCREENING (protocol-v1) — X-IIoTID
+rows 820,834 (all rows); benign label 'Normal'; content features 59; identifiers 6
+
+=== Q1a  misaligned rows ===
+columns checked: ['Date', 'Timestamp', 'Scr_IP', 'Scr_port', 'Des_IP', 'Des_port']; rows without a label 0; misaligned rows 747 (0.09%)
+  RDOS                                         rows    141,261  misaligned   0.00%
+  Scanning_vulnerability                       rows     52,852  misaligned   0.00%
+  Generic_scanning                             rows     50,277  misaligned   0.00%
+  BruteForce                                   rows     47,241  misaligned   0.00%
+  MQTT_cloud_broker_subscription               rows     23,524  misaligned   0.00%
+  Discovering_resources                        rows     23,148  misaligned   0.00%
+  Exfiltration                                 rows     22,134  misaligned   0.00%
+  insider_malcious                             rows     17,447  misaligned   0.00%
+  Modbus_register_reading                      rows      5,953  misaligned   0.00%
+  False_data_injection                         rows      5,094  misaligned   0.00%
+  C&C                                          rows      2,863  misaligned   0.00%
+  Dictionary                                   rows      2,572  misaligned   0.00%
+  TCP Relay                                    rows      2,119  misaligned   0.00%
+  fuzzing                                      rows      1,313  misaligned   0.00%
+  Reverse_shell                                rows      1,016  misaligned   0.00%
+  crypto-ransomware                            rows        458  misaligned  33.84%
+  MitM                                         rows        117  misaligned   0.00%
+  Fake_notification                            rows         28  misaligned   0.00%
+  Normal                                       rows    421,417  misaligned   0.14%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  RDOS                                           0.00%
+  Scanning_vulnerability                         0.00%
+  Generic_scanning                               0.00%
+  BruteForce                                     0.00%
+  MQTT_cloud_broker_subscription                 0.00%
+  Discovering_resources                          0.01%
+  Exfiltration                                   0.00%
+  insider_malcious                               0.00%
+  Modbus_register_reading                        0.00%
+  False_data_injection                           0.00%
+  C&C                                            0.03%
+  Dictionary                                     0.00%
+  TCP Relay                                      0.00%
+  fuzzing                                        0.00%
+  Reverse_shell                                  0.00%
+  crypto-ransomware                              0.00%
+  MitM                                           0.00%
+  Fake_notification                              0.00%
+
+=== Q2b  protocol named by the type ===
+  MQTT_cloud_broker_subscription               MQTT   no indicator in the release: not applied
+  Modbus_register_reading                      MODBUS no indicator in the release: not applied
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  420,825 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  RDOS                                         kept
+  Scanning_vulnerability                       kept
+  Generic_scanning                             kept
+  BruteForce                                   kept
+  MQTT_cloud_broker_subscription               kept
+  Discovering_resources                        kept
+  Exfiltration                                 kept
+  insider_malcious                             kept
+  Modbus_register_reading                      kept
+  False_data_injection                         kept
+  C&C                                          kept
+  Dictionary                                   kept
+  TCP Relay                                    kept
+  fuzzing                                      kept
+  Reverse_shell                                kept
+  crypto-ransomware                            excluded: Q1a 33.84% misaligned
+  MitM                                         kept
+  Fake_notification                            kept
+
+  types kept 17 of 18; benign 420,825 -> QUALIFIES

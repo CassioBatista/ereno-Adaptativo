@@ -1,0 +1,47 @@
+SCREENING (protocol-v1) — Westermo, attacker-involvement labelling (NST_M_Label)
+rows 68,729 (all rows); benign label 'Normal'; content features 47; identifiers 12
+
+=== Q1a  misaligned rows ===
+columns checked: ['sMACs', 'rMACs', 'sIPs', 'rIPs']; rows without a label 0; misaligned rows 0 (0.00%)
+  BAD-MISCONF-DUPLICATION                      rows      4,611  misaligned   0.00%
+  BAD-MISCONF                                  rows      3,889  misaligned   0.00%
+  BAD-SSH                                      rows      2,968  misaligned   0.00%
+  BAD-PORTSCAN2                                rows      2,179  misaligned   0.00%
+  BAD-MITM                                     rows        708  misaligned   0.00%
+  BAD-PORTSCAN1                                rows        267  misaligned   0.00%
+  GOOD-SSH                                     rows         79  misaligned   0.00%
+  Normal                                       rows     54,028  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  BAD-MISCONF-DUPLICATION                       22.38%
+  BAD-MISCONF                                   23.04%
+  BAD-SSH                                        5.22%
+  BAD-PORTSCAN2                                  2.75%
+  BAD-MITM                                       2.54%
+  BAD-PORTSCAN1                                 10.86%
+  GOOD-SSH                                      18.99%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  54,028 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  BAD-MISCONF-DUPLICATION                      kept
+  BAD-MISCONF                                  kept
+  BAD-SSH                                      kept
+  BAD-PORTSCAN2                                kept
+  BAD-MITM                                     kept
+  BAD-PORTSCAN1                                kept
+  GOOD-SSH                                     kept
+
+  types kept 7 of 7; benign 54,028 -> QUALIFIES

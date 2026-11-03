@@ -1,0 +1,104 @@
+SCREENING (protocol-v1) — CICIDS2017, improved (Liu et al., version of 27 April 2023)
+rows 2,099,976 (all rows); benign label 'Benign'; content features 82; identifiers 7
+
+=== Q1a  misaligned rows ===
+columns checked: ['Src IP', 'Src Port', 'Dst IP', 'Dst Port', 'Timestamp']; rows without a label 0; misaligned rows 0 (0.00%)
+  Portscan                                     rows    159,066  misaligned   0.00%
+  DoS Hulk                                     rows    158,468  misaligned   0.00%
+  DDoS                                         rows     95,144  misaligned   0.00%
+  Infiltration - Portscan                      rows     71,767  misaligned   0.00%
+  DoS GoldenEye                                rows      7,567  misaligned   0.00%
+  Botnet - Attempted                           rows      4,067  misaligned   0.00%
+  FTP-Patator                                  rows      3,972  misaligned   0.00%
+  DoS Slowloris                                rows      3,859  misaligned   0.00%
+  DoS Slowhttptest - Attempted                 rows      3,368  misaligned   0.00%
+  SSH-Patator                                  rows      2,961  misaligned   0.00%
+  DoS Slowloris - Attempted                    rows      1,847  misaligned   0.00%
+  DoS Slowhttptest                             rows      1,740  misaligned   0.00%
+  Web Attack - Brute Force - Attempted         rows      1,292  misaligned   0.00%
+  Botnet                                       rows        736  misaligned   0.00%
+  Web Attack - XSS - Attempted                 rows        655  misaligned   0.00%
+  DoS Hulk - Attempted                         rows        581  misaligned   0.00%
+  DoS GoldenEye - Attempted                    rows         80  misaligned   0.00%
+  Web Attack - Brute Force                     rows         73  misaligned   0.00%
+  Infiltration - Attempted                     rows         45  misaligned   0.00%
+  Infiltration                                 rows         36  misaligned   0.00%
+  SSH-Patator - Attempted                      rows         27  misaligned   0.00%
+  Web Attack - XSS                             rows         18  misaligned   0.00%
+  Web Attack - SQL Injection                   rows         13  misaligned   0.00%
+  FTP-Patator - Attempted                      rows         12  misaligned   0.00%
+  Heartbleed                                   rows         11  misaligned   0.00%
+  Web Attack - SQL Injection - Attempted       rows          5  misaligned   0.00%
+  Benign                                       rows  1,582,566  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  Portscan                                       1.66%
+  DoS Hulk                                       0.00%
+  DDoS                                           0.00%
+  Infiltration - Portscan                        0.03%
+  DoS GoldenEye                                  0.00%
+  Botnet - Attempted                             0.00%
+  FTP-Patator                                    0.00%
+  DoS Slowloris                                  0.00%
+  DoS Slowhttptest - Attempted                   0.00%
+  SSH-Patator                                    0.00%
+  DoS Slowloris - Attempted                      0.00%
+  DoS Slowhttptest                               0.00%
+  Web Attack - Brute Force - Attempted           0.00%
+  Botnet                                         0.00%
+  Web Attack - XSS - Attempted                   0.00%
+  DoS Hulk - Attempted                           0.00%
+  DoS GoldenEye - Attempted                      0.00%
+  Web Attack - Brute Force                       0.00%
+  Infiltration - Attempted                       0.00%
+  Infiltration                                   0.00%
+  SSH-Patator - Attempted                        0.00%
+  Web Attack - XSS                               0.00%
+  Web Attack - SQL Injection                     0.00%
+  FTP-Patator - Attempted                        0.00%
+  Heartbleed                                     0.00%
+  Web Attack - SQL Injection - Attempted         0.00%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  1,582,566 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  Portscan                                     kept
+  DoS Hulk                                     kept
+  DDoS                                         kept
+  Infiltration - Portscan                      kept
+  DoS GoldenEye                                kept
+  Botnet - Attempted                           kept
+  FTP-Patator                                  kept
+  DoS Slowloris                                kept
+  DoS Slowhttptest - Attempted                 kept
+  SSH-Patator                                  kept
+  DoS Slowloris - Attempted                    kept
+  DoS Slowhttptest                             kept
+  Web Attack - Brute Force - Attempted         kept
+  Botnet                                       kept
+  Web Attack - XSS - Attempted                 kept
+  DoS Hulk - Attempted                         kept
+  DoS GoldenEye - Attempted                    kept
+  Web Attack - Brute Force                     kept
+  Infiltration - Attempted                     kept
+  Infiltration                                 kept
+  SSH-Patator - Attempted                      kept
+  Web Attack - XSS                             kept
+  Web Attack - SQL Injection                   kept
+  FTP-Patator - Attempted                      kept
+  Heartbleed                                   kept
+  Web Attack - SQL Injection - Attempted       kept
+
+  types kept 26 of 26; benign 1,582,566 -> QUALIFIES

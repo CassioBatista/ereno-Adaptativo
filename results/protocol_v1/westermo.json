@@ -1,0 +1,109 @@
+{
+ "release": "westermo",
+ "tables": [
+  {
+   "release": "Westermo, timing labelling (IT_M_Label)",
+   "rows": 68729,
+   "sample": "all rows",
+   "types": {
+    "BAD-SSH": {
+     "rows": 22150,
+     "excluded_by": [
+      "Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead"
+     ]
+    },
+    "BAD-MITM": {
+     "rows": 6422,
+     "excluded_by": [
+      "Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead"
+     ]
+    },
+    "BAD-PORTSCAN2": {
+     "rows": 5571,
+     "excluded_by": [
+      "Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead"
+     ]
+    },
+    "BAD-MISCONF-DUPLICATION": {
+     "rows": 4611,
+     "excluded_by": [
+      "Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead"
+     ]
+    },
+    "BAD-MISCONF": {
+     "rows": 3889,
+     "excluded_by": [
+      "Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead"
+     ]
+    },
+    "BAD-PORTSCAN1": {
+     "rows": 1566,
+     "excluded_by": [
+      "Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead"
+     ]
+    },
+    "GOOD-SSH": {
+     "rows": 668,
+     "excluded_by": [
+      "Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead"
+     ]
+    }
+   },
+   "kept": [],
+   "benign": 23852,
+   "q3": true,
+   "qualifies": false,
+   "table": "westermo_1"
+  },
+  {
+   "release": "Westermo, attacker-involvement labelling (NST_M_Label)",
+   "rows": 68729,
+   "sample": "all rows",
+   "types": {
+    "BAD-MISCONF-DUPLICATION": {
+     "rows": 4611,
+     "excluded_by": []
+    },
+    "BAD-MISCONF": {
+     "rows": 3889,
+     "excluded_by": []
+    },
+    "BAD-SSH": {
+     "rows": 2968,
+     "excluded_by": []
+    },
+    "BAD-PORTSCAN2": {
+     "rows": 2179,
+     "excluded_by": []
+    },
+    "BAD-MITM": {
+     "rows": 708,
+     "excluded_by": []
+    },
+    "BAD-PORTSCAN1": {
+     "rows": 267,
+     "excluded_by": []
+    },
+    "GOOD-SSH": {
+     "rows": 79,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "BAD-MISCONF-DUPLICATION",
+    "BAD-MISCONF",
+    "BAD-SSH",
+    "BAD-PORTSCAN2",
+    "BAD-MITM",
+    "BAD-PORTSCAN1",
+    "GOOD-SSH"
+   ],
+   "benign": 54028,
+   "q3": true,
+   "qualifies": true,
+   "table": "westermo_2"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "westermo_2"
+}

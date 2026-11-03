@@ -1,0 +1,55 @@
+{
+ "release": "ereno",
+ "tables": [
+  {
+   "release": "ERENO (converted release; attribution from the original)",
+   "rows": 5911386,
+   "sample": "all rows",
+   "types": {
+    "random_replay": {
+     "rows": 78000,
+     "excluded_by": []
+    },
+    "injection": {
+     "rows": 78000,
+     "excluded_by": []
+    },
+    "high_StNum": {
+     "rows": 78000,
+     "excluded_by": []
+    },
+    "inverse_replay": {
+     "rows": 56352,
+     "excluded_by": []
+    },
+    "poisoned_high_rate": {
+     "rows": 37144,
+     "excluded_by": []
+    },
+    "masquerade_fake_normal": {
+     "rows": 34839,
+     "excluded_by": []
+    },
+    "masquerade_fake_fault": {
+     "rows": 34487,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "random_replay",
+    "injection",
+    "high_StNum",
+    "inverse_replay",
+    "poisoned_high_rate",
+    "masquerade_fake_normal",
+    "masquerade_fake_fault"
+   ],
+   "benign": 5514564,
+   "q3": true,
+   "qualifies": true,
+   "table": "ereno"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "ereno"
+}

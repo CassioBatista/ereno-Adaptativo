@@ -1,0 +1,56 @@
+{
+ "release": "morris3",
+ "tables": [
+  {
+   "release": "Morris-3 (water tank, 2014)",
+   "rows": 236179,
+   "sample": "all rows",
+   "types": {
+    "Recon": {
+     "rows": 34002,
+     "excluded_by": []
+    },
+    "CMRI": {
+     "rows": 12460,
+     "excluded_by": [
+      "Q2a 99.0% identical to benign"
+     ]
+    },
+    "NMRI": {
+     "rows": 9187,
+     "excluded_by": []
+    },
+    "MPCI": {
+     "rows": 3725,
+     "excluded_by": []
+    },
+    "MSCI": {
+     "rows": 1833,
+     "excluded_by": []
+    },
+    "MFCI": {
+     "rows": 1320,
+     "excluded_by": []
+    },
+    "DoS": {
+     "rows": 1237,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "Recon",
+    "NMRI",
+    "MPCI",
+    "MSCI",
+    "MFCI",
+    "DoS"
+   ],
+   "benign": 172415,
+   "q3": true,
+   "qualifies": true,
+   "table": "morris3"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "morris3"
+}

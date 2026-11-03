@@ -1,0 +1,66 @@
+{
+ "release": "toniot",
+ "tables": [
+  {
+   "release": "ToN_IoT (network part)",
+   "rows": 11169511,
+   "sample": "every second flow of each of the 23 files",
+   "types": {
+    "scanning": {
+     "rows": 3570004,
+     "excluded_by": []
+    },
+    "ddos": {
+     "rows": 3082733,
+     "excluded_by": []
+    },
+    "dos": {
+     "rows": 1687636,
+     "excluded_by": []
+    },
+    "xss": {
+     "rows": 1054458,
+     "excluded_by": []
+    },
+    "password": {
+     "rows": 859318,
+     "excluded_by": []
+    },
+    "backdoor": {
+     "rows": 254099,
+     "excluded_by": []
+    },
+    "injection": {
+     "rows": 226289,
+     "excluded_by": []
+    },
+    "ransomware": {
+     "rows": 36463,
+     "excluded_by": [
+      "Q2a 90.9% identical to benign"
+     ]
+    },
+    "mitm": {
+     "rows": 519,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "scanning",
+    "ddos",
+    "dos",
+    "xss",
+    "password",
+    "backdoor",
+    "injection",
+    "mitm"
+   ],
+   "benign": 387542,
+   "q3": true,
+   "qualifies": true,
+   "table": "toniot"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "toniot"
+}

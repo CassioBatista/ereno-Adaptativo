@@ -1,0 +1,58 @@
+{
+ "release": "electra",
+ "tables": [
+  {
+   "release": "Electra Modbus",
+   "rows": 16289277,
+   "sample": "all rows",
+   "types": {
+    "MITM_UNALTERED": {
+     "rows": 1550617,
+     "excluded_by": [
+      "Q2a 83.0% identical to benign"
+     ]
+    },
+    "READ_ATTACK": {
+     "rows": 785961,
+     "excluded_by": [
+      "Q2a 65.8% identical to benign"
+     ]
+    },
+    "RECOGNITION_ATTACK": {
+     "rows": 30580,
+     "excluded_by": []
+    },
+    "RESPONSE_ATTACK": {
+     "rows": 16353,
+     "excluded_by": []
+    },
+    "WRITE_ATTACK": {
+     "rows": 9417,
+     "excluded_by": []
+    },
+    "FORCE_ERROR_ATTACK": {
+     "rows": 1129,
+     "excluded_by": []
+    },
+    "REPLAY_ATTACK": {
+     "rows": 897,
+     "excluded_by": [
+      "Q2a 97.1% identical to benign"
+     ]
+    }
+   },
+   "kept": [
+    "RECOGNITION_ATTACK",
+    "RESPONSE_ATTACK",
+    "WRITE_ATTACK",
+    "FORCE_ERROR_ATTACK"
+   ],
+   "benign": 13894323,
+   "q3": true,
+   "qualifies": true,
+   "table": "electra"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "electra"
+}

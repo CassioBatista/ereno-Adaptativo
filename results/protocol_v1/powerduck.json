@@ -1,0 +1,110 @@
+{
+ "release": "powerduck",
+ "tables": [
+  {
+   "release": "PowerDuck",
+   "rows": 1133589,
+   "sample": "all rows",
+   "types": {
+    "16-flood-bloat-repeat": {
+     "rows": 560000,
+     "excluded_by": []
+    },
+    "15-flood-repeat": {
+     "rows": 484000,
+     "excluded_by": [
+      "Q2a 100.0% identical to benign"
+     ]
+    },
+    "06-insert-distort-meas-up-grad": {
+     "rows": 1509,
+     "excluded_by": []
+    },
+    "07-insert-distort-meas-down-grad": {
+     "rows": 1481,
+     "excluded_by": []
+    },
+    "12-sup-1-1-tbv2": {
+     "rows": 216,
+     "excluded_by": [
+      "Q2a 100.0% identical to benign"
+     ]
+    },
+    "09-insert-distort-meas-down-sharp": {
+     "rows": 192,
+     "excluded_by": []
+    },
+    "11-sup-1-1-tbv1": {
+     "rows": 188,
+     "excluded_by": [
+      "Q2a 100.0% identical to benign"
+     ]
+    },
+    "14-sup-1": {
+     "rows": 176,
+     "excluded_by": [
+      "Q2a 100.0% identical to benign"
+     ]
+    },
+    "13-sup-2": {
+     "rows": 164,
+     "excluded_by": [
+      "Q2a 100.0% identical to benign"
+     ]
+    },
+    "10-sup-1-1-tbv0": {
+     "rows": 159,
+     "excluded_by": [
+      "Q2a 100.0% identical to benign"
+     ]
+    },
+    "08-insert-distort-meas-up-sharp": {
+     "rows": 154,
+     "excluded_by": []
+    },
+    "04-insert-fake-open-w-intermediate": {
+     "rows": 150,
+     "excluded_by": [
+      "Q2a 100.0% identical to benign"
+     ]
+    },
+    "05-insert-fake-open-only-end": {
+     "rows": 145,
+     "excluded_by": [
+      "Q2a 100.0% identical to benign"
+     ]
+    },
+    "03-replay-old-measurements": {
+     "rows": 81,
+     "excluded_by": []
+    },
+    "02-replay-opening-switch-w-context": {
+     "rows": 27,
+     "excluded_by": [
+      "Q2a 100.0% identical to benign"
+     ]
+    },
+    "01-replay-opening-switch-isolated": {
+     "rows": 2,
+     "excluded_by": [
+      "Q2a 100.0% identical to benign"
+     ]
+    }
+   },
+   "kept": [
+    "16-flood-bloat-repeat",
+    "06-insert-distort-meas-up-grad",
+    "07-insert-distort-meas-down-grad",
+    "09-insert-distort-meas-down-sharp",
+    "08-insert-distort-meas-up-sharp",
+    "03-replay-old-measurements"
+   ],
+   "benign": 84945,
+   "q3": true,
+   "qualifies": true,
+   "table": "powerduck"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "powerduck"
+}

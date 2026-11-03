@@ -1,0 +1,47 @@
+SCREENING (protocol-v1) — Westermo, timing labelling (IT_M_Label)
+rows 68,729 (all rows); benign label 'Normal'; content features 47; identifiers 12
+
+=== Q1a  misaligned rows ===
+columns checked: ['sMACs', 'rMACs', 'sIPs', 'rIPs']; rows without a label 0; misaligned rows 0 (0.00%)
+  BAD-SSH                                      rows     22,150  misaligned   0.00%
+  BAD-MITM                                     rows      6,422  misaligned   0.00%
+  BAD-PORTSCAN2                                rows      5,571  misaligned   0.00%
+  BAD-MISCONF-DUPLICATION                      rows      4,611  misaligned   0.00%
+  BAD-MISCONF                                  rows      3,889  misaligned   0.00%
+  BAD-PORTSCAN1                                rows      1,566  misaligned   0.00%
+  GOOD-SSH                                     rows        668  misaligned   0.00%
+  Normal                                       rows     23,852  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  timing labelling (IT): documented as every flow during an event -> not used
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  BAD-SSH                                       18.83%
+  BAD-MITM                                      21.11%
+  BAD-PORTSCAN2                                 12.74%
+  BAD-MISCONF-DUPLICATION                       21.82%
+  BAD-MISCONF                                   22.24%
+  BAD-PORTSCAN1                                 18.65%
+  GOOD-SSH                                      20.81%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  23,852 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  BAD-SSH                                      excluded: Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead
+  BAD-MITM                                     excluded: Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead
+  BAD-PORTSCAN2                                excluded: Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead
+  BAD-MISCONF-DUPLICATION                      excluded: Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead
+  BAD-MISCONF                                  excluded: Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead
+  BAD-PORTSCAN1                                excluded: Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead
+  GOOD-SSH                                     excluded: Q2d timing labelling marks every flow during an event; the release's attacker-involvement labelling is used instead
+
+  types kept 0 of 7; benign 23,852 -> DOES NOT QUALIFY

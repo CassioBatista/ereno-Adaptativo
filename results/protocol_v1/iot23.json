@@ -1,0 +1,100 @@
+{
+ "release": "iot23",
+ "tables": [
+  {
+   "release": "IoT-23",
+   "rows": 664788,
+   "sample": "uniform sample of up to 20,000 flows per capture and detailed label (scan cache of inspect_iot23.py)",
+   "types": {
+    "PartOfAHorizontalPortScan": {
+     "rows": 200122,
+     "excluded_by": [
+      "Q2a 54.6% identical to benign"
+     ]
+    },
+    "DDoS": {
+     "rows": 114395,
+     "excluded_by": []
+    },
+    "Okiru": {
+     "rows": 100000,
+     "excluded_by": [
+      "Q2a 80.0% identical to benign"
+     ]
+    },
+    "C&C-HeartBeat": {
+     "rows": 33673,
+     "excluded_by": [
+      "Q2a 56.3% identical to benign"
+     ]
+    },
+    "C&C": {
+     "rows": 21995,
+     "excluded_by": [
+      "Q2a 63.5% identical to benign"
+     ]
+    },
+    "Attack": {
+     "rows": 9398,
+     "excluded_by": []
+    },
+    "C&C-PartOfAHorizontalPortScan": {
+     "rows": 888,
+     "excluded_by": []
+    },
+    "C&C-HeartBeat-Attack": {
+     "rows": 834,
+     "excluded_by": []
+    },
+    "C&C-FileDownload": {
+     "rows": 53,
+     "excluded_by": []
+    },
+    "C&C-Torii": {
+     "rows": 30,
+     "excluded_by": [
+      "Q2a 66.7% identical to benign"
+     ]
+    },
+    "FileDownload": {
+     "rows": 18,
+     "excluded_by": []
+    },
+    "C&C-HeartBeat-FileDownload": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "PartOfAHorizontalPortScan-Attack": {
+     "rows": 5,
+     "excluded_by": []
+    },
+    "Okiru-Attack": {
+     "rows": 3,
+     "excluded_by": []
+    },
+    "C&C-Mirai": {
+     "rows": 2,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "DDoS",
+    "Attack",
+    "C&C-PartOfAHorizontalPortScan",
+    "C&C-HeartBeat-Attack",
+    "C&C-FileDownload",
+    "FileDownload",
+    "C&C-HeartBeat-FileDownload",
+    "PartOfAHorizontalPortScan-Attack",
+    "Okiru-Attack",
+    "C&C-Mirai"
+   ],
+   "benign": 183150,
+   "q3": true,
+   "qualifies": true,
+   "table": "iot23"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "iot23"
+}

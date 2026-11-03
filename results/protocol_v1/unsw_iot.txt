@@ -1,0 +1,58 @@
+SCREENING (protocol-v1) — UNSW IoT attack traces
+rows 570,460 (all rows); benign label 'Normal'; content features 41; identifiers 2
+
+=== Q1a  misaligned rows ===
+columns checked: ['ts']; rows without a label 0; misaligned rows 0 (0.00%)
+  TcpSynReflection                             rows        579  misaligned   0.00%
+  TcpSynDevice                                 rows        558  misaligned   0.00%
+  UdpReflection                                rows        357  misaligned   0.00%
+  ArpSpoof                                     rows        297  misaligned   0.00%
+  UdpDevice                                    rows        209  misaligned   0.00%
+  PingOfDeath                                  rows        180  misaligned   0.00%
+  Smurf                                        rows        120  misaligned   0.00%
+  Normal                                       rows    568,160  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  TcpSynReflection                              18.65%
+  TcpSynDevice                                  17.92%
+  UdpReflection                                  9.80%
+  ArpSpoof                                       3.70%
+  UdpDevice                                     18.66%
+  PingOfDeath                                    2.78%
+  Smurf                                          5.00%
+
+=== Q2b  protocol named by the type ===
+  TcpSynReflection                             SYN    no indicator in the release: not applied
+  TcpSynDevice                                 SYN    no indicator in the release: not applied
+  UdpReflection                                UDP    carried by  93.00%
+  ArpSpoof                                     ARP    carried by  97.31%
+  UdpDevice                                    UDP    carried by  90.43%
+
+=== Q2c  annotation visible in the counters ===
+  TcpSynReflection                             visible in  69.5% of 59 intervals
+  TcpSynDevice                                 visible in  73.2% of 56 intervals
+  UdpReflection                                visible in  62.2% of 37 intervals
+  ArpSpoof                                     visible in 100.0% of 30 intervals
+  UdpDevice                                    visible in  76.2% of 21 intervals
+  PingOfDeath                                  visible in 100.0% of 18 intervals
+  Smurf                                        visible in 100.0% of 12 intervals
+
+=== Q3  benign samples ===
+  568,160 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  TcpSynReflection                             kept
+  TcpSynDevice                                 kept
+  UdpReflection                                kept
+  ArpSpoof                                     kept
+  UdpDevice                                    kept
+  PingOfDeath                                  kept
+  Smurf                                        kept
+
+  types kept 7 of 7; benign 568,160 -> QUALIFIES

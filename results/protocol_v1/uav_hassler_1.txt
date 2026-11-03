@@ -1,0 +1,32 @@
+SCREENING (protocol-v1) — Hassler et al., schema S1 (cyber)
+rows 33,102 (all rows); benign label 'benign'; content features 30; identifiers 7
+
+=== Q1a  misaligned rows ===
+columns checked: ['ip.src (holds another representation throughout: not checked)', 'ip.dst (holds another representation throughout: not checked)', 'tcp.srcport', 'tcp.dstport', 'udp.srcport', 'udp.dstport']; rows without a label 0; misaligned rows 0 (0.00%)
+  Replay                                       rows     12,006  misaligned   0.00%
+  DoS attack                                   rows     11,671  misaligned   0.00%
+  benign                                       rows      9,425  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  Replay                                        12.72%
+  DoS attack                                    10.05%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  9,425 benign samples after Q1-Q2d (below 10,000)
+
+=== DECISION ===
+  Replay                                       kept
+  DoS attack                                   kept
+
+  types kept 2 of 2; benign 9,425 -> DOES NOT QUALIFY

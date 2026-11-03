@@ -1,0 +1,35 @@
+{
+ "release": "pdnet_ids26",
+ "tables": [
+  {
+   "release": "PDNet-IDS26",
+   "rows": 21552,
+   "sample": "all rows",
+   "types": {
+    "FDI": {
+     "rows": 5388,
+     "excluded_by": []
+    },
+    "DOS": {
+     "rows": 5388,
+     "excluded_by": []
+    },
+    "Replay": {
+     "rows": 5388,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "FDI",
+    "DOS",
+    "Replay"
+   ],
+   "benign": 5388,
+   "q3": false,
+   "qualifies": false,
+   "table": "pdnet_ids26"
+  }
+ ],
+ "qualifies": false,
+ "best_table": "pdnet_ids26"
+}

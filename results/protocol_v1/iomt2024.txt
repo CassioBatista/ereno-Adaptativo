@@ -1,0 +1,77 @@
+SCREENING (protocol-v1) — CIC-BCCC-NRC-IoMT-2024
+rows 3,385,313 (all rows); benign label 'Benign'; content features 77; identifiers 6
+
+=== Q1a  misaligned rows ===
+columns checked: ['Src IP', 'Src Port', 'Dst IP', 'Dst Port', 'Timestamp']; rows without a label 0; misaligned rows 0 (0.00%)
+  DoS TCP Flood                                rows  2,106,916  misaligned   0.00%
+  Recon Port Scan                              rows    485,522  misaligned   0.00%
+  MQTT DDoS Publish Flood                      rows    413,913  misaligned   0.00%
+  MQTT DoS Connect Flood                       rows    238,031  misaligned   0.00%
+  Recon OS Scan                                rows     85,317  misaligned   0.00%
+  Recon Vulnerability Scan                     rows      8,321  misaligned   0.00%
+  DoS UDP Flood                                rows      3,115  misaligned   0.00%
+  DDoS UDP Flood                               rows      2,576  misaligned   0.00%
+  DDoS ICMP Flood                              rows      2,552  misaligned   0.00%
+  MQTT Malformed                               rows      2,246  misaligned   0.00%
+  DoS ICMP Flood                               rows      2,107  misaligned   0.00%
+  MITM ARP Spoofing                            rows      1,053  misaligned   0.00%
+  MQTT DoS Publish Flood                       rows        953  misaligned   0.00%
+  Recon Ping Sweep                             rows         71  misaligned   0.00%
+  Benign                                       rows     32,620  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  DoS TCP Flood                                  0.00%
+  Recon Port Scan                                0.00%
+  MQTT DDoS Publish Flood                        0.10%
+  MQTT DoS Connect Flood                         1.20%
+  Recon OS Scan                                  0.02%
+  Recon Vulnerability Scan                       0.13%
+  DoS UDP Flood                                  0.48%
+  DDoS UDP Flood                                 0.08%
+  DDoS ICMP Flood                                0.08%
+  MQTT Malformed                                 0.58%
+  DoS ICMP Flood                                 1.19%
+  MITM ARP Spoofing                              0.09%
+  MQTT DoS Publish Flood                         0.00%
+  Recon Ping Sweep                               2.82%
+
+=== Q2b  protocol named by the type ===
+  MQTT DDoS Publish Flood                      MQTT   no indicator in the release: not applied
+  MQTT DoS Connect Flood                       MQTT   no indicator in the release: not applied
+  DoS UDP Flood                                UDP    carried by   0.00%
+  DDoS UDP Flood                               UDP    carried by   0.00%
+  DDoS ICMP Flood                              ICMP   carried by   0.00%
+  MQTT Malformed                               MQTT   no indicator in the release: not applied
+  DoS ICMP Flood                               ICMP   carried by   0.00%
+  MITM ARP Spoofing                            ARP    carried by   0.00%
+  MQTT DoS Publish Flood                       MQTT   no indicator in the release: not applied
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  32,620 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  DoS TCP Flood                                kept
+  Recon Port Scan                              kept
+  MQTT DDoS Publish Flood                      kept
+  MQTT DoS Connect Flood                       kept
+  Recon OS Scan                                kept
+  Recon Vulnerability Scan                     kept
+  DoS UDP Flood                                excluded: Q2b 0.0% carry UDP
+  DDoS UDP Flood                               excluded: Q2b 0.0% carry UDP
+  DDoS ICMP Flood                              excluded: Q2b 0.0% carry ICMP
+  MQTT Malformed                               kept
+  DoS ICMP Flood                               excluded: Q2b 0.0% carry ICMP
+  MITM ARP Spoofing                            excluded: Q2b 0.0% carry ARP
+  MQTT DoS Publish Flood                       kept
+  Recon Ping Sweep                             kept
+
+  types kept 9 of 14; benign 32,620 -> QUALIFIES

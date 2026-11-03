@@ -1,0 +1,188 @@
+{
+ "release": "ciciot2023",
+ "tables": [
+  {
+   "release": "CICIoT2023",
+   "rows": 2366956,
+   "sample": "10 of the 169 part files",
+   "types": {
+    "DDoS-ICMP_Flood": {
+     "rows": 364557,
+     "excluded_by": []
+    },
+    "DDoS-UDP_Flood": {
+     "rows": 274432,
+     "excluded_by": []
+    },
+    "DDoS-TCP_Flood": {
+     "rows": 228873,
+     "excluded_by": []
+    },
+    "DDoS-PSHACK_Flood": {
+     "rows": 207971,
+     "excluded_by": []
+    },
+    "DDoS-SYN_Flood": {
+     "rows": 206146,
+     "excluded_by": []
+    },
+    "DDoS-RSTFINFlood": {
+     "rows": 204892,
+     "excluded_by": []
+    },
+    "DDoS-SynonymousIP_Flood": {
+     "rows": 182094,
+     "excluded_by": []
+    },
+    "DoS-UDP_Flood": {
+     "rows": 168753,
+     "excluded_by": []
+    },
+    "DoS-TCP_Flood": {
+     "rows": 135180,
+     "excluded_by": []
+    },
+    "DoS-SYN_Flood": {
+     "rows": 102049,
+     "excluded_by": []
+    },
+    "Mirai-greeth_flood": {
+     "rows": 49844,
+     "excluded_by": []
+    },
+    "Mirai-udpplain": {
+     "rows": 45219,
+     "excluded_by": []
+    },
+    "Mirai-greip_flood": {
+     "rows": 38157,
+     "excluded_by": []
+    },
+    "DDoS-ICMP_Fragmentation": {
+     "rows": 22890,
+     "excluded_by": []
+    },
+    "MITM-ArpSpoofing": {
+     "rows": 15618,
+     "excluded_by": [
+      "Q2b 0.1% carry ARP"
+     ]
+    },
+    "DDoS-UDP_Fragmentation": {
+     "rows": 14611,
+     "excluded_by": [
+      "Q2b 12.0% carry UDP"
+     ]
+    },
+    "DDoS-ACK_Fragmentation": {
+     "rows": 14498,
+     "excluded_by": []
+    },
+    "DNS_Spoofing": {
+     "rows": 9142,
+     "excluded_by": [
+      "Q2b 0.2% carry DNS"
+     ]
+    },
+    "Recon-HostDiscovery": {
+     "rows": 6761,
+     "excluded_by": []
+    },
+    "Recon-OSScan": {
+     "rows": 5046,
+     "excluded_by": []
+    },
+    "Recon-PortScan": {
+     "rows": 4198,
+     "excluded_by": []
+    },
+    "DoS-HTTP_Flood": {
+     "rows": 3701,
+     "excluded_by": []
+    },
+    "VulnerabilityScan": {
+     "rows": 1879,
+     "excluded_by": []
+    },
+    "DDoS-HTTP_Flood": {
+     "rows": 1467,
+     "excluded_by": []
+    },
+    "DDoS-SlowLoris": {
+     "rows": 1176,
+     "excluded_by": []
+    },
+    "DictionaryBruteForce": {
+     "rows": 656,
+     "excluded_by": []
+    },
+    "BrowserHijacking": {
+     "rows": 295,
+     "excluded_by": []
+    },
+    "SqlInjection": {
+     "rows": 248,
+     "excluded_by": []
+    },
+    "CommandInjection": {
+     "rows": 243,
+     "excluded_by": []
+    },
+    "Backdoor_Malware": {
+     "rows": 169,
+     "excluded_by": []
+    },
+    "XSS": {
+     "rows": 160,
+     "excluded_by": []
+    },
+    "Recon-PingSweep": {
+     "rows": 101,
+     "excluded_by": []
+    },
+    "Uploading_Attack": {
+     "rows": 71,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "DDoS-ICMP_Flood",
+    "DDoS-UDP_Flood",
+    "DDoS-TCP_Flood",
+    "DDoS-PSHACK_Flood",
+    "DDoS-SYN_Flood",
+    "DDoS-RSTFINFlood",
+    "DDoS-SynonymousIP_Flood",
+    "DoS-UDP_Flood",
+    "DoS-TCP_Flood",
+    "DoS-SYN_Flood",
+    "Mirai-greeth_flood",
+    "Mirai-udpplain",
+    "Mirai-greip_flood",
+    "DDoS-ICMP_Fragmentation",
+    "DDoS-ACK_Fragmentation",
+    "Recon-HostDiscovery",
+    "Recon-OSScan",
+    "Recon-PortScan",
+    "DoS-HTTP_Flood",
+    "VulnerabilityScan",
+    "DDoS-HTTP_Flood",
+    "DDoS-SlowLoris",
+    "DictionaryBruteForce",
+    "BrowserHijacking",
+    "SqlInjection",
+    "CommandInjection",
+    "Backdoor_Malware",
+    "XSS",
+    "Recon-PingSweep",
+    "Uploading_Attack"
+   ],
+   "benign": 55859,
+   "q3": true,
+   "qualifies": true,
+   "table": "ciciot2023"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "ciciot2023"
+}

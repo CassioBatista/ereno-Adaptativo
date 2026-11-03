@@ -1,0 +1,112 @@
+{
+ "release": "uav_hassler",
+ "tables": [
+  {
+   "release": "Hassler et al., schema S1 (cyber)",
+   "rows": 33102,
+   "sample": "all rows",
+   "types": {
+    "Replay": {
+     "rows": 12006,
+     "excluded_by": []
+    },
+    "DoS attack": {
+     "rows": 11671,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "Replay",
+    "DoS attack"
+   ],
+   "benign": 9425,
+   "q3": false,
+   "qualifies": false,
+   "table": "uav_hassler_1"
+  },
+  {
+   "release": "Hassler et al., schema S2 (physical)",
+   "rows": 6236,
+   "sample": "all rows",
+   "types": {
+    "DoS": {
+     "rows": 973,
+     "excluded_by": []
+    },
+    "Replay": {
+     "rows": 973,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "DoS",
+    "Replay"
+   ],
+   "benign": 4290,
+   "q3": false,
+   "qualifies": false,
+   "table": "uav_hassler_2"
+  },
+  {
+   "release": "Hassler et al., schema S3 (cyber)",
+   "rows": 9156,
+   "sample": "all rows",
+   "types": {
+    "evil_twin": {
+     "rows": 5683,
+     "excluded_by": []
+    },
+    "FDI": {
+     "rows": 3473,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "evil_twin",
+    "FDI"
+   ],
+   "benign": 0,
+   "q3": false,
+   "qualifies": false,
+   "table": "uav_hassler_3"
+  },
+  {
+   "release": "Hassler et al., schema S4 (physical)",
+   "rows": 5473,
+   "sample": "all rows",
+   "types": {
+    "evil_twin": {
+     "rows": 5473,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "evil_twin"
+   ],
+   "benign": 0,
+   "q3": false,
+   "qualifies": false,
+   "table": "uav_hassler_4"
+  },
+  {
+   "release": "Hassler et al., schema S5 (physical)",
+   "rows": 807,
+   "sample": "all rows",
+   "types": {
+    "FDI": {
+     "rows": 807,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "FDI"
+   ],
+   "benign": 0,
+   "q3": false,
+   "qualifies": false,
+   "table": "uav_hassler_5"
+  }
+ ],
+ "qualifies": false,
+ "best_table": "uav_hassler_1"
+}

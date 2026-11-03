@@ -1,0 +1,71 @@
+SCREENING (protocol-v1) — Edge-IIoTset (DNN file)
+rows 2,219,201 (all rows); benign label 'Normal'; content features 38; identifiers 23
+
+=== Q1a  misaligned rows ===
+columns checked: ['http.tls_port', 'frame.time', 'ip.src_host', 'ip.dst_host', 'icmp.transmit_timestamp', 'tcp.srcport', 'tcp.dstport', 'udp.port']; rows without a label 0; misaligned rows 121,894 (5.49%)
+  DDoS_UDP                                     rows    121,568  misaligned  99.97%
+  DDoS_ICMP                                    rows    116,436  misaligned   0.00%
+  SQL_injection                                rows     51,203  misaligned   0.00%
+  Password                                     rows     50,153  misaligned   0.00%
+  Vulnerability_scanner                        rows     50,110  misaligned   0.00%
+  DDoS_TCP                                     rows     50,062  misaligned   0.00%
+  DDoS_HTTP                                    rows     49,911  misaligned   0.00%
+  Uploading                                    rows     37,634  misaligned   0.00%
+  Backdoor                                     rows     24,862  misaligned   0.00%
+  Port_Scanning                                rows     22,564  misaligned   0.00%
+  XSS                                          rows     15,915  misaligned   0.00%
+  Ransomware                                   rows     10,925  misaligned   0.00%
+  MITM                                         rows      1,214  misaligned  30.23%
+  Fingerprinting                               rows      1,001  misaligned   0.00%
+  Normal                                       rows  1,615,643  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  DDoS_UDP                                       0.00%
+  DDoS_ICMP                                      0.00%
+  SQL_injection                                  0.00%
+  Password                                       0.00%
+  Vulnerability_scanner                          0.00%
+  DDoS_TCP                                       0.00%
+  DDoS_HTTP                                      0.00%
+  Uploading                                      0.00%
+  Backdoor                                       0.00%
+  Port_Scanning                                  0.00%
+  XSS                                            0.00%
+  Ransomware                                     0.00%
+  MITM                                           0.00%
+  Fingerprinting                                 0.00%
+
+=== Q2b  protocol named by the type ===
+  DDoS_UDP                                     UDP    carried by 100.00%
+  DDoS_ICMP                                    ICMP   carried by  99.99%
+  DDoS_HTTP                                    HTTP   carried by   1.41%
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  1,615,643 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  DDoS_UDP                                     excluded: Q1a 99.97% misaligned
+  DDoS_ICMP                                    kept
+  SQL_injection                                kept
+  Password                                     kept
+  Vulnerability_scanner                        kept
+  DDoS_TCP                                     kept
+  DDoS_HTTP                                    excluded: Q2b 1.4% carry HTTP
+  Uploading                                    kept
+  Backdoor                                     kept
+  Port_Scanning                                kept
+  XSS                                          kept
+  Ransomware                                   kept
+  MITM                                         excluded: Q1a 30.23% misaligned
+  Fingerprinting                               kept
+
+  types kept 11 of 14; benign 1,615,643 -> QUALIFIES

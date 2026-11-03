@@ -1,0 +1,310 @@
+SCREENING (protocol-v1) — CIC IIoT 2025 (DataSense), 1sec windows
+rows 227,191 (all rows); benign label 'benign'; content features 71; identifiers 2
+
+=== Q1a  misaligned rows ===
+columns checked: none (no address, port or time column); rows without a label 0; misaligned rows 0 (0.00%)
+  mitm_arp-spoofing                            rows      4,196  misaligned   0.00%
+  malware_mirai-udp-flood                      rows      4,010  misaligned   0.00%
+  recon_os-scan                                rows      3,968  misaligned   0.00%
+  recon_host-disc-tcp-ack-ping                 rows      3,947  misaligned   0.00%
+  recon_vuln-scan                              rows      3,944  misaligned   0.00%
+  recon_host-disc-tcp-syn-ping                 rows      3,932  misaligned   0.00%
+  recon_port-scan                              rows      3,924  misaligned   0.00%
+  recon_host-disc-tcp-syn-stealth              rows      3,918  misaligned   0.00%
+  recon_host-disc-arp-ping                     rows      3,911  misaligned   0.00%
+  recon_host-disc-udp-ping                     rows      3,894  misaligned   0.00%
+  malware_mirai-syn-flood                      rows      3,531  misaligned   0.00%
+  mitm_ip-spoofing                             rows      3,040  misaligned   0.00%
+  recon_ping-sweep                             rows      2,210  misaligned   0.00%
+  dos_udp-flood                                rows      1,722  misaligned   0.00%
+  dos_icmp-flood                               rows      1,715  misaligned   0.00%
+  ddos_icmp-flood                              rows      1,599  misaligned   0.00%
+  ddos_udp-frag-flood                          rows      1,598  misaligned   0.00%
+  dos_icmp-frag-flood                          rows      1,597  misaligned   0.00%
+  ddos_icmp-frag-flood                         rows      1,592  misaligned   0.00%
+  dos_udp-frag-flood                           rows      1,591  misaligned   0.00%
+  dos_rst-fin-flood-port-1883                  rows      1,290  misaligned   0.00%
+  web_command-injection                        rows        996  misaligned   0.00%
+  web_sql-injection-blind                      rows        990  misaligned   0.00%
+  bruteforce_dictionary-ssh                    rows        965  misaligned   0.00%
+  ddos_rst-fin-flood-port-1883                 rows        924  misaligned   0.00%
+  ddos_synonymousip-flood-port-1883            rows        924  misaligned   0.00%
+  ddos_ack-frag-flood-port-1883                rows        924  misaligned   0.00%
+  ddos_syn-flood-port-1883                     rows        923  misaligned   0.00%
+  dos_push-ack-flood-port-1883                 rows        923  misaligned   0.00%
+  ddos_udp-flood-port-1883                     rows        922  misaligned   0.00%
+  ddos_tcp-flood-port-1883                     rows        922  misaligned   0.00%
+  dos_synonymousip-flood-port-1883             rows        922  misaligned   0.00%
+  dos_ack-frag-flood-port-1883                 rows        922  misaligned   0.00%
+  ddos_push-ack-flood-port-1883                rows        921  misaligned   0.00%
+  dos_tcp-flood-port-1883                      rows        921  misaligned   0.00%
+  dos_syn-flood-port-1883                      rows        919  misaligned   0.00%
+  ddos_http-flood-port-1883                    rows        915  misaligned   0.00%
+  bruteforce_dictionary-telnet                 rows        903  misaligned   0.00%
+  mitm_impersonation                           rows        826  misaligned   0.00%
+  dos_synonymousip-flood-port-80               rows        735  misaligned   0.00%
+  ddos_synonymousip-flood-port-80              rows        678  misaligned   0.00%
+  ddos_rst-fin-flood-port-80                   rows        677  misaligned   0.00%
+  ddos_tcp-flood-port-80                       rows        677  misaligned   0.00%
+  dos_tcp-flood-port-80                        rows        677  misaligned   0.00%
+  ddos_udp-flood-port-80                       rows        676  misaligned   0.00%
+  dos_syn-flood-port-80                        rows        676  misaligned   0.00%
+  dos_ack-frag-flood-port-80                   rows        676  misaligned   0.00%
+  ddos_push-ack-flood-port-80                  rows        675  misaligned   0.00%
+  ddos_ack-frag-flood-port-80                  rows        675  misaligned   0.00%
+  ddos_syn-flood-port-80                       rows        673  misaligned   0.00%
+  ddos_http-flood-port-80                      rows        673  misaligned   0.00%
+  dos_push-ack-flood-port-80                   rows        672  misaligned   0.00%
+  web_sql-injection                            rows        384  misaligned   0.00%
+  dos_rst-fin-flood-port-80                    rows        306  misaligned   0.00%
+  dos_http-flood-port-80                       rows        305  misaligned   0.00%
+  dos_http-flood-port-6668                     rows        244  misaligned   0.00%
+  web_xss                                      rows        217  misaligned   0.00%
+  web_backdoor-upload                          rows        209  misaligned   0.00%
+  dos_tcp-flood-port-554                       rows        187  misaligned   0.00%
+  ddos_slowloris-port-80                       rows        183  misaligned   0.00%
+  dos_slowloris-port-80                        rows        183  misaligned   0.00%
+  dos_syn-flood-port-554                       rows        156  misaligned   0.00%
+  dos_syn-flood-port-443                       rows        125  misaligned   0.00%
+  dos_tcp-flood-port-443                       rows        125  misaligned   0.00%
+  dos_syn-flood-port-22                        rows         64  misaligned   0.00%
+  dos_http-flood-port-1883                     rows         62  misaligned   0.00%
+  dos_syn-flood-port-23                        rows         62  misaligned   0.00%
+  dos_tcp-flood-port-23                        rows         62  misaligned   0.00%
+  dos_tcp-flood-port-22                        rows         62  misaligned   0.00%
+  ddos_mqtt-publish-flood                      rows         61  misaligned   0.00%
+  ddos_connect-flood                           rows         61  misaligned   0.00%
+  dos_connect-flood                            rows         61  misaligned   0.00%
+  dos_http-flood-port-9595                     rows         61  misaligned   0.00%
+  ddos_slowloris-port-1883                     rows         61  misaligned   0.00%
+  dos_mqtt-publish-flood                       rows         61  misaligned   0.00%
+  ddos_slowloris-port-8000                     rows         61  misaligned   0.00%
+  ddos_slowloris-port-554                      rows         61  misaligned   0.00%
+  dos_slowloris-port-1883                      rows         61  misaligned   0.00%
+  dos_http-flood-port-554                      rows         61  misaligned   0.00%
+  dos_slowloris-port-8000                      rows         61  misaligned   0.00%
+  dos_slowloris-port-554                       rows         61  misaligned   0.00%
+  dos_http-flood-port-443                      rows         61  misaligned   0.00%
+  dos_syn-flood-port-557                       rows         31  misaligned   0.00%
+  benign                                       rows    136,800  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  attack-labelled windows with no traffic and no sensor reading: 9,674 (dropped)
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  mitm_arp-spoofing                              1.30%
+  malware_mirai-udp-flood                        0.00%
+  recon_os-scan                                  0.00%
+  recon_host-disc-tcp-ack-ping                   0.00%
+  recon_vuln-scan                                0.00%
+  recon_host-disc-tcp-syn-ping                   0.03%
+  recon_port-scan                                0.03%
+  recon_host-disc-tcp-syn-stealth                0.00%
+  recon_host-disc-arp-ping                       0.00%
+  recon_host-disc-udp-ping                       0.00%
+  malware_mirai-syn-flood                        0.00%
+  mitm_ip-spoofing                               0.00%
+  recon_ping-sweep                               0.00%
+  dos_udp-flood                                  0.00%
+  dos_icmp-flood                                 0.00%
+  ddos_icmp-flood                                0.27%
+  ddos_udp-frag-flood                            0.07%
+  dos_icmp-frag-flood                            0.00%
+  ddos_icmp-frag-flood                           0.00%
+  dos_udp-frag-flood                             0.00%
+  dos_rst-fin-flood-port-1883                    0.00%
+  web_command-injection                          0.00%
+  web_sql-injection-blind                        0.00%
+  bruteforce_dictionary-ssh                      0.00%
+  ddos_rst-fin-flood-port-1883                   0.11%
+  ddos_synonymousip-flood-port-1883              0.56%
+  ddos_ack-frag-flood-port-1883                  0.00%
+  ddos_syn-flood-port-1883                       0.00%
+  dos_push-ack-flood-port-1883                   0.00%
+  ddos_udp-flood-port-1883                       0.22%
+  ddos_tcp-flood-port-1883                       0.23%
+  dos_synonymousip-flood-port-1883               0.00%
+  dos_ack-frag-flood-port-1883                   0.00%
+  ddos_push-ack-flood-port-1883                  0.22%
+  dos_tcp-flood-port-1883                        0.00%
+  dos_syn-flood-port-1883                        0.00%
+  ddos_http-flood-port-1883                      0.45%
+  bruteforce_dictionary-telnet                   0.00%
+  mitm_impersonation                             0.00%
+  dos_synonymousip-flood-port-80                 0.00%
+  ddos_synonymousip-flood-port-80                0.17%
+  ddos_rst-fin-flood-port-80                     0.00%
+  ddos_tcp-flood-port-80                         0.00%
+  dos_tcp-flood-port-80                          0.16%
+  ddos_udp-flood-port-80                         0.00%
+  dos_syn-flood-port-80                          0.00%
+  dos_ack-frag-flood-port-80                     0.00%
+  ddos_push-ack-flood-port-80                    0.00%
+  ddos_ack-frag-flood-port-80                    0.00%
+  ddos_syn-flood-port-80                         0.00%
+  ddos_http-flood-port-80                        0.00%
+  dos_push-ack-flood-port-80                     0.00%
+  web_sql-injection                              0.00%
+  dos_rst-fin-flood-port-80                      0.00%
+  dos_http-flood-port-80                         0.00%
+  dos_http-flood-port-6668                       0.00%
+  web_xss                                        0.00%
+  web_backdoor-upload                            0.00%
+  dos_tcp-flood-port-554                         0.00%
+  ddos_slowloris-port-80                         0.00%
+  dos_slowloris-port-80                          0.00%
+  dos_syn-flood-port-554                         0.00%
+  dos_syn-flood-port-443                         0.00%
+  dos_tcp-flood-port-443                         0.00%
+  dos_syn-flood-port-22                          0.00%
+  dos_http-flood-port-1883                       0.00%
+  dos_syn-flood-port-23                          0.00%
+  dos_tcp-flood-port-23                          0.00%
+  dos_tcp-flood-port-22                          0.00%
+  ddos_mqtt-publish-flood                        0.00%
+  ddos_connect-flood                             0.00%
+  dos_connect-flood                              0.00%
+  dos_http-flood-port-9595                       0.00%
+  ddos_slowloris-port-1883                       0.00%
+  dos_mqtt-publish-flood                         0.00%
+  ddos_slowloris-port-8000                       0.00%
+  ddos_slowloris-port-554                        0.00%
+  dos_slowloris-port-1883                        0.00%
+  dos_http-flood-port-554                        0.00%
+  dos_slowloris-port-8000                        0.00%
+  dos_slowloris-port-554                         0.00%
+  dos_http-flood-port-443                        0.00%
+  dos_syn-flood-port-557                         0.00%
+
+=== Q2b  protocol named by the type ===
+  mitm_arp-spoofing                            ARP    no indicator in the release: not applied
+  malware_mirai-udp-flood                      UDP    no indicator in the release: not applied
+  recon_host-disc-tcp-syn-ping                 SYN    carried by  83.96%
+  recon_host-disc-tcp-syn-stealth              SYN    carried by  80.27%
+  recon_host-disc-arp-ping                     ARP    no indicator in the release: not applied
+  recon_host-disc-udp-ping                     UDP    no indicator in the release: not applied
+  malware_mirai-syn-flood                      SYN    carried by  72.88%
+  dos_udp-flood                                UDP    no indicator in the release: not applied
+  dos_icmp-flood                               ICMP   no indicator in the release: not applied
+  ddos_icmp-flood                              ICMP   no indicator in the release: not applied
+  ddos_udp-frag-flood                          UDP    no indicator in the release: not applied
+  dos_icmp-frag-flood                          ICMP   no indicator in the release: not applied
+  ddos_icmp-frag-flood                         ICMP   no indicator in the release: not applied
+  dos_udp-frag-flood                           UDP    no indicator in the release: not applied
+  ddos_syn-flood-port-1883                     SYN    carried by  89.33%
+  ddos_udp-flood-port-1883                     UDP    no indicator in the release: not applied
+  dos_syn-flood-port-1883                      SYN    carried by  96.82%
+  ddos_http-flood-port-1883                    HTTP   no indicator in the release: not applied
+  ddos_udp-flood-port-80                       UDP    no indicator in the release: not applied
+  dos_syn-flood-port-80                        SYN    carried by  96.12%
+  ddos_syn-flood-port-80                       SYN    carried by  94.43%
+  ddos_http-flood-port-80                      HTTP   no indicator in the release: not applied
+  dos_http-flood-port-80                       HTTP   no indicator in the release: not applied
+  dos_http-flood-port-6668                     HTTP   no indicator in the release: not applied
+  dos_syn-flood-port-554                       SYN    carried by  97.33%
+  dos_syn-flood-port-443                       SYN    carried by  96.69%
+  dos_syn-flood-port-22                        SYN    carried by  96.77%
+  dos_http-flood-port-1883                     HTTP   no indicator in the release: not applied
+  dos_syn-flood-port-23                        SYN    carried by  96.67%
+  ddos_mqtt-publish-flood                      MQTT   no indicator in the release: not applied
+  dos_http-flood-port-9595                     HTTP   no indicator in the release: not applied
+  dos_mqtt-publish-flood                       MQTT   no indicator in the release: not applied
+  dos_http-flood-port-554                      HTTP   no indicator in the release: not applied
+  dos_http-flood-port-443                      HTTP   no indicator in the release: not applied
+  dos_syn-flood-port-557                       SYN    carried by  93.55%
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  136,800 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  mitm_arp-spoofing                            kept
+  malware_mirai-udp-flood                      kept
+  recon_os-scan                                kept
+  recon_host-disc-tcp-ack-ping                 kept
+  recon_vuln-scan                              kept
+  recon_host-disc-tcp-syn-ping                 kept
+  recon_port-scan                              kept
+  recon_host-disc-tcp-syn-stealth              kept
+  recon_host-disc-arp-ping                     kept
+  recon_host-disc-udp-ping                     kept
+  malware_mirai-syn-flood                      kept
+  mitm_ip-spoofing                             kept
+  recon_ping-sweep                             kept
+  dos_udp-flood                                kept
+  dos_icmp-flood                               kept
+  ddos_icmp-flood                              kept
+  ddos_udp-frag-flood                          kept
+  dos_icmp-frag-flood                          kept
+  ddos_icmp-frag-flood                         kept
+  dos_udp-frag-flood                           kept
+  dos_rst-fin-flood-port-1883                  kept
+  web_command-injection                        kept
+  web_sql-injection-blind                      kept
+  bruteforce_dictionary-ssh                    kept
+  ddos_rst-fin-flood-port-1883                 kept
+  ddos_synonymousip-flood-port-1883            kept
+  ddos_ack-frag-flood-port-1883                kept
+  ddos_syn-flood-port-1883                     kept
+  dos_push-ack-flood-port-1883                 kept
+  ddos_udp-flood-port-1883                     kept
+  ddos_tcp-flood-port-1883                     kept
+  dos_synonymousip-flood-port-1883             kept
+  dos_ack-frag-flood-port-1883                 kept
+  ddos_push-ack-flood-port-1883                kept
+  dos_tcp-flood-port-1883                      kept
+  dos_syn-flood-port-1883                      kept
+  ddos_http-flood-port-1883                    kept
+  bruteforce_dictionary-telnet                 kept
+  mitm_impersonation                           kept
+  dos_synonymousip-flood-port-80               kept
+  ddos_synonymousip-flood-port-80              kept
+  ddos_rst-fin-flood-port-80                   kept
+  ddos_tcp-flood-port-80                       kept
+  dos_tcp-flood-port-80                        kept
+  ddos_udp-flood-port-80                       kept
+  dos_syn-flood-port-80                        kept
+  dos_ack-frag-flood-port-80                   kept
+  ddos_push-ack-flood-port-80                  kept
+  ddos_ack-frag-flood-port-80                  kept
+  ddos_syn-flood-port-80                       kept
+  ddos_http-flood-port-80                      kept
+  dos_push-ack-flood-port-80                   kept
+  web_sql-injection                            kept
+  dos_rst-fin-flood-port-80                    kept
+  dos_http-flood-port-80                       kept
+  dos_http-flood-port-6668                     kept
+  web_xss                                      kept
+  web_backdoor-upload                          kept
+  dos_tcp-flood-port-554                       kept
+  ddos_slowloris-port-80                       kept
+  dos_slowloris-port-80                        kept
+  dos_syn-flood-port-554                       kept
+  dos_syn-flood-port-443                       kept
+  dos_tcp-flood-port-443                       kept
+  dos_syn-flood-port-22                        kept
+  dos_http-flood-port-1883                     kept
+  dos_syn-flood-port-23                        kept
+  dos_tcp-flood-port-23                        kept
+  dos_tcp-flood-port-22                        kept
+  ddos_mqtt-publish-flood                      kept
+  ddos_connect-flood                           kept
+  dos_connect-flood                            kept
+  dos_http-flood-port-9595                     kept
+  ddos_slowloris-port-1883                     kept
+  dos_mqtt-publish-flood                       kept
+  ddos_slowloris-port-8000                     kept
+  ddos_slowloris-port-554                      kept
+  dos_slowloris-port-1883                      kept
+  dos_http-flood-port-554                      kept
+  dos_slowloris-port-8000                      kept
+  dos_slowloris-port-554                       kept
+  dos_http-flood-port-443                      kept
+  dos_syn-flood-port-557                       kept
+
+  types kept 83 of 83; benign 136,800 -> QUALIFIES

@@ -1,0 +1,56 @@
+{
+ "release": "morris2",
+ "tables": [
+  {
+   "release": "Morris-2 (gas pipeline, 2014)",
+   "rows": 97019,
+   "sample": "all rows",
+   "types": {
+    "CMRI": {
+     "rows": 15466,
+     "excluded_by": []
+    },
+    "MPCI": {
+     "rows": 7637,
+     "excluded_by": [
+      "Q2a 83.6% identical to benign"
+     ]
+    },
+    "Recon": {
+     "rows": 6805,
+     "excluded_by": []
+    },
+    "NMRI": {
+     "rows": 2763,
+     "excluded_by": []
+    },
+    "DoS": {
+     "rows": 1837,
+     "excluded_by": []
+    },
+    "MSCI": {
+     "rows": 782,
+     "excluded_by": []
+    },
+    "MFCI": {
+     "rows": 573,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "CMRI",
+    "Recon",
+    "NMRI",
+    "DoS",
+    "MSCI",
+    "MFCI"
+   ],
+   "benign": 61156,
+   "q3": true,
+   "qualifies": true,
+   "table": "morris2"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "morris2"
+}

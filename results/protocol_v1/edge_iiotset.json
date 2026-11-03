@@ -1,0 +1,93 @@
+{
+ "release": "edge_iiotset",
+ "tables": [
+  {
+   "release": "Edge-IIoTset (DNN file)",
+   "rows": 2219201,
+   "sample": "all rows",
+   "types": {
+    "DDoS_UDP": {
+     "rows": 121568,
+     "excluded_by": [
+      "Q1a 99.97% misaligned"
+     ]
+    },
+    "DDoS_ICMP": {
+     "rows": 116436,
+     "excluded_by": []
+    },
+    "SQL_injection": {
+     "rows": 51203,
+     "excluded_by": []
+    },
+    "Password": {
+     "rows": 50153,
+     "excluded_by": []
+    },
+    "Vulnerability_scanner": {
+     "rows": 50110,
+     "excluded_by": []
+    },
+    "DDoS_TCP": {
+     "rows": 50062,
+     "excluded_by": []
+    },
+    "DDoS_HTTP": {
+     "rows": 49911,
+     "excluded_by": [
+      "Q2b 1.4% carry HTTP"
+     ]
+    },
+    "Uploading": {
+     "rows": 37634,
+     "excluded_by": []
+    },
+    "Backdoor": {
+     "rows": 24862,
+     "excluded_by": []
+    },
+    "Port_Scanning": {
+     "rows": 22564,
+     "excluded_by": []
+    },
+    "XSS": {
+     "rows": 15915,
+     "excluded_by": []
+    },
+    "Ransomware": {
+     "rows": 10925,
+     "excluded_by": []
+    },
+    "MITM": {
+     "rows": 1214,
+     "excluded_by": [
+      "Q1a 30.23% misaligned"
+     ]
+    },
+    "Fingerprinting": {
+     "rows": 1001,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "DDoS_ICMP",
+    "SQL_injection",
+    "Password",
+    "Vulnerability_scanner",
+    "DDoS_TCP",
+    "Uploading",
+    "Backdoor",
+    "Port_Scanning",
+    "XSS",
+    "Ransomware",
+    "Fingerprinting"
+   ],
+   "benign": 1615643,
+   "q3": true,
+   "qualifies": true,
+   "table": "edge_iiotset"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "edge_iiotset"
+}

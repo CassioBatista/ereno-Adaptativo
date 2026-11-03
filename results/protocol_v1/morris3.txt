@@ -1,0 +1,47 @@
+SCREENING (protocol-v1) — Morris-3 (water tank, 2014)
+rows 236,179 (all rows); benign label 'normal'; content features 21; identifiers 2
+
+=== Q1a  misaligned rows ===
+columns checked: none (no address, port or time column); rows without a label 0; misaligned rows 0 (0.00%)
+  Recon                                        rows     34,002  misaligned   0.00%
+  CMRI                                         rows     12,460  misaligned   0.00%
+  NMRI                                         rows      9,187  misaligned   0.00%
+  MPCI                                         rows      3,725  misaligned   0.00%
+  MSCI                                         rows      1,833  misaligned   0.00%
+  MFCI                                         rows      1,320  misaligned   0.00%
+  DoS                                          rows      1,237  misaligned   0.00%
+  normal                                       rows    172,415  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  Recon                                          0.00%
+  CMRI                                          98.97%
+  NMRI                                           2.35%
+  MPCI                                           0.48%
+  MSCI                                           2.67%
+  MFCI                                           0.00%
+  DoS                                            0.00%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  172,415 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  Recon                                        kept
+  CMRI                                         excluded: Q2a 99.0% identical to benign
+  NMRI                                         kept
+  MPCI                                         kept
+  MSCI                                         kept
+  MFCI                                         kept
+  DoS                                          kept
+
+  types kept 6 of 7; benign 172,415 -> QUALIFIES

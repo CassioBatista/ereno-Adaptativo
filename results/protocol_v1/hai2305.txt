@@ -1,0 +1,44 @@
+SCREENING (protocol-v1) — HAI 23.05
+rows 1,180,800 (all rows); benign label 'normal'; content features 86; identifiers 0
+
+=== Q1a  misaligned rows ===
+columns checked: none (no address, port or time column); rows without a label 0; misaligned rows 0 (0.00%)
+  P1-LC                                        rows      3,768  misaligned   0.00%
+  P1-PC                                        rows      2,813  misaligned   0.00%
+  P1-CC                                        rows      1,658  misaligned   0.00%
+  P1-FC                                        rows      1,618  misaligned   0.00%
+  P1-TC                                        rows      1,444  misaligned   0.00%
+  P1-HC                                        rows         83  misaligned   0.00%
+  normal                                       rows  1,169,416  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  P1-LC                                          0.00%
+  P1-PC                                          0.00%
+  P1-CC                                          0.00%
+  P1-FC                                          0.00%
+  P1-TC                                          0.00%
+  P1-HC                                          0.00%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  1,169,416 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  P1-LC                                        kept
+  P1-PC                                        kept
+  P1-CC                                        kept
+  P1-FC                                        kept
+  P1-TC                                        kept
+  P1-HC                                        kept
+
+  types kept 6 of 6; benign 1,169,416 -> QUALIFIES

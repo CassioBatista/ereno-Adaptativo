@@ -1,0 +1,42 @@
+SCREENING (protocol-v1) — Kitsune (five captures)
+rows 1,862,222 (stride sample of each capture, at most 400,000 packets (sample cache of inspect_kitsune.py)); benign label 'normal'; content features 100; identifiers 16
+
+=== Q1a  misaligned rows ===
+columns checked: none (no address, port or time column); rows without a label 0; misaligned rows 0 (0.00%)
+  Mirai                                        rows    321,258  misaligned   0.00%
+  SSDP_Flood                                   rows    130,923  misaligned   0.00%
+  Fuzzing                                      rows     72,159  misaligned   0.00%
+  OS_Scan                                      rows     13,074  misaligned   0.00%
+  SYN_DoS                                      rows        974  misaligned   0.00%
+  normal                                       rows  1,323,834  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  Mirai                                          0.00%
+  SSDP_Flood                                     0.00%
+  Fuzzing                                        0.00%
+  OS_Scan                                        0.00%
+  SYN_DoS                                        0.00%
+
+=== Q2b  protocol named by the type ===
+  SYN_DoS                                      SYN    no indicator in the release: not applied
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  1,323,834 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  Mirai                                        kept
+  SSDP_Flood                                   kept
+  Fuzzing                                      kept
+  OS_Scan                                      kept
+  SYN_DoS                                      kept
+
+  types kept 5 of 5; benign 1,323,834 -> QUALIFIES

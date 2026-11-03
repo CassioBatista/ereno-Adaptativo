@@ -1,0 +1,74 @@
+SCREENING (protocol-v1) — PowerDuck
+rows 1,133,589 (all rows); benign label 'benign'; content features 20; identifiers 6
+
+=== Q1a  misaligned rows ===
+columns checked: none (no address, port or time column); rows without a label 0; misaligned rows 0 (0.00%)
+  16-flood-bloat-repeat                        rows    560,000  misaligned   0.00%
+  15-flood-repeat                              rows    484,000  misaligned   0.00%
+  06-insert-distort-meas-up-grad               rows      1,509  misaligned   0.00%
+  07-insert-distort-meas-down-grad             rows      1,481  misaligned   0.00%
+  12-sup-1-1-tbv2                              rows        216  misaligned   0.00%
+  09-insert-distort-meas-down-sharp            rows        192  misaligned   0.00%
+  11-sup-1-1-tbv1                              rows        188  misaligned   0.00%
+  14-sup-1                                     rows        176  misaligned   0.00%
+  13-sup-2                                     rows        164  misaligned   0.00%
+  10-sup-1-1-tbv0                              rows        159  misaligned   0.00%
+  08-insert-distort-meas-up-sharp              rows        154  misaligned   0.00%
+  04-insert-fake-open-w-intermediate           rows        150  misaligned   0.00%
+  05-insert-fake-open-only-end                 rows        145  misaligned   0.00%
+  03-replay-old-measurements                   rows         81  misaligned   0.00%
+  02-replay-opening-switch-w-context           rows         27  misaligned   0.00%
+  01-replay-opening-switch-isolated            rows          2  misaligned   0.00%
+  benign                                       rows     84,945  misaligned   0.00%
+
+=== Q1b  identical files under different labels ===
+  none found (the release has no per-label data files)
+
+=== Q2d  period-wide labels ===
+  no documented period-wide rule and no attack-labelled sample without content
+
+=== Q2a  samples whose content vector also occurs as benign ===
+  16-flood-bloat-repeat                          0.00%
+  15-flood-repeat                              100.00%
+  06-insert-distort-meas-up-grad                 0.00%
+  07-insert-distort-meas-down-grad               0.00%
+  12-sup-1-1-tbv2                              100.00%
+  09-insert-distort-meas-down-sharp              0.00%
+  11-sup-1-1-tbv1                              100.00%
+  14-sup-1                                     100.00%
+  13-sup-2                                     100.00%
+  10-sup-1-1-tbv0                              100.00%
+  08-insert-distort-meas-up-sharp                0.00%
+  04-insert-fake-open-w-intermediate           100.00%
+  05-insert-fake-open-only-end                 100.00%
+  03-replay-old-measurements                     0.00%
+  02-replay-opening-switch-w-context           100.00%
+  01-replay-opening-switch-isolated            100.00%
+
+=== Q2b  protocol named by the type ===
+
+=== Q2c  annotation visible in the counters ===
+  labels are per sample: not applicable
+
+=== Q3  benign samples ===
+  84,945 benign samples after Q1-Q2d (meets 10,000)
+
+=== DECISION ===
+  16-flood-bloat-repeat                        kept
+  15-flood-repeat                              excluded: Q2a 100.0% identical to benign
+  06-insert-distort-meas-up-grad               kept
+  07-insert-distort-meas-down-grad             kept
+  12-sup-1-1-tbv2                              excluded: Q2a 100.0% identical to benign
+  09-insert-distort-meas-down-sharp            kept
+  11-sup-1-1-tbv1                              excluded: Q2a 100.0% identical to benign
+  14-sup-1                                     excluded: Q2a 100.0% identical to benign
+  13-sup-2                                     excluded: Q2a 100.0% identical to benign
+  10-sup-1-1-tbv0                              excluded: Q2a 100.0% identical to benign
+  08-insert-distort-meas-up-sharp              kept
+  04-insert-fake-open-w-intermediate           excluded: Q2a 100.0% identical to benign
+  05-insert-fake-open-only-end                 excluded: Q2a 100.0% identical to benign
+  03-replay-old-measurements                   kept
+  02-replay-opening-switch-w-context           excluded: Q2a 100.0% identical to benign
+  01-replay-opening-switch-isolated            excluded: Q2a 100.0% identical to benign
+
+  types kept 6 of 16; benign 84,945 -> QUALIFIES

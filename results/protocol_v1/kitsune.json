@@ -1,0 +1,45 @@
+{
+ "release": "kitsune",
+ "tables": [
+  {
+   "release": "Kitsune (five captures)",
+   "rows": 1862222,
+   "sample": "stride sample of each capture, at most 400,000 packets (sample cache of inspect_kitsune.py)",
+   "types": {
+    "Mirai": {
+     "rows": 321258,
+     "excluded_by": []
+    },
+    "SSDP_Flood": {
+     "rows": 130923,
+     "excluded_by": []
+    },
+    "Fuzzing": {
+     "rows": 72159,
+     "excluded_by": []
+    },
+    "OS_Scan": {
+     "rows": 13074,
+     "excluded_by": []
+    },
+    "SYN_DoS": {
+     "rows": 974,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "Mirai",
+    "SSDP_Flood",
+    "Fuzzing",
+    "OS_Scan",
+    "SYN_DoS"
+   ],
+   "benign": 1323834,
+   "q3": true,
+   "qualifies": true,
+   "table": "kitsune"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "kitsune"
+}

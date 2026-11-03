@@ -1,0 +1,200 @@
+{
+ "release": "morris4",
+ "tables": [
+  {
+   "release": "Morris-4 (gas pipeline, 2015)",
+   "rows": 274628,
+   "sample": "all rows",
+   "types": {
+    "specific 35": {
+     "rows": 2204,
+     "excluded_by": []
+    },
+    "specific 18": {
+     "rows": 2176,
+     "excluded_by": [
+      "Q2a 81.1% identical to benign"
+     ]
+    },
+    "specific 30": {
+     "rows": 2120,
+     "excluded_by": []
+    },
+    "specific 27": {
+     "rows": 2079,
+     "excluded_by": []
+    },
+    "specific 12": {
+     "rows": 2072,
+     "excluded_by": []
+    },
+    "specific 23": {
+     "rows": 2048,
+     "excluded_by": []
+    },
+    "specific 6": {
+     "rows": 2026,
+     "excluded_by": []
+    },
+    "specific 34": {
+     "rows": 2010,
+     "excluded_by": []
+    },
+    "specific 4": {
+     "rows": 1932,
+     "excluded_by": []
+    },
+    "specific 31": {
+     "rows": 1906,
+     "excluded_by": []
+    },
+    "specific 32": {
+     "rows": 1871,
+     "excluded_by": []
+    },
+    "specific 28": {
+     "rows": 1858,
+     "excluded_by": []
+    },
+    "specific 29": {
+     "rows": 1856,
+     "excluded_by": []
+    },
+    "specific 11": {
+     "rows": 1834,
+     "excluded_by": []
+    },
+    "specific 26": {
+     "rows": 1808,
+     "excluded_by": []
+    },
+    "specific 8": {
+     "rows": 1798,
+     "excluded_by": []
+    },
+    "specific 1": {
+     "rows": 1792,
+     "excluded_by": []
+    },
+    "specific 21": {
+     "rows": 1722,
+     "excluded_by": []
+    },
+    "specific 3": {
+     "rows": 1700,
+     "excluded_by": []
+    },
+    "specific 14": {
+     "rows": 1676,
+     "excluded_by": [
+      "Q2a 61.6% identical to benign"
+     ]
+    },
+    "specific 16": {
+     "rows": 1658,
+     "excluded_by": []
+    },
+    "specific 19": {
+     "rows": 1634,
+     "excluded_by": []
+    },
+    "specific 33": {
+     "rows": 1604,
+     "excluded_by": []
+    },
+    "specific 13": {
+     "rows": 1594,
+     "excluded_by": [
+      "Q2a 63.3% identical to benign"
+     ]
+    },
+    "specific 15": {
+     "rows": 1558,
+     "excluded_by": [
+      "Q2a 58.2% identical to benign"
+     ]
+    },
+    "specific 22": {
+     "rows": 1542,
+     "excluded_by": []
+    },
+    "specific 7": {
+     "rows": 1512,
+     "excluded_by": []
+    },
+    "specific 10": {
+     "rows": 1474,
+     "excluded_by": []
+    },
+    "specific 25": {
+     "rows": 1472,
+     "excluded_by": []
+    },
+    "specific 2": {
+     "rows": 1460,
+     "excluded_by": [
+      "Q2a 50.1% identical to benign"
+     ]
+    },
+    "specific 5": {
+     "rows": 1416,
+     "excluded_by": []
+    },
+    "specific 17": {
+     "rows": 1414,
+     "excluded_by": []
+    },
+    "specific 9": {
+     "rows": 1396,
+     "excluded_by": []
+    },
+    "specific 24": {
+     "rows": 1160,
+     "excluded_by": []
+    },
+    "specific 20": {
+     "rows": 666,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "specific 35",
+    "specific 30",
+    "specific 27",
+    "specific 12",
+    "specific 23",
+    "specific 6",
+    "specific 34",
+    "specific 4",
+    "specific 31",
+    "specific 32",
+    "specific 28",
+    "specific 29",
+    "specific 11",
+    "specific 26",
+    "specific 8",
+    "specific 1",
+    "specific 21",
+    "specific 3",
+    "specific 16",
+    "specific 19",
+    "specific 33",
+    "specific 22",
+    "specific 7",
+    "specific 10",
+    "specific 25",
+    "specific 5",
+    "specific 17",
+    "specific 9",
+    "specific 24",
+    "specific 20"
+   ],
+   "benign": 214580,
+   "q3": true,
+   "qualifies": true,
+   "table": "morris4"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "morris4"
+}

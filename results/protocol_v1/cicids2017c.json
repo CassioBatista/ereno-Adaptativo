@@ -1,0 +1,150 @@
+{
+ "release": "cicids2017c",
+ "tables": [
+  {
+   "release": "CICIDS2017, improved (Liu et al., version of 27 April 2023)",
+   "rows": 2099976,
+   "sample": "all rows",
+   "types": {
+    "Portscan": {
+     "rows": 159066,
+     "excluded_by": []
+    },
+    "DoS Hulk": {
+     "rows": 158468,
+     "excluded_by": []
+    },
+    "DDoS": {
+     "rows": 95144,
+     "excluded_by": []
+    },
+    "Infiltration - Portscan": {
+     "rows": 71767,
+     "excluded_by": []
+    },
+    "DoS GoldenEye": {
+     "rows": 7567,
+     "excluded_by": []
+    },
+    "Botnet - Attempted": {
+     "rows": 4067,
+     "excluded_by": []
+    },
+    "FTP-Patator": {
+     "rows": 3972,
+     "excluded_by": []
+    },
+    "DoS Slowloris": {
+     "rows": 3859,
+     "excluded_by": []
+    },
+    "DoS Slowhttptest - Attempted": {
+     "rows": 3368,
+     "excluded_by": []
+    },
+    "SSH-Patator": {
+     "rows": 2961,
+     "excluded_by": []
+    },
+    "DoS Slowloris - Attempted": {
+     "rows": 1847,
+     "excluded_by": []
+    },
+    "DoS Slowhttptest": {
+     "rows": 1740,
+     "excluded_by": []
+    },
+    "Web Attack - Brute Force - Attempted": {
+     "rows": 1292,
+     "excluded_by": []
+    },
+    "Botnet": {
+     "rows": 736,
+     "excluded_by": []
+    },
+    "Web Attack - XSS - Attempted": {
+     "rows": 655,
+     "excluded_by": []
+    },
+    "DoS Hulk - Attempted": {
+     "rows": 581,
+     "excluded_by": []
+    },
+    "DoS GoldenEye - Attempted": {
+     "rows": 80,
+     "excluded_by": []
+    },
+    "Web Attack - Brute Force": {
+     "rows": 73,
+     "excluded_by": []
+    },
+    "Infiltration - Attempted": {
+     "rows": 45,
+     "excluded_by": []
+    },
+    "Infiltration": {
+     "rows": 36,
+     "excluded_by": []
+    },
+    "SSH-Patator - Attempted": {
+     "rows": 27,
+     "excluded_by": []
+    },
+    "Web Attack - XSS": {
+     "rows": 18,
+     "excluded_by": []
+    },
+    "Web Attack - SQL Injection": {
+     "rows": 13,
+     "excluded_by": []
+    },
+    "FTP-Patator - Attempted": {
+     "rows": 12,
+     "excluded_by": []
+    },
+    "Heartbleed": {
+     "rows": 11,
+     "excluded_by": []
+    },
+    "Web Attack - SQL Injection - Attempted": {
+     "rows": 5,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "Portscan",
+    "DoS Hulk",
+    "DDoS",
+    "Infiltration - Portscan",
+    "DoS GoldenEye",
+    "Botnet - Attempted",
+    "FTP-Patator",
+    "DoS Slowloris",
+    "DoS Slowhttptest - Attempted",
+    "SSH-Patator",
+    "DoS Slowloris - Attempted",
+    "DoS Slowhttptest",
+    "Web Attack - Brute Force - Attempted",
+    "Botnet",
+    "Web Attack - XSS - Attempted",
+    "DoS Hulk - Attempted",
+    "DoS GoldenEye - Attempted",
+    "Web Attack - Brute Force",
+    "Infiltration - Attempted",
+    "Infiltration",
+    "SSH-Patator - Attempted",
+    "Web Attack - XSS",
+    "Web Attack - SQL Injection",
+    "FTP-Patator - Attempted",
+    "Heartbleed",
+    "Web Attack - SQL Injection - Attempted"
+   ],
+   "benign": 1582566,
+   "q3": true,
+   "qualifies": true,
+   "table": "cicids2017c"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "cicids2017c"
+}

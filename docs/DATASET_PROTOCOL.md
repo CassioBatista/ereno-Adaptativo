@@ -163,4 +163,31 @@ parentheses. n.i. = not indexed by OpenAlex.
 
 ## Change log
 
-- (none)
+- **2026-11-03, operational definitions fixed while writing `scripts/apply_protocol.py`**
+  (no criterion, threshold or selection rule changed; listed so that every choice made
+  after the freeze is visible):
+  - *Unit (section 4):* the finest label of each release is: CICIDS2017, improved, the
+    `Label` column (the "Attempted" labels are attack types of their own); CICIoT2023, the
+    34 labels; IoT-23, the detailed label; X-IIoTID, `class1`; CIC-BCCC-NRC-IoMT-2024, the
+    file (one per class); CIC IIoT 2025, `label4` (category and attack type;
+    `label_full` adds the target of each window); Morris-4, `specific result`; PowerDuck, the attack recording; UNSW, the attack
+    name without rate and origin; HAI 23.05, the target control loop of the manual; the
+    label column as given for the others.
+  - *Releases with several tables* (UAV-NIDD cases, Hassler et al. schemas, CIC IIoT 2025
+    window lengths, Westermo labellings): each table is screened with its own benign class;
+    the release qualifies through its best table.
+  - *Q1a:* checked columns are those named after an address, a port or a time. A row is
+    misaligned when its value is not of the named kind while at least half of the
+    non-empty values of that column are; a column holding another representation
+    throughout (addresses encoded as integers) marks no row. Lists of addresses ("a/b")
+    and missing values pass. Rows without a label are misaligned.
+  - *Q1b:* per-label files by MD5; for UAV-NIDD, the listing of the raw release (CRC32 and
+    size, `results/uav_nidd_figshare_listing.txt`), folders mapped to labels by their first
+    four letters.
+  - *Q2b:* type names are split into words (separators and camel case); the protocol words
+    are ARP, ICMP, DNS, HTTP/HTTPS, MQTT, Modbus/MBTCP, UDP, SYN. A sample carries the
+    protocol when a column named after it is non-zero, or when an IP protocol field holds
+    its number or name; with an IP protocol field, a sample does not carry ARP.
+  - *Q2d:* applied when the labelling rule is documented (Westermo timing labels) or when
+    attack-labelled samples have no content (CIC IIoT 2025 windows with no traffic and no
+    sensor reading).

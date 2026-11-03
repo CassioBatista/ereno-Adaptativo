@@ -1,0 +1,50 @@
+{
+ "release": "hai2305",
+ "tables": [
+  {
+   "release": "HAI 23.05",
+   "rows": 1180800,
+   "sample": "all rows",
+   "types": {
+    "P1-LC": {
+     "rows": 3768,
+     "excluded_by": []
+    },
+    "P1-PC": {
+     "rows": 2813,
+     "excluded_by": []
+    },
+    "P1-CC": {
+     "rows": 1658,
+     "excluded_by": []
+    },
+    "P1-FC": {
+     "rows": 1618,
+     "excluded_by": []
+    },
+    "P1-TC": {
+     "rows": 1444,
+     "excluded_by": []
+    },
+    "P1-HC": {
+     "rows": 83,
+     "excluded_by": []
+    }
+   },
+   "kept": [
+    "P1-LC",
+    "P1-PC",
+    "P1-CC",
+    "P1-FC",
+    "P1-TC",
+    "P1-HC"
+   ],
+   "benign": 1169416,
+   "q3": true,
+   "qualifies": true,
+   "table": "hai2305"
+  }
+ ],
+ "qualifies": true,
+ "best_table": "hai2305"
+}
