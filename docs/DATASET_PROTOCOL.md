@@ -173,6 +173,9 @@ parentheses. n.i. = not indexed by OpenAlex.
   OpenAlex. Morris-4 qualifies (30 of 35 types) and replaces Morris-3 in the industrial
   control class. Decided before any model of the evaluation was trained; the alternative
   of excluding superseded releases, which would have selected Electra, was not taken.
+  *Note (2026-11-03, no decision changed):* Google Scholar lists 236 citations of the
+  reference requested by Morris-4 (all years), so its absence from OpenAlex reflects that
+  index's coverage, not a lack of use. The counts of section 7 remain the OpenAlex ones.
 
 - **2026-11-03, operational definitions fixed while writing `scripts/apply_protocol.py`**
   (no criterion, threshold or selection rule changed; listed so that every choice made
