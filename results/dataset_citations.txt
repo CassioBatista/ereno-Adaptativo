@@ -1,0 +1,23 @@
+OpenAlex, queried 2026-11-03; window = citations received in 2025-2026
+release	window	total	year	type	title
+ERENO	38	46	2023	article	ERENO: A Framework for Generating Realistic IEC–61850 Intrusion Detection Datasets for Smart Grids
+CICIDS2017, improved	84	127	2022	conference-paper	Error Prevalence in NIDS datasets: A Case Study on CIC-IDS-2017 and CSE-CIC-IDS-2018
+Electra Modbus	38	120	2019	article	On the Generation of Anomaly Detection Datasets in Industrial Control Systems
+UNSW IoT attack traces	38	193	2019	conference-paper	Detecting Volumetric Attacks on loT Devices via SDN-Based Monitoring of MUD Activity
+CICIoT2023	982	1248	2023	article	CICIoT2023: A Real-Time Dataset and Benchmark for Large-Scale Attacks in IoT Environment
+ToN_IoT (network)	418	747	2021	article	A new distributed architecture for evaluating AI-based security systems at the edge: Network TON_IoT datasets
+IoT-23	75	240	2020	dataset	IoT-23: A labeled dataset with malicious and benign IoT network traffic
+X-IIoTID	153	285	2021	article	X-IIoTID: A Connectivity-Agnostic and Device-Agnostic Intrusion Data Set for Industrial Internet of Things
+Kitsune	20	212	2018	conference-paper	Kitsune: An Ensemble of Autoencoders for Online Network Intrusion Detection
+Edge-IIoTset	778	1218	2022	article	Edge-IIoTset: A New Comprehensive Realistic Cyber Security Dataset of IoT and IIoT Applications for Centralized and Federated Learning
+UAV-NIDD	45	45	2025	article	UAV-NIDD: A Dynamic Dataset for Cybersecurity and Intrusion Detection in UAV Networks
+PDNet-IDS26	0	0	2026	conference-paper	PDNet-IDS26: A Healthcare 5.0 Multiclass Intrusion Detection Dataset with Biomedical and Network Features
+Hassler et al.	82	90	2023	article	Cyber-Physical Intrusion Detection System for Unmanned Aerial Vehicles
+CIC-BCCC-NRC-IoMT-2024 (tabular; Sasi et al.)	58	58	2024	article	An efficient self attention-based 1D-CNN-LSTM network for IoT attack detection and identification using network traffic
+CIC IIoT 2025	32	32	2025	article	DataSense: A Real-Time Sensor-Based Benchmark Dataset for Attack Analysis in IIoT with Multi-Objective Feature Selection
+Morris-1	56	457	2015	article	Developing a Hybrid Intrusion Detection System Using Data Mining for Power Systems
+Morris-2, Morris-3	49	241	2014	conference-paper	Industrial Control System Traffic Data Sets for Intrusion Detection Research
+Morris-4	n.i.	n.i.			not indexed (title search: A three-tiered intrusion detection system for industrial con; Anomaly Detection Dataset for Industrial Control Systems; Survey of intrusion detection systems: techniques, datasets )
+PowerDuck	14	25	2022	conference-paper	PowerDuck: A GOOSE Data Set of Cyberattacks in Substations
+Westermo	9	18	2023	data-paper	The Westermo network traffic data set
+HAI 23.05	n.i.	n.i.			not indexed (title search: {HAI} 1.0: HIL-based Augmented {ICS} Security Dataset; Two ICS Security Datasets and Anomaly Detection Contest on t; Deep learning and ensemble methods for anomaly detection in )
