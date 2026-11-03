@@ -1,0 +1,48 @@
+[cache] results/.cache/ereno_probs_n14_k2audit.npz
+test 2,955,648 samples (200,509 attack); calibration benign 100,049 held-out samples; target fused FPR 0.10%
+
+=== R0 === calibration-benign FPR 0.633%   H1 pass  H2 pass  H3 FAIL
+  Full     F1  95.45  recall  99.97  precision  91.33  FPR 0.6906% (FP 19,028)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak  99.6  masquerade_fak 100.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Absence  F1  95.46  recall  99.97  precision  91.33  FPR 0.6905% (FP 19,023)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak  99.6  masquerade_fak 100.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Silent   F1  95.46  recall  99.97  precision  91.33  FPR 0.6905% (FP 19,023)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak  99.6  masquerade_fak 100.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+
+=== R1 === calibration-benign FPR 0.555%   H1 FAIL  H2 FAIL  H3 FAIL
+  Full     F1  95.98  recall  99.96  precision  92.31  FPR 0.6064% (FP 16,708)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak  99.6  masquerade_fak 100.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Absence  F1  75.40  recall  60.53  precision  99.94  FPR 0.0025% (FP 68)
+           per attack: random_replay  89.9  inverse_replay  63.5  masquerade_fak   3.7  masquerade_fak   0.0  injection  22.7  high_StNum 100.0  poisoned_high_ 100.0
+  Silent   F1  75.40  recall  60.53  precision  99.94  FPR 0.0025% (FP 68)
+           per attack: random_replay  89.9  inverse_replay  63.5  masquerade_fak   3.7  masquerade_fak   0.0  injection  22.7  high_StNum 100.0  poisoned_high_ 100.0
+
+=== R2 === calibration-benign FPR 0.059%   H1 FAIL  H2 FAIL  H3 pass
+  threshold (Full) 0.8185
+  Full     F1  99.46  recall  99.65  precision  99.27  FPR 0.0536% (FP 1,478)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak  98.6  masquerade_fak  97.8  injection  99.8  high_StNum 100.0  poisoned_high_ 100.0
+  Absence  F1  95.39  recall  91.47  precision  99.67  FPR 0.0220% (FP 607)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   3.8  masquerade_fak  97.3  injection  99.8  high_StNum 100.0  poisoned_high_ 100.0
+  Silent   F1  95.39  recall  91.47  precision  99.67  FPR 0.0220% (FP 607)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   3.8  masquerade_fak  97.3  injection  99.8  high_StNum 100.0  poisoned_high_ 100.0
+
+=== R3 === calibration-benign FPR 0.001%   H1 FAIL  H2 FAIL  H3 pass
+  Full     F1  90.72  recall  83.06  precision  99.94  FPR 0.0038% (FP 104)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   3.8  masquerade_fak   0.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Absence  F1  90.72  recall  83.06  precision  99.94  FPR 0.0036% (FP 99)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   3.8  masquerade_fak   0.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Silent   F1  90.72  recall  83.06  precision  99.94  FPR 0.0036% (FP 99)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   3.8  masquerade_fak   0.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+
+=== R4 === calibration-benign FPR 0.093%   H1 FAIL  H2 FAIL  H3 pass
+  threshold (Full) 0.8033
+  Full     F1  99.27  recall  99.70  precision  98.85  FPR 0.0842% (FP 2,320)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak  99.6  masquerade_fak  97.3  injection  99.8  high_StNum 100.0  poisoned_high_ 100.0
+  Absence  F1  95.39  recall  91.47  precision  99.67  FPR 0.0220% (FP 607)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   3.8  masquerade_fak  97.3  injection  99.8  high_StNum 100.0  poisoned_high_ 100.0
+  Silent   F1   0.00  recall   0.00  precision   0.00  FPR 0.0000% (FP 0)
+           per attack: random_replay   0.0  inverse_replay   0.0  masquerade_fak   0.0  masquerade_fak   0.0  injection   0.0  high_StNum   0.0  poisoned_high_   0.0
+
+=== DECISION (docs/FUSION_RULE.md, section 5) ===
+no rule meets H1-H3; most constraints met (2): ['R0']
+CHOSEN RULE: R0
