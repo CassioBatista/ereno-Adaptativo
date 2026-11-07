@@ -44,9 +44,10 @@ the split of section 4 is applied before any feature selection.
 The recipe of the pipeline (`scripts/run_grasp_cross_domain.sh`), run on the **training split
 only**: (a) binary GRASP per attack type, attack vs benign (GraspVND, XGBoost, 5-fold
 cross-validation, lambda = 0.05, sample 60,000, benign cap 60,000, attack rows capped at the
-benign count, stop after 15 iterations without improvement); (b) penalized multiclass
-GRASP over all types (lambda = 0.05, sample 150,000, stop after 15 iterations without
-improvement; on a class-balanced copy when benign is under 10 % of the training rows,
+benign count, stop after 5 iterations without improvement *(amended, see the change log;
+was 15)*); (b) penalized multiclass GRASP over all types (lambda = 0.05, sample 150,000,
+stop after 5 iterations without improvement *(amended, see the change log; was 15)*; on a
+class-balanced copy when benign is under 10 % of the training rows,
 i.e. CICIoT2023); (c) the selected set is the union of (a) and (b). Types with fewer than
 10 training rows get no per-type run and are covered by (b).
 
@@ -132,6 +133,25 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   are no longer evaluated.
 
 ## Change log
+
+- **2026-11-07, amendment (compute budget), section 2.2: GRASP stops after 5 iterations
+  without improvement instead of 15, in steps (a) and (b) and in every domain.** Reason:
+  compute time, not results. Run alone, a Morris-4 iteration takes about 0.7 min per type in
+  step (a) and about 84 min in the multiclass step (b), so the registered rule (at least 16
+  iterations per run) costs about 22 h for step (b) of Morris-4 alone, and CICIoT2023 and
+  CICIDS2017 are larger. The change is not expected to alter the selection: in 29 of the 30
+  Morris-4 per-type runs the best subset was found in the first iteration (`iterations` −
+  `no_improvement` = 1 in `features/por_ataque/grasppen005_ev1_morris4_*.json`), so stopping
+  after 5 iterations returns the same subset; in step (b) the best subset was also found in
+  the first iteration, followed by 8 iterations without improvement. This evidence comes
+  from the cross-validation on the training split only; no evaluation model had been trained
+  and no test result had been seen. Consequences: the 29 Morris-4 per-type selections are
+  kept as computed (identical under the amended rule); `specific_19`, whose output records 13
+  iterations (fewer than the rule implies, cause not established; the run overlapped the
+  parallel period and a standby), is re-run under the amended rule, and the Morris-4 superset
+  is rebuilt; step (b) of Morris-4, interrupted after 9 iterations, is re-run under the
+  amended rule; CICIoT2023 and CICIDS2017 run under it from the start. The ERENO selection
+  is unchanged, as registered in section 2.2.
 
 - **2026-11-03, amendment (addition), section 6: profile ablation on CICIDS2017.** The
   controlled ablation of the earlier runs (`scripts/_cicids_profile_ablation.py`, profile

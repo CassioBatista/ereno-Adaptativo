@@ -32,11 +32,11 @@ EOF
   echo "[$ds] per-type GRASP for: $attacks"
   [ -f features/por_ataque/grasppen005_${ds}_SUPERSET.json ] || $PY -u scripts/grasp_por_ataque.py \
       --dataset all_in_one_${ds}_train --global-file none --lambda 0.05 --sample 60000 \
-      --normal-cap 60000 --attack-cap balanced --no-improvement 15 --attacks "$attacks" \
+      --normal-cap 60000 --attack-cap balanced --no-improvement 5 --attacks "$attacks" \
       --tag grasppen005_${ds}
   src=all_in_one_${ds}_train; [ -f all_in_one_${ds}_trainbal.csv ] && src=all_in_one_${ds}_trainbal
   [ -f features/global_penalizado_${ds}_L0.05.json ] || $PY -u scripts/grasp_global_penalizado.py \
-      --dataset $src --lambda 0.05 --sample 150000 --no-improvement 15 \
+      --dataset $src --lambda 0.05 --sample 150000 --no-improvement 5 \
       --out features/global_penalizado_${ds}_L0.05.json
   $PY - "$ds" <<'EOF'
 import json, sys
