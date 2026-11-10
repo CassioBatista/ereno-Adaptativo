@@ -119,7 +119,10 @@ Reported: overall and per-type recall, and false-positive rate, at every N.
 
 Per sample: F1-score, recall, precision, false-positive rate (at the prevalence of the test
 split), per-type recall; F1-score also at the ERENO test prevalence (6.8 %) for comparison
-across domains. Windows: attack windows alarmed, benign windows alarmed (false alarms),
+across domains; precision also at operational prevalences of 1 % and 0.1 % *(amended, see
+the change log)*, derived from the measured recall R and false-positive rate FPR as
+P(π) = Rπ / (Rπ + FPR (1 − π)); when no false positive occurs, FPR is replaced by its 95 %
+upper bound, 3/n for n benign test samples. Windows: attack windows alarmed, benign windows alarmed (false alarms),
 per type. Types with fewer than 100 test samples are reported with exact 95 % intervals.
 
 ## 8. Differences from the earlier runs (declared)
@@ -133,6 +136,17 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   are no longer evaluated.
 
 ## Change log
+
+- **2026-11-10, amendment (addition), section 7: precision at operational prevalence.** The
+  test splits are attack-rich (attack share 6.8 % in ERENO, 24.6 % in CICIDS2017, 19.4 % in
+  Morris-4, 97.6 % in CICIoT2023), far above the prevalence of attacks in operation. Recall
+  and the false-positive rate do not depend on prevalence; precision and F1-score do, and
+  the F1-score at the ERENO prevalence already registered aligns the domains but not with
+  operation. Precision is therefore also reported at prevalences of 1 % and 0.1 %, derived
+  from the measured recall and false-positive rate; no run is added. When no false positive
+  occurs, the 95 % upper bound of the false-positive rate (3/n) is used, so that precision
+  is not reported as 1. Added before any evaluation run; no evaluation model had been
+  trained and no test result had been seen.
 
 - **2026-11-07, amendment (compute budget), section 2.2: GRASP stops after 5 iterations
   without improvement instead of 15, in steps (a) and (b) and in every domain.** Reason:
