@@ -58,10 +58,11 @@ ax.text(1.42, 6.38, "(specialist of attack type $i$)", ha="left", va="center", f
         color="0.4")
 
 box(0.3, 4.75, 2.55, 1.3, LAV, "Disaster-FD monitor $i$",
-    "probes every 5 s:\nthe FL aggregator (50),\nneighbour specialists (15 + 15)",
+    "probes, with weights:\nthe FL aggregator ($w_A$),\neach neighbour specialist ($w_j$)",
     tfs=10.5, sfs=8.2)
 box(3.75, 4.75, 2.6, 1.3, ORANGE, "Agent $i$",
-    "FL if TL $\\geq$ 50;  GL if TL $\\geq$ 30;\nlocal otherwise\nsettle 5 s;  no TL for 15 s $\\to$ local",
+    "FL if TL $\\geq \\theta_{\\mathrm{FL}}$;  GL if TL $\\geq \\theta_{\\mathrm{GL}}$;\n"
+    "local otherwise\nsettle $S$;  no TL for $F$ $\\to$ local",
     sfs=8.2)
 arrow((2.87, 5.4), (3.73, 5.4), color=C_PR, lw=1.8)
 ax.text(3.3, 5.62, "TL", ha="center", va="center", fontsize=9.5, fontweight="bold", color=C_PR)
@@ -107,10 +108,10 @@ n, R, rn, cx = 8, 0.95, 0.21, 10.15
 ang = [math.pi / 2 + 2 * math.pi * k / n for k in range(n)]      # node i at the top
 
 
-def nodes(cy, labels):
+def nodes(cy, labels, nbrs=()):
     pos = [(cx + R * math.cos(a), cy + R * math.sin(a)) for a in ang]
     for k, (x, y) in enumerate(pos):
-        st = ORANGE if k == 0 else GREY
+        st = ORANGE if k == 0 else GREEN if k in nbrs else GREY
         ax.add_patch(Circle((x, y), rn, fc=st["fc"], ec=st["ec"], lw=1.4, zorder=3))
         ax.text(x, y, labels.get(k, ""), ha="center", va="center", fontsize=7.4, zorder=4,
                 color="0.15")
@@ -135,13 +136,23 @@ for x, y in pos:
 box(cx - 0.55, cy_fl - 0.22, 1.1, 0.44, BLUE, "Aggregator", tfs=8.2, lw=1.4)
 side_label(cy_fl, "FL", "aggregator\n+ specialists", C_FL)
 
-# GL: specialists only (ring)
+# GL: specialists only, on a generic connected overlay graph (ring in the evaluation)
 cy_gl = 1.85
-pos = nodes(cy_gl, {0: "$i$", 1: "$i{-}1$", n - 1: "$i{+}1$"})
-for k in range(n):
-    (x0, y0), (x1, y1) = pos[k], pos[(k + 1) % n]
-    ax.add_line(Line2D([x0, x1], [y0, y1], color=C_GL, lw=2.0, zorder=2))
-side_label(cy_gl, "GL", "specialists only,\nring overlay", C_GL)
+nbrs_i = (1, 3, 6)                                   # N(i): neighbours of node i (k = 0)
+edges = [(0, 1), (0, 3), (0, 6), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 1),
+         (2, 5), (4, 7)]
+pos = nodes(cy_gl, {0: "$i$"}, nbrs=nbrs_i)
+for a, b in edges:
+    (x0, y0), (x1, y1) = pos[a], pos[b]
+    ax.add_line(Line2D([x0, x1], [y0, y1], color=C_GL, lw=2.4 if 0 in (a, b) else 1.4,
+                       alpha=1.0 if 0 in (a, b) else 0.55, zorder=2))
+ax.text(6.95, cy_gl + 0.75, "GL", ha="left", va="center", fontsize=11, fontweight="bold",
+        color=C_GL)
+ax.text(6.95, cy_gl + 0.4, "specialists only,\noverlay graph\n(a ring in the\nevaluation)",
+        ha="left", va="top", fontsize=8, color="0.3", linespacing=1.25)
+ax.add_patch(Circle((7.05, cy_gl - 0.95), 0.1, fc=GREEN["fc"], ec=GREEN["ec"], lw=1.3))
+ax.text(7.22, cy_gl - 0.95, "$\\mathcal{N}(i)$, neighbours of $i$", ha="left", va="center",
+        fontsize=7.6, color="0.25")
 
 ax.add_line(Line2D([6.95, 12.25], [3.45, 3.45], color="0.8", lw=0.8, ls=(0, (4, 3))))
 ax.add_patch(Circle((7.08, 0.2), 0.1, fc=LAV["fc"], ec=LAV["ec"], lw=1.2))
