@@ -92,7 +92,7 @@ ax.text(1.45, 2.8, "$b_i$ shared", ha="left", va="center", fontsize=7.2, color="
 
 # detection
 box(1.55, 0.3, 3.4, 0.9, ORANGE, "OR fusion",
-    "alert if any $b \\in \\mathcal{M}_i$ scores $x$ above 0.5", tfs=10.5, sfs=7.8)
+    "alert if $b(x) \\geq 0.5$ for some $b \\in \\mathcal{M}_i$", tfs=10.5, sfs=7.8)
 ax.text(0.95, 0.75, "message $x$", ha="center", va="center", fontsize=8.5, color="0.3")
 arrow((1.0, 0.55), (1.53, 0.6), color="0.35")
 arrow((4.55, 1.53), (4.1, 1.22))
