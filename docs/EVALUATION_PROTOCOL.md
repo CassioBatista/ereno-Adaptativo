@@ -49,7 +49,9 @@ was 15)*); (b) penalized multiclass GRASP over all types (lambda = 0.05, sample 
 stop after 5 iterations without improvement *(amended, see the change log; was 15)*; on a
 class-balanced copy when benign is under 10 % of the training rows,
 i.e. CICIoT2023); (c) the selected set is the union of (a) and (b). Types with fewer than
-10 training rows get no per-type run and are covered by (b).
+10 training rows get no per-type run and are covered by (b). No wall-clock limit applies to
+(a) or (b): a run stops only on its iteration rule *(correction, see the change log of
+2026-11-12)*.
 
 - ERENO: the existing selection of this recipe, `features/all_in_one_ereno_train_combined.json`
   (24 features), unchanged (the fusion rule was selected on it).
@@ -136,6 +138,36 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   are no longer evaluated.
 
 ## Change log
+
+- **2026-11-12, correction (implementation), section 2.2: no wall-clock limit on GRASP; the
+  CICIDS2017 step (b) resumed from a checkpoint.** The GRASP implementation carried a
+  wall-clock limit of 24 h (`max_time` in `python/grasp/base.py`), not stated in the
+  protocol, checked at the end of each iteration and inside IWSS; the clock includes
+  standby. It could end a run before the registered rule (5 iterations without improvement)
+  was met. Of the 86 GRASP runs completed for evaluation-v1 (the 84 selections in use, the
+  replaced Morris-4 `specific_19`, and one Morris-3 run superseded when Morris-4 replaced
+  Morris-3), one reached it: the first Morris-4 `specific_19` (86,889 s, 13 iterations under
+  the then-registered rule of 15), which establishes the cause left open in the entry of
+  2026-11-07; that run had already been replaced by a re-run under the amended rule. The 84
+  selections in use all stopped on the iteration rule (longest: CICIoT2023 step (b),
+  77,719 s), so none is affected. The limit is
+  removed for steps (a) and (b) (`--max-time-h 0` in `scripts/run_ev1_grasp.sh`; the default
+  of the library is unchanged for other callers), which brings the implementation in line
+  with the registered rule. Only the CICIDS2017 step (b), still running, runs under the
+  correction. That step had been interrupted three times (a restart by Windows Update, a
+  shutdown of the WSL virtual machine, and one of unrecorded cause), each time restarting from
+  the first iteration. It is resumed from an evaluation checkpoint
+  (`python/grasp/checkpoint.py`): GRASP runs again from the start with the same seed, and
+  each evaluation already made is served from the checkpoint instead of recomputed, so that
+  the search reaches the point of interruption with the same random-number state as an
+  uninterrupted run; any difference in the requested subsets or in the hash of that state
+  aborts the run. The checkpoint was seeded with the 2,276 evaluations of the longest
+  interrupted run (`scripts/grasp_ckpt_from_log.py`); the four logged runs are identical
+  over their common evaluations, and each F1-score is rebuilt exactly from the logged fold
+  counts. On a reduced Morris-4 problem, a run killed half-way and resumed, and a run seeded
+  from a truncated log, returned the same selection, evaluation sequence and random-number
+  states as an uninterrupted run. No CICIDS2017 selection existed and no CICIDS2017
+  evaluation model had been trained.
 
 - **2026-11-10, amendment (addition), section 7: precision at operational prevalence.** The
   test splits are attack-rich (attack share 6.8 % in ERENO, 24.6 % in CICIDS2017, 19.4 % in

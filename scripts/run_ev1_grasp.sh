@@ -2,12 +2,16 @@
 # Feature selection of docs/EVALUATION_PROTOCOL.md (evaluation-v1), section 2.2, for the three
 # new domains, with the recipe of scripts/run_grasp_cross_domain.sh on the TRAINING split only:
 #   1. binary GRASP per attack type (lambda 0.05, sample 60k, benign cap 60k, attack rows
-#      capped at the benign count, 15 iterations without improvement); types with fewer than
+#      capped at the benign count, 5 iterations without improvement, no wall-clock cap);
+#      types with fewer than
 #      10 training rows get no per-type run;
-#   2. penalized global multiclass GRASP (lambda 0.05, sample 150k, 15 without improvement;
+#   2. penalized global multiclass GRASP (lambda 0.05, sample 150k, 5 without improvement,
+#      no wall-clock cap;
 #      on the class-balanced copy for ev1_ciciot, whose benign is under 10 %);
 #   3. union -> features/all_in_one_<ds>_train_combined.json.
-# Idempotent and resumable (each finished type is kept). Log: results/grasp_ev1.log
+# Idempotent and resumable (each finished type is kept; the global step resumes from its
+# evaluation checkpoint by deterministic replay, python/grasp/checkpoint.py).
+# Log: results/grasp_ev1.log
 set -euo pipefail
 cd ~/ereno-Adaptativo
 PY=~/venv-ereno314/bin/python
@@ -33,11 +37,13 @@ EOF
   [ -f features/por_ataque/grasppen005_${ds}_SUPERSET.json ] || $PY -u scripts/grasp_por_ataque.py \
       --dataset all_in_one_${ds}_train --global-file none --lambda 0.05 --sample 60000 \
       --normal-cap 60000 --attack-cap balanced --no-improvement 5 --attacks "$attacks" \
+      --max-time-h 0 \
       --tag grasppen005_${ds}
   src=all_in_one_${ds}_train; [ -f all_in_one_${ds}_trainbal.csv ] && src=all_in_one_${ds}_trainbal
   [ -f features/global_penalizado_${ds}_L0.05.json ] || $PY -u scripts/grasp_global_penalizado.py \
       --dataset $src --lambda 0.05 --sample 150000 --no-improvement 5 \
-      --out features/global_penalizado_${ds}_L0.05.json
+      --out features/global_penalizado_${ds}_L0.05.json \
+      --checkpoint features/checkpoints/global_penalizado_${ds}_L0.05.jsonl --max-time-h 0
   $PY - "$ds" <<'EOF'
 import json, sys
 ds = sys.argv[1]

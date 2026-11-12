@@ -8,6 +8,15 @@ import python.config as config
 from python.grasp.solution import GraspSolution
 
 
+def max_time_ms(hours: float | None) -> float:
+    """Wall-clock cap of a GRASP run, from --max-time-h: None keeps the historical
+    default of 24 h; 0 or a negative value removes the cap, so that the run stops only
+    on its iteration rules (no improvement, max iterations)."""
+    if hours is None:
+        return 24 * 60 * 60 * 1000
+    return float("inf") if hours <= 0 else hours * 60 * 60 * 1000
+
+
 class Grasp:
     """Abstract GRASP base."""
 
@@ -28,6 +37,9 @@ class Grasp:
         self.begin_time: float           = 0.0
         self._best_global_solution: GraspSolution | None = None
         self._all_instances: tuple | None = None
+        # optional evaluation checkpoint (python.grasp.checkpoint.EvalCheckpoint):
+        # resume by deterministic replay; None keeps the original behaviour
+        self.checkpoint = None
 
     # ------------------------------------------------------------------
     # Dataset
@@ -105,6 +117,18 @@ class Grasp:
 
         config.FEATURE_SELECTION = solution.get_array_features()
 
+        ck = self.checkpoint
+        if ck is not None:
+            cached = ck.lookup(solution.get_array_features(), self)
+            if cached is not None:
+                solution.evaluation = cached
+                self.number_evaluation += 1
+                print(f"EV;{self.number_evaluation};{cached.f1score};"
+                      f"{solution.get_array_features()}")
+                return solution
+            rng_before = ck.rng_hash_now()
+            t_eval = time.time()
+
         match config.CROSS_VALIDATION:
             case True:
                 X, y = self._all_instances
@@ -124,6 +148,9 @@ class Grasp:
                     )
 
         self.number_evaluation += 1
+        if ck is not None:
+            ck.record(self.number_evaluation, solution.get_array_features(),
+                      solution.evaluation, time.time() - t_eval, rng_before)
         f1 = solution.evaluation.f1score if solution.evaluation else 0.0
         print(f"EV;{self.number_evaluation};{f1};{solution.get_array_features()}")
         return solution

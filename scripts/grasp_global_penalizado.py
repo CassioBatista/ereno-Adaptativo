@@ -29,10 +29,14 @@ def main():
     dataset = _get("--dataset", "all_in_one_ereno_train")
     config.FEATURE_PENALTY = lam
     out = _get("--out", f"features/global_penalizado_L{lam}.json")
-    print(f"[global-pen] dataset={dataset}; FEATURE_PENALTY (lambda) = {lam} -> {out}")
+    ckpt = _get("--checkpoint", None)
+    max_h = _get("--max-time-h", None)
+    print(f"[global-pen] dataset={dataset}; FEATURE_PENALTY (lambda) = {lam} -> {out}"
+          + (f"; checkpoint {ckpt}" if ckpt else ""))
     main_grasp.main(["GR-G-VND", "6", dataset,
                      "--sample", str(sample), "--no-improvement", str(noimp),
-                     "--out", out])
+                     "--out", out] + (["--checkpoint", ckpt] if ckpt else [])
+                    + (["--max-time-h", max_h] if max_h is not None else []))
 
 
 if __name__ == "__main__":

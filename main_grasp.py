@@ -12,6 +12,8 @@ Uso (via ereno.py):
                     [--no-improvement K]   parada: K iterações sem melhora (default 15)
                     [--max-iterations M]   teto de segurança (default 1000)
                     [--out PATH]           default: features/<dataset>.json
+                    [--checkpoint PATH]    JSONL por avaliação; retoma por replay
+                    [--max-time-h H]       teto de relógio (default 24 h; 0 = sem teto)
 
 Exemplos:
     python ereno.py grasp GR-G-VND 2 all_in_one_ereno_train --sample 150000
@@ -140,9 +142,30 @@ def main(args: list[str] | None = None) -> None:
     # convergência: para após K iterações sem melhora do melhor global
     grasp.max_no_improvement = no_improve
     grasp.max_iterations     = max_iter
+    from python.grasp.base import max_time_ms
+    max_time_h = _get("--max-time-h", None)
+    max_time_h = float(max_time_h) if max_time_h is not None else None
+    grasp.max_time = max_time_ms(max_time_h)
+
+    # checkpoint por avaliação (retomada por replay determinístico; ver
+    # python/grasp/checkpoint.py). Sem --checkpoint, comportamento original.
+    ckpt_path = _get("--checkpoint", None)
+    if ckpt_path:
+        from python.grasp.checkpoint import EvalCheckpoint
+        grasp.checkpoint = EvalCheckpoint(ckpt_path, {
+            "dataset": dataset, "grasp_method": grasp_method.upper(),
+            "classifier_idx": clf_idx + 1, "sample": sample,
+            "no_improvement": no_improve, "max_iterations": max_iter,
+            "seed": config.GRASP_SEED, "folds": config.FOLDS,
+            "feature_penalty": getattr(config, "FEATURE_PENALTY", 0.0),
+            "dropped_classes": dropped_classes,
+        })
 
     print(f"[GRASP] {grasp_method} clf={clf_idx + 1} dataset={dataset} "
           f"| parada: {no_improve} iterações sem melhora (teto {max_iter})")
+    if max_time_h is not None:
+        print(f"[GRASP] teto de tempo: "
+              f"{'nenhum' if grasp.max_time == float('inf') else f'{max_time_h} h'}")
     t0   = time.time()
     best = grasp.run(rcl, grasp_method, dataset)
     dt   = time.time() - t0
@@ -163,7 +186,15 @@ def main(args: list[str] | None = None) -> None:
         "dropped_classes": dropped_classes,
         "seed":           config.GRASP_SEED,
         "elapsed_s":      round(dt, 1),
+        # wall-clock cap in force (None = no cap); 24 is the historical default
+        "max_time_h":     None if grasp.max_time == float("inf") else grasp.max_time / 3.6e6,
     }
+    if grasp.checkpoint is not None:
+        # elapsed_s above is this process only; the virtual elapsed counts the replayed
+        # evaluations with their recorded durations (estimated for log-seeded ones)
+        payload["checkpoint"] = ckpt_path
+        payload["replayed_evaluations"] = grasp.checkpoint.replayed
+        payload["elapsed_virtual_s"] = round((time.time() * 1000 - grasp.begin_time) / 1000, 1)
     os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
     with open(out_path, "w") as fh:
         json.dump(payload, fh, indent=2)

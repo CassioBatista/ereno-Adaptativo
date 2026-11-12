@@ -9,6 +9,7 @@ gera o conjunto final de features.
 Uso:
     python scripts/grasp_por_ataque.py [--sample N] [--normal-cap M]
         [--no-improvement K] [--attacks a,b,c] [--out-dir DIR] [--tag TAG]
+        [--max-time-h H]   (wall-clock cap per run; default 24 h, 0 = no cap)
 
 Cada ataque persiste features/por_ataque/<tag>_<attack>.json; ao final grava
 features/por_ataque/<tag>_SUPERSET.json (uniao + combinado com global-15).
@@ -26,6 +27,7 @@ import python.config as config
 import python.util as util
 from python.classifiers import all_classifiers
 from python.grasp.vnd import GraspVND
+from python.grasp.base import max_time_ms
 from main_grasp import _get_feature_subsets
 
 DATASET = "all_in_one_ereno_train"          # override with --dataset
@@ -49,6 +51,8 @@ def main():
     tag         = _get("--tag", "grasp")
     only        = _get("--attacks", None)
     attack_cap  = _get("--attack-cap", None)          # None | "balanced" | integer
+    max_time_h  = _get("--max-time-h", None)          # None = 24 h (default); 0 = no cap
+    max_time_h  = float(max_time_h) if max_time_h is not None else None
     global DATASET, GLOBAL15
     DATASET = _get("--dataset", DATASET)
     gfile = _get("--global-file", None)
@@ -113,6 +117,7 @@ def main():
         grasp._all_instances = (Xb, yb)
         grasp.max_no_improvement = no_improve
         grasp.max_iterations = 1000
+        grasp.max_time = max_time_ms(max_time_h)
 
         print(f"\n{'='*64}\n[grasp-atk] ATAQUE {aname} ({a}) | "
               f"{int((yb==1).sum())} pos / {int((yb==0).sum())} neg | "
@@ -130,7 +135,9 @@ def main():
                    "no_improvement": no_improve, "sample": sample, "normal_cap": normal_cap,
                    "attack_cap": attack_cap,
                    "feature_penalty": lam,
-                   "seed": config.GRASP_SEED, "elapsed_s": round(dt, 1)}
+                   "seed": config.GRASP_SEED, "elapsed_s": round(dt, 1),
+                   "max_time_h": None if grasp.max_time == float("inf")
+                                 else grasp.max_time / 3.6e6}
         with open(os.path.join(out_dir, f"{tag}_{aname}.json"), "w") as fh:
             json.dump(payload, fh, indent=2)
         print(f"[grasp-atk] {aname}: {len(feats)} feats {feats} f1_cv={f1} "
