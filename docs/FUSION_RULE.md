@@ -28,8 +28,8 @@ calibration and fixed criteria.
 
 | Id | Rule | Threshold |
 |---|---|---|
-| R0 | OR: alarm if any specialist's score > 0.5 | fixed 0.5 |
-| R1 | k >= 2: alarm if at least two specialists' scores > 0.5 (current) | fixed 0.5 |
+| R0 | OR: alarm if any specialist's score >= 0.5 *(corrected from "> 0.5", see the change log)* | fixed 0.5 |
+| R1 | k >= 2: alarm if at least two specialists' scores >= 0.5 (current) *(corrected from "> 0.5", see the change log)* | fixed 0.5 |
 | R2 | max score: alarm if the highest score > t | one t, calibrated |
 | R3 | per-specialist OR: specialist i alarms if its score > t_i; alarm if any does | one t_i per specialist, calibrated to FPR target / (number of specialists present) |
 | R4 | pair agreement: an attack alarms if every present specialist of that attack scores > t (a single present specialist alarms alone); alarm if any attack does | one t, calibrated |
@@ -67,4 +67,14 @@ reported for the comparison in the paper (RQ3), not used for the decision.
 
 ## Change log
 
-- (none)
+- **2026-11-12, wording correction, section 3 (R0, R1): the fixed threshold is inclusive,
+  score >= 0.5.** The table stated "> 0.5"; ReSIDS flags a message when a specialist's
+  probability is at least 0.5 (`main_dist.py`, k-of-n prediction), and the evaluation applies
+  the rule as implemented. The selection script (`scripts/fusion_rule_selection.py`, R0 and
+  R1) used "> 0.5" and is left unchanged as the record of the run. The two forms differ only
+  for a score of exactly 0.5, and no such score occurs in the selection data: 0 of the
+  41,379,072 test scores (`results/.cache/ereno_probs_n14_k2audit.npz`, 2,955,648 rows × 14
+  specialists) and 0 of the 1,949,738 calibration scores
+  (`results/.cache/ereno_probs_n14_calib.npz`, 139,267 rows × 14), none within 10^-4 of 0.5.
+  The results in `results/fusion_rule_selection.txt` and the choice of R0 are therefore the
+  same under either form. The calibrated rules R2-R4 (score > t) are not affected.

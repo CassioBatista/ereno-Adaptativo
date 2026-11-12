@@ -68,7 +68,8 @@ i.e. CICIoT2023); (c) the selected set is the union of (a) and (b). Types with f
 ## 3. Fusion
 
 - **Fusion: OR at 0.5** (rule R0, `docs/FUSION_RULE.md`, tag `fusion-v1`): a sample is
-  flagged when any specialist scores above 0.5. No threshold is calibrated.
+  flagged when any specialist scores at least 0.5 *(corrected from "above 0.5", see the change
+  log of 2026-11-12)*. No threshold is calibrated.
 - Seed 42 for the reported results; seeds 43-46 repeat the per-sample results to report
   their dispersion.
 
@@ -138,6 +139,13 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   are no longer evaluated.
 
 ## Change log
+
+- **2026-11-12, wording correction, section 3: OR fires at a score of at least 0.5.** The
+  section said "above 0.5"; the implementation flags a sample when a specialist's
+  probability is >= 0.5 (`main_dist.py`), and the evaluation applies it as implemented. The
+  same correction is made, with its evidence, in the change log of `docs/FUSION_RULE.md`:
+  the two forms differ only for a score of exactly 0.5, none occurs in the ERENO selection
+  data, so the selection of R0 is the same under either. No run is affected.
 
 - **2026-11-12, correction (implementation), section 2.2: no wall-clock limit on GRASP; the
   CICIDS2017 step (b) resumed from a checkpoint.** The GRASP implementation carried a
