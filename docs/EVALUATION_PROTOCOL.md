@@ -51,10 +51,13 @@ class-balanced copy when benign is under 10 % of the training rows,
 i.e. CICIoT2023); (c) the selected set is the union of (a) and (b). Types with fewer than
 10 training rows get no per-type run and are covered by (b). No wall-clock limit applies to
 (a) or (b): a run stops only on its iteration rule *(correction, see the change log of
-2026-11-12)*.
+2026-11-12)*. An iteration counts as an improvement only when its result beats the best
+subset found so far, which is the subset the run returns *(correction (implementation), see
+the change log of 2026-11-12, GRASP incumbent)*.
 
 - ERENO: the existing selection of this recipe, `features/all_in_one_ereno_train_combined.json`
-  (24 features), unchanged (the fusion rule was selected on it).
+  (24 features), unchanged (the fusion rule was selected on it) *(under audit, see the
+  change log of 2026-11-12, GRASP incumbent)*.
 - CICIDS2017, Morris-4, CICIoT2023: new runs, per type, on the splits of section 4.
 
 ### 2.3 Partitioning
@@ -139,6 +142,53 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   are no longer evaluated.
 
 ## Change log
+
+- **2026-11-12, correction (implementation), section 2.2: GRASP incumbent and stopping
+  rule.** Defect: the VND local search (`do_vnd` in `python/grasp/local_searches.py`)
+  replaced the best subset found so far (the incumbent, which a run returns and against which
+  an iteration is judged an improvement) by any subset better than the starting point of the
+  current iteration, without comparing it with the incumbent. Two effects: (i) a run could
+  return a subset worse, on the penalized criterion, than one it had already found; (ii) the
+  result of an iteration had already become the incumbent when it was compared with it, so
+  it never counted as an improvement, the counter of the registered rule (5 iterations
+  without improvement) never reset, and every run made exactly the minimum number of
+  iterations. Correction: the local search returns its result and leaves the incumbent to the
+  caller (`GraspVND.run`), which replaces it only by a better subset (`do_vnd`; also
+  `do_rvnd`, not used in evaluation-v1). This brings the implementation in line with the
+  registered rule. Audit (`scripts/audit_grasp_incumbent.py`): the evaluations a run makes do
+  not depend on the incumbent (each iteration rebuilds from the subset of the first
+  iteration, and the local searches never read the incumbent), so each of the 84 selections
+  in use was replayed from its log under both versions. The replay of the code as run
+  reproduces all 84 stored outputs (subset, F1-score, iterations); in all 84 the counter
+  never reset. Under the corrected rule, 19 selections are identical; 16 differ within the
+  iterations already run (3 of them by a tie: another subset of the same penalized score);
+  49 runs would not yet have stopped (Morris-4 10 of 31, CICIoT2023 23 of 31, CICIDS2017 16
+  of 22), and in 37 of them the incumbent at that point already differs. Consequences: (1)
+  the evidence of the entry of 2026-11-07 ("in 29 of the 30 Morris-4 per-type runs the best
+  subset was found in the first iteration", from `iterations` − `no_improvement` = 1) is an
+  artifact of the defect, since that difference was 1 in every run; the amendment to 5
+  iterations, motivated by compute time, stands, but its expectation that the selection
+  would not change and the decision to keep the 29 Morris-4 per-type selections computed
+  under 15 do not. Under the corrected rule with 5 iterations, the 30 Morris-4 per-type runs
+  all stop within their logged iterations (19 identical, 11 different). (2) "Stopped on the
+  iteration rule" in the entry below refers to the rule as implemented. (3) The CICIDS2017
+  step (b) ran under the defect and finished on 2026-11-13 after 7 iterations with
+  `[25, 29, 42, 69, 71, 82]` (F1-score 98.684); the replay reproduces it. Its subset is the
+  best one evaluated, but under the corrected rule the counter stood at 4, not 5, so the run
+  would have gone on for at least one more iteration; its evaluations are valid and stay in
+  its checkpoint. It is kept as it is for now; whether it is resumed under the corrected rule
+  is decided after the ERENO audit. (4) The ERENO selection (section 2.2), published with the
+  earlier work, was produced by the same implementation but no log of its runs exists. Its 7
+  per-type runs are re-run with the corrected code and the same parameters (seed, sample,
+  benign cap, 15 iterations without improvement, λ = 0.05); the comparison is valid only if
+  replaying the code as it was on the new log reproduces each stored selection. Criterion,
+  fixed before the run: the published selection is kept if, for every type, the corrected
+  selection exceeds it on the penalized cross-validation F1-score by less than 0.05 points
+  (the value of one feature); otherwise the OR fusion of the two unions is compared on the
+  calibration set. The test split is not used. The outcome is recorded in a later entry. How the
+  selections are brought under the corrected implementation is recorded in a later entry.
+  The audit uses the cross-validation on the training split only; no evaluation model had
+  been trained and no test result had been seen.
 
 - **2026-11-12, wording correction, section 3: OR fires at a score of at least 0.5.** The
   section said "above 0.5"; the implementation flags a sample when a specialist's

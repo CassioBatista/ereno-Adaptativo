@@ -13,6 +13,11 @@ def busca_local(solution: GraspSolution, neighborhood, grasp) -> GraspSolution:
 
 
 def do_vnd(seed: GraspSolution, grasp) -> GraspSolution:
+    """Returns the best solution found from `seed`. It does not touch the global best: the
+    caller (GraspVND.run) compares the result with it, so that an iteration counts as an
+    improvement only when it beats the best solution found so far (correction of
+    2026-11-12; the global best used to be overwritten here by any solution better than
+    the seed, even a worse one, and a true improvement then never reset the counter)."""
     structures = [IWSSr(grasp), IWSS(grasp)]
     print("Adding IWWSr...")
     print("Adding IWWS...")
@@ -28,7 +33,6 @@ def do_vnd(seed: GraspSolution, grasp) -> GraspSolution:
 
         if nova.is_better_than(best_local, grasp.criteria_metric):
             best_local = nova.new_clone(False)
-            grasp.set_best_global_solution(nova.new_clone(False))
 
         grasp.num_bit_flip_features = best_local.get_num_selected_features()
         if grasp.num_bit_flip_features > 0 and not included_bf:
@@ -41,6 +45,7 @@ def do_vnd(seed: GraspSolution, grasp) -> GraspSolution:
 
 
 def do_rvnd(seed: GraspSolution, grasp) -> GraspSolution:
+    """As do_vnd: returns its best solution and leaves the global best to the caller."""
     def _make_structures():
         s = [IWSSr(grasp), IWSS(grasp)]
         print("Adding IWWSr...")
@@ -71,7 +76,6 @@ def do_rvnd(seed: GraspSolution, grasp) -> GraspSolution:
                 else:
                     print("RESET")
                     best = nova.new_clone(False)
-                    grasp.set_best_global_solution(best.new_clone(False))
                     structures = _make_structures()
                 grasp.num_bit_flip_features = best.get_num_selected_features()
             else:
