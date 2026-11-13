@@ -55,9 +55,9 @@ i.e. CICIoT2023); (c) the selected set is the union of (a) and (b). Types with f
 subset found so far, which is the subset the run returns *(correction (implementation), see
 the change log of 2026-11-12, GRASP incumbent)*.
 
-- ERENO: the existing selection of this recipe, `features/all_in_one_ereno_train_combined.json`
-  (24 features), unchanged (the fusion rule was selected on it) *(under audit, see the
-  change log of 2026-11-12, GRASP incumbent)*.
+- ERENO: a new run of this recipe under the corrected implementation *(amended, see the change
+  log of 2026-11-13; was the selection published with the earlier work,
+  `features/all_in_one_ereno_train_combined.json`, 24 features, which stays as published there)*.
 - CICIDS2017, Morris-4, CICIoT2023: new runs, per type, on the splits of section 4.
 
 ### 2.3 Partitioning
@@ -142,6 +142,33 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   are no longer evaluated.
 
 ## Change log
+
+- **2026-11-13, amendment, section 2.2: ERENO selection re-run under the corrected
+  implementation.** The earlier work is not changed: its selection and its criteria stay as
+  published there. This evaluation registers the correction of 2026-11-12 and re-runs GRASP
+  under it in every domain, ERENO included, with the recipe of section 2.2 (steps (a), (b),
+  (c)); the published ERENO selection is no longer used here. The comparison planned in the
+  entry of 2026-11-12, consequence (4), is dropped: the re-run of the 7 ERENO per-type runs
+  with the parameters of the earlier work was stopped during the first type (random_replay),
+  because replaying the code as it was on the new log does not reproduce the stored
+  selection (`[9, 44, 55, 57]`, 4,762 evaluations, against `[19, 21, 57]`, 4,334): the search
+  code is unchanged since that selection (commit `28f66cb`), but the software environment of
+  those runs was not recorded, and the current one differs from it at least in the pandas
+  version. From this entry on, each GRASP run records its environment (Python and package
+  versions) next to its log. Partial log kept in
+  `results/grasp_ereno_fixaudit_py314_stopped.log`; it is not used. The ERENO run
+  (`scripts/run_ev1_grasp_ereno.sh`, outputs named `ev1_ereno`, log
+  `results/grasp_ev1_ereno.log`) started on 2026-11-13. Consequences: (1) the fusion rule
+  (section 3, `docs/FUSION_RULE.md`) was selected on the published ERENO selection; its
+  selection procedure is repeated on the new ERENO selection, on the calibration set only,
+  and the rule it returns is the one evaluated. (2) The 84 selections of the other domains
+  are re-run under the corrected implementation, seeded from their logs: the evaluations a
+  run makes do not depend on the incumbent, and those logs were produced in the current
+  environment, so each logged evaluation is served from an evaluation checkpoint and only the
+  evaluations beyond it are computed; the result is the one of a run from the start. This is
+  conditional on a test of the resumption (a reduced run resumed from a checkpoint equals the
+  same run from the start, in output and in evaluation sequence). No evaluation model had
+  been trained and no test result had been seen.
 
 - **2026-11-12, correction (implementation), section 2.2: GRASP incumbent and stopping
   rule.** Defect: the VND local search (`do_vnd` in `python/grasp/local_searches.py`)
