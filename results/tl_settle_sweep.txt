@@ -1,0 +1,8 @@
+run: /home/cassi/datasets/disaster_fd_run1
+monitors: 14  run_t0 (estimated) 2026-10-08T18:47:15.688688+00:00
+policy: bands gl=30.0 fl=50.0; stale after F=15.0 s; transient = mode left within 60 s
+
+S=   0 s: switches/client 6-9; transients/client 2-5, total 44, durations 0.3-4.5 s; latency median -2.2 s, max 3.7 s, missing 0
+S=   3 s: switches/client 4-5; transients/client 0-1, total 1, durations 4.0-4.0 s; latency median 0.8 s, max 6.7 s, missing 0
+S=   5 s: switches/client 4-4; transients/client 0-0, total 0, durations -; latency median 2.8 s, max 8.7 s, missing 0
+S=  10 s: switches/client 4-4; transients/client 0-0, total 0, durations -; latency median 7.8 s, max 13.7 s, missing 0

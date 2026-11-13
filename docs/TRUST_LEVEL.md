@@ -76,13 +76,18 @@ second. Over the 14 clients of the pilot run:
 
 | S | switches per client | last switch after the boundary (median / max) |
 |---:|---|---|
-| 0 s | 5–8 (1–4 s transients) | −2.2 s / 3.7 s |
-| 3 s | 4 | 0.8 s / 6.7 s |
+| 0 s | 6–9 (2–5 transients per client, of 0.3–4.5 s) | −2.2 s / 3.7 s |
+| 3 s | 4–5 (one transient of 4.0 s, one client) | 0.8 s / 6.7 s |
 | **5 s** | **4** (the nominal ones) | **2.8 s / 8.7 s** |
 | 10 s | 4 | 7.8 s / 13.7 s |
 
 Latencies are relative to the boundaries of an estimated `run_t0` (§6), so the negative
-median for S = 0 means switching on the first row of the change. S plays the role that the
+median for S = 0 means switching on the first row of the change. A transient is a mode
+entered and left again within 60 s (phases last 900 s). *(Corrected 2026-11-13: the rows
+for S = 0 and S = 3 read "5–8 (1–4 s transients)" and "4"; recomputed with the unchanged
+`scripts/tl_policy_replay.py` policy by
+[`scripts/tl_settle_sweep.py`](../scripts/tl_settle_sweep.py); the latencies are
+unchanged.)* S plays the role that the
 `dwell` gate had for the GL→FL return in 1.4.0–1.7.0: a hub is re-accepted only on
 evidence that persists.
 
@@ -153,9 +158,17 @@ The run directory has no `run_t0`; as the team's guide prescribes, it is estimat
 15-min all-clear (first jump to TL = 80 minus 900 s): 2026-10-08 18:47:15.69 UTC, spread
 3.8 s over the 14 monitors.
 
+*Answer of the Disaster-FD team (recorded 2026-11-13):* t0 = 1791485235688688 µs
+(2026-10-08 18:47:15.688688 UTC), given as close to the real value, which was not saved. It
+equals the estimate above to the microsecond, so it is the same estimate and not an
+independent record: it confirms the rule, not the time of the run, and the latencies of
+§3.2 stay relative to an estimate. The team offered to re-run the scenario and send new
+traces with `run_t0` persisted (`docs/disaster_fd_trace2_scenario.md`, item 2).
+
 ```
 python scripts/inspect_disaster_fd_trace.py ~/datasets/disaster_fd_run1   # checklist
 python scripts/tl_policy_replay.py ~/datasets/disaster_fd_run1            # policy
+python scripts/tl_settle_sweep.py ~/datasets/disaster_fd_run1             # table of §3.2
 ```
 
 * 41,802 observations, all valid against `trust_level.schema.json`.
@@ -166,7 +179,7 @@ python scripts/tl_policy_replay.py ~/datasets/disaster_fd_run1            # poli
 * 14 of 14 event streams conformant.
 
 Output: `results/tl_policy/events_client<NN>.jsonl`, `results/tl_policy/tl_monitor07.jsonl`
-(sample observation stream), `results/tl_policy_replay.txt`.
+(sample observation stream), `results/tl_policy_replay.txt`, `results/tl_settle_sweep.txt`.
 
 ## 7. Superseded
 
