@@ -3,8 +3,9 @@
 
 Left: one node -- Disaster-FD monitor -> trust level -> agent -> learning mode
 (FL / GL / local) -> held specialists M_i -> OR fusion -> alert.
-Right: the system -- aggregator, ring overlay, FL and GL exchanges, and the probes
-of one monitor (aggregator 50, neighbours 15 + 15).
+Right: the system -- FL (aggregator + specialists) and GL (specialists only, on a generic
+connected overlay graph; a ring in the evaluation), with the neighbours N(i) of node i
+highlighted and one of them labelled j, as in the weight w_j of the monitor box.
 Differs from Paper 1 Fig. 1 (global FL<->GL switch, k-of-n): control is per node,
 driven by the trust level, with a third mode (local).
 Out: results/figs/resids_architecture.{pdf,png}
@@ -58,7 +59,7 @@ ax.text(1.42, 6.38, "(specialist of attack type $i$)", ha="left", va="center", f
         color="0.4")
 
 box(0.3, 4.75, 2.55, 1.3, LAV, "Disaster-FD monitor $i$",
-    "probes, with weights:\nthe FL aggregator ($w_A$),\neach neighbour specialist ($w_j$)",
+    "probes, with weights:\nthe FL aggregator ($w_A$),\neach neighbour $j \\in \\mathcal{N}(i)$ ($w_j$)",
     tfs=10.5, sfs=8.2)
 box(3.75, 4.75, 2.6, 1.3, ORANGE, "Agent $i$",
     "FL if TL $\\geq \\theta_{\\mathrm{FL}}$;  GL if TL $\\geq \\theta_{\\mathrm{GL}}$;\n"
@@ -141,7 +142,7 @@ cy_gl = 1.85
 nbrs_i = (1, 3, 6)                                   # N(i): neighbours of node i (k = 0)
 edges = [(0, 1), (0, 3), (0, 6), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 1),
          (2, 5), (4, 7)]
-pos = nodes(cy_gl, {0: "$i$"}, nbrs=nbrs_i)
+pos = nodes(cy_gl, {0: "$i$", 1: "$j$"}, nbrs=nbrs_i)   # j: one neighbour, as in w_j
 for a, b in edges:
     (x0, y0), (x1, y1) = pos[a], pos[b]
     ax.add_line(Line2D([x0, x1], [y0, y1], color=C_GL, lw=2.4 if 0 in (a, b) else 1.4,
