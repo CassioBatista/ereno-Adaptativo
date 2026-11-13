@@ -62,11 +62,34 @@ the change log of 2026-11-12, GRASP incumbent)*.
 
 ### 2.3 Partitioning
 
-- **One node per attack type** (N = 7, 26, 30, 30; Morris-4 amended). Node i holds all training rows of type i
-  and the i-th of N disjoint random slices of the training benign rows (seed 42); ERENO
-  benign training rows capped at 500,000 before slicing.
-- Each node trains **one XGBoost specialist** on its partition, on the selected features
-  (max_depth 4, eta 0.1, 10 rounds, scale_pos_weight = benign / attack).
+- **N = 14 nodes in every domain** *(amended, see the change log of 2026-11-13; was one node
+  per attack type, N = 7, 26, 30, 30)*, the clients of the Disaster-FD run of section 5;
+  monitor NN of that run is colocated with node NN.
+- **Specialists:** one per attack type; the types with fewer than 100 training rows share
+  one specialist, trained on their rows together (CICIDS2017: 10 types, 220 rows;
+  CICIoT2023: 2 types, 117 rows). Specialists: ERENO 14 (each of the 7 types on two nodes,
+  its rows split into two disjoint random halves, seed 42), CICIDS2017 17, Morris-4 30,
+  CICIoT2023 29.
+- **Placement:** specialists in decreasing order of training rows (ties: order of the class
+  declaration), in contiguous blocks: with S specialists, q = S div 14 and r = S mod 14,
+  nodes 1 to 14 − r take q consecutive specialists and the last r nodes take q + 1, so that
+  large specialists share a node only with large ones and small ones only with small ones
+  (CICIDS2017: nodes 1-11 one each, 12-14 two each; Morris-4: 1-12 two, 13-14 three;
+  CICIoT2023: 1-13 two, 14 three). With fewer specialists than nodes, the extra nodes go to
+  the largest specialists, one at a time (the `attack` partitioner of `fd/dataset.py`). Listing: `scripts/ev1_partition_n14.py`,
+  `results/ev1_partition_n14.txt`.
+- Node i holds the i-th of 14 disjoint random slices of the training benign rows (seed 42);
+  ERENO benign training rows capped at 500,000 before slicing. Every specialist on node i
+  is **one XGBoost** trained on its own attack rows against that slice, on the selected
+  features (max_depth 4, eta 0.1, 10 rounds, scale_pos_weight = benign / attack).
+- **References (step 1)** *(amended, see the change log of 2026-11-13)*, on the same
+  training rows and features, fused by the rule of section 3 where there is more than one
+  model: (i) *Local*: each node with its own specialists only; (ii) *IID*: the training rows
+  split into 14 equal random parts (`iid` partitioner, seed 42), one binary XGBoost per node
+  with round(10 S / 14) rounds, S = number of specialists (ERENO 10, CICIDS2017 12,
+  Morris-4 21, CICIoT2023 21); (iii) *Centralized*: one binary XGBoost of 10 S rounds
+  (140, 170, 300, 290) on the pooled training rows of the 14 nodes, scale_pos_weight =
+  benign / attack, an upper reference, not a competitor.
 
 ## 3. Fusion
 
@@ -88,8 +111,9 @@ the change log of 2026-11-12, GRASP incumbent)*.
 
 ## 5. Node loss
 
-N = number of attack types (one specialist per node). Nodes are removed in a fixed order (a
-permutation drawn with seed 42), from N down to 3:
+N = 14 *(amended, see the change log of 2026-11-13; was the number of attack types)*; a node
+removed takes its specialists with it. Nodes are removed in a fixed order (a permutation
+drawn with seed 42), from N down to 3:
 
 - **GL, retention:** every node keeps the specialists it received; the fused detector of a
   surviving node is unchanged.
@@ -100,10 +124,12 @@ Reported: overall and per-type recall, and false-positive rate, at every N.
 
 ## 6. Window alarms (ERENO, CICIDS2017, Morris-4)
 
-- Per window: network-wide flagged count and flagged fraction, and per specialist S_t = the
-  flagged samples on which the specialist of type t fired.
-- Alarm: network-wide volume OR fraction OR any S_t >= T_t, with thresholds = ceil(1.25 x
-  maximum over benign windows) + 1, and T_t >= 2.
+- Per window: network-wide flagged count and flagged fraction, and per specialist S_s = the
+  flagged samples on which specialist s fired *(amended, see the change log of 2026-11-13;
+  was "the specialist of type t": a specialist may now be shared by small types, and an
+  ERENO type has two)*.
+- Alarm: network-wide volume OR fraction OR any S_s >= T_s, with thresholds = ceil(1.25 x
+  maximum over benign windows) + 1, and T_s >= 2.
 - **Out-of-sample calibration, blocked-5** (the ERENO procedure, now for every windowed
   domain): the test period, in order, is cut into 5 contiguous blocks; each block is scored
   with thresholds calibrated on the attack-free windows of the other four; results are
@@ -133,7 +159,8 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
 
 ## 8. Differences from the earlier runs (declared)
 
-- One specialist per type instead of two per category; OR instead of k >= 2.
+- One specialist per type instead of two per category (ERENO: two per type, on 14 nodes;
+  small types share one; amended 2026-11-13); OR instead of k >= 2.
 - CICIDS2017: per-label specialists (26) instead of 7 categories; "Attempted" flows are
   their own types instead of benign; features by GRASP per type on the new split (the
   initial TCP window sizes are candidates like any content column; no feature is removed
@@ -142,6 +169,41 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   are no longer evaluated.
 
 ## Change log
+
+- **2026-11-13, amendment, sections 2.3, 5 and 6: 14 nodes in every domain; references of
+  the first evaluation step.** Reason: the runtime switching is evaluated by replaying the
+  trust levels of the Disaster-FD run, which has 14 clients (`docs/TRUST_LEVEL.md`, section
+  6); with one node per attack type (N = 7, 26, 30, 30) no domain matched it, and the
+  specialists would have had to be mapped onto the clients by a rule chosen for the
+  replay alone. With N = 14 everywhere, monitor NN drives node NN, and node loss runs from
+  14 to 3 in every domain. Changes: (1) N = 14. (2) Specialists stay one per attack type,
+  so each type is covered by exactly one specialist (ERENO: by two, on two nodes, its rows
+  split in halves, which is the setting of the development data of `docs/FUSION_RULE.md`).
+  The types with fewer than 100 training rows share one specialist, because a specialist
+  trained on a few rows against a benign slice of about 79,000 (CICIDS2017; 3 rows for the
+  smallest type) carries a weight of the attack class of up to about 26,000, and under OR
+  its false positives reach the fused detector directly; 100 is the size below which this
+  protocol already treats a type as small (section 7). Assigning several types to one
+  specialist per node was considered and rejected: placed by size, every large type would
+  have shared a booster of 10 trees with a type of 0.04 % to 2 % of its rows. (3) Placement
+  by decreasing training rows in contiguous blocks over the 14 nodes (section 2.3), with the
+  pipeline's rule for fewer specialists than nodes; the listing is
+  `results/ev1_partition_n14.txt`. Dealing the specialists round-robin was considered and
+  rejected: it puts the last, smallest specialists on the nodes of the largest ones (in
+  CICIDS2017 the shared specialist of the 10 small types would sit with DDoS), so that every
+  node mixing sizes would lose a rare type together with a high-volume one under node loss;
+  in blocks, a node holds specialists of similar size, and the loss of high-volume and of
+  rare types appears separately. (4) First evaluation step, references added: Local
+  (each node alone), IID (the same rows in 14 random parts, one model per node) and
+  Centralized (one model on the pooled rows); IID and Centralized have the same number of
+  trees as the specialists together (10 per specialist; IID rounded to whole trees per
+  node), so that the comparison varies only how the data are divided. (5) Window alarms
+  count per specialist instead of per type (section 6). Consequences: the fusion-rule
+  selection repeated on the new ERENO selection (entry below, consequence (1)) uses this
+  partition; the trust-level replay with detection and the dissemination of a specialist
+  while the server is unavailable are specified in a later entry, before they are run.
+  The GRASP selection (section 2.2) does not depend on the partition and is unchanged. No
+  evaluation model had been trained and no test result had been seen.
 
 - **2026-11-13, amendment, section 2.2: ERENO selection re-run under the corrected
   implementation.** The earlier work is not changed: its selection and its criteria stay as
