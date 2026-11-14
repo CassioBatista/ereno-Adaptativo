@@ -53,12 +53,18 @@ i.e. CICIoT2023); (c) the selected set is the union of (a) and (b). Types with f
 (a) or (b): a run stops only on its iteration rule *(correction, see the change log of
 2026-11-12)*. An iteration counts as an improvement only when its result beats the best
 subset found so far, which is the subset the run returns *(correction (implementation), see
-the change log of 2026-11-12, GRASP incumbent)*.
+the change log of 2026-11-12, GRASP incumbent)*: the best-subset retention rule. Each run
+of (a) is seeded on its own: Python's `random` with the GRASP seed at its start, and its
+benign and attack row draws with a generator seeded by (GRASP seed, type), so that its result
+depends neither on the process nor on the other types *(correction (implementation), see the
+change log of 2026-11-14)*.
 
-- ERENO: a new run of this recipe under the corrected implementation *(amended, see the change
-  log of 2026-11-13; was the selection published with the earlier work,
-  `features/all_in_one_ereno_train_combined.json`, 24 features, which stays as published there)*.
-- CICIDS2017, Morris-4, CICIoT2023: new runs, per type, on the splits of section 4.
+- All four domains: runs of this recipe under the best-subset retention rule and the per-type
+  seeding, every run of (a) from the start, (b) resumed from the evaluations of its earlier
+  run (`scripts/run_ev1_grasp_bsr.sh`, outputs tagged `bsr005`) *(amended, see the change log
+  of 2026-11-14)*. For ERENO this replaces the selection published with the earlier work
+  (`features/all_in_one_ereno_train_combined.json`, 24 features, which stays as published
+  there) *(amended, see the change log of 2026-11-13)*.
 
 ### 2.3 Partitioning
 
@@ -169,6 +175,40 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   are no longer evaluated.
 
 ## Change log
+
+- **2026-11-14, correction (implementation) and amendment, section 2.2: per-type seeding;
+  every GRASP selection re-run under the best-subset retention rule.** (1) Test of the
+  resumption required by the entry of 2026-11-13, consequence (2), on a reduced Morris-4
+  multiclass problem (sample 2,000): the run under the earlier rule (457 evaluations), the
+  run under the best-subset retention rule from the start, and the same run resumed from the
+  checkpoint of the first returned the same subset and F1-score; the last two have the same
+  811 evaluations in the same order, and their first 457 equal those of the first run, whose
+  RNG-state hashes were all verified on the replay. Passed. (2) Defect found while preparing
+  the re-run: the per-type runs (step (a), `scripts/grasp_por_ataque.py`) never seeded Python's
+  `random`, which drives the construction, the neighbourhoods and the BitFlip draws; its state
+  came from the operating system at process start (two processes start from different
+  states), and the benign and attack row draws shared one generator across the types, so a
+  type's rows depended on the types run before it in the same process. The multiclass runs
+  (step (b), `main_grasp.py`) seed `random` and are not affected. The per-type runs made so
+  far (the 82 of the three new domains and the 7 ERENO runs of 2026-11-13) are valid runs of
+  the recipe but cannot be reproduced, and those that would not yet have stopped under the
+  best-subset retention rule cannot be continued from their logs; the re-run planned in the
+  entry of 2026-11-13, consequence (2), is therefore not possible for them. The selection of
+  the earlier work was produced by the same code. Correction: each per-type run seeds
+  `random` with the GRASP seed at its start and draws its rows with a generator seeded by
+  (GRASP seed, type id); per-type evaluation checkpoints, with a fingerprint of the rows, are
+  added. Test on reduced Morris-4 per-type problems (sample 2,000): two processes from the
+  start gave the same output and evaluation sequence; a run killed after 282 of its 480
+  evaluations and resumed from its checkpoint gave the same output and evaluation sequence
+  (282 RNG-state hashes verified); two types run in one process gave the same results as each
+  type run alone. (3) Re-run (`scripts/run_ev1_grasp_bsr.sh`, outputs tagged `bsr005`, one job
+  at a time, ERENO, Morris-4, CICIoT2023, CICIDS2017 in this order): every per-type run of
+  the four domains from the start; each multiclass run resumed from the evaluations of its
+  earlier run (ERENO and CICIDS2017 from their checkpoints, Morris-4 and CICIoT2023 from
+  checkpoints seeded from their logs), whose evaluation sequence does not depend on the
+  incumbent; then the union. The combined files `features/all_in_one_ev1_<domain>_train_combined.json`
+  are replaced by the outputs of this re-run. No evaluation model had been trained and no
+  test result had been seen.
 
 - **2026-11-13, amendment, sections 2.3, 5 and 6: 14 nodes in every domain; references of
   the first evaluation step.** Reason: the runtime switching is evaluated by replaying the

@@ -124,12 +124,21 @@ def main():
     ap.add_argument("--log", required=True)
     ap.add_argument("--dataset", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--no-improvement", type=int, default=None,
+                    help="use only the sections run with this stopping parameter (a log may "
+                         "hold runs made before an amendment of it)")
     a = ap.parse_args()
     if os.path.exists(a.out):
         raise SystemExit(f"{a.out} exists; move it away first (this tool never overwrites)")
 
     lines = open(a.log, encoding="utf-8", errors="replace").read().split("\n")
     secs = [s for s in parse_sections(lines, a.dataset) if s["evs"]]
+    if a.no_improvement is not None:
+        for s in secs:
+            if s["header"].get("no_improvement") != a.no_improvement:
+                print(f"  section at line {s['start']}: skipped (no_improvement "
+                      f"{s['header'].get('no_improvement')} != {a.no_improvement})")
+        secs = [s for s in secs if s["header"].get("no_improvement") == a.no_improvement]
     if not secs:
         raise SystemExit("no section with evaluations")
     for s in secs:

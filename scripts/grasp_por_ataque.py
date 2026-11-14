@@ -10,12 +10,23 @@ Uso:
     python scripts/grasp_por_ataque.py [--sample N] [--normal-cap M]
         [--no-improvement K] [--attacks a,b,c] [--out-dir DIR] [--tag TAG]
         [--max-time-h H]   (wall-clock cap per run; default 24 h, 0 = no cap)
+        [--checkpoint-dir DIR]   (one evaluation checkpoint per type, DIR/<tag>_<attack>.jsonl)
 
 Cada ataque persiste features/por_ataque/<tag>_<attack>.json; ao final grava
 features/por_ataque/<tag>_SUPERSET.json (uniao + combinado com global-15).
+
+Reproducibility (2026-11-14): each type's run is seeded on its own, so its result does not
+depend on the process, on the order of the types or on which types an interrupted run had
+already finished: Python's `random` (construction, neighbourhoods, BitFlip) is seeded with
+GRASP_SEED at the start of each type, and the benign/attack row draws use a NumPy generator
+seeded with (GRASP_SEED, attack id). Before this change `random` was never seeded here (the
+state came from the OS at process start) and the row draws shared one generator across the
+types, so per-type runs made before it cannot be reproduced or resumed.
 """
+import hashlib
 import json
 import os
+import random
 import sys
 import time
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -53,6 +64,7 @@ def main():
     attack_cap  = _get("--attack-cap", None)          # None | "balanced" | integer
     max_time_h  = _get("--max-time-h", None)          # None = 24 h (default); 0 = no cap
     max_time_h  = float(max_time_h) if max_time_h is not None else None
+    ckpt_dir    = _get("--checkpoint-dir", None)
     global DATASET, GLOBAL15
     DATASET = _get("--dataset", DATASET)
     gfile = _get("--global-file", None)
@@ -83,7 +95,6 @@ def main():
           flush=True)
 
     norm_idx = np.where(y == nc)[0]
-    rng = np.random.default_rng(config.GRASP_SEED)
     per_attack = {}
 
     for a in atk_ids:
@@ -93,6 +104,7 @@ def main():
             per_attack[aname] = json.load(open(done))["features"]
             print(f"[grasp-atk] {aname}: retomado de {done}", flush=True)
             continue
+        rng = np.random.default_rng([config.GRASP_SEED, a])   # this type's own row draws
         a_idx = np.where(y == a)[0]
         n_sub = min(normal_cap, len(norm_idx))
         nsel = rng.choice(norm_idx, size=n_sub, replace=False)
@@ -112,12 +124,25 @@ def main():
                                        random_state=config.GRASP_SEED, stratify=yb)
             Xb, yb = Xb[keep], yb[keep]
         util.normal_class = 0   # metrica VP/FP: normal=0, positivo=ataque(1)
+        # fingerprint of the rows this type is searched on (row ids and labels)
+        sel = idx if not (sample and sample < len(idx)) else idx[keep]
+        rows_sha = hashlib.sha256(np.ascontiguousarray(sel).tobytes()
+                                  + np.ascontiguousarray(yb).tobytes()).hexdigest()[:16]
 
         grasp = GraspVND()
         grasp._all_instances = (Xb, yb)
         grasp.max_no_improvement = no_improve
         grasp.max_iterations = 1000
         grasp.max_time = max_time_ms(max_time_h)
+        if ckpt_dir:
+            from python.grasp.checkpoint import EvalCheckpoint
+            grasp.checkpoint = EvalCheckpoint(os.path.join(ckpt_dir, f"{tag}_{aname}.jsonl"), {
+                "dataset": DATASET, "attack": aname, "attack_id": int(a),
+                "grasp_method": "GR-G-VND(binario)", "classifier_idx": XGB_CLF_IDX + 1,
+                "sample": sample, "normal_cap": normal_cap, "attack_cap": attack_cap,
+                "no_improvement": no_improve, "max_iterations": 1000, "seed": config.GRASP_SEED,
+                "folds": config.FOLDS, "feature_penalty": lam, "rows_sha": rows_sha})
+        random.seed(config.GRASP_SEED)   # this type's search, independent of the process
 
         print(f"\n{'='*64}\n[grasp-atk] ATAQUE {aname} ({a}) | "
               f"{int((yb==1).sum())} pos / {int((yb==0).sum())} neg | "
