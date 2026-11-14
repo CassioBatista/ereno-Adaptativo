@@ -1,0 +1,454 @@
+{
+  "dataset": "all_in_one_ev1_ciciot_train",
+  "method": "GRASP lambda=0.05: penalized global (multiclass) U binary per attack type (evaluation-v1)",
+  "global": [
+    1,
+    2,
+    16,
+    36,
+    40
+  ],
+  "per_type": {
+    "Backdoor_Malware": [
+      1,
+      15,
+      40,
+      45
+    ],
+    "BrowserHijacking": [
+      40
+    ],
+    "CommandInjection": [
+      3,
+      18,
+      19,
+      20,
+      21,
+      28,
+      36,
+      38,
+      40,
+      42
+    ],
+    "DDoS_ACK_Fragmentation": [
+      9,
+      19,
+      41,
+      44
+    ],
+    "DDoS_HTTP_Flood": [
+      18,
+      46
+    ],
+    "DDoS_ICMP_Flood": [
+      41
+    ],
+    "DDoS_ICMP_Fragmentation": [
+      41
+    ],
+    "DDoS_PSHACK_Flood": [
+      39,
+      40,
+      42
+    ],
+    "DDoS_RSTFINFlood": [
+      36,
+      40
+    ],
+    "DDoS_SYN_Flood": [
+      41
+    ],
+    "DDoS_SlowLoris": [
+      19,
+      40,
+      42
+    ],
+    "DDoS_SynonymousIP_Flood": [
+      9,
+      40,
+      46
+    ],
+    "DDoS_TCP_Flood": [
+      46
+    ],
+    "DDoS_UDP_Flood": [
+      40,
+      41
+    ],
+    "DictionaryBruteForce": [
+      40
+    ],
+    "DoS_HTTP_Flood": [
+      37,
+      46
+    ],
+    "DoS_SYN_Flood": [
+      9,
+      18,
+      22,
+      46
+    ],
+    "DoS_TCP_Flood": [
+      2,
+      41,
+      42
+    ],
+    "DoS_UDP_Flood": [
+      34,
+      39,
+      42,
+      46
+    ],
+    "Mirai_greeth_flood": [
+      3,
+      27,
+      41,
+      44
+    ],
+    "Mirai_greip_flood": [
+      3,
+      19,
+      41
+    ],
+    "Mirai_udpplain": [
+      27,
+      41,
+      42
+    ],
+    "Recon_HostDiscovery": [
+      1,
+      2,
+      4,
+      6,
+      10,
+      15,
+      16,
+      17,
+      18,
+      19,
+      30,
+      37,
+      40
+    ],
+    "Recon_OSScan": [
+      1,
+      2,
+      5,
+      15,
+      16,
+      17,
+      20,
+      21,
+      27,
+      40
+    ],
+    "Recon_PingSweep": [
+      40,
+      41,
+      46
+    ],
+    "Recon_PortScan": [
+      1,
+      2,
+      4,
+      5,
+      9,
+      15,
+      17,
+      19,
+      21,
+      22,
+      37,
+      40,
+      44
+    ],
+    "SqlInjection": [
+      11,
+      12,
+      15,
+      18,
+      20,
+      26,
+      28,
+      40,
+      44,
+      46
+    ],
+    "Uploading_Attack": [
+      19,
+      40,
+      43,
+      44,
+      45
+    ],
+    "VulnerabilityScan": [
+      46
+    ],
+    "XSS": [
+      1,
+      5,
+      36,
+      40,
+      45,
+      46
+    ]
+  },
+  "features": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    9,
+    10,
+    11,
+    12,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    26,
+    27,
+    28,
+    30,
+    34,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "n_features": 34,
+  "names": [
+    "flow_duration",
+    "Header_Length",
+    "Protocol Type",
+    "Duration",
+    "Rate",
+    "Srate",
+    "syn_flag_number",
+    "rst_flag_number",
+    "psh_flag_number",
+    "ack_flag_number",
+    "ack_count",
+    "syn_count",
+    "fin_count",
+    "urg_count",
+    "rst_count",
+    "HTTP",
+    "HTTPS",
+    "DNS",
+    "IRC",
+    "TCP",
+    "UDP",
+    "ARP",
+    "Tot sum",
+    "Max",
+    "AVG",
+    "Std",
+    "Tot size",
+    "IAT",
+    "Number",
+    "Magnitue",
+    "Radius",
+    "Covariance",
+    "Variance",
+    "Weight"
+  ],
+  "per_type_names": {
+    "Backdoor_Malware": [
+      "flow_duration",
+      "ack_count",
+      "IAT",
+      "Variance"
+    ],
+    "BrowserHijacking": [
+      "IAT"
+    ],
+    "CommandInjection": [
+      "Protocol Type",
+      "urg_count",
+      "rst_count",
+      "HTTP",
+      "HTTPS",
+      "UDP",
+      "Max",
+      "Std",
+      "IAT",
+      "Magnitue"
+    ],
+    "DDoS_ACK_Fragmentation": [
+      "syn_flag_number",
+      "rst_count",
+      "Number",
+      "Covariance"
+    ],
+    "DDoS_HTTP_Flood": [
+      "urg_count",
+      "Weight"
+    ],
+    "DDoS_ICMP_Flood": [
+      "Number"
+    ],
+    "DDoS_ICMP_Fragmentation": [
+      "Number"
+    ],
+    "DDoS_PSHACK_Flood": [
+      "Tot size",
+      "IAT",
+      "Magnitue"
+    ],
+    "DDoS_RSTFINFlood": [
+      "Max",
+      "IAT"
+    ],
+    "DDoS_SYN_Flood": [
+      "Number"
+    ],
+    "DDoS_SlowLoris": [
+      "rst_count",
+      "IAT",
+      "Magnitue"
+    ],
+    "DDoS_SynonymousIP_Flood": [
+      "syn_flag_number",
+      "IAT",
+      "Weight"
+    ],
+    "DDoS_TCP_Flood": [
+      "Weight"
+    ],
+    "DDoS_UDP_Flood": [
+      "IAT",
+      "Number"
+    ],
+    "DictionaryBruteForce": [
+      "IAT"
+    ],
+    "DoS_HTTP_Flood": [
+      "AVG",
+      "Weight"
+    ],
+    "DoS_SYN_Flood": [
+      "syn_flag_number",
+      "urg_count",
+      "DNS",
+      "Weight"
+    ],
+    "DoS_TCP_Flood": [
+      "Header_Length",
+      "Number",
+      "Magnitue"
+    ],
+    "DoS_UDP_Flood": [
+      "Tot sum",
+      "Tot size",
+      "Magnitue",
+      "Weight"
+    ],
+    "Mirai_greeth_flood": [
+      "Protocol Type",
+      "TCP",
+      "Number",
+      "Covariance"
+    ],
+    "Mirai_greip_flood": [
+      "Protocol Type",
+      "rst_count",
+      "Number"
+    ],
+    "Mirai_udpplain": [
+      "TCP",
+      "Number",
+      "Magnitue"
+    ],
+    "Recon_HostDiscovery": [
+      "flow_duration",
+      "Header_Length",
+      "Duration",
+      "Srate",
+      "rst_flag_number",
+      "ack_count",
+      "syn_count",
+      "fin_count",
+      "urg_count",
+      "rst_count",
+      "ARP",
+      "AVG",
+      "IAT"
+    ],
+    "Recon_OSScan": [
+      "flow_duration",
+      "Header_Length",
+      "Rate",
+      "ack_count",
+      "syn_count",
+      "fin_count",
+      "HTTP",
+      "HTTPS",
+      "TCP",
+      "IAT"
+    ],
+    "Recon_PingSweep": [
+      "IAT",
+      "Number",
+      "Weight"
+    ],
+    "Recon_PortScan": [
+      "flow_duration",
+      "Header_Length",
+      "Duration",
+      "Rate",
+      "syn_flag_number",
+      "ack_count",
+      "fin_count",
+      "rst_count",
+      "HTTPS",
+      "DNS",
+      "AVG",
+      "IAT",
+      "Covariance"
+    ],
+    "SqlInjection": [
+      "psh_flag_number",
+      "ack_flag_number",
+      "ack_count",
+      "urg_count",
+      "HTTP",
+      "IRC",
+      "UDP",
+      "IAT",
+      "Covariance",
+      "Weight"
+    ],
+    "Uploading_Attack": [
+      "rst_count",
+      "IAT",
+      "Radius",
+      "Covariance",
+      "Variance"
+    ],
+    "VulnerabilityScan": [
+      "Weight"
+    ],
+    "XSS": [
+      "flow_duration",
+      "Rate",
+      "Max",
+      "IAT",
+      "Variance",
+      "Weight"
+    ]
+  }
+}

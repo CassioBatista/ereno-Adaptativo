@@ -1,0 +1,308 @@
+{
+  "dataset": "all_in_one_ev1_morris4_train",
+  "method": "GRASP lambda=0.05: penalized global (multiclass) U binary per attack type (evaluation-v1)",
+  "global": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "per_type": {
+    "specific_1": [
+      4,
+      7,
+      8
+    ],
+    "specific_10": [
+      4,
+      5,
+      6,
+      7,
+      11
+    ],
+    "specific_11": [
+      6,
+      8,
+      11
+    ],
+    "specific_12": [
+      6,
+      7,
+      8,
+      13
+    ],
+    "specific_16": [
+      1,
+      6,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "specific_17": [
+      4,
+      10,
+      11,
+      12,
+      14
+    ],
+    "specific_19": [
+      3
+    ],
+    "specific_20": [
+      2
+    ],
+    "specific_21": [
+      3
+    ],
+    "specific_22": [
+      2
+    ],
+    "specific_23": [
+      2
+    ],
+    "specific_24": [
+      2
+    ],
+    "specific_25": [
+      14
+    ],
+    "specific_26": [
+      14
+    ],
+    "specific_27": [
+      11,
+      14
+    ],
+    "specific_28": [
+      14
+    ],
+    "specific_29": [
+      14
+    ],
+    "specific_3": [
+      5
+    ],
+    "specific_30": [
+      14
+    ],
+    "specific_31": [
+      14
+    ],
+    "specific_32": [
+      14
+    ],
+    "specific_33": [
+      14
+    ],
+    "specific_34": [
+      14
+    ],
+    "specific_35": [
+      14
+    ],
+    "specific_4": [
+      1,
+      4,
+      5,
+      7
+    ],
+    "specific_5": [
+      4,
+      6,
+      13
+    ],
+    "specific_6": [
+      1,
+      5,
+      6,
+      8,
+      14
+    ],
+    "specific_7": [
+      9
+    ],
+    "specific_8": [
+      9
+    ],
+    "specific_9": [
+      6,
+      7,
+      8,
+      11,
+      13
+    ]
+  },
+  "features": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "n_features": 14,
+  "names": [
+    "address",
+    "function",
+    "length",
+    "setpoint",
+    "gain",
+    "reset rate",
+    "deadband",
+    "cycle time",
+    "rate",
+    "system mode",
+    "control scheme",
+    "pump",
+    "solenoid",
+    "pressure measurement"
+  ],
+  "per_type_names": {
+    "specific_1": [
+      "setpoint",
+      "deadband",
+      "cycle time"
+    ],
+    "specific_10": [
+      "setpoint",
+      "gain",
+      "reset rate",
+      "deadband",
+      "control scheme"
+    ],
+    "specific_11": [
+      "reset rate",
+      "cycle time",
+      "control scheme"
+    ],
+    "specific_12": [
+      "reset rate",
+      "deadband",
+      "cycle time",
+      "solenoid"
+    ],
+    "specific_16": [
+      "address",
+      "reset rate",
+      "cycle time",
+      "rate",
+      "system mode",
+      "control scheme",
+      "pump",
+      "solenoid"
+    ],
+    "specific_17": [
+      "setpoint",
+      "system mode",
+      "control scheme",
+      "pump",
+      "pressure measurement"
+    ],
+    "specific_19": [
+      "length"
+    ],
+    "specific_20": [
+      "function"
+    ],
+    "specific_21": [
+      "length"
+    ],
+    "specific_22": [
+      "function"
+    ],
+    "specific_23": [
+      "function"
+    ],
+    "specific_24": [
+      "function"
+    ],
+    "specific_25": [
+      "pressure measurement"
+    ],
+    "specific_26": [
+      "pressure measurement"
+    ],
+    "specific_27": [
+      "control scheme",
+      "pressure measurement"
+    ],
+    "specific_28": [
+      "pressure measurement"
+    ],
+    "specific_29": [
+      "pressure measurement"
+    ],
+    "specific_3": [
+      "gain"
+    ],
+    "specific_30": [
+      "pressure measurement"
+    ],
+    "specific_31": [
+      "pressure measurement"
+    ],
+    "specific_32": [
+      "pressure measurement"
+    ],
+    "specific_33": [
+      "pressure measurement"
+    ],
+    "specific_34": [
+      "pressure measurement"
+    ],
+    "specific_35": [
+      "pressure measurement"
+    ],
+    "specific_4": [
+      "address",
+      "setpoint",
+      "gain",
+      "deadband"
+    ],
+    "specific_5": [
+      "setpoint",
+      "reset rate",
+      "solenoid"
+    ],
+    "specific_6": [
+      "address",
+      "gain",
+      "reset rate",
+      "cycle time",
+      "pressure measurement"
+    ],
+    "specific_7": [
+      "rate"
+    ],
+    "specific_8": [
+      "rate"
+    ],
+    "specific_9": [
+      "reset rate",
+      "deadband",
+      "cycle time",
+      "control scheme",
+      "solenoid"
+    ]
+  }
+}
