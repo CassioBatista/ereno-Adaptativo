@@ -1,0 +1,50 @@
+features (15): [5, 7, 14, 15, 20, 25, 40, 42, 43, 44, 45, 46, 55, 57, 58]
+environment: python 3.14.4, xgboost 3.3.0, numpy 2.5.0, scikit-learn 1.9.0
+calibration set 139,267 held-out rows (39,218 attack, 100,049 benign), 2 folds cross-fitted; target fused FPR 0.10%; the test file is not read
+per attack (calibration rows): random_replay 7,731  inverse_replay 5,217  masquerade_fake_fault 3,470  masquerade_fake_normal 3,451  injection 7,829  high_StNum 7,712  poisoned_high_rate 3,808
+
+=== R0 ===   H1 pass  H2 pass  H3 FAIL
+  Full     F1  99.20  recall 100.00  precision  98.41  FPR 0.6337% (FP 634)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak 100.0  masquerade_fak 100.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Absence  F1  99.20  recall 100.00  precision  98.41  FPR 0.6327% (FP 633)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak 100.0  masquerade_fak 100.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Silent   F1  99.20  recall 100.00  precision  98.41  FPR 0.6327% (FP 633)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak 100.0  masquerade_fak 100.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+
+=== R1 ===   H1 FAIL  H2 FAIL  H3 FAIL
+  Full     F1  99.30  recall 100.00  precision  98.60  FPR 0.5547% (FP 555)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak 100.0  masquerade_fak 100.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Absence  F1  77.18  recall  62.83  precision 100.00  FPR 0.0000% (FP 0)
+           per attack: random_replay  90.3  inverse_replay  81.3  masquerade_fak   5.0  masquerade_fak   0.0  injection  22.0  high_StNum 100.0  poisoned_high_ 100.0
+  Silent   F1  77.18  recall  62.83  precision 100.00  FPR 0.0000% (FP 0)
+           per attack: random_replay  90.3  inverse_replay  81.3  masquerade_fak   5.0  masquerade_fak   0.0  injection  22.0  high_StNum 100.0  poisoned_high_ 100.0
+
+=== R2 ===   H1 FAIL  H2 FAIL  H3 pass
+  threshold (Full) by fold: 0.8185, 0.8185
+  Full     F1  99.73  recall  99.60  precision  99.85  FPR 0.0580% (FP 58)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak  98.2  masquerade_fak  97.6  injection  99.8  high_StNum 100.0  poisoned_high_ 100.0
+  Absence  F1  95.42  recall  91.30  precision  99.92  FPR 0.0270% (FP 27)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   5.0  masquerade_fak  97.2  injection  99.8  high_StNum 100.0  poisoned_high_ 100.0
+  Silent   F1  95.42  recall  91.30  precision  99.92  FPR 0.0270% (FP 27)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   5.0  masquerade_fak  97.2  injection  99.8  high_StNum 100.0  poisoned_high_ 100.0
+
+=== R3 ===   H1 pass  H2 pass  H3 pass
+  Full     F1  90.59  recall  82.79  precision 100.00  FPR 0.0000% (FP 0)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   5.0  masquerade_fak   0.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Absence  F1  90.59  recall  82.79  precision 100.00  FPR 0.0000% (FP 0)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   5.0  masquerade_fak   0.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Silent   F1  90.59  recall  82.79  precision 100.00  FPR 0.0000% (FP 0)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   5.0  masquerade_fak   0.0  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+
+=== R4 ===   H1 FAIL  H2 FAIL  H3 pass
+  threshold (Full) by fold: 0.7958, 0.7958
+  Full     F1  99.77  recall  99.68  precision  99.85  FPR 0.0580% (FP 58)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak  98.8  masquerade_fak  97.6  injection 100.0  high_StNum 100.0  poisoned_high_ 100.0
+  Absence  F1  95.42  recall  91.30  precision  99.92  FPR 0.0270% (FP 27)
+           per attack: random_replay 100.0  inverse_replay 100.0  masquerade_fak   5.0  masquerade_fak  97.2  injection  99.8  high_StNum 100.0  poisoned_high_ 100.0
+  Silent   F1   0.00  recall   0.00  precision   0.00  FPR 0.0000% (FP 0)
+           per attack: random_replay   0.0  inverse_replay   0.0  masquerade_fak   0.0  masquerade_fak   0.0  injection   0.0  high_StNum   0.0  poisoned_high_   0.0
+
+=== DECISION (docs/FUSION_RULE.md, section 5; H3 on the out-of-fold calibration benign; H1/H2 as first registered) ===
+rules meeting H1-H3: ['R3']; best Full recall 82.79%; tied within 0.5 pp: ['R3']
+CHOSEN RULE: R3

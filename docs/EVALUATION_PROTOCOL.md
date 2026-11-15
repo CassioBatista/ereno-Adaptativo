@@ -176,6 +176,39 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
 
 ## Change log
 
+- **2026-11-15, result and correction (criterion), section 3: fusion rule on the new ERENO
+  selection.** The selection specified in the next entry was run
+  (`results/fusion_rule_selection_ev1.txt`). Under the criteria as registered it returned R3,
+  the only rule meeting H1-H3, with a recall of 82.79 %: it detects masquerade_fake_normal on
+  0.0 % and masquerade_fake_fault on 5.0 % of their calibration rows, and it passed H1 and H2
+  because an attack with zero Full recall satisfies "at least 90 % of the Full recall". This is
+  a defect of H1 and H2, corrected in `docs/FUSION_RULE.md` (change log of 2026-11-15) after
+  this result was seen, with its evidence there; the test file was not read. Under the
+  corrected criterion no rule meets H1-H3 and R0 alone meets two constraints (H1 and H2; its
+  out-of-fold false-positive rate on the calibration benign is 0.63 %, against the bound of
+  0.2 %, as on the test set in the first selection, 0.69 %). **R0 is chosen; section 3 is
+  unchanged.** The run under the criteria as registered is kept
+  (`results/fusion_rule_selection_ev1_h12original.txt`).
+
+- **2026-11-15, specification (before the run), section 3: fusion rule selected again on
+  the new ERENO selection, calibration set only.** Carries out the entry of 2026-11-13,
+  consequence (1) (`scripts/fusion_rule_selection_ev1.py`). Procedure of
+  `docs/FUSION_RULE.md` unchanged (candidates R0-R4, target fused false-positive rate 0.1 %,
+  scenarios Full, Absence and Silent fault, constraints H1-H3, decision rule, tie of 0.5 pp,
+  order of simplicity), with two differences. (1) Features: the ERENO selection of section 2.2
+  (`features/all_in_one_ev1_ereno_train_combined.json`, 15 features); the 14 specialists are
+  those of `docs/FUSION_RULE.md` section 2 (the `attack` partitioner, seed 42, benign cap
+  500,000, the partition of section 2.3), each trained on 80 % of its partition
+  (train_test_split, test_size 0.2, seed 42); the other 20 % of every partition is the
+  calibration set. (2) No test set: the ERENO test file is not read. The calibration set is
+  split into two folds (StratifiedKFold on the class, shuffled, seed 42); the thresholds of a
+  fold are calibrated on the benign rows of the other fold and applied to it, and every metric
+  of the scenarios is computed on the pooled out-of-fold predictions, so that H3 still bounds
+  an out-of-sample false-positive rate (calibrating and measuring on the same benign rows would
+  meet the target by construction). R0 and R1 have no threshold and are applied directly. The
+  rule returned is the one evaluated (section 3 is updated if it is not R0). No evaluation
+  model had been trained and no test result had been seen.
+
 - **2026-11-14, correction (implementation) and amendment, section 2.2: per-type seeding;
   every GRASP selection re-run under the best-subset retention rule.** (1) Test of the
   resumption required by the entry of 2026-11-13, consequence (2), on a reduced Morris-4

@@ -67,6 +67,32 @@ reported for the comparison in the paper (RQ3), not used for the decision.
 
 ## Change log
 
+- **2026-11-15, correction (criterion), section 5 (H1, H2): an attack with zero Full recall
+  is not kept.** Defect: H1 and H2 compare each attack's recall in a scenario with 90 % of its
+  Full recall under the same rule; for an attack the rule does not detect at all (Full recall
+  0), 0 >= 0.9 x 0 holds, so a rule passes H1 and H2 on that attack by missing it. Found in
+  the repetition of this selection on the evaluation-v1 ERENO selection, on the calibration
+  set only (`docs/EVALUATION_PROTOCOL.md`, change log of 2026-11-15;
+  `scripts/fusion_rule_selection_ev1.py`): R3 detects masquerade_fake_normal on 0.0 % and
+  masquerade_fake_fault on 5.0 % of its calibration rows in all three scenarios, and passed
+  H1-H3 there (the only rule to do so), while in the selection above it failed H1 and H2 with
+  the same per-attack recall (83.06 % overall, 3.8 % and 0.0 % on the two masquerade types,
+  against 82.79 %, 5.0 % and 0.0 %). Its per-attack recalls there are equal, to 0.1 pp, in the
+  three scenarios, so the attack that failed differs by less than 0.1 pp and must have a Full
+  recall under 1 %: masquerade_fake_normal, with a Full recall above zero and under 0.05 %,
+  lower in Absence and Silent. The outcome of the criterion turned on noise near zero, not on
+  the rules. The correction was made after the
+  calibration result was seen (the ERENO test file was not read), and it is applied because
+  the uncorrected criterion selects, on that ground alone, a rule that misses two of the seven
+  attack types. Correction: in H1 and H2 an attack with zero Full recall counts as not kept.
+  Effect: (1) on the evaluation-v1 selection, R3 fails H1 and H2, no rule meets H1-H3, and R0
+  alone meets two constraints and is chosen (`results/fusion_rule_selection_ev1.txt`; the run
+  under the original criterion is kept as `results/fusion_rule_selection_ev1_h12original.txt`).
+  (2) The selection above is unchanged: the correction can only turn a pass of H1 or H2 into a
+  failure; R0, the only rule meeting two constraints there, has Full recall above zero on
+  every attack (at least 99.6 %), so it keeps H1 and H2, and no other rule can gain a
+  constraint. `scripts/fusion_rule_selection.py` is left unchanged as the record of that run.
+
 - **2026-11-12, wording correction, section 3 (R0, R1): the fixed threshold is inclusive,
   score >= 0.5.** The table stated "> 0.5"; ReSIDS flags a message when a specialist's
   probability is at least 0.5 (`main_dist.py`, k-of-n prediction), and the evaluation applies
