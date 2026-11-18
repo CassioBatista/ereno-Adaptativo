@@ -1,0 +1,49 @@
+# Morris-4 test split, benign-identical share (data only, no model), 2026-11-17
+# benign = benign rows of training and test splits; 15 candidate features
+
+per category:
+cat    types test_rows identical pct_pooled pct_min pct_max
+MSCI       5     1,188       179       15.1     0.0    26.9
+MPCI      12     3,067         1        0.0     0.0     0.5
+MFCI       3     1,471         0        0.0     0.0     0.0
+Recon      3     1,163         0        0.0     0.0     0.0
+NMRI       4     2,327        27        1.2     0.0     4.2
+CMRI       7     3,914        73        1.9     0.0     4.2
+all       34    13,130       280        2.1
+
+per type:
+  cat  specific  test_rows  identical   pct
+ CMRI        25        442          6   1.4
+ CMRI        26        543          0   0.0
+ CMRI        27        624         11   1.8
+ CMRI        28        558          9   1.6
+ CMRI        33        482          6   1.2
+ CMRI        34        603         13   2.2
+ CMRI        35        662         28   4.2
+ MFCI        19        491          0   0.0
+ MFCI        21        517          0   0.0
+ MFCI        22        463          0   0.0
+ MPCI         1        269          0   0.0
+ MPCI         2        220          1   0.5
+ MPCI         3        255          0   0.0
+ MPCI         4        290          0   0.0
+ MPCI         5        213          0   0.0
+ MPCI         6        304          0   0.0
+ MPCI         7        227          0   0.0
+ MPCI         8        270          0   0.0
+ MPCI         9        210          0   0.0
+ MPCI        10        222          0   0.0
+ MPCI        11        276          0   0.0
+ MPCI        12        311          0   0.0
+ MSCI        13        240         51  21.2
+ MSCI        14        252         65  25.8
+ MSCI        15        234         63  26.9
+ MSCI        16        249          0   0.0
+ MSCI        17        213          0   0.0
+ NMRI        29        557          0   0.0
+ NMRI        30        636         27   4.2
+ NMRI        31        572          0   0.0
+ NMRI        32        562          0   0.0
+Recon        20        200          0   0.0
+Recon        23        615          0   0.0
+Recon        24        348          0   0.0

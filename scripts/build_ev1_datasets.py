@@ -5,9 +5,10 @@ the three domains that need new files (ERENO uses its existing all_in_one_ereno_
   ev1_cicids   CICIDS2017, improved: 26 Label types; per label, its first 70 % in time TRAIN
                and the rest TEST; benign likewise, day by day (correction of 2026-11-03,
                protocol change log: the interval rule left types without training rows)
-  ev1_morris4  Morris-4 (gas pipeline, 2015): 30 specific attacks (5 excluded by Q2a); for
-               each label its first 70 % in time TRAIN (amendment of 2026-11-03: replaces
-               Morris-3, which its authors superseded)
+  ev1_morris4  Morris-4 (gas pipeline, 2015): 34 specific attacks (amendment of 2026-11-16:
+               Q2d removes the transaction-labelled responses, then Q2a excludes specific 18;
+               was 30, 5 excluded by Q2a); for each label its first 70 % in time TRAIN
+               (amendment of 2026-11-03: replaces Morris-3, which its authors superseded)
   ev1_morris3  Morris-3 (water tank), kept for the record: 6 attack categories (CMRI
                excluded by Q2a); file order, first 70 % of each label TRAIN
   ev1_ciciot   CICIoT2023, 10 screened part files: 30 labels (three excluded by Q2b); part
@@ -70,13 +71,14 @@ def excluded(release):
     return {t for t, v in best["types"].items() if v["excluded_by"]}
 
 
-def prepare(rel, release, typ):
-    """Drop excluded types and misaligned rows; numeric content matrix; safe labels."""
+def prepare(rel, release, typ, screen=True):
+    """Drop excluded types and misaligned rows; numeric content matrix; safe labels.
+    screen=False keeps every type (Morris-4 screens its types itself, after Q2d)."""
     import apply_protocol as A
     df = rel.df
     typ = np.asarray(typ, dtype=object)
     bad, _ = A.misaligned(df, rel.feats + rel.ids)
-    ex = excluded(release)
+    ex = excluded(release) if screen else set()
     keep = ~bad & ~np.isin(typ, list(ex))
     print(f"{rel.name}: {len(df):,} rows; excluded types {sorted(ex) or 'none'}; misaligned rows "
           f"{int(bad.sum()):,}; kept {int(keep.sum()):,}", flush=True)
@@ -138,13 +140,70 @@ def build_morris3():
                   "water_final.arff (Morris and Gao 2014, Web Archive copy); evaluation-v1")
 
 
+def q2d_transaction_responses(X, lab, feats):
+    """Morris-4, Q2d (amendment of 2026-11-16): the release labels a whole command/response
+    transaction, so the response of the controller to an injected command carries the attack
+    label although it is an ordinary response. For each attack type, its response rows
+    (command response = 0) are excluded when every one of them has a feature vector that also
+    occurs as benign (the identity test of Q2a: all content columns, missing values equal);
+    a type with any response not found among benign rows (forged responses) keeps them all.
+    Applied before the split, like the other exclusions."""
+    c = feats.index("command response")
+    key = pd.util.hash_pandas_object(pd.DataFrame(X).fillna(-9.99e307), index=False).to_numpy()
+    bkeys = np.unique(key[lab == "Benign"])
+    drop = np.zeros(len(lab), bool)
+    for a in sorted(set(lab) - {"Benign"}, key=lambda s: (len(s), s)):
+        r = (lab == a) & (X[:, c] == 0)
+        n, dup = int(r.sum()), int(np.isin(key[r], bkeys).sum())
+        out = n > 0 and dup == n
+        if out:
+            drop |= r
+        print(f"  [Q2d] {a:12s} rows {int((lab == a).sum()):6,d}  responses {n:6,d}  identical to benign "
+              f"{dup:6,d}  -> {'responses excluded' if out else 'kept'}", flush=True)
+    print(f"  [Q2d] excluded {int(drop.sum()):,} response rows of "
+          f"{len(set(lab[drop]))} attack types", flush=True)
+    return drop, key, bkeys
+
+
+def q2a_after_q2d(lab, drop, key, bkeys):
+    """Q2a on the rows left by Q2d: a type is excluded when more than 50 % of its remaining
+    rows have a feature vector that also occurs as benign (same test as the screening)."""
+    out = np.zeros(len(lab), bool)
+    for a in sorted(set(lab) - {"Benign"}, key=lambda s: (len(s), s)):
+        r = (lab == a) & ~drop
+        share = float(np.isin(key[r], bkeys).mean()) if r.any() else 1.0
+        ex = share > 0.5
+        if ex:
+            out |= lab == a
+        print(f"  [Q2a] {a:12s} rows after Q2d {int(r.sum()):6,d}  identical to benign "
+              f"{100 * share:5.1f}%  -> {'EXCLUDED' if ex else 'kept'}", flush=True)
+    return out
+
+
 def build_morris4():
-    """Morris-4 (amendment of 2026-11-03, replacing Morris-3): 30 specific attacks; it has a
-    clock, so for each label its first 70 % in time train."""
+    """Morris-4 (amendment of 2026-11-03, replacing Morris-3): specific attacks; it has a
+    clock, so for each label its first 70 % in time train. Amendment of 2026-11-16: Q2d
+    (q2d_transaction_responses) is applied first, then Q2a on the rows that remain
+    (q2a_after_q2d), instead of the type exclusions of the screening table. Amendment of
+    2026-11-17: 'crc rate' is a content column, not an identifier (attack 18, "Bad CRC",
+    manipulates it, and the protocol's identifiers are fields no attack manipulates); it is
+    appended as the last feature (F16), so F1-F15 keep their meaning. The screening loader
+    (audit_loaders.morris4, protocol-v1) is left unchanged, as the record of the screening."""
     import audit_loaders as L
     rel = L.LOADERS["morris4"]()
+    assert "crc rate" in rel.ids and "crc rate" not in rel.feats
+    rel.ids = [c for c in rel.ids if c != "crc rate"]
+    rel.feats = list(rel.feats) + ["crc rate"]
     typ = rel.df["_type"].astype(str).values
-    keep, X, lab = prepare(rel, "morris4", typ)
+    keep, X, lab = prepare(rel, "morris4", typ, screen=False)
+    drop, key, bkeys = q2d_transaction_responses(X, lab, list(rel.feats))
+    drop |= q2a_after_q2d(lab, drop, key, bkeys)
+    print(f"  kept {int((~drop).sum()):,} rows, {len(set(lab[~drop])) - 1} attack types", flush=True)
+    if os.environ.get("DRYRUN") == "1":
+        return "ev1_morris4 (dry run)"
+    keep = np.asarray(keep, bool).copy()
+    keep[np.flatnonzero(keep)[drop]] = False
+    X, lab = X[~drop], lab[~drop]
     t = rel.df["_t"].to_numpy(np.float64)[keep]
     train = np.zeros(len(lab), bool)
     for c in set(lab):

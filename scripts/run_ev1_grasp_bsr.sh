@@ -17,10 +17,18 @@
 # One GRASP job at a time. Resumable: finished types are kept, each type and the global step
 # resume from their checkpoints. The environment is recorded next to the log.
 # Usage: DOMAINS="ereno morris4 ciciot cicids" scripts/run_ev1_grasp_bsr.sh  (log: results/grasp_bsr005.log)
+#        TAG=bsr005q2d DOMAINS=morris4 scripts/run_ev1_grasp_bsr.sh  (log: results/grasp_bsr005q2d.log)
+#        TAG=bsr005crc DOMAINS=morris4 scripts/run_ev1_grasp_bsr.sh  (log: results/grasp_bsr005crc.log)
 set -euo pipefail
 cd ~/ereno-Adaptativo
 PY=~/venv-ereno314/bin/python
 CK=features/checkpoints
+# TAG: bsr005 by default. Another tag (bsr005q2d: Morris-4 rebuilt with Q2d before Q2a,
+# amendment of 2026-11-16) writes its own outputs and runs the global step from the start,
+# since the earlier evaluations were made on other data. bsr005crc: Morris-4 rebuilt with
+# crc rate as content (16 features, 35 types), amendment of 2026-11-17; bsr005q2d was
+# stopped in its global step and is not used.
+TAG=${TAG:-bsr005}
 if pgrep -f 'grasp_(por_ataque|global_penalizado)\.py' > /dev/null; then
   echo "another GRASP job is running; not starting"; exit 1
 fi
@@ -30,7 +38,7 @@ for d in ${DOMAINS:-ereno morris4 ciciot cicids}; do
   echo "$(date '+%F %T') start $ds"
   { date '+%F %T'; git rev-parse HEAD; git status --short python scripts/grasp_*.py scripts/run_ev1_grasp_bsr.sh
     git diff HEAD -- python scripts/grasp_*.py scripts/run_ev1_grasp_bsr.sh; $PY -V; $PY -m pip freeze; } \
-      > results/grasp_env_bsr005_${ds}_$(date +%F_%H%M).txt
+      > results/grasp_env_${TAG}_${ds}_$(date +%F_%H%M).txt
   if [ "$d" = ereno ]; then src=all_in_one_ereno_train; gsrc=$src; attacks=""
   else
     src=all_in_one_${ds}_train; gsrc=$src
@@ -53,15 +61,15 @@ EOF
   echo "[$ds] per-type GRASP for: ${attacks:-all types}"
 
   # 1. per type, from scratch
-  [ -f features/por_ataque/bsr005_${ds}_SUPERSET.json ] || $PY -u scripts/grasp_por_ataque.py \
+  [ -f features/por_ataque/${TAG}_${ds}_SUPERSET.json ] || $PY -u scripts/grasp_por_ataque.py \
       --dataset $src --global-file none --lambda 0.05 --sample 60000 \
       --normal-cap 60000 --attack-cap balanced --no-improvement 5 --max-time-h 0 \
-      ${attacks:+--attacks "$attacks"} --tag bsr005_${ds} --checkpoint-dir $CK/por_ataque
+      ${attacks:+--attacks "$attacks"} --tag ${TAG}_${ds} --checkpoint-dir $CK/por_ataque
 
   # 2. global, resumed from the earlier evaluations
-  gck=$CK/global_bsr005_${ds}.jsonl
-  if [ ! -f features/global_bsr005_${ds}.json ]; then
-    if [ ! -f $gck ]; then
+  gck=$CK/global_${TAG}_${ds}.jsonl
+  if [ ! -f features/global_${TAG}_${ds}.json ]; then
+    if [ ! -f $gck ] && [ "$TAG" = bsr005 ]; then
       if [ -f $CK/global_penalizado_${ds}_L0.05.jsonl ]; then
         cp $CK/global_penalizado_${ds}_L0.05.jsonl $gck
       else
@@ -70,19 +78,23 @@ EOF
       fi
     fi
     $PY -u scripts/grasp_global_penalizado.py --dataset $gsrc --lambda 0.05 --sample 150000 \
-        --no-improvement 5 --out features/global_bsr005_${ds}.json --checkpoint $gck --max-time-h 0
+        --no-improvement 5 --out features/global_${TAG}_${ds}.json --checkpoint $gck --max-time-h 0
   fi
 
   # 3. union
-  $PY - "$ds" "$src" <<'EOF'
+  $PY - "$ds" "$src" "$TAG" <<'EOF'
 import json, os, sys
-ds, src = sys.argv[1], sys.argv[2]
-s = json.load(open(f"features/por_ataque/bsr005_{ds}_SUPERSET.json"))
-g = json.load(open(f"features/global_bsr005_{ds}.json"))
+ds, src, tag = sys.argv[1], sys.argv[2], sys.argv[3]
+s = json.load(open(f"features/por_ataque/{tag}_{ds}_SUPERSET.json"))
+g = json.load(open(f"features/global_{tag}_{ds}.json"))
 comb = sorted(set(g["features"]) | set(s["superset_grasp"]))
-out = {"dataset": src,
+out = {"dataset": src, "tag": tag,
        "method": "GRASP lambda=0.05: penalized global (multiclass) U binary per attack type "
-                 "(evaluation-v1, best-subset retention rule, per-type seeding)",
+                 "(evaluation-v1, best-subset retention rule, per-type seeding"
+                 + ("; Morris-4 data rebuilt with Q2d before Q2a, amendment of 2026-11-16"
+                    if tag == "bsr005q2d" else "")
+                 + ("; Morris-4 data rebuilt with Q2d before Q2a and crc rate as content, "
+                    "amendments of 2026-11-16 and 2026-11-17" if tag == "bsr005crc" else "") + ")",
        "global": g["features"], "per_type": s["per_attack"], "features": comb,
        "n_features": len(comb)}
 nf = f"features/{ds}_feature_names.json"
