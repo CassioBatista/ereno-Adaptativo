@@ -1,4 +1,10 @@
 % Paper 2 (ReSIDS v2, EAAI) -- research questions. Impersonal style.
+% 2026-11-17 (later, user decision): RQs REMOVED FROM THE PAPER. The introduction keeps the
+% three gaps and the contributions; every gap is evaluated on the four domains, and the
+% results are organized by gap. This file is kept as the record of the RQs and of their
+% history; nothing below is in the paper.
+% 2026-11-17: FOUR RQs. The former RQ3 (fusion at realistic prevalence, k-of-n) is removed
+% (see the comment at its place); former RQ4 -> RQ3 (reworded), former RQ5 -> RQ4.
 % 2026-10-07: five RQs. The time aggregation of alerts became its own question (RQ4),
 % separate from fusion at realistic prevalence (RQ3): per-specialist window triage,
 % CICIDS2017-C 25.9% -> 73.5% of attack windows, ERENO 97.9% -> 99.3%, same false alarms.
@@ -18,21 +24,32 @@ nodes fail?
 RQ2: How does the failure detector's cadence bound protection latency, and how must
 detection thresholds be calibrated when the cadence changes?
 
-% RQ3 -- detection at realistic prevalence
-RQ3: Does decision-level fusion of per-attack specialists remain operationally usable at
-realistic attack prevalence, and what does k-of-n fusion actually contribute?
+% Former RQ3 -- REMOVED 2026-11-17 (user decision). It read: "Does decision-level fusion of
+% per-attack specialists remain operationally usable at realistic attack prevalence, and
+% what does k-of-n fusion actually contribute?" Reasons: (1) its second half repeats RQ4
+% of Paper 1 ("What does k-of-n corroboration contribute beyond the OR union when
+% specialists are redundant ...?"), and in Paper 2 only ERENO has redundant specialists,
+% so the answer would be the same; (2) its first half is the problem the window layer
+% solves, so it moves into RQ3 below (precision at 1 % and 0.1 % prevalence opens that
+% section); (3) the fusion rule (OR at 0.5) was fixed by the pre-registered selection
+% (docs/FUSION_RULE.md) before any run, so it is reported in the methodology, not as a
+% result. The RQs below are renumbered: former RQ4 -> RQ3, former RQ5 -> RQ4.
 
-% RQ4 -- aggregation of alerts over time
-RQ4: How must the specialists' alerts be aggregated over time so that slow attacks are
-detected without raising the false-alarm rate?
+% RQ3 -- aggregation of alerts over time, at realistic prevalence (former RQ4)
+% 2026-11-17: reworded to absorb the prevalence half of the former RQ3. Replaces "How must
+% the specialists' alerts be aggregated over time so that slow attacks are detected without
+% raising the false-alarm rate?"
+RQ3: How must the specialists' alerts be aggregated over time so that detection remains
+usable at realistic attack prevalence, with slow attacks detected and without raising the
+false-alarm rate?
 
-% RQ5 -- generality of the core
+% RQ4 -- generality of the core (former RQ5)
 % 2026-10-09: plainer wording adopted, "commands" -> "switching policy" (API 1.9.0), and the
 % recalibration of thresholds stated (the window rule is the same in every domain; its
 % thresholds are calibrated on each domain's benign traffic and the window length follows
 % the profile). Replaces "Can the same core (event model, command interface, authority rule
 % and cadences) run unchanged in other domains, with only the domain profile and the
 % retrained detectors changing?"
-RQ5: Can ReSIDS be moved to a different network domain by supplying only a domain profile
+RQ4: Can ReSIDS be moved to a different network domain by supplying only a domain profile
 and retrained specialists, while its failure handling, switching policy and alarm rules
 stay unchanged and only their thresholds are recalibrated?

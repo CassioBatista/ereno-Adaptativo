@@ -63,9 +63,17 @@ simpler rule, in the order R2, R3, R4. If no rule meets all three constraints, t
 meeting the most constraints is chosen, then by recall, then by simplicity.
 
 Everything else (F1-score, precision, per-attack recall, all scenarios for every rule) is
-reported for the comparison in the paper (RQ3), not used for the decision.
+reported for the comparison in the paper (in the description of the fusion rule, in the
+methodology) *(amended 2026-11-17, see the change log; was "(RQ3)")*, not used for the
+decision.
 
 ## Change log
+
+- **2026-11-17, wording, section 5: where the comparison is reported.** The second paper no
+  longer has research questions (the results are organised by the gaps of its introduction),
+  and the fusion rule is described in its methodology, since it was fixed before any
+  evaluation run. "(RQ3)" is replaced by the methodology. Nothing in the selection, its
+  criteria or its results changes.
 
 - **2026-11-15, correction (criterion), section 5 (H1, H2): an attack with zero Full recall
   is not kept.** Defect: H1 and H2 compare each attack's recall in a scenario with 90 % of its

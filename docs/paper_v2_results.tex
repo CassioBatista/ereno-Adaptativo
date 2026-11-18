@@ -1,0 +1,119 @@
+% Paper 2 (EAAI) -- Results and Discussion. Impersonal. [R] = number from the
+% evaluation-v1 runs (step 1: references and specialists, seed 42; seeds 43-46 for the
+% dispersion). Design: docs/EVALUATION_PROTOCOL.md.
+% Skeleton (user, 2026-11-17), every subsection on the four domains; no RQs, results by gap:
+%   5.1 attack-based vs IID (FL = GL, Centralized as ceiling)       -- protocol 2.3, 3, 7
+%   5.2 node loss: retention vs re-formed aggregate (static sweep)    -- protocol 5
+%   5.3 mode switching on the Disaster-FD traces T1 and T2            -- protocol 9
+%   5.4 window alarms at realistic prevalence                         -- protocol 6, 7
+%   5.5 discussion, one paragraph per gap
+% NO APPENDIX in this paper (user, 2026-11-17). k = 2 is a column of the 5.1 table.
+% Precision at 1 % and 0.1 % prevalence opens 5.4. Pre-registered items still without a
+% place (to decide): Local reference, per-type recall, Delta sensitivity (5.3), window
+% sensitivities (5.4), dispersion over seeds 43-46.
+
+\subsection{Attack-based versus IID partitioning}
+\label{sec:res-partition}
+
+% [Text after the runs. Content to cover: same training rows, features and model budget
+%  in the two partitions; FL = GL at full membership (retention); where the difference
+%  between the partitions lies (recall or false positives) in each domain; Centralized as
+%  a ceiling. Report every domain as measured, including any in which IID is not worse.
+%  Last paragraph of 5.1: what k = 2 does to recall and FPR in each domain (column
+%  k = 2 of the table; same scores as OR). The rule itself stays in the methodology.]
+
+\begin{table}[htbp]
+\centering
+\caption{Detection under the IID and the attack-based partition, in the four domains
+($N{=}14$ nodes, full test split of each domain, seed 42). Fusion by OR at 0.5, except in
+the column $k{=}2$, which flags a sample when at least two specialists score at least 0.5,
+on the same scores (not used by the system; it shows the veto of
+Section~\ref{sec:fusion}).
+\emph{IID}: the training rows split into 14 equal random parts, one binary XGBoost per node
+with $\mathrm{round}(10S/14)$ trees. \emph{Attack-based}: one specialist per attack type,
+each a binary XGBoost of 10 trees trained on its own attack rows against its node's slice
+of benign rows. $S$ is the number of specialists (ERENO 14, CICIDS2017 17, Morris-4 35,
+CICIoT2023 29), so both partitions hold about $10S$ trees on the same training rows and
+features. With all nodes present, every node holds the same set of models in FL and in GL
+(retention), so each partition yields one detector (FL = GL) in every column.
+\emph{Centralized}: one
+binary XGBoost of $10S$ trees on the pooled training rows of the 14 nodes; it requires the
+data of all nodes in one place and is a ceiling, not a competitor. Precision and FPR at
+the prevalence of each test split.}
+\label{tab:partition-domains}
+\small
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Domain & Metric (\%) & IID & Attack-based & Attack-based, {=}2$ & Centralized \\
+\midrule
+\multirow{4}{*}{ERENO}
+ & F1-score  & [R] & [R] & [R] & [R] \\
+ & Recall    & [R] & [R] & [R] & [R] \\
+ & Precision & [R] & [R] & [R] & [R] \\
+ & FPR       & [R] & [R] & [R] & [R] \\
+\midrule
+\multirow{4}{*}{CICIDS2017, improved}
+ & F1-score  & [R] & [R] & [R] & [R] \\
+ & Recall    & [R] & [R] & [R] & [R] \\
+ & Precision & [R] & [R] & [R] & [R] \\
+ & FPR       & [R] & [R] & [R] & [R] \\
+\midrule
+\multirow{4}{*}{Morris-4}
+ & F1-score  & [R] & [R] & [R] & [R] \\
+ & Recall    & [R] & [R] & [R] & [R] \\
+ & Precision & [R] & [R] & [R] & [R] \\
+ & FPR       & [R] & [R] & [R] & [R] \\
+\midrule
+\multirow{4}{*}{CICIoT2023}
+ & F1-score  & [R] & [R] & [R] & [R] \\
+ & Recall    & [R] & [R] & [R] & [R] \\
+ & Precision & [R] & [R] & [R] & [R] \\
+ & FPR       & [R] & [R] & [R] & [R] \\
+\bottomrule
+\end{tabular}
+\end{table}
+% Packages: booktabs, multirow.
+% Dispersion over seeds 42-46: add "mean $\pm$ 95\% CI" in the cells or a footnote, once
+% the runs show whether it is visible at two decimals.
+
+\subsection{Node loss: retention versus re-formed aggregate}
+\label{sec:res-nodeloss}
+
+% [Protocol section 5. Nodes removed in a fixed order (permutation, seed 42) from 14 to 3,
+%  four domains. Retention (every surviving node keeps the specialists it received) against
+%  the re-formed aggregate (only the specialists of the nodes still present). Overall and
+%  per-type recall and FPR at every N; figure: recall vs N, one panel per domain, two
+%  curves. The dynamic counterpart, driven by the failure detector, is T2 in 5.3.]
+
+\subsection{Mode switching on the Disaster-FD traces}
+\label{sec:res-switching}
+
+% [Protocol section 9. T1 (run 1, dissemination) and T2 (scenario2, aggregator and region
+%  loss; labelled synthetic if replayed from the expected trust levels). Blocks of nodes
+%  8/12/14 at 0/30/60 min; Delta = 60 s (sensitivity 5-600 s in the appendix or a small
+%  figure). Six policies: local, gossip fixed, federated fixed (retention / re-formed),
+%  switching (retention = ReSIDS / re-formed). Content to cover: diffusion latency of the
+%  late blocks per policy; recall on the late types per phase; reachable vs unreachable
+%  nodes in T2; re-formed aggregate drops the blocks of nodes 2-7 at 75 min. Report as
+%  measured that, in T2 between 60 and 75 min, gossip fixed reaches nodes 1 and 8 before
+%  switching does (cutoff T_GL = 30 needs both ring neighbours). CICIoT2023: per-sample
+%  metrics only (no windows), precision and F1 at 6.8 % derived.]
+
+\subsection{Window alarms at realistic prevalence}
+\label{sec:res-windows}
+
+% [Protocol sections 6 and 7. Opens with per-sample precision at 1 % and 0.1 % prevalence
+%  in the four domains (from R and FPR; 3/n bound when no false positive), which shows why
+%  per-sample alarms are not usable in operation. Then windows in ERENO, CICIDS2017 and
+%  Morris-4 (blocked-5 calibration): attack windows alarmed and false alarms, per type;
+%  CICIDS2017 profile ablation as an extra row (count windows, no attribution). CICIoT2023
+%  without windows, with the reason (rows shuffled; at 2.4 % benign almost every window
+%  would hold an attack). Morris-4 and CICIDS2017 window sensitivities in the appendix.]
+
+\subsection{Discussion}
+\label{sec:res-discussion}
+
+% [One paragraph per gap of the introduction, each drawing on 5.1-5.4 across the four
+%  domains; the domain-profile gap is argued from what changed between domains (profile,
+%  windows, calibration) and from the CICIDS2017 ablation, without a subsection of its own.
+%  Closing: what held in every domain and what did not.]
