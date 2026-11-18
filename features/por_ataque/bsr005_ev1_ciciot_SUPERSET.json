@@ -1,0 +1,217 @@
+{
+  "dataset": "all_in_one_ev1_ciciot_train",
+  "per_attack": {
+    "Backdoor_Malware": [
+      1,
+      15,
+      40,
+      46
+    ],
+    "BrowserHijacking": [
+      3,
+      6,
+      16,
+      21,
+      37,
+      38,
+      39,
+      40
+    ],
+    "CommandInjection": [
+      20,
+      24,
+      36,
+      40,
+      45
+    ],
+    "DDoS_ACK_Fragmentation": [
+      41
+    ],
+    "DDoS_HTTP_Flood": [
+      41
+    ],
+    "DDoS_ICMP_Flood": [
+      41
+    ],
+    "DDoS_ICMP_Fragmentation": [
+      46
+    ],
+    "DDoS_PSHACK_Flood": [
+      46
+    ],
+    "DDoS_RSTFINFlood": [
+      40,
+      42
+    ],
+    "DDoS_SYN_Flood": [
+      41
+    ],
+    "DDoS_SlowLoris": [
+      46
+    ],
+    "DDoS_SynonymousIP_Flood": [
+      41
+    ],
+    "DDoS_TCP_Flood": [
+      40,
+      42
+    ],
+    "DDoS_UDP_Flood": [
+      41
+    ],
+    "DictionaryBruteForce": [
+      6,
+      17,
+      25,
+      40
+    ],
+    "DoS_HTTP_Flood": [
+      46
+    ],
+    "DoS_SYN_Flood": [
+      41
+    ],
+    "DoS_TCP_Flood": [
+      40,
+      45
+    ],
+    "DoS_UDP_Flood": [
+      41
+    ],
+    "Mirai_greeth_flood": [
+      41
+    ],
+    "Mirai_greip_flood": [
+      41
+    ],
+    "Mirai_udpplain": [
+      41
+    ],
+    "Recon_HostDiscovery": [
+      1,
+      2,
+      4,
+      6,
+      15,
+      17,
+      19,
+      21,
+      39,
+      40
+    ],
+    "Recon_OSScan": [
+      1,
+      5,
+      8,
+      9,
+      15,
+      17,
+      19,
+      21,
+      28,
+      37,
+      40
+    ],
+    "Recon_PingSweep": [
+      24,
+      40,
+      41
+    ],
+    "Recon_PortScan": [
+      1,
+      2,
+      3,
+      5,
+      21,
+      39,
+      40
+    ],
+    "SqlInjection": [
+      1,
+      6,
+      18,
+      40,
+      46
+    ],
+    "Uploading_Attack": [
+      24,
+      34,
+      36,
+      40
+    ],
+    "VulnerabilityScan": [
+      46
+    ],
+    "XSS": [
+      1,
+      24,
+      36,
+      40,
+      45
+    ]
+  },
+  "superset_grasp": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    9,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    24,
+    25,
+    28,
+    34,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    45,
+    46
+  ],
+  "n_superset": 28,
+  "global15": [],
+  "combined_grasp": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    9,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    24,
+    25,
+    28,
+    34,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    45,
+    46
+  ],
+  "n_combined": 28,
+  "tag": "bsr005_ev1_ciciot"
+}

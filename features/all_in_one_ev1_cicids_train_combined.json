@@ -1,6 +1,6 @@
 {
   "dataset": "all_in_one_ev1_cicids_train",
-  "method": "GRASP lambda=0.05: penalized global (multiclass) U binary per attack type (evaluation-v1)",
+  "method": "GRASP lambda=0.05: penalized global (multiclass) U binary per attack type (evaluation-v1, best-subset retention rule, per-type seeding)",
   "global": [
     25,
     29,
@@ -11,357 +11,289 @@
   ],
   "per_type": {
     "Botnet": [
-      11,
-      49,
+      6,
+      65,
+      69
+    ],
+    "Botnet_Attempted": [
+      40,
+      47
+    ],
+    "DDoS": [
       55,
+      69
+    ],
+    "DoS_GoldenEye": [
+      46,
+      68,
       69,
       82
     ],
-    "Botnet_Attempted": [
-      16,
-      43
-    ],
-    "DDoS": [
-      7
-    ],
-    "DoS_GoldenEye": [
-      13,
-      32,
-      46,
-      69,
-      70
-    ],
     "DoS_GoldenEye_Attempted": [
-      28,
-      50,
-      69
+      4,
+      82
     ],
     "DoS_Hulk": [
-      31,
-      50,
-      67,
+      6,
       69
     ],
     "DoS_Hulk_Attempted": [
-      18,
-      54,
-      71,
-      74,
-      82
+      21,
+      25,
+      70,
+      75
     ],
     "DoS_Slowhttptest": [
       6,
-      20,
-      58,
-      68,
+      42,
+      59,
       69
     ],
     "DoS_Slowhttptest_Attempted": [
       20,
       21,
-      69,
-      82
-    ],
-    "DoS_Slowloris": [
-      13,
-      28,
-      39,
-      69
-    ],
-    "DoS_Slowloris_Attempted": [
-      19,
-      38,
       68,
       69
     ],
+    "DoS_Slowloris": [
+      38,
+      42,
+      54
+    ],
+    "DoS_Slowloris_Attempted": [
+      4,
+      69,
+      71,
+      82
+    ],
     "FTP_Patator": [
-      19,
-      28,
-      65
+      23,
+      57
     ],
     "Infiltration": [
-      45,
+      29,
+      42,
+      47,
       49,
       59,
       67,
-      69,
-      75
+      68
     ],
     "Infiltration_Attempted": [
-      19,
-      37,
-      65
+      4,
+      38,
+      40
     ],
     "Infiltration_Portscan": [
-      7,
-      9,
-      19,
+      17,
       37,
-      47
+      47,
+      56
     ],
     "Portscan": [
-      8,
-      19,
-      47,
+      65,
       82
     ],
     "SSH_Patator": [
-      5,
-      22,
-      69,
-      82
+      11,
+      49
     ],
     "SSH_Patator_Attempted": [
-      56,
-      69,
-      70
+      42,
+      55
     ],
     "Web_Attack_Brute_Force": [
-      60,
       70
     ],
     "Web_Attack_Brute_Force_Attempted": [
-      25,
-      27,
-      69,
-      70
+      13,
+      24,
+      25
     ],
     "Web_Attack_XSS": [
-      26,
-      31,
+      69,
       70
     ],
     "Web_Attack_XSS_Attempted": [
-      54,
-      69,
-      72,
-      82
+      25,
+      69
     ]
   },
   "features": [
-    5,
+    4,
     6,
-    7,
-    8,
-    9,
     11,
     13,
-    16,
-    18,
-    19,
+    17,
     20,
     21,
-    22,
+    23,
+    24,
     25,
-    26,
-    27,
-    28,
     29,
-    31,
-    32,
     37,
     38,
-    39,
+    40,
     42,
-    43,
-    45,
     46,
     47,
     49,
-    50,
     54,
     55,
     56,
-    58,
+    57,
     59,
-    60,
     65,
     67,
     68,
     69,
     70,
     71,
-    72,
-    74,
     75,
     82
   ],
-  "n_features": 46,
+  "n_features": 31,
   "names": [
-    "Total Length of Fwd Packet",
+    "Total Bwd packets",
     "Total Length of Bwd Packet",
-    "Fwd Packet Length Max",
-    "Fwd Packet Length Min",
-    "Fwd Packet Length Mean",
     "Bwd Packet Length Max",
     "Bwd Packet Length Mean",
-    "Flow Packets/s",
-    "Flow IAT Std",
-    "Flow IAT Max",
+    "Flow IAT Mean",
     "Flow IAT Min",
     "Fwd IAT Total",
-    "Fwd IAT Mean",
+    "Fwd IAT Std",
+    "Fwd IAT Max",
     "Fwd IAT Min",
-    "Bwd IAT Total",
-    "Bwd IAT Mean",
-    "Bwd IAT Std",
     "Bwd IAT Max",
-    "Fwd PSH Flags",
-    "Bwd PSH Flags",
     "Fwd Header Length",
     "Bwd Header Length",
-    "Fwd Packets/s",
+    "Bwd Packets/s",
     "Packet Length Max",
-    "Packet Length Mean",
-    "Packet Length Variance",
     "FIN Flag Count",
     "SYN Flag Count",
     "PSH Flag Count",
-    "ACK Flag Count",
     "Down/Up Ratio",
     "Average Packet Size",
     "Fwd Segment Size Avg",
-    "Fwd Bytes/Bulk Avg",
+    "Bwd Segment Size Avg",
     "Fwd Packet/Bulk Avg",
-    "Fwd Bulk Rate Avg",
     "Subflow Fwd Bytes",
     "Subflow Bwd Bytes",
     "FWD Init Win Bytes",
     "Bwd Init Win Bytes",
     "Fwd Act Data Pkts",
     "Fwd Seg Size Min",
-    "Active Mean",
-    "Active Max",
     "Active Min",
     "Total TCP Flow Time"
   ],
   "per_type_names": {
     "Botnet": [
-      "Bwd Packet Length Max",
-      "PSH Flag Count",
+      "Total Length of Bwd Packet",
+      "Subflow Fwd Bytes",
+      "Bwd Init Win Bytes"
+    ],
+    "Botnet_Attempted": [
+      "Bwd Packets/s",
+      "SYN Flag Count"
+    ],
+    "DDoS": [
       "Average Packet Size",
+      "Bwd Init Win Bytes"
+    ],
+    "DoS_GoldenEye": [
+      "FIN Flag Count",
+      "FWD Init Win Bytes",
       "Bwd Init Win Bytes",
       "Total TCP Flow Time"
     ],
-    "Botnet_Attempted": [
-      "Flow Packets/s",
-      "Packet Length Mean"
-    ],
-    "DDoS": [
-      "Fwd Packet Length Max"
-    ],
-    "DoS_GoldenEye": [
-      "Bwd Packet Length Mean",
-      "Bwd PSH Flags",
-      "FIN Flag Count",
-      "Bwd Init Win Bytes",
-      "Fwd Act Data Pkts"
-    ],
     "DoS_GoldenEye_Attempted": [
-      "Bwd IAT Std",
-      "ACK Flag Count",
-      "Bwd Init Win Bytes"
+      "Total Bwd packets",
+      "Total TCP Flow Time"
     ],
     "DoS_Hulk": [
-      "Fwd PSH Flags",
-      "ACK Flag Count",
-      "Subflow Bwd Bytes",
+      "Total Length of Bwd Packet",
       "Bwd Init Win Bytes"
     ],
     "DoS_Hulk_Attempted": [
-      "Flow IAT Std",
-      "Down/Up Ratio",
-      "Fwd Seg Size Min",
-      "Active Max",
-      "Total TCP Flow Time"
+      "Fwd IAT Total",
+      "Fwd IAT Min",
+      "Fwd Act Data Pkts",
+      "Active Min"
     ],
     "DoS_Slowhttptest": [
       "Total Length of Bwd Packet",
-      "Flow IAT Min",
-      "Fwd Bytes/Bulk Avg",
-      "FWD Init Win Bytes",
+      "Packet Length Max",
+      "Fwd Packet/Bulk Avg",
       "Bwd Init Win Bytes"
     ],
     "DoS_Slowhttptest_Attempted": [
       "Flow IAT Min",
       "Fwd IAT Total",
-      "Bwd Init Win Bytes",
-      "Total TCP Flow Time"
-    ],
-    "DoS_Slowloris": [
-      "Bwd Packet Length Mean",
-      "Bwd IAT Std",
-      "Fwd Packets/s",
-      "Bwd Init Win Bytes"
-    ],
-    "DoS_Slowloris_Attempted": [
-      "Flow IAT Max",
-      "Bwd Header Length",
       "FWD Init Win Bytes",
       "Bwd Init Win Bytes"
     ],
+    "DoS_Slowloris": [
+      "Bwd Header Length",
+      "Packet Length Max",
+      "Down/Up Ratio"
+    ],
+    "DoS_Slowloris_Attempted": [
+      "Total Bwd packets",
+      "Bwd Init Win Bytes",
+      "Fwd Seg Size Min",
+      "Total TCP Flow Time"
+    ],
     "FTP_Patator": [
-      "Flow IAT Max",
-      "Bwd IAT Std",
-      "Subflow Fwd Bytes"
+      "Fwd IAT Std",
+      "Bwd Segment Size Avg"
     ],
     "Infiltration": [
-      "Packet Length Variance",
+      "Bwd IAT Max",
+      "Packet Length Max",
+      "SYN Flag Count",
       "PSH Flag Count",
       "Fwd Packet/Bulk Avg",
       "Subflow Bwd Bytes",
-      "Bwd Init Win Bytes",
-      "Active Min"
+      "FWD Init Win Bytes"
     ],
     "Infiltration_Attempted": [
-      "Flow IAT Max",
-      "Fwd Header Length",
-      "Subflow Fwd Bytes"
+      "Total Bwd packets",
+      "Bwd Header Length",
+      "Bwd Packets/s"
     ],
     "Infiltration_Portscan": [
-      "Fwd Packet Length Max",
-      "Fwd Packet Length Mean",
-      "Flow IAT Max",
+      "Flow IAT Mean",
       "Fwd Header Length",
-      "SYN Flag Count"
+      "SYN Flag Count",
+      "Fwd Segment Size Avg"
     ],
     "Portscan": [
-      "Fwd Packet Length Min",
-      "Flow IAT Max",
-      "SYN Flag Count",
+      "Subflow Fwd Bytes",
       "Total TCP Flow Time"
     ],
     "SSH_Patator": [
-      "Total Length of Fwd Packet",
-      "Fwd IAT Mean",
-      "Bwd Init Win Bytes",
-      "Total TCP Flow Time"
+      "Bwd Packet Length Max",
+      "PSH Flag Count"
     ],
     "SSH_Patator_Attempted": [
-      "Fwd Segment Size Avg",
-      "Bwd Init Win Bytes",
-      "Fwd Act Data Pkts"
+      "Packet Length Max",
+      "Average Packet Size"
     ],
     "Web_Attack_Brute_Force": [
-      "Fwd Bulk Rate Avg",
       "Fwd Act Data Pkts"
     ],
     "Web_Attack_Brute_Force_Attempted": [
-      "Fwd IAT Min",
-      "Bwd IAT Mean",
-      "Bwd Init Win Bytes",
-      "Fwd Act Data Pkts"
+      "Bwd Packet Length Mean",
+      "Fwd IAT Max",
+      "Fwd IAT Min"
     ],
     "Web_Attack_XSS": [
-      "Bwd IAT Total",
-      "Fwd PSH Flags",
+      "Bwd Init Win Bytes",
       "Fwd Act Data Pkts"
     ],
     "Web_Attack_XSS_Attempted": [
-      "Down/Up Ratio",
-      "Bwd Init Win Bytes",
-      "Active Mean",
-      "Total TCP Flow Time"
+      "Fwd IAT Min",
+      "Bwd Init Win Bytes"
     ]
   }
 }

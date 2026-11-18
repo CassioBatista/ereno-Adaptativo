@@ -1,0 +1,24 @@
+{
+  "dataset": "all_in_one_ev1_cicids_train",
+  "attack": "DoS_Slowloris",
+  "attack_id": 10,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    38,
+    42,
+    54
+  ],
+  "n_features": 3,
+  "f1_grasp_cv": 99.98065389823951,
+  "iterations": 7,
+  "evaluations": 3618,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 1903.9,
+  "max_time_h": null
+}

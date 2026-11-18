@@ -1,0 +1,174 @@
+2026-11-14 15:21:10
+741d2d4e08a1b70f3665ec9f2d6a49c5c4ca78b4
+ M scripts/grasp_ckpt_from_log.py
+ M scripts/grasp_por_ataque.py
+?? scripts/run_ev1_grasp_bsr.sh
+diff --git a/scripts/grasp_ckpt_from_log.py b/scripts/grasp_ckpt_from_log.py
+index 0f4cdb4..03b92e7 100644
+--- a/scripts/grasp_ckpt_from_log.py
++++ b/scripts/grasp_ckpt_from_log.py
+@@ -124,12 +124,21 @@ def main():
+     ap.add_argument("--log", required=True)
+     ap.add_argument("--dataset", required=True)
+     ap.add_argument("--out", required=True)
++    ap.add_argument("--no-improvement", type=int, default=None,
++                    help="use only the sections run with this stopping parameter (a log may "
++                         "hold runs made before an amendment of it)")
+     a = ap.parse_args()
+     if os.path.exists(a.out):
+         raise SystemExit(f"{a.out} exists; move it away first (this tool never overwrites)")
+ 
+     lines = open(a.log, encoding="utf-8", errors="replace").read().split("\n")
+     secs = [s for s in parse_sections(lines, a.dataset) if s["evs"]]
++    if a.no_improvement is not None:
++        for s in secs:
++            if s["header"].get("no_improvement") != a.no_improvement:
++                print(f"  section at line {s['start']}: skipped (no_improvement "
++                      f"{s['header'].get('no_improvement')} != {a.no_improvement})")
++        secs = [s for s in secs if s["header"].get("no_improvement") == a.no_improvement]
+     if not secs:
+         raise SystemExit("no section with evaluations")
+     for s in secs:
+diff --git a/scripts/grasp_por_ataque.py b/scripts/grasp_por_ataque.py
+index b0ea7a2..00c9c2d 100644
+--- a/scripts/grasp_por_ataque.py
++++ b/scripts/grasp_por_ataque.py
+@@ -10,12 +10,23 @@ Uso:
+     python scripts/grasp_por_ataque.py [--sample N] [--normal-cap M]
+         [--no-improvement K] [--attacks a,b,c] [--out-dir DIR] [--tag TAG]
+         [--max-time-h H]   (wall-clock cap per run; default 24 h, 0 = no cap)
++        [--checkpoint-dir DIR]   (one evaluation checkpoint per type, DIR/<tag>_<attack>.jsonl)
+ 
+ Cada ataque persiste features/por_ataque/<tag>_<attack>.json; ao final grava
+ features/por_ataque/<tag>_SUPERSET.json (uniao + combinado com global-15).
++
++Reproducibility (2026-11-14): each type's run is seeded on its own, so its result does not
++depend on the process, on the order of the types or on which types an interrupted run had
++already finished: Python's `random` (construction, neighbourhoods, BitFlip) is seeded with
++GRASP_SEED at the start of each type, and the benign/attack row draws use a NumPy generator
++seeded with (GRASP_SEED, attack id). Before this change `random` was never seeded here (the
++state came from the OS at process start) and the row draws shared one generator across the
++types, so per-type runs made before it cannot be reproduced or resumed.
+ """
++import hashlib
+ import json
+ import os
++import random
+ import sys
+ import time
+ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+@@ -53,6 +64,7 @@ def main():
+     attack_cap  = _get("--attack-cap", None)          # None | "balanced" | integer
+     max_time_h  = _get("--max-time-h", None)          # None = 24 h (default); 0 = no cap
+     max_time_h  = float(max_time_h) if max_time_h is not None else None
++    ckpt_dir    = _get("--checkpoint-dir", None)
+     global DATASET, GLOBAL15
+     DATASET = _get("--dataset", DATASET)
+     gfile = _get("--global-file", None)
+@@ -83,7 +95,6 @@ def main():
+           flush=True)
+ 
+     norm_idx = np.where(y == nc)[0]
+-    rng = np.random.default_rng(config.GRASP_SEED)
+     per_attack = {}
+ 
+     for a in atk_ids:
+@@ -93,6 +104,7 @@ def main():
+             per_attack[aname] = json.load(open(done))["features"]
+             print(f"[grasp-atk] {aname}: retomado de {done}", flush=True)
+             continue
++        rng = np.random.default_rng([config.GRASP_SEED, a])   # this type's own row draws
+         a_idx = np.where(y == a)[0]
+         n_sub = min(normal_cap, len(norm_idx))
+         nsel = rng.choice(norm_idx, size=n_sub, replace=False)
+@@ -112,12 +124,25 @@ def main():
+                                        random_state=config.GRASP_SEED, stratify=yb)
+             Xb, yb = Xb[keep], yb[keep]
+         util.normal_class = 0   # metrica VP/FP: normal=0, positivo=ataque(1)
++        # fingerprint of the rows this type is searched on (row ids and labels)
++        sel = idx if not (sample and sample < len(idx)) else idx[keep]
++        rows_sha = hashlib.sha256(np.ascontiguousarray(sel).tobytes()
++                                  + np.ascontiguousarray(yb).tobytes()).hexdigest()[:16]
+ 
+         grasp = GraspVND()
+         grasp._all_instances = (Xb, yb)
+         grasp.max_no_improvement = no_improve
+         grasp.max_iterations = 1000
+         grasp.max_time = max_time_ms(max_time_h)
++        if ckpt_dir:
++            from python.grasp.checkpoint import EvalCheckpoint
++            grasp.checkpoint = EvalCheckpoint(os.path.join(ckpt_dir, f"{tag}_{aname}.jsonl"), {
++                "dataset": DATASET, "attack": aname, "attack_id": int(a),
++                "grasp_method": "GR-G-VND(binario)", "classifier_idx": XGB_CLF_IDX + 1,
++                "sample": sample, "normal_cap": normal_cap, "attack_cap": attack_cap,
++                "no_improvement": no_improve, "max_iterations": 1000, "seed": config.GRASP_SEED,
++                "folds": config.FOLDS, "feature_penalty": lam, "rows_sha": rows_sha})
++        random.seed(config.GRASP_SEED)   # this type's search, independent of the process
+ 
+         print(f"\n{'='*64}\n[grasp-atk] ATAQUE {aname} ({a}) | "
+               f"{int((yb==1).sum())} pos / {int((yb==0).sum())} neg | "
+Python 3.14.4
+alembic==1.18.5
+attrs==26.1.0
+certifi==2026.6.17
+cffi==2.0.0
+charset-normalizer==3.4.7
+click==8.4.2
+contourpy==1.3.3
+cryptography==46.0.7
+cycler==0.12.1
+filelock==3.29.4
+flwr==1.32.0
+fonttools==4.63.0
+graphviz==0.21
+greenlet==3.5.3
+grpcio==1.81.1
+grpcio-health-checking==1.81.1
+idna==3.18
+iterators==0.0.2
+joblib==1.5.3
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
+kagglehub==1.0.2
+kagglesdk==0.1.37
+kiwisolver==1.5.0
+Mako==1.3.12
+markdown-it-py==4.2.0
+MarkupSafe==3.0.3
+matplotlib==3.11.0
+mdurl==0.1.2
+msgpack==1.2.1
+narwhals==2.22.1
+numpy==2.5.0
+nvidia-nccl-cu12==2.30.7
+packaging==25.0
+pandas==3.0.5
+pathspec==0.12.1
+pillow==12.3.0
+protobuf==6.33.6
+pycparser==3.0
+pycryptodome==3.23.0
+Pygments==2.20.0
+pyparsing==3.3.2
+pypdf==6.14.2
+python-dateutil==2.9.0.post0
+PyYAML==6.0.3
+ray==2.55.1
+referencing==0.37.0
+requests==2.34.2
+rich==14.3.4
+rpds-py==2026.6.3
+scikit-learn==1.9.0
+scipy==1.18.0
+shellingham==1.5.4
+six==1.17.0
+SQLAlchemy==2.0.51
+threadpoolctl==3.6.0
+tomli==2.4.1
+tomli_w==1.2.0
+tqdm==4.70.1
+typer==0.20.1
+typing_extensions==4.15.0
+urllib3==2.7.0
+uv==0.11.25
+xgboost==3.3.0

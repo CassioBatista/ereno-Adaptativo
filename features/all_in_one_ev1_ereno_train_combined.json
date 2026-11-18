@@ -1,6 +1,6 @@
 {
   "dataset": "all_in_one_ereno_train",
-  "method": "GRASP lambda=0.05: penalized global (multiclass) U binary per attack type (evaluation-v1, corrected implementation)",
+  "method": "GRASP lambda=0.05: penalized global (multiclass) U binary per attack type (evaluation-v1, best-subset retention rule, per-type seeding)",
   "global": [
     5,
     7,
@@ -18,21 +18,15 @@
       57
     ],
     "inverse_replay": [
-      50,
-      57
+      55
     ],
     "masquerade_fake_fault": [
       5,
       14,
-      19,
+      15,
       20,
-      21,
-      23,
-      27,
-      35,
-      40,
-      41,
       42,
+      55,
       58
     ],
     "masquerade_fake_normal": [
@@ -43,17 +37,14 @@
       55
     ],
     "injection": [
-      44,
-      46
+      44
     ],
     "high_StNum": [
-      40,
-      56
+      44
     ],
     "poisoned_high_rate": [
-      43,
-      52,
-      57
+      40,
+      43
     ]
   },
   "features": [
@@ -61,26 +52,17 @@
     7,
     14,
     15,
-    19,
     20,
-    21,
-    23,
     25,
-    27,
-    35,
     40,
-    41,
     42,
     43,
     44,
     45,
     46,
-    50,
-    52,
     55,
-    56,
     57,
     58
   ],
-  "n_features": 24
+  "n_features": 15
 }

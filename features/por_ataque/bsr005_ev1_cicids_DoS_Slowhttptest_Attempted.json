@@ -1,0 +1,25 @@
+{
+  "dataset": "all_in_one_ev1_cicids_train",
+  "attack": "DoS_Slowhttptest_Attempted",
+  "attack_id": 9,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    20,
+    21,
+    68,
+    69
+  ],
+  "n_features": 4,
+  "f1_grasp_cv": 99.6042216358839,
+  "iterations": 8,
+  "evaluations": 4456,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 2588.2,
+  "max_time_h": null
+}

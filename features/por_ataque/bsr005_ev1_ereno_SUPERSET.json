@@ -1,0 +1,69 @@
+{
+  "dataset": "all_in_one_ereno_train",
+  "per_attack": {
+    "random_replay": [
+      57
+    ],
+    "inverse_replay": [
+      55
+    ],
+    "masquerade_fake_fault": [
+      5,
+      14,
+      15,
+      20,
+      42,
+      55,
+      58
+    ],
+    "masquerade_fake_normal": [
+      15,
+      20,
+      25,
+      42,
+      55
+    ],
+    "injection": [
+      44
+    ],
+    "high_StNum": [
+      44
+    ],
+    "poisoned_high_rate": [
+      40,
+      43
+    ]
+  },
+  "superset_grasp": [
+    5,
+    14,
+    15,
+    20,
+    25,
+    40,
+    42,
+    43,
+    44,
+    55,
+    57,
+    58
+  ],
+  "n_superset": 12,
+  "global15": [],
+  "combined_grasp": [
+    5,
+    14,
+    15,
+    20,
+    25,
+    40,
+    42,
+    43,
+    44,
+    55,
+    57,
+    58
+  ],
+  "n_combined": 12,
+  "tag": "bsr005_ev1_ereno"
+}

@@ -1,0 +1,24 @@
+{
+  "dataset": "all_in_one_ev1_ciciot_train",
+  "attack": "Recon_PingSweep",
+  "attack_id": 25,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    24,
+    40,
+    41
+  ],
+  "n_features": 3,
+  "f1_grasp_cv": 69.81132075471699,
+  "iterations": 7,
+  "evaluations": 1818,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 732.2,
+  "max_time_h": null
+}

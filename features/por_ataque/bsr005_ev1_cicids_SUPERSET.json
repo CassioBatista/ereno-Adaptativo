@@ -1,0 +1,183 @@
+{
+  "dataset": "all_in_one_ev1_cicids_train",
+  "per_attack": {
+    "Botnet": [
+      6,
+      65,
+      69
+    ],
+    "Botnet_Attempted": [
+      40,
+      47
+    ],
+    "DDoS": [
+      55,
+      69
+    ],
+    "DoS_GoldenEye": [
+      46,
+      68,
+      69,
+      82
+    ],
+    "DoS_GoldenEye_Attempted": [
+      4,
+      82
+    ],
+    "DoS_Hulk": [
+      6,
+      69
+    ],
+    "DoS_Hulk_Attempted": [
+      21,
+      25,
+      70,
+      75
+    ],
+    "DoS_Slowhttptest": [
+      6,
+      42,
+      59,
+      69
+    ],
+    "DoS_Slowhttptest_Attempted": [
+      20,
+      21,
+      68,
+      69
+    ],
+    "DoS_Slowloris": [
+      38,
+      42,
+      54
+    ],
+    "DoS_Slowloris_Attempted": [
+      4,
+      69,
+      71,
+      82
+    ],
+    "FTP_Patator": [
+      23,
+      57
+    ],
+    "Infiltration": [
+      29,
+      42,
+      47,
+      49,
+      59,
+      67,
+      68
+    ],
+    "Infiltration_Attempted": [
+      4,
+      38,
+      40
+    ],
+    "Infiltration_Portscan": [
+      17,
+      37,
+      47,
+      56
+    ],
+    "Portscan": [
+      65,
+      82
+    ],
+    "SSH_Patator": [
+      11,
+      49
+    ],
+    "SSH_Patator_Attempted": [
+      42,
+      55
+    ],
+    "Web_Attack_Brute_Force": [
+      70
+    ],
+    "Web_Attack_Brute_Force_Attempted": [
+      13,
+      24,
+      25
+    ],
+    "Web_Attack_XSS": [
+      69,
+      70
+    ],
+    "Web_Attack_XSS_Attempted": [
+      25,
+      69
+    ]
+  },
+  "superset_grasp": [
+    4,
+    6,
+    11,
+    13,
+    17,
+    20,
+    21,
+    23,
+    24,
+    25,
+    29,
+    37,
+    38,
+    40,
+    42,
+    46,
+    47,
+    49,
+    54,
+    55,
+    56,
+    57,
+    59,
+    65,
+    67,
+    68,
+    69,
+    70,
+    71,
+    75,
+    82
+  ],
+  "n_superset": 31,
+  "global15": [],
+  "combined_grasp": [
+    4,
+    6,
+    11,
+    13,
+    17,
+    20,
+    21,
+    23,
+    24,
+    25,
+    29,
+    37,
+    38,
+    40,
+    42,
+    46,
+    47,
+    49,
+    54,
+    55,
+    56,
+    57,
+    59,
+    65,
+    67,
+    68,
+    69,
+    70,
+    71,
+    75,
+    82
+  ],
+  "n_combined": 31,
+  "tag": "bsr005_ev1_cicids"
+}

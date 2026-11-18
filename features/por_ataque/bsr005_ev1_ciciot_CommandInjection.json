@@ -1,0 +1,26 @@
+{
+  "dataset": "all_in_one_ev1_ciciot_train",
+  "attack": "CommandInjection",
+  "attack_id": 3,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    20,
+    24,
+    36,
+    40,
+    45
+  ],
+  "n_features": 5,
+  "f1_grasp_cv": 73.28244274809161,
+  "iterations": 6,
+  "evaluations": 956,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 360.2,
+  "max_time_h": null
+}

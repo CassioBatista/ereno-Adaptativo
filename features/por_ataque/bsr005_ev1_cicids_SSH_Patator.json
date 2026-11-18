@@ -1,0 +1,23 @@
+{
+  "dataset": "all_in_one_ev1_cicids_train",
+  "attack": "SSH_Patator",
+  "attack_id": 19,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    11,
+    49
+  ],
+  "n_features": 2,
+  "f1_grasp_cv": 100.0,
+  "iterations": 11,
+  "evaluations": 5258,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 2444.4,
+  "max_time_h": null
+}

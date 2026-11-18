@@ -1,0 +1,24 @@
+{
+  "dataset": "all_in_one_ev1_cicids_train",
+  "attack": "Infiltration_Attempted",
+  "attack_id": 16,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    4,
+    38,
+    40
+  ],
+  "n_features": 3,
+  "f1_grasp_cv": 93.10344827586208,
+  "iterations": 6,
+  "evaluations": 2226,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 943.9,
+  "max_time_h": null
+}
