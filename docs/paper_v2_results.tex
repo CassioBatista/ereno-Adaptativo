@@ -12,6 +12,14 @@
 % place (to decide): Local reference, per-type recall, Delta sensitivity (5.3), window
 % sensitivities (5.4), dispersion over seeds 43-46.
 
+\section{Results and Discussion}
+\label{sec:results}
+
+The results follow the four parts of the evaluation (Section~\ref{sec:evaldesign}), each in the four domains. Section~\ref{sec:res-partition} measures what the attack-based partition costs against an IID split of the same data, with a centralized model as a ceiling. Section~\ref{sec:res-nodeloss} removes nodes and compares the specialists retained by the survivors with an aggregate re-formed without the lost nodes. Section~\ref{sec:res-switching} replays the Disaster-FD trust levels and follows how each policy spreads the specialists of attacks that appear late. Section~\ref{sec:res-windows} turns the per-sample alerts into window alarms at realistic prevalence, and Section~\ref{sec:res-discussion} relates the findings to the gaps of Section~\ref{sec:intro}.
+% [Check: the label of the introduction (sec:intro); "attacks that appear late" assumes the
+%  Evaluation Design mentions the node blocks of 30 and 60 min, otherwise "spreads the
+%  specialists over time".]
+
 \subsection{Attack-based versus IID partitioning}
 \label{sec:res-partition}
 
@@ -19,8 +27,8 @@
 %  in the two partitions; FL = GL at full membership (retention); where the difference
 %  between the partitions lies (recall or false positives) in each domain; Centralized as
 %  a ceiling. Report every domain as measured, including any in which IID is not worse.
-%  Last paragraph of 5.1: what k = 2 does to recall and FPR in each domain (column
-%  k = 2 of the table; same scores as OR). The rule itself stays in the methodology.]
+%  The k = 2 paragraph closes 5.1 (after the table). The rule itself stays in the
+%  methodology.]
 
 \begin{table}[htbp]
 \centering
@@ -44,7 +52,7 @@ the prevalence of each test split.}
 \small
 \begin{tabular}{@{}llrrrr@{}}
 \toprule
-Domain & Metric (\%) & IID & Attack-based & Attack-based, {=}2$ & Centralized \\
+Domain & Metric (\%) & IID & Attack-based & Attack-based, $k{=}2$ & Centralized \\
 \midrule
 \multirow{4}{*}{ERENO}
  & F1-score  & [R] & [R] & [R] & [R] \\
@@ -75,6 +83,11 @@ Domain & Metric (\%) & IID & Attack-based & Attack-based, {=}2$ & Centralized \\
 % Packages: booktabs, multirow.
 % Dispersion over seeds 42-46: add "mean $\pm$ 95\% CI" in the cells or a footnote, once
 % the runs show whether it is visible at two decimals.
+
+Table~\ref{tab:partition-domains} also reports $k = 2$ on the same scores as OR, under the attack-based partition. In ERENO, where each attack type has two specialists, $k = 2$ changes the recall from [R] to [R]\,\% and the false-positive rate from [R] to [R]\,\%. In CICIDS2017, Morris-4 and CICIoT2023, where each type has a single specialist, it changes the recall from [R], [R] and [R]\,\% to [R], [R] and [R]\,\%, and the false-positive rate from [R], [R] and [R]\,\% to [R], [R] and [R]\,\%.
+% [After the runs: one sentence on what this shows, as measured in each domain -- e.g. whether
+%  the recall lost where a type has one specialist (veto, Section~\ref{sec:fusion}) outweighs
+%  the false positives removed. Do not presuppose the direction.]
 
 \subsection{Node loss: retention versus re-formed aggregate}
 \label{sec:res-nodeloss}
