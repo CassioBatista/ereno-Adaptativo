@@ -2,16 +2,17 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it using these metadata."
 title: "ReSIDS: A Resilient, Adaptive, runtime-Switchable Federated–Gossip IDS"
 abstract: >-
-  ReSIDS / ereno-Adaptativo is an intrusion-detection pipeline that unifies
-  centralized, federated and gossip learning in a single run with round-by-round
-  mode switching, built on Flower, scikit-learn and XGBoost. Version 2 adds a
-  distributed, automatic FL<->GL switch driven by decentralized failure detection
-  (fail-fast on local corroboration; careful, unanimity-based recovery), an
-  outbound observability monitor (REST + CoAP), and a control plane (mode votes +
-  peer suspicions) piggybacked on the GLow gossip substrate.
+  ReSIDS / ereno-Adaptativo is an intrusion-detection system whose nodes switch
+  between local, gossip and federated learning at runtime, built on Flower and
+  XGBoost. Version 2.1 lets each node decide its learning mode from the trust level
+  supplied by the federated failure detector Disaster-FD (API 1.9.0), keeps every
+  specialist a node receives in both modes, fuses per-attack specialists by OR, and
+  raises alarms per window. It carries the evaluation of the second paper in four
+  domains (ERENO, improved CICIDS2017, Morris-4 and CICIoT2023) under pre-registered
+  protocols, including the replay of two recorded Disaster-FD runs.
 type: software
-version: 2.0.0
-date-released: 2026-09-15
+version: 2.1.1
+date-released: 2026-11-25
 license: MIT
 repository-code: "https://github.com/CassioBatista/ereno-Adaptativo"
 keywords:
@@ -24,6 +25,9 @@ keywords:
   - runtime mode switching
   - ERENO
   - CICIDS-2017
+  - CICIoT2023
+  - Modbus
+  - failure detection
 authors:
   - given-names: "Cassio Luis"
     family-names: Batista

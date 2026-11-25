@@ -4,6 +4,41 @@ All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); this project uses simple
 `vMAJOR.MINOR` tags.
 
+## [v2.1.1] — 2026-11-25
+
+Artifact of the second paper. Same code as the tag `v2.1.0`, which was created before
+`CITATION.cff` and `.zenodo.json` were updated and has no release; v2.1.1 adds only that
+metadata and this entry.
+
+### Added
+- **Trust-level switching (API 1.9.0).** Disaster-FD publishes a trust level per node and
+  each node decides its own mode: local below 30, gossip from 30, federated from 50; settle
+  time 5 s; local learning when no level arrives for 15 s. `TrustLevelArchManager` replays
+  recorded Disaster-FD runs (`links: scenario`, `round_offset_s`, `gl_peers`, `t_gl`).
+- **Retention in both modes** (`node_holdings: retain`), per-round holdings log and per-node
+  evaluation (`scripts/ev1_tl_node_eval.py`).
+- **Four domains under pre-registered protocols:** ERENO, improved CICIDS2017, Morris-4 and
+  CICIoT2023; tags `protocol-v1` (dataset screening), `fusion-v1` (fusion rule) and
+  `evaluation-v1` (evaluation), amendments dated in `docs/EVALUATION_PROTOCOL.md`.
+- **Evaluation scripts and results:** step 1 (`scripts/ev1_step1.py`, seeds 42-46), node
+  loss, cross-detection, coverage rule (exploratory), trust-level replay runners
+  (`scripts/ev1_tl_runners/`) and summaries, round-period sensitivity, window alarms with
+  blocked-5 calibration, attack thinning and cadence (exploratory), and the checks cited in
+  the protocol (`scripts/ev1_checks/`).
+- **GRASP** under the best-subset retention rule, per-type seeding and resumable
+  checkpoints; per-type and combined selections of the four domains.
+- **Domain profiles** (`docs/PROFILES.md`).
+
+### Changed
+- Fusion by OR at 0.5, selected by the pre-registered procedure, instead of k-of-n voting.
+- The evaluated switch is decided by each node from the Disaster-FD trust level, rather than
+  by the decentralized fail-fast/unanimity controller (`DistributedArchManager`, kept).
+- The command surface of API 1.7.0 is kept as future work.
+
+### Not versioned
+- Datasets (see `docs/DATASET_PROTOCOL.md`); large per-run outputs (boosters, score caches,
+  per-round holdings, per-node evaluations, run logs) and GRASP checkpoints.
+
 ## [v2.0.0] — 2026-09-15
 
 Version 2 turns the round-by-round switch from a **static schedule** into a
