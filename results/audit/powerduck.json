@@ -1,0 +1,143 @@
+{
+ "dataset": "PowerDuck",
+ "sample": "all rows",
+ "rows": 1133589,
+ "feats": 20,
+ "ids": [
+  "id",
+  "t",
+  "src",
+  "dst",
+  "d_stNum",
+  "d_sqNum"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.997376474189499,
+  "multi_rows": 0.4404453465938713,
+  "per_label": {
+   "flood": {
+    "rows": 1044000,
+    "multi": 0.46360153256704983,
+    "as_benign": 0.46360153256704983
+   },
+   "benign": {
+    "rows": 84945,
+    "multi": 0.16548354817823296,
+    "as_benign": null
+   },
+   "insert": {
+    "rows": 3631,
+    "multi": 0.08124483613329661,
+    "as_benign": 0.08124483613329661
+   },
+   "sup": {
+    "rows": 903,
+    "multi": 1.0,
+    "as_benign": 1.0
+   },
+   "replay": {
+    "rows": 110,
+    "multi": 0.2636363636363636,
+    "as_benign": 0.2636363636363636
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 1.0,
+  "per_label": {
+   "flood": {
+    "benign_share_inside": 0.004973227680043614,
+    "benign_inside": 5218
+   },
+   "insert": {
+    "benign_share_inside": 0.06948837275344416,
+    "benign_inside": 78302
+   },
+   "sup": {
+    "benign_share_inside": 0.9550925004973145,
+    "benign_inside": 19205
+   },
+   "replay": {
+    "benign_share_inside": 0.9784229109454688,
+    "benign_inside": 4988
+   }
+  }
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.9699344294978163,
+  "majority": 0.9209687108819863
+ },
+ "prevalence": {
+  "benign_rows": 84945,
+  "benign_share": 0.07493456623167656
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.7557702765177166,
+   "per_label": {
+    "benign": 0.9614562754505503,
+    "flood": 0.9721952167995334,
+    "insert": 0.9638439581351094,
+    "replay": 0.8813559322033898,
+    "sup": 0.0
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.7207386804291611,
+   "per_label": {
+    "benign": 0.9364020550215446,
+    "flood": 0.9672271210484742,
+    "insert": 0.7000642260757868,
+    "replay": 1.0,
+    "sup": 0.0
+   }
+  },
+  "content | independent: held-out groups (13 train / 7 test)": {
+   "macro_f1": 0.10208246128087066,
+   "per_label": {
+    "benign": 0.5104123064043533,
+    "flood": 0.0,
+    "insert": 0.0,
+    "replay": 0.0,
+    "sup": 0.0
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9438640531086808,
+   "per_label": {
+    "benign": 0.9971566954918917,
+    "flood": 0.9999666677777408,
+    "insert": 0.9995406522737712,
+    "replay": 1.0,
+    "sup": 0.72265625
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.7289643082322325,
+   "per_label": {
+    "benign": 0.9760073150853757,
+    "flood": 1.0,
+    "insert": 0.7000642260757868,
+    "replay": 0.96875,
+    "sup": 0.0
+   }
+  },
+  "content + identifiers | independent: held-out groups (13 train / 7 test)": {
+   "macro_f1": 0.10649638231583285,
+   "per_label": {
+    "benign": 0.5324819115791642,
+    "flood": 0.0,
+    "insert": 0.0,
+    "replay": 0.0,
+    "sup": 0.0
+   }
+  }
+ }
+}

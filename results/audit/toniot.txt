@@ -1,0 +1,91 @@
+DATASET AUDIT — ToN_IoT (network part)
+rows 11,169,511 (every second flow of each of the 23 files); content features 33; identifiers ['ts', 'src_ip', 'src_port', 'dst_ip', 'dst_port', 'dns_query', 'ssl_subject', 'ssl_issuer', 'http_uri', 'http_referrer', 'http_user_agent']; benign label 'normal'
+
+=== (i) STRUCTURE ===
+  toniot/Network_dataset_1.csv                                 fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_2.csv                                 fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_3.csv                                 fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_4.csv                                 fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_5.csv                                 fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_6.csv                                 fields per line={47: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_7.csv                                 fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_8.csv                                 fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_9.csv                                 fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_10.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_11.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_12.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_13.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_14.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_15.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_16.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_17.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_18.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_19.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_20.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_21.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_22.csv                                fields per line={46: 1000000}; header lines inside the data=0
+  toniot/Network_dataset_23.csv                                fields per line={46: 339021}; header lines inside the data=0
+  columns checked 44; value kind contradicting the name or role: 0
+  NaN cells in content features 11,157,748; infinite 0
+
+=== (ii) LABELS ===
+rows 11,169,511; duplicates on all columns 699,080 (6.26%); without identifiers 7,707,067 (69.00%)
+feature vectors with >1 label 18,297; rows in them 5,550,646 (49.69%)
+  scanning                     rows   3,570,004  in multi-label vectors  79.07%  vector also occurs as benign  34.45%
+  ddos                         rows   3,082,733  in multi-label vectors  18.71%  vector also occurs as benign   4.20%
+  dos                          rows   1,687,636  in multi-label vectors  94.72%  vector also occurs as benign   0.00%
+  xss                          rows   1,054,458  in multi-label vectors   8.28%  vector also occurs as benign   0.73%
+  password                     rows     859,318  in multi-label vectors  10.87%  vector also occurs as benign   8.78%
+  normal                       rows     397,992  in multi-label vectors  20.10%
+  backdoor                     rows     254,099  in multi-label vectors  99.45%  vector also occurs as benign   0.03%
+  injection                    rows     226,289  in multi-label vectors   2.53%  vector also occurs as benign   0.20%
+  ransomware                   rows      36,463  in multi-label vectors  91.43%  vector also occurs as benign  90.88%
+  mitm                         rows         519  in multi-label vectors   3.28%  vector also occurs as benign   0.96%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 100.00% of steps (mean over 1 file(s)); span 653.00 h
+label runs in file order 263,538 for 10 labels
+  scanning                     span          21.21 h  benign share inside   0.68%  benign rows inside 24,263
+  ddos                         span          16.75 h  benign share inside   1.44%  benign rows inside 44,953
+  dos                          span           8.61 h  benign share inside   2.94%  benign rows inside 51,032
+  xss                          span           7.78 h  benign share inside   1.48%  benign rows inside 15,842
+  password                     span          14.03 h  benign share inside   2.02%  benign rows inside 17,707
+  backdoor                     span          26.26 h  benign share inside   7.57%  benign rows inside 20,811
+  injection                    span           4.42 h  benign share inside   5.13%  benign rows inside 12,244
+  ransomware                   span           1.69 h  benign share inside  72.84%  benign rows inside 97,797
+  mitm                         span           2.41 h  benign share inside  94.73%  benign rows inside 9,335
+
+=== (iv) ATTRIBUTION ===
+  scanning                     distinct sources      41  top: 192.168.1.32 (47.29%), 192.168.1.31 (28.21%), 192.168.1.30 (19.91%)  sources also emitting benign 24.33%
+  ddos                         distinct sources      12  top: 192.168.1.31 (41.40%), 192.168.1.30 (38.83%), 192.168.1.38 (15.44%)  sources also emitting benign 38.85%
+  dos                          distinct sources       5  top: 192.168.1.30 (97.23%), 192.168.1.39 (1.50%), 192.168.1.31 (1.27%)  sources also emitting benign 97.23%
+  xss                          distinct sources       4  top: 192.168.1.35 (47.01%), 192.168.1.39 (38.03%), 192.168.1.32 (8.62%)  sources also emitting benign 0.00%
+  password                     distinct sources       6  top: 192.168.1.32 (63.20%), 192.168.1.33 (19.35%), 192.168.1.30 (5.90%)  sources also emitting benign 5.90%
+  normal                       distinct sources  11,789  top: 192.168.1.195 (20.12%), 192.168.1.190 (19.73%), 192.168.1.152 (17.17%)
+  backdoor                     distinct sources       4  top: 192.168.1.193 (99.95%), 192.168.1.33 (0.03%), 192.168.1.37 (0.02%)  sources also emitting benign 99.95%
+  injection                    distinct sources       7  top: 192.168.1.36 (36.81%), 192.168.1.33 (27.95%), 192.168.1.30 (12.47%)  sources also emitting benign 12.47%
+  ransomware                   distinct sources       5  top: 192.168.1.33 (50.36%), 192.168.1.37 (33.25%), 192.168.1.193 (16.38%)  sources also emitting benign 16.38%
+  mitm                         distinct sources       5  top: 192.168.1.34 (51.06%), 192.168.1.31 (48.17%), 192.168.1.1 (0.39%)  sources also emitting benign 0.77%
+source alone -> label (majority per source): 63.12%, against 31.96% for the majority class
+
+=== (v) PREVALENCE ===
+  scanning                       3,570,004  31.96%
+  ddos                           3,082,733  27.60%
+  dos                            1,687,636  15.11%
+  xss                            1,054,458  9.44%
+  password                         859,318  7.69%
+  normal                           397,992  3.56%
+  backdoor                         254,099  2.27%
+  injection                        226,289  2.03%
+  ransomware                        36,463  0.33%
+  mitm                                 519  0.00%
+benign 397,992 rows (3.56%); attack 96.44%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 819,193: normal 100,000, scanning 100,000, dos 100,000, injection 100,000, ddos 100,000, password 100,000, xss 100,000, backdoor 100,000, ransomware 18,674, mitm 519
+  content                  random 70/30                                 macro-F1=0.915  backdoor=0.96  ddos=0.98  dos=0.99  injection=0.98  mitm=0.61  normal=0.95  password=0.98  ransomware=0.78  scanning=0.94  xss=0.98
+  content                  time-ordered 70/30 per label                 macro-F1=0.832  backdoor=0.90  ddos=0.96  dos=0.98  injection=0.97  mitm=0.48  normal=0.74  password=0.97  ransomware=0.50  scanning=0.83  xss=0.97
+  content + identifiers    random 70/30                                 macro-F1=0.999  backdoor=1.00  ddos=1.00  dos=1.00  injection=1.00  mitm=0.99  normal=1.00  password=1.00  ransomware=1.00  scanning=1.00  xss=1.00
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.331  backdoor=0.85  ddos=0.33  dos=0.24  injection=0.16  mitm=0.07  normal=0.21  password=0.28  ransomware=0.42  scanning=0.05  xss=0.69
+
+(run time 1459 s)

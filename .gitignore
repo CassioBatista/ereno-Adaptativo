@@ -25,3 +25,16 @@ all_in_one_*_ts.npy
 # Credentials and app config: never commit
 *firebase-adminsdk*.json
 google-services.json
+
+# Paper 2 run artefacts (regenerable from the configs and scripts; large): per-run boosters,
+# score caches, per-round holdings and per-node evaluations, run logs (progress.log is kept)
+results/ev1_tl/**/boosters/
+results/ev1_tl/**/scores.npz
+results/ev1_tl/**/rounds.jsonl
+results/ev1_tl/**/node_eval.csv
+results/ev1_tl/**/*.log
+!results/ev1_tl/**/progress.log
+# GRASP resume checkpoints, Disaster-FD trace arrays, test time orders (derived from the data)
+features/checkpoints/
+results/disaster_fd_trace/*.npz
+all_in_one_*_test_order.npy

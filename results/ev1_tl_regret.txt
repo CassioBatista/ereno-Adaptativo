@@ -1,0 +1,26 @@
+regret = exposure (% of node-rounds after arrival) minus the best of the three policies
+
+24 cells, 16 with a spread above 1 point
+cell                                  ReSIDS  Fixed GL  Fixed FL   regret R/GL/FL
+CICIDS2017 T1 + 0 min block 1             3.9      32.7      52.6   0.0/28.8/48.7
+CICIDS2017 T1 + 0 min block 2             4.0      50.0       0.0   4.0/50.0/0.0
+CICIDS2017 T1 + 5 min block 1            34.8      26.5      48.4   8.3/0.0/21.9
+CICIDS2017 T1 + 5 min block 2             0.0      36.1       0.0   0.0/36.1/0.0
+CICIDS2017 T1 +20 min block 1            30.5      44.8      28.1   2.4/16.7/0.0
+CICIDS2017 T1 +20 min block 2             0.0      85.7       0.0   0.0/85.7/0.0
+CICIDS2017 T2 + 0 min block 1             0.0      10.8       0.0   0.0/10.8/0.0
+CICIDS2017 T2 + 0 min block 2            52.4      49.6      63.9   2.8/0.0/14.3
+CICIDS2017 T2 + 5 min block 1            86.8      81.4      92.9   5.4/0.0/11.5
+CICIDS2017 T2 + 5 min block 2            52.8      51.7      59.5   1.1/0.0/7.8
+CICIDS2017 T2 +20 min block 2            42.9      61.9      42.9   0.0/19.0/0.0
+ERENO      T1 + 0 min block 1             3.9      49.1      56.6   0.0/45.1/52.7
+ERENO      T1 + 5 min block 1            47.6      49.0      52.1   0.0/1.3/4.5
+ERENO      T1 +20 min block 1            32.3      43.9      30.3   1.9/13.6/0.0
+ERENO      T2 + 0 min block 1             0.0      44.6       0.0   0.0/44.6/0.0
+ERENO      T2 + 5 min block 1            61.2      66.1     100.0   0.0/4.9/38.8
+
+ReSIDS    regret mean   1.6, max   8.3 points; best (within 1 point) in 9/16; worst in 0/16
+Fixed GL  regret mean  22.3, max  85.7 points; best (within 1 point) in 4/16; worst in 8/16
+Fixed FL  regret mean  12.5, max  52.7 points; best (within 1 point) in 8/16; worst in 8/16
+registered arrivals only (offset 0): ReSIDS mean 1.1, max 4.0; Fixed GL mean 29.9, max 50.0; Fixed FL mean 19.3, max 52.7
+shifted arrivals only (+5, +20): ReSIDS mean 1.9, max 8.3; Fixed GL mean 17.7, max 85.7; Fixed FL mean 8.4, max 38.8

@@ -1,0 +1,18 @@
+trust-level grid, delta 60 s, seed 42 -- arguments (b), (c), (d)
+
+(b) exposure after each block's arrival: all node-rounds / only the node-rounds of nodes that reach the aggregator or a neighbour
+  ERENO      T1  ReSIDS:   3.9/  4.1    0.0/  0.0 | Fixed GL:  49.1/ 46.9    0.0/  0.0 | Fixed FL:  56.6/ 54.8    0.0/  0.0
+  ERENO      T2  ReSIDS:   0.0/  0.0    0.0/  0.0 | Fixed GL:  44.6/ 35.3    0.0/  0.0 | Fixed FL:   0.0/  0.0    0.0/  0.0
+  CICIDS2017 T1  ReSIDS:   3.9/  4.1    4.0/  4.0 | Fixed GL:  32.7/ 29.9   50.0/ 50.0 | Fixed FL:  52.6/ 50.6    0.0/  0.0
+  CICIDS2017 T2  ReSIDS:   0.0/  0.0   52.4/ 17.9 | Fixed GL:  10.8/ 14.7   49.6/ 13.0 | Fixed FL:   0.0/  0.0   63.9/ 37.7
+  mean over the 8 domain x trace x block cells (all / reachable): ReSIDS 8.0 / 3.8 %; Fixed GL 29.6 / 23.7 %; Fixed FL 21.6 / 17.9 %
+
+(c) communication over the trace: full-state boosters moved (MB) / messages; delta boosters (MB); FL rounds / GL rounds
+  ERENO      T1  booster ~9.3 KB  ReSIDS:  62.28 MB / 1063 msg; delta  1.65 MB; 37 FL / 16 GL | Fixed GL:   9.89 MB /  133 msg; delta  1.65 MB;  0 FL / 68 GL | Fixed FL:  59.92 MB / 1044 msg; delta  1.65 MB; 38 FL /  0 GL
+  ERENO      T2  booster ~9.3 KB  ReSIDS:  50.98 MB /  855 msg; delta  1.54 MB; 37 FL / 45 GL | Fixed GL:  14.19 MB /  153 msg; delta  1.47 MB;  0 FL / 82 GL | Fixed FL:  41.57 MB /  772 msg; delta  1.54 MB; 37 FL /  0 GL
+  CICIDS2017 T1  booster ~12.8 KB  ReSIDS: 105.41 MB / 1063 msg; delta  2.77 MB; 37 FL / 16 GL | Fixed GL:  15.78 MB /  133 msg; delta  2.77 MB;  0 FL / 68 GL | Fixed FL: 101.19 MB / 1044 msg; delta  2.77 MB; 38 FL /  0 GL
+  CICIDS2017 T2  booster ~12.8 KB  ReSIDS:  86.93 MB /  855 msg; delta  2.62 MB; 37 FL / 45 GL | Fixed GL:  23.69 MB /  153 msg; delta  2.47 MB;  0 FL / 82 GL | Fixed FL:  70.83 MB /  772 msg; delta  2.62 MB; 37 FL /  0 GL
+
+(d) decisions per node over the trace (1-s grid): mode changes with the trust level (S = 5 s / S = 0), changes of the probe-driven mode, share of time the two differ; mixed federated+gossip rounds in the switching runs
+  T1: changes per node, trust level S=5 s: 4-4 (mean 4.0); S=0: 5-7 (mean 5.8); probe-driven: 3-10 (mean 6.1); time trust-level mode != probe mode: 15.9 % (per node 0.4-18.5 %); mixed F+G rounds: ERENO 1, CICIDS2017 1
+  T2: changes per node, trust level S=5 s: 3-4 (mean 3.1); S=0: 3-5 (mean 3.4); probe-driven: 3-6 (mean 3.6); time trust-level mode != probe mode: 4.6 % (per node 0.2-15.5 %); mixed F+G rounds: ERENO 0, CICIDS2017 0

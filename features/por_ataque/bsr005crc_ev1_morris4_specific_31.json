@@ -1,0 +1,25 @@
+{
+  "dataset": "all_in_one_ev1_morris4_train",
+  "attack": "specific_31",
+  "attack_id": 25,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    6,
+    10,
+    14,
+    16
+  ],
+  "n_features": 4,
+  "f1_grasp_cv": 99.92343032159266,
+  "iterations": 7,
+  "evaluations": 476,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 197.4,
+  "max_time_h": null
+}

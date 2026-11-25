@@ -1,0 +1,39 @@
+DATASET AUDIT — Hassler et al., schema S1 (cyber)
+rows 33,102 (all rows); content features 30; identifiers ['timestamp_c', 'frame.number', 'wlan.seq', 'ip.id', 'tcp.seq_raw', 'tcp.ack_raw', 'time_since_last_packet']; benign label 'benign'
+note: 3 block(s) of the stacked CSV share this schema
+
+=== (i) STRUCTURE ===
+  uav_hassler/Dataset_T-ITS.csv                                fields per line={38: 54783}; header lines inside the data=2
+  columns checked 37; value kind contradicting the name or role: 2: ip.src holds integer; ip.dst holds integer
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 33,102; duplicates on all columns 124 (0.37%); without identifiers 28,056 (84.76%)
+feature vectors with >1 label 545; rows in them 23,039 (69.60%)
+  Replay                       rows      12,006  in multi-label vectors  71.97%  vector also occurs as benign  12.72%
+  DoS attack                   rows      11,671  in multi-label vectors  84.87%  vector also occurs as benign  10.05%
+  benign                       rows       9,425  in multi-label vectors  47.67%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 99.99% of steps (mean over 1 file(s)); span 10.56 h
+label runs in file order 3 for 3 labels
+  Replay                       span           8.10 h  benign share inside  22.74%  benign rows inside 6,970
+  DoS attack                   span           1.34 h  benign share inside   0.00%  benign rows inside 0
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  Replay                            12,006  36.27%
+  DoS attack                        11,671  35.26%
+  benign                             9,425  28.47%
+benign 9,425 rows (28.47%); attack 71.53%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 33,102: Replay 12,006, DoS attack 11,671, benign 9,425
+  content                  random 70/30                                 macro-F1=0.640  DoS attack=0.70  Replay=0.38  benign=0.84
+  content                  time-ordered 70/30 per label                 macro-F1=0.522  DoS attack=0.66  Replay=0.21  benign=0.70
+  content + identifiers    random 70/30                                 macro-F1=0.994  DoS attack=0.99  Replay=0.99  benign=1.00
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.385  DoS attack=0.28  Replay=0.29  benign=0.58
+
+(run time 4 s)

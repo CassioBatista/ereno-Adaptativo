@@ -1,0 +1,161 @@
+{
+ "dataset": "Electra Modbus",
+ "sample": "all rows",
+ "rows": 16289277,
+ "feats": 5,
+ "ids": [
+  "Time",
+  "smac",
+  "dmac",
+  "sip",
+  "dip"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.9974729387928022,
+  "multi_rows": 0.9720764770591107,
+  "per_label": {
+   "NORMAL": {
+    "rows": 13894323,
+    "multi": 0.995996278480067,
+    "as_benign": null
+   },
+   "MITM_UNALTERED": {
+    "rows": 1550617,
+    "multi": 0.9298305126281989,
+    "as_benign": 0.8302424131813336
+   },
+   "READ_ATTACK": {
+    "rows": 785961,
+    "multi": 0.7030310664269601,
+    "as_benign": 0.6577781849226616
+   },
+   "RECOGNITION_ATTACK": {
+    "rows": 30580,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "RESPONSE_ATTACK": {
+    "rows": 16353,
+    "multi": 0.030086222711429095,
+    "as_benign": 0.00183452577508714
+   },
+   "WRITE_ATTACK": {
+    "rows": 9417,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "FORCE_ERROR_ATTACK": {
+    "rows": 1129,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "REPLAY_ATTACK": {
+    "rows": 897,
+    "multi": 0.9710144927536232,
+    "as_benign": 0.9710144927536232
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.9993892300676838,
+  "per_label": {
+   "MITM_UNALTERED": {
+    "benign_share_inside": 0.8527449409774549,
+    "benign_inside": 13856580
+   },
+   "READ_ATTACK": {
+    "benign_share_inside": 0.8615264789618552,
+    "benign_inside": 13777920
+   },
+   "RECOGNITION_ATTACK": {
+    "benign_share_inside": 0.8618162592543056,
+    "benign_inside": 13692429
+   },
+   "RESPONSE_ATTACK": {
+    "benign_share_inside": 0.8524032165262688,
+    "benign_inside": 13814835
+   },
+   "WRITE_ATTACK": {
+    "benign_share_inside": 0.8616652043558147,
+    "benign_inside": 13673523
+   },
+   "FORCE_ERROR_ATTACK": {
+    "benign_share_inside": 0.8525052957031135,
+    "benign_inside": 13814145
+   },
+   "REPLAY_ATTACK": {
+    "benign_share_inside": 0.8582789644785437,
+    "benign_inside": 11333457
+   }
+  }
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.9536087451886293,
+  "majority": 0.8529735850154675
+ },
+ "prevalence": {
+  "benign_rows": 13894323,
+  "benign_share": 0.8529735850154675
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.6676200159470627,
+   "per_label": {
+    "FORCE_ERROR_ATTACK": 1.0,
+    "MITM_UNALTERED": 0.272780816154817,
+    "NORMAL": 0.5693755050213551,
+    "READ_ATTACK": 0.5021496130696474,
+    "RECOGNITION_ATTACK": 1.0,
+    "REPLAY_ATTACK": 0.022058823529411766,
+    "RESPONSE_ATTACK": 0.9745953698012703,
+    "WRITE_ATTACK": 1.0
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.6735033485565669,
+   "per_label": {
+    "FORCE_ERROR_ATTACK": 1.0,
+    "MITM_UNALTERED": 0.2856745557193314,
+    "NORMAL": 0.5713623993978345,
+    "READ_ATTACK": 0.5010794896957802,
+    "RECOGNITION_ATTACK": 1.0,
+    "REPLAY_ATTACK": 0.05755395683453238,
+    "RESPONSE_ATTACK": 0.972356386805056,
+    "WRITE_ATTACK": 1.0
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9770504773346245,
+   "per_label": {
+    "FORCE_ERROR_ATTACK": 1.0,
+    "MITM_UNALTERED": 0.9961038961038962,
+    "NORMAL": 1.0,
+    "READ_ATTACK": 0.9988014382740711,
+    "RECOGNITION_ATTACK": 1.0,
+    "REPLAY_ATTACK": 0.8454935622317596,
+    "RESPONSE_ATTACK": 0.9760049220672683,
+    "WRITE_ATTACK": 1.0
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.8328296003796879,
+   "per_label": {
+    "FORCE_ERROR_ATTACK": 1.0,
+    "MITM_UNALTERED": 0.9345877340907074,
+    "NORMAL": 1.0,
+    "READ_ATTACK": 0.9907635878626209,
+    "RECOGNITION_ATTACK": 1.0,
+    "REPLAY_ATTACK": 0.010714285714285714,
+    "RESPONSE_ATTACK": 0.7265711953698895,
+    "WRITE_ATTACK": 1.0
+   }
+  }
+ }
+}

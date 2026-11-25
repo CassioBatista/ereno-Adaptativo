@@ -1,0 +1,83 @@
+2026-11-19 09:36:43
+HEAD e352d9dc81488ec8ed5c129d945504db0821f1ea
+status:
+ M scripts/ev1_step1.py
+diff of the script:
+diff --git a/scripts/ev1_step1.py b/scripts/ev1_step1.py
+index da6482c..a23b417 100644
+--- a/scripts/ev1_step1.py
++++ b/scripts/ev1_step1.py
+@@ -141,6 +141,7 @@ def capped(y, nc, cap, seed):
+ def attack_partition(y, nc, classes, cap, seed):
+     """[(name, type codes, node, row indices into y)] and the 14 benign slices (indices into y)."""
+     import ev1_partition_n14 as P
++    P.N = N                                             # --nodes (default 14)
+     rng, kept = capped(y, nc, cap, seed)
+     yk = y[kept]
+     benign = np.where(yk == nc)[0].copy()
+@@ -246,9 +247,18 @@ def env_record(path, dom, feats, seed):
+                 f"nthread {NTHREAD}; seed {seed}; features {feats}\n")
+ 
+ 
++def specialist_count(path):
++    """S, the number of specialists of the domain (types under SMALL training rows share one);
++    read from the label column only, before the node count is fixed."""
++    import ev1_partition_n14 as P
++    classes, benign, counts = P.label_counts(path)
++    P.N = 1                                             # all on one node: one unit per specialist
++    return len(P.specialists(classes, benign, counts))
++
++
+ def run(domain, seed, smoke):
+     dom = DOMAINS[domain]
+-    tag = f"{domain}_s{seed}"
++    tag = f"{domain}_s{seed}" + ("" if N == 14 else f"_n{N}")
+     if smoke:
+         cache = out_base = os.path.join("results/.cache/ev1_step1_smoke", tag)
+         os.makedirs(cache, exist_ok=True)
+@@ -287,7 +297,7 @@ def run(domain, seed, smoke):
+         b, p, q = train(X[idx], (y[idx] != nc).astype(np.int8), iid_rounds, seed)
+         b.save_model(f"{mdir}/iid{i:02d}.json")
+         iid.append({"node": i + 1, "attack": p, "benign": q})
+-    print(f"[iid] 14 models of {iid_rounds} rounds", flush=True)
++    print(f"[iid] {N} models of {iid_rounds} rounds", flush=True)
+     b, p, q = train(X[kept], (y[kept] != nc).astype(np.int8), TREES * S, seed)
+     b.save_model(f"{mdir}/central.json")
+     print(f"[central] {TREES * S} rounds on {p:,} attack / {q:,} benign", flush=True)
+@@ -333,10 +343,10 @@ def run(domain, seed, smoke):
+     # report
+     buf = io.StringIO()
+     with redirect_stdout(buf):
+-        print(f"evaluation-v1 step 1 -- {dom['name']} -- seed {seed}"
++        print(f"evaluation-v1 step 1 -- {dom['name']} -- seed {seed} -- {N} nodes"
+               + ("  [SMOKE: training rows only, not results]" if smoke else ""))
+         print(f"features ({len(feats)}): {feats}")
+-        print(f"specialists {S} (10 rounds each), IID 14 x {iid_rounds} rounds, Centralized "
++        print(f"specialists {S} (10 rounds each), IID {N} x {iid_rounds} rounds, Centralized "
+               f"{TREES * S} rounds; nthread {NTHREAD}; test {len(yt):,} rows "
+               f"({int((yt != nc).sum()):,} attack, prevalence {100 * (yt != nc).mean():.2f} %)")
+         print(f"\n{'detector':<22}{'F1':>8}{'recall':>9}{'prec.':>9}{'FPR %':>10}{'FP':>9}"
+@@ -371,7 +381,7 @@ def run(domain, seed, smoke):
+ 
+     def js(m):
+         return {k: (v if k != "per_type" else {classes[c]: x for c, x in v.items()}) for k, v in m.items()}
+-    json.dump({"domain": dom["name"], "seed": seed, "smoke": smoke, "features": feats, "nthread": NTHREAD,
++    json.dump({"domain": dom["name"], "seed": seed, "nodes": N, "smoke": smoke, "features": feats, "nthread": NTHREAD,
+                "specialists": spec, "iid": iid, "iid_rounds": iid_rounds, "central_rounds": TREES * S,
+                "results": {k: js(v) for k, v in res.items() if k in det},
+                "local_mean": res["Local (mean over nodes)"], "local": {n: js(m) for n, m in local.items()}},
+@@ -384,8 +394,12 @@ if __name__ == "__main__":
+     ap.add_argument("--domain", required=True, choices=DOMAINS)
+     ap.add_argument("--seed", type=int, default=42)
+     ap.add_argument("--smoke", action="store_true")
++    ap.add_argument("--nodes", default="14",
++                    help="node count: an integer (default 14), or 'spec' for one node per specialist "
++                         "(N = S; outputs tagged _n<N> when N != 14)")
+     a = ap.parse_args()
+     os.chdir(ROOT)
++    N = specialist_count(DOMAINS[a.domain]["train"]) if a.nodes == "spec" else int(a.nodes)
+     if not a.smoke:
+         b = busy()
+         if b:
+
+python 3.14.4, xgboost 3.3.0, numpy 2.5.0, scikit-learn 1.9.0, scipy 1.18.0, pandas 3.0.5; nthread 8; seed 45; features [1, 2, 3, 4, 5, 6, 8, 9, 15, 16, 17, 18, 19, 20, 21, 24, 25, 28, 34, 36, 37, 38, 39, 40, 41, 42, 45, 46]

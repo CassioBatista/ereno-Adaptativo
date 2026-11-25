@@ -1,0 +1,61 @@
+evaluation-v1 step 1, CALIBRATED THRESHOLDS (exploratory, not pre-registered) -- ERENO -- seed 42 -- 14 nodes
+features (15): [5, 7, 14, 15, 20, 25, 40, 42, 43, 44, 45, 46, 55, 57, 58]
+specialists 14, IID 14 x 10 rounds, Centralized 140 rounds; 20 % of each node's benign rows held out for calibration; test 2,955,648 rows (prevalence 6.78 %)
+
+detector                                    F1   recall    prec.     FPR %       FP  F1@6.8%     P@1%   P@0.1%
+attack-based OR @0.5 (80% benign)        95.45    99.97    91.32    0.6917   19,058    95.46    59.35    12.64
+IID OR @0.5 (80% benign)                 78.91    99.32    65.46    3.8143  105,090    78.95    20.82     2.54
+Centralized @0.5 (80% benign)            99.70    99.96    99.45    0.0402    1,108    99.70    96.17    71.33
+attack-based OR calib A=1%               94.55    91.56    97.74    0.1539    4,240    94.55    85.73    37.33
+attack-based k=2 calib A=1%              95.53    91.45   100.00    0.0000        0    95.53>=  99.99>=  99.88
+IID OR calib A=1%                        93.02    88.16    98.45    0.1013    2,792    93.02    89.78    46.55
+Centralized calib A=1%                   93.43   100.00    87.67    1.0239   28,209    93.44    49.66     8.91
+attack-based OR calib A=0.1%             95.53    91.45   100.00    0.0000        0    95.53>=  99.99>=  99.88
+IID OR calib A=0.1%                      90.93    83.72    99.50    0.0307      847    90.93    96.49    73.16
+Centralized calib A=0.1%                 99.38    99.97    98.80    0.0886    2,442    99.38    91.93    53.03
+
+per-type recall % (* fewer than 100 test samples)
+type                                      n      AB@0.5     AB A=1%    AB A=.1%    IID A=1%    Cen A=1%
+ random_replay                       39,000      100.00       99.99       99.99       92.90      100.00
+ inverse_replay                      30,319      100.00      100.00      100.00       96.52      100.00
+ masquerade_fake_fault               17,200       99.64        3.81        3.81       54.87      100.00
+ masquerade_fake_normal              17,420      100.00       97.89       96.59       35.10      100.00
+ injection                           39,000      100.00      100.00      100.00       97.86      100.00
+ high_StNum                          39,000      100.00      100.00      100.00       99.98      100.00
+ poisoned_high_rate                  18,570      100.00      100.00      100.00      100.00      100.00
+
+thresholds, A = 1 % (per specialist a = 0.0714 %): node, name, n_cal, t, test FPR of the specialist, resolution-limited
+   1 random_replay                              7,143 0.1798   0.000
+   2 random_replay                              7,143 0.1798   0.000
+   3 injection                                  7,143 0.1793   0.000
+   4 injection                                  7,143 0.1793   0.000
+   5 high_StNum                                 7,143 0.2045   0.113
+   6 high_StNum                                 7,143 0.2086   0.000
+   7 inverse_replay                             7,143 0.1805   0.000
+   8 inverse_replay                             7,143 0.1804   0.000
+   9 poisoned_high_rate                         7,143 0.1924   0.000
+  10 poisoned_high_rate                         7,143 0.1941   0.000
+  11 masquerade_fake_normal                     7,143 0.8146   0.000
+  12 masquerade_fake_normal                     7,143 0.7888   0.041
+  13 masquerade_fake_fault                      7,143 0.8187   0.000
+  14 masquerade_fake_fault                      7,143 0.8190   0.000
+  IID: t 0.6665-0.7380, n_cal 7,118, limited 0/14; Centralized t 0.0441, n_cal 100,000
+
+thresholds, A = 0.1 % (per specialist a = 0.0071 %): node, name, n_cal, t, test FPR of the specialist, resolution-limited
+   1 random_replay                              7,143 0.1798   0.000  limited
+   2 random_replay                              7,143 0.1798   0.000  limited
+   3 injection                                  7,143 0.1793   0.000  limited
+   4 injection                                  7,143 0.1793   0.000  limited
+   5 high_StNum                                 7,143 0.2077   0.000  limited
+   6 high_StNum                                 7,143 0.2086   0.000  limited
+   7 inverse_replay                             7,143 0.1805   0.000  limited
+   8 inverse_replay                             7,143 0.1804   0.000  limited
+   9 poisoned_high_rate                         7,143 0.1924   0.000  limited
+  10 poisoned_high_rate                         7,143 0.1941   0.000  limited
+  11 masquerade_fake_normal                     7,143 0.8146   0.000  limited
+  12 masquerade_fake_normal                     7,143 0.8205   0.000  limited
+  13 masquerade_fake_fault                      7,143 0.8187   0.000  limited
+  14 masquerade_fake_fault                      7,143 0.8190   0.000  limited
+  IID: t 0.6846-0.8203, n_cal 7,118, limited 14/14; Centralized t 0.3423, n_cal 100,000
+
+elapsed 33 s

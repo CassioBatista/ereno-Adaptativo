@@ -1,0 +1,35 @@
+# Arrival-offset check of the trust-level grid (paper 2, 5.3; exploratory, not registered):
+# same as tl_grid_template.yaml, with the two late blocks shifted by an offset.
+# Placeholders filled by run_tl_arrival_offsets.sh.
+run_name: ev1-tl-ereno_T1_switching_retain_off5
+seed: 42
+grasp:
+  features_file: features/all_in_one_ev1_ereno_train_combined.json
+dataset:
+  name: all_in_one_ereno_train
+  test_file: all_in_one_ereno_test
+  partitioner: specialists
+  benign_cap: 500000
+  partitioner_arg: null
+topology:
+  type: ring
+  num_nodes: 14
+simulation:
+  num_rounds: 82
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 1
+  eval_sample: 100000
+  monolithic: false
+scenario:
+  # nodes 3, 4, 11, 12 at 30 min + offset and 9, 10 at 60 min + offset (1-based); 0-based here
+  arrival_s: {2: 2100, 3: 2100, 10: 2100, 11: 2100, 8: 3900, 9: 3900}
+architecture:
+  manager: trust_level
+  trace: /home/cassi/datasets/disaster_fd_run1
+  t_end: 4980
+  delta_s: 60
+  policy: switching
+  node_holdings: retain
+  holdings_log: /home/cassi/ereno-Adaptativo/results/ev1_tl/arrival_offsets/ereno_T1_switching_retain_off5
+  aggregation: xgb_union

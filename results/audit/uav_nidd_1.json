@@ -1,0 +1,153 @@
+{
+ "dataset": "UAV-NIDD, case1_uav",
+ "sample": "all rows",
+ "rows": 885384,
+ "feats": 30,
+ "ids": [
+  "frame.number",
+  "frame.time_epoch",
+  "frame.time_relative",
+  "frame.time_delta_displayed",
+  "radiotap.mactime",
+  "radiotap.timestamp.ts",
+  "wlan_radio.start_tsf",
+  "wlan_radio.timestamp",
+  "wlan.seq",
+  "ip.src",
+  "ip.dst",
+  "wlan.bssid",
+  "udp.srcport",
+  "udp.dstport"
+ ],
+ "structure": {
+  "value_kind_conflicts": [
+   "radiotap.dbm_antsignal holds real",
+   "wlan_radio.signal_dbm holds real",
+   "ip.proto holds IPv4 (a content feature)",
+   "ip.ttl holds IPv4 (a content feature)",
+   "ip.src holds integer",
+   "udp.srcport holds real",
+   "udp.dstport holds real"
+  ]
+ },
+ "labels": {
+  "dup_all": 0.04058465027603842,
+  "dup_feat": 0.059087356446468425,
+  "multi_rows": 0.0,
+  "per_label": {
+   "DDoS": {
+    "rows": 193180,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "BruteForce": {
+    "rows": 175925,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "UDP Flooding": {
+    "rows": 152775,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "MITM": {
+    "rows": 151586,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "ICMP Flooding": {
+    "rows": 47544,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Jamming": {
+    "rows": 41600,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "replay": {
+    "rows": 25977,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "FakeLanding": {
+    "rows": 24050,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Normal": {
+    "rows": 17949,
+    "multi": 0.0,
+    "as_benign": null
+   },
+   "De-authentication": {
+    "rows": 14606,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Scanning": {
+    "rows": 9030,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "DoS": {
+    "rows": 6424,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Reconnassiance": {
+    "rows": 6,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": false
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.4111583222646897,
+  "majority": 0.2181878145527816
+ },
+ "prevalence": {
+  "benign_rows": 17949,
+  "benign_share": 0.020272559702908567
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.9643038389445233,
+   "per_label": {
+    "BruteForce": 0.9992995330220147,
+    "DDoS": 1.0,
+    "De-authentication": 0.9070915619389587,
+    "DoS": 1.0,
+    "FakeLanding": 0.7886160714285714,
+    "ICMP Flooding": 1.0,
+    "Jamming": 0.9999198782148866,
+    "MITM": 0.932451549016834,
+    "Normal": 0.9979013641133263,
+    "Scanning": 1.0,
+    "UDP Flooding": 1.0,
+    "replay": 0.946366109599689
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 1.0,
+   "per_label": {
+    "BruteForce": 1.0,
+    "DDoS": 1.0,
+    "De-authentication": 1.0,
+    "DoS": 1.0,
+    "FakeLanding": 1.0,
+    "ICMP Flooding": 1.0,
+    "Jamming": 1.0,
+    "MITM": 1.0,
+    "Normal": 1.0,
+    "Scanning": 1.0,
+    "UDP Flooding": 1.0,
+    "replay": 1.0
+   }
+  }
+ }
+}

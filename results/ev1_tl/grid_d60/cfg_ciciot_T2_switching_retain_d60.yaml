@@ -1,0 +1,35 @@
+# evaluation-v1 section 9 grid (paper 2, 5.3): trust-level manager on a Disaster-FD trace,
+# 'specialists' partitioner (section 2.3), arrival of node blocks, per-node holdings log.
+# Placeholders filled by run_tl_grid.sh.
+run_name: ev1-tl-ciciot_T2_switching_retain_d60
+seed: 42
+grasp:
+  features_file: features/all_in_one_ev1_ciciot_train_combined.json
+dataset:
+  name: all_in_one_ev1_ciciot_train
+  test_file: all_in_one_ev1_ciciot_test
+  partitioner: specialists
+  
+  partitioner_arg: null
+topology:
+  type: ring
+  num_nodes: 14
+simulation:
+  num_rounds: 97
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 1
+  eval_sample: 100000
+  monolithic: false     # skip the pipeline's monolithic baseline (Centralized is in step 1)
+scenario:
+  # nodes 3, 4, 11, 12 at 30 min and 9, 10 at 60 min (1-based); 0-based indices here
+  arrival_s: {2: 1800, 3: 1800, 10: 1800, 11: 1800, 8: 3600, 9: 3600}
+architecture:
+  manager: trust_level
+  trace: /home/cassi/datasets/disaster_fd_scenario2
+  t_end: 5880
+  delta_s: 60
+  policy: switching
+  node_holdings: retain
+  holdings_log: /home/cassi/ereno-Adaptativo/results/ev1_tl/grid_d60/ciciot_T2_switching_retain_d60
+  aggregation: xgb_union

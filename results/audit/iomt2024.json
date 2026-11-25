@@ -1,0 +1,137 @@
+{
+ "dataset": "CIC-BCCC-NRC-IoMT-2024",
+ "sample": "all rows",
+ "rows": 3385313,
+ "feats": 77,
+ "ids": [
+  "Flow ID",
+  "Src IP",
+  "Src Port",
+  "Dst IP",
+  "Dst Port",
+  "Timestamp"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.03225107988537544,
+  "dup_feat": 0.232837259065853,
+  "multi_rows": 0.0015768113613128239,
+  "per_label": {
+   "DoS": {
+    "rows": 2112138,
+    "multi": 5.5867561683943e-05,
+    "as_benign": 2.3672695628789407e-05
+   },
+   "MQTT": {
+    "rows": 655143,
+    "multi": 0.007348014097685544,
+    "as_benign": 0.005009593325426663
+   },
+   "Recon": {
+    "rows": 579231,
+    "multi": 8.977420062116841e-05,
+    "as_benign": 8.632134675112348e-05
+   },
+   "Benign": {
+    "rows": 32620,
+    "multi": 0.00941140404659718,
+    "as_benign": null
+   },
+   "DDoS": {
+    "rows": 5128,
+    "multi": 0.008385335413416536,
+    "as_benign": 0.00078003120124805
+   },
+   "Spoofing": {
+    "rows": 1053,
+    "multi": 0.003798670465337132,
+    "as_benign": 0.000949667616334283
+   }
+  },
+  "identical_files_across_labels": 0
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.812505907874961,
+  "per_label": {
+   "DoS": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "MQTT": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "Recon": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "DDoS": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "Spoofing": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   }
+  }
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.8478858528000217,
+  "majority": 0.6239121759199223
+ },
+ "prevalence": {
+  "benign_rows": 32620,
+  "benign_share": 0.009635741215066376
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.8195685402041867,
+   "per_label": {
+    "Benign": 0.9489865857240771,
+    "DDoS": 0.60828025477707,
+    "DoS": 0.9982470491994858,
+    "MQTT": 0.9981684981684982,
+    "Recon": 0.9987653497063534,
+    "Spoofing": 0.36496350364963503
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.7746084888906707,
+   "per_label": {
+    "Benign": 0.8766918044249113,
+    "DDoS": 0.37966101694915255,
+    "DoS": 0.9956143287579511,
+    "MQTT": 0.9892613408269771,
+    "Recon": 0.9943012302638196,
+    "Spoofing": 0.4121212121212121
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9899628622917067,
+   "per_label": {
+    "Benign": 0.9994890137966275,
+    "DDoS": 0.980354267310789,
+    "DoS": 0.9993495989193336,
+    "MQTT": 1.0,
+    "Recon": 0.9997999799979999,
+    "Spoofing": 0.9607843137254902
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.9346750368825286,
+   "per_label": {
+    "Benign": 0.9975003825945008,
+    "DDoS": 0.8768971332209107,
+    "DoS": 0.9976444644915552,
+    "MQTT": 0.9999166736105325,
+    "Recon": 0.9992494621145154,
+    "Spoofing": 0.7368421052631579
+   }
+  }
+ }
+}

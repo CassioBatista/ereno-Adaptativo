@@ -1,0 +1,92 @@
+evaluation-v1 section 6, window alarms -- Morris-4 -- seed 42; 77,831 test rows (13,457 attack), 35 specialists, OR at 0.5; time span 36.29 h
+alarm: n_f >= ceil(1.25 max benign) + 1 OR fraction > 1.25 max benign OR any S_s >= max(ceil(1.25 max benign S_s) + 1, 2); blocked-5 out-of-sample calibration
+
+=== 100-s windows (primary): 711 attack + 171 benign windows; samples per window median 106, mean 88.2
+  network-wide  attack windows alarmed 222/711 = 31.22 % [27.83, 34.77]; false alarms 0 of 171 (95 % upper bound 1.754 %)
+  full rule     attack windows alarmed 597/711 = 83.97 % [81.06, 86.59]; false alarms 5 of 171 (2.924 %)
+  per type, full rule (windows holding the type: alarmed / windows):
+    specific_9                              9/17      52.94 %  [27.8, 77.0]
+    specific_14                            13/23      56.52 %  [34.5, 76.8]
+    specific_13                            10/17      58.82 %  [32.9, 81.6]
+    specific_15                            13/22      59.09 %  [36.4, 79.3]
+    specific_6                             14/23      60.87 %  [38.5, 80.3]
+    specific_2                             11/17      64.71 %  [38.3, 85.8]
+    specific_30                            32/49      65.31 %  [50.4, 78.3]
+    specific_35                            36/55      65.45 %  [51.4, 77.8]
+    specific_27                            37/56      66.07 %  [52.2, 78.2]
+    specific_1                             15/21      71.43 %  [47.8, 88.7]
+    specific_17                            13/18      72.22 %  [46.5, 90.3]
+    specific_16                            16/20      80.00 %  [56.3, 94.3]
+    specific_10                            14/17      82.35 %  [56.6, 96.2]
+    specific_33                            40/46      86.96 %  [73.7, 95.1]
+    specific_5                             15/17      88.24 %  [63.6, 98.5]
+    specific_34                            48/52      92.31 %  [81.5, 97.9]
+    specific_20                            30/32      93.75 %  [79.2, 99.2]
+    specific_7                             16/17      94.12 %  [71.3, 99.9]
+    specific_3                             19/20      95.00 %  [75.1, 99.9]
+    specific_4                             23/24      95.83 %  [78.9, 99.9]
+    specific_18                            26/27      96.30 %  [81.0, 99.9]
+    specific_21                            42/43      97.67 %  [87.7, 99.9]
+    specific_29                            45/46      97.83 %  [88.5, 99.9]
+    specific_28                            47/48      97.92 %  [88.9, 99.9]
+    specific_31                            48/49      97.96 %  [89.1, 99.9]
+    specific_11                            23/23     100.00 %  [85.2, 100.0]
+    specific_12                            27/27     100.00 %  [87.2, 100.0]
+    specific_19                            39/39     100.00 %  [91.0, 100.0]
+    specific_22                            37/37     100.00 %  [90.5, 100.0]
+    specific_23                            51/51     100.00 %  [93.0, 100.0]
+    specific_24                            33/33     100.00 %  [89.4, 100.0]
+    specific_25                            42/42     100.00 %  [91.6, 100.0]
+    specific_26                            48/48     100.00 %  [92.6, 100.0]
+    specific_32                            49/49     100.00 %  [92.7, 100.0]
+    specific_8                             23/23     100.00 %  [85.2, 100.0]
+  folds: 0: 177 win (141 attack), 135 benign for calibration, T=78, f=0.6307, T_s 2-40; 1: 177 win (139 attack), 133 benign for calibration, T=78, f=0.6307, T_s 2-40; 2: 176 win (131 attack), 126 benign for calibration, T=78, f=0.6307, T_s 2-40; 3: 176 win (142 attack), 137 benign for calibration, T=78, f=0.6303, T_s 2-40; 4: 176 win (158 attack), 153 benign for calibration, T=78, f=0.6307, T_s 2-40
+
+=== 10-s windows (sensitivity): 4,645 attack + 3,815 benign windows; samples per window median 12, mean 9.2
+  network-wide  attack windows alarmed 547/4,645 = 11.78 % [10.86, 12.74]; false alarms 0 of 3,815 (95 % upper bound 0.079 %)
+  full rule     attack windows alarmed 2,912/4,645 = 62.69 % [61.28, 64.08]; false alarms 43 of 3,815 (1.127 %)
+  per type, full rule (windows holding the type: alarmed / windows):
+    specific_15                             4/84       4.76 %  [1.3, 11.7]
+    specific_9                              9/76      11.84 %  [5.6, 21.3]
+    specific_16                            19/92      20.65 %  [12.9, 30.4]
+    specific_27                            59/284     20.77 %  [16.2, 26.0]
+    specific_20                            40/192     20.83 %  [15.3, 27.3]
+    specific_13                            19/87      21.84 %  [13.7, 32.0]
+    specific_14                            26/96      27.08 %  [18.5, 37.1]
+    specific_35                            81/278     29.14 %  [23.9, 34.9]
+    specific_30                            79/248     31.85 %  [26.1, 38.0]
+    specific_2                             29/83      34.94 %  [24.8, 46.2]
+    specific_6                             40/114     35.09 %  [26.4, 44.6]
+    specific_1                             36/101     35.64 %  [26.4, 45.8]
+    specific_10                            30/81      37.04 %  [26.6, 48.5]
+    specific_33                            84/222     37.84 %  [31.4, 44.6]
+    specific_18                            49/120     40.83 %  [32.0, 50.2]
+    specific_34                           114/228     50.00 %  [43.3, 56.7]
+    specific_17                            42/79      53.16 %  [41.6, 64.5]
+    specific_5                             52/80      65.00 %  [53.5, 75.3]
+    specific_25                           150/221     67.87 %  [61.3, 74.0]
+    specific_29                           157/231     67.97 %  [61.5, 73.9]
+    specific_28                           210/253     83.00 %  [77.8, 87.4]
+    specific_31                           215/246     87.40 %  [82.6, 91.3]
+    specific_26                           185/210     88.10 %  [82.9, 92.1]
+    specific_32                           231/257     89.88 %  [85.5, 93.3]
+    specific_7                             78/85      91.76 %  [83.8, 96.6]
+    specific_8                             91/99      91.92 %  [84.7, 96.4]
+    specific_4                             97/105     92.38 %  [85.5, 96.7]
+    specific_12                           108/115     93.91 %  [87.9, 97.5]
+    specific_3                             88/93      94.62 %  [87.9, 98.2]
+    specific_11                            97/102     95.10 %  [88.9, 98.4]
+    specific_24                           173/180     96.11 %  [92.2, 98.4]
+    specific_21                           257/260     98.85 %  [96.7, 99.8]
+    specific_23                           307/310     99.03 %  [97.2, 99.8]
+    specific_19                           245/247     99.19 %  [97.1, 99.9]
+    specific_22                           232/232    100.00 %  [98.4, 100.0]
+  folds: 0: 1692 win (886 attack), 3009 benign for calibration, T=10, f=0.8333, T_s 2-6; 1: 1692 win (868 attack), 2991 benign for calibration, T=10, f=0.7500, T_s 2-6; 2: 1692 win (830 attack), 2953 benign for calibration, T=10, f=0.8333, T_s 2-6; 3: 1692 win (994 attack), 3117 benign for calibration, T=10, f=0.8333, T_s 2-6; 4: 1692 win (1067 attack), 3190 benign for calibration, T=10, f=0.8333, T_s 2-6
+
+=== 1000-s windows (sensitivity): 109 attack + 0 benign windows; samples per window median 875, mean 714.0; NOT SCORED (no attack-free window in the other blocks): 109 windows, 109 attack
+  no block could be calibrated and scored
+  network-wide  attack windows alarmed 0/0 = nan % [nan, nan]; false alarms 0 of 0 (95 % upper bound nan %)
+  full rule     attack windows alarmed 0/0 = nan % [nan, nan]; false alarms 0 of 0 (95 % upper bound nan %)
+  per type, full rule (windows holding the type: alarmed / windows):
+  folds: 0: 22 win (22 attack), not calibrated (no attack-free window in the other blocks); 1: 22 win (22 attack), not calibrated (no attack-free window in the other blocks); 2: 22 win (22 attack), not calibrated (no attack-free window in the other blocks); 3: 22 win (22 attack), not calibrated (no attack-free window in the other blocks); 4: 21 win (21 attack), not calibrated (no attack-free window in the other blocks)
+

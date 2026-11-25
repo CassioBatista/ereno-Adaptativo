@@ -56,27 +56,29 @@
 % (scripts/redund_k2_fulltest.py, results/redund_k2_fulltest.csv).
 % Cross-domain numbers for [RESULT]: docs/RESULTADOS_cicids2017c.md, RESULTADOS_ciciot2023.md.
 
+% 2026-11-25: rewritten on the evaluation-v1 results (OR fusion; ERENO, improved CICIDS2017,
+% Morris-4, CICIoT2023; faithful replay of T1/T2 with fixed GL gl_peers both; windows by
+% blocked-5). 247 words. Earlier version (k-of-n, Electra, UNSW) superseded.
 \begin{abstract}
 The evolution of networks has increased their complexity and driven a shift toward
 distributed cyber and cyber-physical systems, from enterprise networks to the Internet of
-Things and critical infrastructure. While this shift opens new landscapes and opportunities, it also
-enlarges the attack surface, calling for resilient, adaptive intrusion detection that
-keeps working while its own nodes fail. Federated learning (FL) is widely adopted
-to train intrusion detectors through a server; gossip learning (GL), far less explored,
-lets peers exchange models directly. This research presents ReSIDS, an adaptive intrusion detection system that combines both: it fuses
-per-attack gradient-boosted specialists by k-of-n voting and switches its learning mode
-at runtime. A federated failure detector, Disaster-FD, supplies a trust level from which
-each node switches by itself: to GL when nodes fail, back to FL once they recover, and to
-local learning when it is cut off. Applying ReSIDS elsewhere requires only retraining the
-specialists. Since attacks are rare,
-individual alerts are mostly false alarms; ReSIDS therefore counts them per window,
-network-wide and per specialist: a slow attack accumulates in its own specialist, whereas
-false alarms spread. On public IEC 61850 substation (ERENO), enterprise (improved CICIDS2017), railway
-Modbus (Electra) and consumer IoT (UNSW) traffic, detection is unchanged as membership
-shrinks to 3 nodes (F1-score 95.98\%, 98.87\%, 99.97\% and 72.7\%), while FL alone loses
-whole categories, and windowed alarms flag 99.3\%, 73.5\%, 88.7\% and 71.1\% of attack
-windows at false-alarm rates up to 0.17\%. Adaptive switching turns the learning topology
-into an operational choice.
+Things and critical infrastructure. This shift enlarges the attack surface, calling for
+resilient, adaptive intrusion detection that keeps working while its own nodes fail.
+Federated learning (FL) trains intrusion detectors through a server; gossip learning (GL),
+far less explored, lets peers exchange models directly. This research presents ReSIDS, an
+adaptive intrusion detection system that combines both: it fuses per-attack
+gradient-boosted specialists by OR, keeps every specialist it receives, and switches its
+learning mode at runtime. A federated failure detector, Disaster-FD, supplies a trust level
+from which each node switches by itself: to FL while the aggregator answers, to GL when it
+is lost, and to local learning when the node is cut off. Applying ReSIDS elsewhere requires
+only a domain profile and retrained specialists. Since attacks are rare, individual alerts
+are mostly false alarms; ReSIDS therefore counts them per window, network-wide and per
+specialist. On IEC~61850 substation (ERENO), enterprise (improved CICIDS2017), gas-pipeline
+control (Morris-4) and IoT (CICIoT2023) traffic, replayed on two runs of Disaster-FD,
+switching was never behind fixed FL or fixed GL in protecting nodes against new attacks,
+while these fell up to 82.0 and 48.1 points behind it; retention kept every attack type as
+nodes were lost. Windowed alarms flag 99.3\%, 70.2\% and 84.0\% of attack windows in ERENO,
+CICIDS2017 and Morris-4, at false-alarm rates of 0.14\% to 2.9\%.
 \end{abstract}
 
 \begin{keyword}
@@ -85,8 +87,11 @@ intrusion detection \sep federated learning \sep gossip learning \sep failure de
 \end{keyword}
 
 % Highlights (separate file at submission; character counts include spaces):
-%  - Intrusion detection switches between federated and gossip learning at runtime (77)
-%  - Each node switches by itself on the trust level of a federated failure detector (79)
-%  - Detection is unchanged as the training membership shrinks from 14 to 3 nodes (76)
-%  - Per-specialist window triage: 99.3% of attack windows at a 0.14% false-alarm rate (81)
-%  - One architecture for substation, enterprise, railway Modbus and IoT traffic (75)
+%  - ReSIDS nodes switch learning mode by themselves on the Disaster-FD trust level (78)
+%    (alternative: "ReSIDS keeps spreading new attack specialists while the FL aggregator is lost" (77))
+%  - Switching is never behind fixed federated or fixed gossip learning in two real runs (83)
+%  - Retained specialists keep every attack type as nodes drop from 14 to 3 (70)
+%  - Window alarms flag 70-99% of attack windows at 0.14-2.9% false-alarm rates (74)
+%  - One architecture for substation, enterprise, gas-pipeline control and IoT traffic (81)
+%  (2026-11-25; earlier: "Detection is unchanged as the training membership shrinks...",
+%   "Per-specialist window triage: 99.3%...", "...railway Modbus and IoT traffic")

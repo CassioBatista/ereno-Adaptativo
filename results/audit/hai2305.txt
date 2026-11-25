@@ -1,0 +1,55 @@
+DATASET AUDIT — HAI 23.05
+rows 1,180,800 (all rows); content features 86; identifiers []; benign label 'normal'
+note: label = target control loop of the attack (joined from the technical manual), normal otherwise; no network traffic: no source address; independent split = hai-test2 held out (trained on the train files and hai-test1)
+
+=== (i) STRUCTURE ===
+  hai_2305/hai-train1.csv                                      fields per line={87: 280800}; header lines inside the data=0
+  hai_2305/hai-train2.csv                                      fields per line={87: 291600}; header lines inside the data=0
+  hai_2305/hai-train3.csv                                      fields per line={87: 126000}; header lines inside the data=0
+  hai_2305/hai-train4.csv                                      fields per line={87: 198000}; header lines inside the data=0
+  hai_2305/hai-test1.csv                                       fields per line={87: 54000}; header lines inside the data=0
+  hai_2305/hai-test2.csv                                       fields per line={87: 230400}; header lines inside the data=0
+  columns checked 86; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 1,180,800; duplicates on all columns 0 (0.00%); without identifiers 0 (0.00%)
+feature vectors with >1 label 0; rows in them 0 (0.00%)
+  normal                       rows   1,169,416  in multi-label vectors   0.00%
+  P1-LC                        rows       3,768  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  P1-PC                        rows       2,813  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  P1-CC                        rows       1,658  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  P1-FC                        rows       1,618  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  P1-TC                        rows       1,444  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  P1-HC                        rows          83  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 100.00% of steps (mean over 1 file(s)); span 486.00 h
+label runs in file order 105 for 7 labels
+  P1-LC                        span          61.43 h  benign share inside  96.20%  benign rows inside 212,754
+  P1-PC                        span         165.93 h  benign share inside  98.02%  benign rows inside 557,305
+  P1-CC                        span          44.96 h  benign share inside  96.05%  benign rows inside 155,472
+  P1-FC                        span         149.01 h  benign share inside  98.74%  benign rows inside 501,218
+  P1-TC                        span          41.03 h  benign share inside  96.24%  benign rows inside 142,163
+  P1-HC                        span           0.02 h  benign share inside   0.00%  benign rows inside 0
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  normal                         1,169,416  99.04%
+  P1-LC                              3,768  0.32%
+  P1-PC                              2,813  0.24%
+  P1-CC                              1,658  0.14%
+  P1-FC                              1,618  0.14%
+  P1-TC                              1,444  0.12%
+  P1-HC                                 83  0.01%
+benign 1,169,416 rows (99.04%); attack 0.96%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 111,384: normal 100,000, P1-LC 3,768, P1-PC 2,813, P1-CC 1,658, P1-FC 1,618, P1-TC 1,444, P1-HC 83
+  content                  random 70/30                                 macro-F1=0.994  P1-CC=0.99  P1-FC=0.99  P1-HC=1.00  P1-LC=1.00  P1-PC=0.99  P1-TC=0.98  normal=1.00
+  content                  time-ordered 70/30 per label                 macro-F1=0.462  P1-CC=0.01  P1-FC=0.41  P1-HC=1.00  P1-LC=0.72  P1-PC=0.00  P1-TC=0.14  normal=0.96
+  content                  independent: release test file               macro-F1=0.117  P1-CC=0.00  P1-FC=0.00  P1-HC=0.00  P1-LC=0.00  P1-PC=0.00  P1-TC=0.00  normal=0.82
+
+(run time 65 s)

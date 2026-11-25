@@ -1,0 +1,33 @@
+{
+  "dataset": "all_in_one_ev1_ciciot_train",
+  "attack": "Recon_PortScan",
+  "attack_id": 26,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    1,
+    2,
+    4,
+    5,
+    9,
+    15,
+    17,
+    19,
+    21,
+    22,
+    37,
+    40,
+    44
+  ],
+  "n_features": 13,
+  "f1_grasp_cv": 85.33883987234842,
+  "iterations": 6,
+  "evaluations": 2318,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 982.9
+}

@@ -152,6 +152,9 @@ drawn with seed 42), from N down to 3:
   present.
 
 Reported: overall and per-type recall, and false-positive rate, at every N.
+*(Amended 2026-11-20, see the change log: retention is a holding rule, not a mode, and holds
+in FL as in GL; the spread over 1,000 further removal orders is added; the results open the
+section of the trust-level replay, section 9.)*
 
 ## 6. Window alarms (ERENO, CICIDS2017, Morris-4)
 
@@ -329,6 +332,159 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   - **Sensitivity:** the values of Δ.
 
 ## Change log
+
+- **2026-11-25, implementation, section 6: window alarms run.** `scripts/ev1_windows.py`, on
+  the per-sample scores of step 1 (`results/.cache/ev1_step1_<domain>_s42.npz`), so the
+  specialists, features and test rows are those of step 1; no model trained. Time: ERENO
+  column F1 of the test file (`Time`, an identifier); CICIDS2017 and Morris-4
+  `all_in_one_ev1_<ds>_test_order.npy`. Rule as registered (T, f with margin 1.25; T_s =
+  max(ceil(1.25 max benign S_s) + 1, 2)), blocked-5 over the occupied windows in time order.
+  Declared: (1) a block whose other four blocks hold no attack-free window cannot be
+  calibrated and is not scored; this happens for every block of the Morris-4 sensitivity at
+  1,000 s (no attack-free window at all), which is therefore not reported as a result;
+  (2) when the largest benign flagged fraction is 1 (CICIDS2017 at 1 s and 10 s, windows of
+  a single flagged flow), f = 1.25 and the fraction rule cannot fire. Exploratory additions
+  (not registered): alarms by number of attack samples in the window
+  (`~/.audit_tmp/win_by_volume.py`); thinning of the attacks, each attack sample kept with
+  probability 0.1, 0.01, 0.001, benign stream whole, 5 draws
+  (`scripts/ev1_windows_thinning.py`, `results/ev1_windows_thinning_s42.txt`). The ERENO
+  thinning is not informative: 203 of its 282 attack windows hold no benign sample (the attack
+  intervals of the trace carry no benign traffic), so a thinned window of one attack sample
+  has flagged fraction 1 and alarms (`~/.audit_tmp/win_attack_removed.py`); ERENO, network-wide
+  thresholds calibrated by blocked-5 on 1-s windows and held fixed on windows of 0.25 to 10 s
+  (`scripts/ev1_windows_cadence.py`, `results/ev1_windows_cadence_ereno_s42.txt`). Results
+  `results/ev1_windows_<domain>_s42.{txt,json}`.
+
+- **2026-11-25, addition (sensitivity), section 9: ReSIDS with the gossip band starting at 15.**
+  The main runs keep the band at 30 (a node enters a mode only when it trusts every party the
+  mode relies on: the aggregator, 50, for FL; both ring neighbours, 2 x 15, for GL). As a
+  sensitivity, ReSIDS is re-run in the faithful replay with `t_gl: 15` (a node that trusts a
+  single neighbour gossips), 4 domains x T1/T2, in `results/ev1_tl/faithful_band15/`
+  (`run_tl_faithful_band15.sh`); nothing of the main runs changes. Comparison: fixed GL with
+  `gl_peers: any`, kept in `results/ev1_tl/faithful_gl_any/`. Checked without training
+  (`check_band15.py`): in T2 the gossip nodes of this ReSIDS equal those of fixed GL `any` in
+  every round; in T1, 30-45 min, ReSIDS also places in gossip nodes 2, 5, 6, 9, 10 and 13, whose
+  monitor reports trust level 15 while the ring link is not up in both directions.
+  CORRECTION (2026-11-25, after the runs): the earlier statement that these nodes "exchange
+  nothing" is wrong. GLow takes as neighbours of the head the ring neighbours that are in the
+  active set of the round (fd/topology.py up_neighbors: node status, not link state), so in T1,
+  30-45 min, adjacent active nodes exchange across ring links that are down (all but 3-4, 7-8,
+  11-12; holdings grow on nodes 2-13, ~/.audit_tmp/band15_t1_check.py). The T1 band-15 runs are
+  therefore NOT valid and are not reported. In T2 no two adjacent active nodes have a down link
+  between them in any round (45-60: 3 with 2, 6 with 7; 60-75: 1 with 14, 8 with 9), so the T2
+  runs are valid. The main runs are not affected: with the band at 30 and gl_peers both, every
+  active node has both ring links up, so every link between two active neighbours is up.
+  Checked without training for every gossip round (~/.audit_tmp/check_down_links.py): exchanges
+  over down links 0 for ReSIDS band 30, fixed GL both and fixed GL any in T1 and T2, and for
+  ReSIDS band 15 in T2; 120 node-pair-rounds for ReSIDS band 15 in T1 (30.5-44.5 min).
+
+- **2026-11-24, correction (implementation), section 9: fixed GL gossips with the same nodes as
+  ReSIDS.** Found after the faithful-replay results. Fixed GL took into a gossip round every node
+  with at least one ring link up, while ReSIDS gossips only with nodes that trust both neighbours
+  (trust level 30, the gossip band) and the scenario documents define GL the same way ("a client
+  stays in GL only while both of its ring peers are reachable", `scenario2.md`). Nodes with a
+  single neighbour (T1 30-45 min: pairs 3-4, 7-8, 11-12; T2: nodes 3 and 6 at 45-60 min, 1 and 8
+  at 60-75 min) were therefore in GL under fixed GL and in local learning under ReSIDS, so the
+  two were not compared over the same nodes; this accounted for the largest gaps of ReSIDS to
+  fixed GL (node 3 of T2 in the three domains checked). Correction (user): fixed GL takes only
+  nodes with both ring links up (`gl_peers: both`, `fd/arch_manager.py`; `LinkStates.both_peers_up`
+  in `fd/trust_level.py`; default `any` keeps earlier runs reproducible). Checked without
+  training (`~/.audit_tmp/check_gl_peers.py`): every gossip round of ReSIDS has the same nodes as
+  fixed GL with `both`, in T1 and T2; every federated round of ReSIDS has the same nodes as fixed
+  FL (`~/.audit_tmp/check_fl_nodes.py`). Re-run: fixed GL, four domains, T1 and T2
+  (`run_tl_faithful_glboth.sh`); the runs with `any` move to `results/ev1_tl/faithful_gl_any/`
+  as record. The delta-sensitivity runs of fixed GL follow the same rule.
+
+- **2026-11-24, declaration (implementation), section 9: gossip is GLow, not synchronous.**
+  Section 9 describes a gossip round as every pair of ring neighbours exchanging their blocks
+  ("one hop per round"). The pipeline, in every run of section 9 (first grid, arrival-offset
+  check, faithful replay and delta sensitivity), uses the GLow strategy (Belenguer, Pascual and Navaridas, JPDC 2026), as in Paper 1
+  (`fd/strategy/glow_strategy.py`, `_head_for_round`): in each round one node, chosen in turn
+  among the active nodes, takes the union of the blocks of its neighbours whose links are up.
+  Found after the faithful-replay results. Decision (user): keep GLow and declare it; no
+  re-run. Consequences, declared where they appear:
+  - Gossip spreads more slowly than the synchronous form, so the diffusion medians of fixed GL
+    and of ReSIDS in gossip are those of GLow.
+  - Scenario 2, "does client 5 hold the block of 11-12 before 45 min": no, under GLow; a
+    synchronous gossip would carry it the six hops in six of the 15 rounds.
+  - Delta sensitivity: with few rounds (long delta), few nodes are chosen as heads, which
+    weighs on fixed GL.
+  The comparison between ReSIDS and fixed GL in gossip phases is not affected (same gossip).
+
+- **2026-11-23, correction (implementation), section 9: the replay follows the network of
+  each scenario.** Two departures of the first grid (results/ev1_tl/grid_d60) from the
+  scenario documents of the Disaster-FD team were found after its results:
+  - **Links.** The fixed policies took a ring link as up when the node's own monitor got
+    answers. The pilot run (T1) drops clients without cutting their monitors' outbound
+    probes (`guide.md`, 30 min: "Aggregator + clients {1,2,5,6,9,10,13,14} dropped"), so a
+    dropped client's monitor still saw its neighbours and fixed GL exchanged with clients the
+    scenario had dropped; six of the fourteen ring links answered in one direction only.
+    Scenario 2 cuts both directions (firewall rules) and is unaffected. Correction: a ring
+    link is up only when the monitors at both ends answer each other (`links: scenario`), the
+    same network for ReSIDS, fixed FL and fixed GL. Between 30 and 45 min of T1 only the
+    pairs 3-4, 7-8 and 11-12 keep a link.
+  - **Round instants.** Rounds ran at multiples of 60 s, so every scenario event (multiples
+    of 15 min, about 10 s of jitter) fell on a round, which then sampled a network in
+    transition, and a block "distributed at 30 min" entered the last round of the previous
+    phase (a federated round, in both traces), against the scenario texts ("30 min ... every
+    monitor is in LL / GL; 2 attacks are distributed"). Correction: rounds at 60 r + 30 s
+    (`round_offset_s: 30`); arrivals stay at 30 and 60 min and reach the first round of the
+    new phase.
+  - Implemented as options of the trust-level manager (`fd/trust_level.py` LinkStates
+    `symmetric`; `fd/arch_manager.py` `links`, `round_offset_s`), defaults unchanged so the
+    first grid stays reproducible. Re-run: ReSIDS, fixed FL and fixed GL (retention), four
+    domains, T1 and T2 (`results/ev1_tl/faithful`, `scripts/ev1_tl_faithful_summary.py`),
+    which becomes the reported replay; the first grid and the arrival-offset check are kept
+    as record. The scenario-2 questions (does the specialist of clients 3-4 leave the region
+    before it is lost; does client 5 hold that of 11-12 before 45 min; does that of 9-10
+    reach clients 1 and 8 at 75 min) are answered from the holdings logs.
+
+- **2026-11-20, declaration and two post hoc analyses (after the step-1 and node-loss
+  results; exploratory, not registered).**
+  - **IAT in CICIoT2023, declared.** Section 1 registered the 46 flow features of the
+    release, IAT among them, and the GRASP selection kept it (global subset and 15 of the
+    per-type subsets). The dataset audit of the paper and `docs/PROFILES.md` identify IAT as a
+    capture clock. The registered selection is kept and the dependence is measured: on the
+    same partition, seed and trees without IAT, attack-based OR 99.94 % recall / 33.38 % FPR
+    (registered 99.97 / 28.57), IID 99.14 / 0.60 (99.14 / 0.68); without IAT and
+    Header_Length, 99.94 / 31.30 and 99.13 / 0.61
+    (`scripts/ev1_ciciot_feature_sensitivity.py`, `results/ev1_ciciot_feature_sensitivity.txt`).
+  - **Cross-detection matrix** (`scripts/ev1_crossdetect.py`): share of the test rows of
+    each type flagged by each specialist, cached step-1 scores, four domains. Cover = at
+    least 50 % of the rows, precise = at most 1 % of the benign rows; both thresholds chosen
+    for this analysis.
+  - **Coverage rule** (`scripts/ev1_coverage_rule.py`): decided on training rows only (the
+    nodes' own attack rows for coverage, at least 90 %; the other nodes' benign rows for the
+    false-positive rate, at most 1 %), greedy cover, scored on the test split. Thresholds set
+    before the run; the 50 % cover was run afterwards as a sensitivity and loses recall.
+    Defined after the results that motivated it; reported as exploratory.
+  - **Coverage rule on seeds 43-46** (`--seed`, step-1 models of each seed;
+    `scripts/ev1_coverage_rule_seeds.py`, `results/ev1_coverage_rule_seeds.txt`). One cover
+    per type (cover-1) fails in CICIDS2017 in 3 of 5 seeds: the DDoS specialist covers 91-95 %
+    of the DoS Hulk training rows and replaces its specialist; DoS Hulk falls to 91-94 % on
+    test. Two covers on distinct nodes (cover-2) lose no type by 5 points in any seed or
+    domain, and is the variant reported. Its precision-filtered form (precise-2) was added
+    after this check.
+
+- **2026-11-20, section 5 (node loss): run; wording and one addition.**
+  - **Run.** `scripts/ev1_nodeloss.py` on the cached step-1 scores (seed 42), no training:
+    removal order `default_rng(42).permutation` of the 14 nodes,
+    [7, 8, 10, 4, 1, 12, 14, 11, 6, 3, 5, 13, 2, 9], from 14 nodes down to 3; OR at 0.5.
+    Results in `results/ev1_nodeloss_<domain>.{txt,json}` and `results/ev1_nodeloss.{pdf,png}`.
+  - **Wording.** Section 5 named the two arms "GL, retention" and "FL, re-formed aggregate".
+    With the per-node holdings of the pipeline (`node_holdings: retain`), FL keeps the union
+    of the participants' holdings and gives the same detector as GL (step 1, four domains),
+    so retention is a holding rule, not a mode. The comparison is retention (ReSIDS, both
+    modes) against an aggregate re-formed from the nodes present, the limit in which the
+    knowledge of a lost node leaves at once.
+  - **Retention is constant by construction** once every node has received every specialist.
+    The static sweep therefore measures what the re-formed aggregate loses (recall, per type)
+    and what retention costs (false positives of the specialists it keeps). Loss before the
+    exchange completes is measured by the trace replay of section 9 (T2), which these results
+    open in the paper.
+  - **Addition: spread over removal orders.** One fixed order decides which nodes fall first;
+    the 5th to 95th percentile and the range of recall and false-positive rate over 1,000
+    further orders (`default_rng(2026)`) are reported with it. Added before the run.
 
 - **2026-11-18, step-1 script; the design is kept after a smoke test on training rows.**
   - **Script.** `scripts/ev1_step1.py` implements step 1 as registered in sections 2.3, 3, 4

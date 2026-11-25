@@ -1,0 +1,86 @@
+evaluation-v1 step 1, CALIBRATED THRESHOLDS (exploratory, not pre-registered) -- CICIDS2017, improved -- seed 42 -- 14 nodes
+features (31): [4, 6, 11, 13, 17, 20, 21, 23, 24, 25, 29, 37, 38, 40, 42, 46, 47, 49, 54, 55, 56, 57, 59, 65, 67, 68, 69, 70, 71, 75, 82]
+specialists 17, IID 14 x 12 rounds, Centralized 170 rounds; 20 % of each node's benign rows held out for calibration; test 630,008 rows (prevalence 24.64 %)
+
+detector                                    F1   recall    prec.     FPR %       FP  F1@6.8%     P@1%   P@0.1%
+attack-based OR @0.5 (80% benign)        96.08    99.78    92.64    2.5926   12,309    84.81    27.99     3.71
+IID OR @0.5 (80% benign)                 95.36    98.45    92.46    2.6242   12,459    84.00    27.48     3.62
+Centralized @0.5 (80% benign)            99.16    99.83    98.50    0.4969    2,359    96.62    66.99    16.74
+attack-based OR calib A=1%               98.05    98.93    97.18    0.9398    4,462    93.42    51.53     9.53
+attack-based k=2 calib A=1%              94.72    90.09    99.85    0.0444      211    94.49    95.34    66.99
+IID OR calib A=1%                        97.04    96.28    97.81    0.7060    3,352    93.50    57.94    12.01
+Centralized calib A=1%                   97.37    99.99    94.89    1.7619    8,365    89.22    36.44     5.38
+attack-based OR calib A=0.1%             82.27    69.91    99.93    0.0164       78    82.18    97.73    80.99
+IID OR calib A=0.1%                      97.36    95.21    99.62    0.1201      570    96.73    88.90    44.25
+Centralized calib A=0.1%                 98.91    99.86    97.97    0.6751    3,205    95.51    59.91    12.90
+
+per-type recall % (* fewer than 100 test samples)
+type                                      n      AB@0.5     AB A=1%    AB A=.1%    IID A=1%    Cen A=1%
+ Botnet                                 221      100.00      100.00        0.00       16.74      100.00
+ Botnet_Attempted                     1,221       86.81       86.08       86.08       86.24       99.75
+ DDoS                                28,544      100.00      100.00       99.93       98.86      100.00
+ DoS_GoldenEye                        2,271      100.00      100.00       71.86       94.85      100.00
+*DoS_GoldenEye_Attempted                 24      100.00      100.00      100.00        0.00      100.00
+ DoS_Hulk                            47,541       99.94       99.99       99.89       97.92      100.00
+ DoS_Hulk_Attempted                     175      100.00      100.00      100.00        0.00      100.00
+ DoS_Slowhttptest                       522       94.83       85.63        0.00       51.53      100.00
+ DoS_Slowhttptest_Attempted           1,011      100.00        0.89        0.69        0.00      100.00
+ DoS_Slowloris                        1,158      100.00       88.26        0.00       91.88      100.00
+ DoS_Slowloris_Attempted                555      100.00       88.65       86.67       12.61      100.00
+ FTP_Patator                          1,192       99.58       99.50        0.00       99.66      100.00
+*FTP_Patator_Attempted                    4      100.00        0.00        0.00        0.00      100.00
+*Heartbleed                               4      100.00       75.00       75.00        0.00      100.00
+*Infiltration                            11      100.00       90.91        0.00        0.00      100.00
+*Infiltration_Attempted                  14      100.00       92.86       85.71       85.71       92.86
+ Infiltration_Portscan               21,531       99.72       99.56        0.23       98.59      100.00
+ Portscan                            47,720       99.94       99.94       57.97       99.78       99.98
+ SSH_Patator                            889       96.40       96.29       96.29        0.00       99.78
+*SSH_Patator_Attempted                    9      100.00       22.22        0.00       11.11      100.00
+*Web_Attack_Brute_Force                  22      100.00       18.18       18.18        0.00      100.00
+ Web_Attack_Brute_Force_Attempted       388      100.00      100.00       94.07        0.00      100.00
+*Web_Attack_SQL_Injection                 4       75.00       25.00        0.00        0.00      100.00
+*Web_Attack_SQL_Injection_Attempte        2      100.00      100.00       50.00       50.00      100.00
+*Web_Attack_XSS                           6      100.00        0.00        0.00        0.00      100.00
+ Web_Attack_XSS_Attempted               197      100.00      100.00       98.98        0.00      100.00
+
+thresholds, A = 1 % (per specialist a = 0.0588 %): node, name, n_cal, t, test FPR of the specialist, resolution-limited
+   1 Portscan                                  15,826 0.2278   0.026
+   2 DoS_Hulk                                  15,826 0.3337   0.019
+   3 DDoS                                      15,826 0.1823   0.016
+   4 Infiltration_Portscan                     15,826 0.5425   0.025
+   5 DoS_GoldenEye                             15,826 0.2031   0.059
+   6 Botnet_Attempted                          15,826 0.1797   0.489
+   7 FTP_Patator                               15,826 0.1807   0.027
+   8 DoS_Slowloris                             15,826 0.1817   0.029
+   9 DoS_Slowhttptest_Attempted                15,826 0.8199   0.000
+  10 SSH_Patator                               15,826 0.2093   0.027
+  11 DoS_Slowloris_Attempted                   15,826 0.7643   0.008
+  12 DoS_Slowhttptest                          15,826 0.7126   0.038
+  12 Web_Attack_Brute_Force_Attempted          15,826 0.3422   0.021
+  13 Botnet                                    15,826 0.1804   0.007
+  13 Web_Attack_XSS_Attempted                  15,826 0.4082   0.051
+  14 DoS_Hulk_Attempted                        15,826 0.2529   0.112
+  14 shared (DoS_GoldenEye_Attempted, FTP_Pat  15,826 0.8018   0.035
+  IID: t 0.7462-0.8454, n_cal 15,812, limited 0/14; Centralized t 0.0125, n_cal 221,559
+
+thresholds, A = 0.1 % (per specialist a = 0.0059 %): node, name, n_cal, t, test FPR of the specialist, resolution-limited
+   1 Portscan                                  15,826 0.8207   0.000  limited
+   2 DoS_Hulk                                  15,826 0.7796   0.001  limited
+   3 DDoS                                      15,826 0.3865   0.004  limited
+   4 Infiltration_Portscan                     15,826 0.8205   0.000  limited
+   5 DoS_GoldenEye                             15,826 0.8206   0.000  limited
+   6 Botnet_Attempted                          15,826 0.5303   0.003  limited
+   7 FTP_Patator                               15,826 0.8207   0.000  limited
+   8 DoS_Slowloris                             15,826 0.8206   0.000  limited
+   9 DoS_Slowhttptest_Attempted                15,826 0.8199   0.000  limited
+  10 SSH_Patator                               15,826 0.5082   0.001  limited
+  11 DoS_Slowloris_Attempted                   15,826 0.8083   0.001  limited
+  12 DoS_Slowhttptest                          15,826 0.8202   0.000  limited
+  12 Web_Attack_Brute_Force_Attempted          15,826 0.8207   0.001  limited
+  13 Botnet                                    15,826 0.8207   0.000  limited
+  13 Web_Attack_XSS_Attempted                  15,826 0.7244   0.004  limited
+  14 DoS_Hulk_Attempted                        15,826 0.8165   0.001  limited
+  14 shared (DoS_GoldenEye_Attempted, FTP_Pat  15,826 0.8096   0.001  limited
+  IID: t 0.7779-0.8461, n_cal 15,812, limited 0/14; Centralized t 0.1370, n_cal 221,559
+
+elapsed 24 s

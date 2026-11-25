@@ -1,0 +1,69 @@
+DATASET AUDIT — CIC-BCCC-NRC-IoMT-2024
+rows 3,385,313 (all rows); content features 77; identifiers ['Flow ID', 'Src IP', 'Src Port', 'Dst IP', 'Dst Port', 'Timestamp']; benign label 'Benign'
+note: label = category of the file (one CSV per class)
+
+=== (i) STRUCTURE ===
+  cic_bccc_nrc_iomt2024/Benign Traffic.csv                     fields per line={85: 32620}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/DDoS ICMP Flood.csv                    fields per line={85: 2552}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/DDoS UDP Flood.csv                     fields per line={85: 2576}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/DoS ICMP Flood.csv                     fields per line={85: 2107}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/DoS TCP Flood.csv                      fields per line={85: 2106916}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/DoS UDP Flood.csv                      fields per line={85: 3115}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/MITM ARP Spoofing.csv                  fields per line={85: 1053}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/MQTT DDoS Publish Flood.csv            fields per line={85: 413913}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/MQTT DoS Connect Flood.csv             fields per line={85: 238031}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/MQTT DoS Publish Flood.csv             fields per line={85: 953}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/MQTT Malformed.csv                     fields per line={85: 2246}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/Recon OS Scan.csv                      fields per line={85: 85317}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/Recon Ping Sweep.csv                   fields per line={85: 71}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/Recon Port Scan.csv                    fields per line={85: 485522}; header lines inside the data=0
+  cic_bccc_nrc_iomt2024/Recon Vulnerability Scan.csv           fields per line={85: 8321}; header lines inside the data=0
+  columns checked 83; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 3,385,313; duplicates on all columns 109,180 (3.23%); without identifiers 788,227 (23.28%)
+feature vectors with >1 label 171; rows in them 5,338 (0.16%)
+  DoS                          rows   2,112,138  in multi-label vectors   0.01%  vector also occurs as benign   0.00%
+  MQTT                         rows     655,143  in multi-label vectors   0.73%  vector also occurs as benign   0.50%
+  Recon                        rows     579,231  in multi-label vectors   0.01%  vector also occurs as benign   0.01%
+  Benign                       rows      32,620  in multi-label vectors   0.94%
+  DDoS                         rows       5,128  in multi-label vectors   0.84%  vector also occurs as benign   0.08%
+  Spoofing                     rows       1,053  in multi-label vectors   0.38%  vector also occurs as benign   0.09%
+identical files filed under different labels: 0
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 81.25% of steps (mean over 1 file(s)); span 409.70 h
+label runs in file order 6 for 6 labels
+  DoS                          span          50.56 h  benign share inside   0.00%  benign rows inside 0
+  MQTT                         span          29.48 h  benign share inside   0.00%  benign rows inside 0
+  Recon                        span         120.33 h  benign share inside   0.00%  benign rows inside 0
+  DDoS                         span          24.60 h  benign share inside   0.00%  benign rows inside 0
+  Spoofing                     span           1.78 h  benign share inside   0.00%  benign rows inside 0
+
+=== (iv) ATTRIBUTION ===
+  DoS                          distinct sources     145  top: 192.168.137.48 (99.65%), 192.168.137.210 (0.02%), 192.168.137.115 (0.02%)  sources also emitting benign 0.24%
+  MQTT                         distinct sources      47  top: 192.168.137.250 (59.84%), 192.168.137.48 (33.00%), 192.168.137.212 (2.34%)  sources also emitting benign 59.97%
+  Recon                        distinct sources      38  top: 192.168.137.250 (49.15%), 192.168.137.105 (15.59%), 192.168.137.174 (15.06%)  sources also emitting benign 50.00%
+  Benign                       distinct sources     234  top: 192.168.137.234 (6.94%), 34.173.20.6 (4.85%), 10.0.0.3 (4.75%)
+  DDoS                         distinct sources     156  top: 192.168.137.174 (5.07%), 10.0.0.3 (3.94%), 10.0.0.12 (3.94%)  sources also emitting benign 75.39%
+  Spoofing                     distinct sources      96  top: 34.173.20.6 (3.99%), 10.0.0.8 (3.99%), 10.0.0.7 (3.99%)  sources also emitting benign 81.86%
+source alone -> label (majority per source): 84.79%, against 62.39% for the majority class
+
+=== (v) PREVALENCE ===
+  DoS                            2,112,138  62.39%
+  MQTT                             655,143  19.35%
+  Recon                            579,231  17.11%
+  Benign                            32,620  0.96%
+  DDoS                               5,128  0.15%
+  Spoofing                           1,053  0.03%
+benign 32,620 rows (0.96%); attack 99.04%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 338,737: DoS 100,000, MQTT 100,000, Recon 100,000, Benign 32,606, DDoS 5,078, Spoofing 1,053
+  content                  random 70/30                                 macro-F1=0.820  Benign=0.95  DDoS=0.61  DoS=1.00  MQTT=1.00  Recon=1.00  Spoofing=0.36
+  content                  time-ordered 70/30 per label                 macro-F1=0.775  Benign=0.88  DDoS=0.38  DoS=1.00  MQTT=0.99  Recon=0.99  Spoofing=0.41
+  content + identifiers    random 70/30                                 macro-F1=0.990  Benign=1.00  DDoS=0.98  DoS=1.00  MQTT=1.00  Recon=1.00  Spoofing=0.96
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.935  Benign=1.00  DDoS=0.88  DoS=1.00  MQTT=1.00  Recon=1.00  Spoofing=0.74
+
+(run time 162 s)

@@ -1,0 +1,48 @@
+cross-detection -- CICIDS2017 (step-1 specialists, seed 42; cover = flags >= 50 % of the rows; precise = benign FPR <= 1 %)
+26 attack types, 17 specialists on 14 nodes, 16 precise; 13 groups of types linked by a shared precise specialist
+types covered by a precise specialist of another node: 15 of 26 (97.4 % of the attack rows); by any specialist of another node: 17 (98.3 %)
+
+grp type                                   rows  own %  own node  other nodes, precise  other nodes, any           covered by (precise)
+  1 Portscan                             47,720   99.7         1  4                     4                          Infiltration_Portscan
+  1 Infiltration_Portscan                21,531   99.6         4  1                     1                          Portscan
+  1 Botnet_Attempted                      1,221   86.1         6  1                     1,14                       Portscan
+  1 DoS_Slowhttptest_Attempted            1,011   99.7         9  11                    11,14                      DoS_Slowloris_Attempted
+  1 DoS_Slowloris_Attempted                 555   86.7        11  9                     9,14                       DoS_Slowhttptest_Attempt
+  1 Web_Attack_Brute_Force_Attempted        388  100.0        12  13,14                 13,14                      Web_Attack_XSS_Attempted; DoS_Hulk_Attempted
+  1 Web_Attack_XSS_Attempted                197   99.0        13  12,14                 12,14                      Web_Attack_Brute_Force_A; DoS_Hulk_Attempted
+  1 DoS_Hulk_Attempted                      175   14.3        14  6,9                   6,9                        Botnet_Attempted; DoS_Slowhttptest_Attempt
+  1 DoS_GoldenEye_Attempted                  24  100.0        14  6,9                   6,9                        Botnet_Attempted; DoS_Slowhttptest_Attempt
+  1 Infiltration_Attempted                   14   64.3        14  1,6                   1,6                        Portscan; Botnet_Attempted
+  1 FTP_Patator_Attempted                     4  100.0        14  9                     9                          DoS_Slowhttptest_Attempt
+  1 Web_Attack_SQL_Injection_Attempte         2   50.0        14  11,13                 11,13                      DoS_Slowloris_Attempted; Web_Attack_XSS_Attempted
+  2 DoS_Hulk                             47,541   99.9         2  3                     3                          DDoS
+  2 DDoS                                 28,544   99.9         3  2                     2                          DoS_Hulk
+  2 DoS_GoldenEye                         2,271   99.7         5  2,3                   2,3                        DoS_Hulk; DDoS
+  3 FTP_Patator                           1,192   99.5         7  -                     -                          -
+  4 DoS_Slowloris                         1,158   69.0         8  -                     14                         -
+  5 SSH_Patator                             889   96.3        10  -                     -                          -
+  6 DoS_Slowhttptest                        522   65.1        12  -                     -                          -
+  7 Botnet                                  221  100.0        13  -                     14                         -
+  8 Web_Attack_Brute_Force                   22  100.0        14  -                     -                          -
+  9 Infiltration                             11  100.0        14  -                     -                          -
+ 10 SSH_Patator_Attempted                     9  100.0        14  -                     -                          -
+ 11 Web_Attack_XSS                            6  100.0        14  -                     -                          -
+ 12 Heartbleed                                4  100.0        14  -                     -                          -
+ 13 Web_Attack_SQL_Injection                  4   75.0        14  -                     -                          -
+
+per group: types, attack rows %, nodes holding a precise specialist that covers every type of the group
+  group  1: 12 types,  46.9 % of rows; nodes covering all: -; Botnet_Attempted, DoS_GoldenEye_Attempte, DoS_Hulk_Attempted, DoS_Slowhttptest_Attem, DoS_Slowloris_Attempte, FTP_Patator_Attempted, Infiltration_Attempted, Infiltration_Portscan, Portscan, Web_Attack_Brute_Force, Web_Attack_SQL_Injecti, Web_Attack_XSS_Attempt
+  group  2:  3 types,  50.5 % of rows; nodes covering all: [2, 3]; DDoS, DoS_GoldenEye, DoS_Hulk
+  group  3:  1 types,   0.8 % of rows; nodes covering all: [7]; FTP_Patator
+  group  4:  1 types,   0.7 % of rows; nodes covering all: [8]; DoS_Slowloris
+  group  5:  1 types,   0.6 % of rows; nodes covering all: [10]; SSH_Patator
+  group  6:  1 types,   0.3 % of rows; nodes covering all: [12]; DoS_Slowhttptest
+  group  7:  1 types,   0.1 % of rows; nodes covering all: [13]; Botnet
+  group  8:  1 types,   0.0 % of rows; nodes covering all: -; Web_Attack_Brute_Force
+  group  9:  1 types,   0.0 % of rows; nodes covering all: -; Infiltration
+  group 10:  1 types,   0.0 % of rows; nodes covering all: -; SSH_Patator_Attempted
+  group 11:  1 types,   0.0 % of rows; nodes covering all: -; Web_Attack_XSS
+  group 12:  1 types,   0.0 % of rows; nodes covering all: -; Heartbleed
+  group 13:  1 types,   0.0 % of rows; nodes covering all: -; Web_Attack_SQL_Injecti
+
+benign false-positive rate per specialist (%): Portscan 0.00, Infiltration_Ports 0.01, Botnet_Attempted 0.00, DoS_Slowhttptest_A 0.15, DoS_Slowloris_Atte 0.17, Web_Attack_Brute_F 0.01, Web_Attack_XSS_Att 0.05, DoS_Hulk_Attempted 0.01, shared (DoS_Golden 2.33, DoS_Hulk 0.00, DDoS 0.00, DoS_GoldenEye 0.04, FTP_Patator 0.00, DoS_Slowloris 0.02, SSH_Patator 0.00, DoS_Slowhttptest 0.05, Botnet 0.01

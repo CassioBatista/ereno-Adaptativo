@@ -1,0 +1,71 @@
+DATASET AUDIT — PowerDuck
+rows 1,133,589 (all rows); content features 20; identifiers ['id', 't', 'src', 'dst', 'd_stNum', 'd_sqNum']; benign label 'benign'
+note: label = attack family of the recording for malicious packets, benign otherwise; content = packet length, number of data fields and the numeric data values; independent split = held-out recordings
+
+=== (i) STRUCTURE ===
+  01-replay-opening-switch-isolated.ipal.gz    keys per record={13: 1, 12: 2015} unparsable=0
+  02-replay-opening-switch-w-context.ipal.gz   keys per record={13: 1, 12: 2576} unparsable=0
+  03-replay-old-measurements.ipal.gz           keys per record={13: 1, 12: 1981} unparsable=0
+  04-insert-fake-open-w-intermediate.ipal.gz   keys per record={13: 1, 12: 2526} unparsable=0
+  05-insert-fake-open-only-end.ipal.gz         keys per record={13: 1, 12: 2084} unparsable=0
+  06-insert-distort-meas-up-grad.ipal.gz       keys per record={13: 1, 12: 5079} unparsable=0
+  07-insert-distort-meas-down-grad.ipal.gz     keys per record={13: 1, 12: 7526} unparsable=0
+  08-insert-distort-meas-up-sharp.ipal.gz      keys per record={13: 1, 12: 4767} unparsable=0
+  09-insert-distort-meas-down-sharp.ipal.gz    keys per record={13: 1, 12: 4488} unparsable=0
+  10-sup-1-1-tbv0.ipal.gz                      keys per record={13: 1, 12: 4231} unparsable=0
+  11-sup-1-1-tbv1.ipal.gz                      keys per record={13: 1, 12: 4038} unparsable=0
+  12-sup-1-1-tbv2.ipal.gz                      keys per record={13: 1, 12: 5110} unparsable=0
+  13-sup-2.ipal.gz                             keys per record={13: 1, 12: 4769} unparsable=0
+  14-sup-1.ipal.gz                             keys per record={13: 1, 12: 4243} unparsable=0
+  15-flood-repeat.ipal.gz                      keys per record={13: 1, 12: 487572} unparsable=0
+  16-flood-bloat-repeat.ipal.gz                keys per record={13: 1, 12: 563588} unparsable=0
+  01-normal-1.ipal.gz                          keys per record={13: 1, 12: 6258} unparsable=0
+  02-normal-2.ipal.gz                          keys per record={13: 1, 12: 8048} unparsable=0
+  03-normal-3.ipal.gz                          keys per record={13: 1, 12: 4726} unparsable=0
+  04-normal-4.ipal.gz                          keys per record={13: 1, 12: 7944} unparsable=0
+  columns checked 26; value kind contradicting the name or role: 0
+  NaN cells in content features 20,112,708; infinite 0
+
+=== (ii) LABELS ===
+rows 1,133,589; duplicates on all columns 0 (0.00%); without identifiers 1,130,615 (99.74%)
+feature vectors with >1 label 2; rows in them 499,284 (44.04%)
+  flood                        rows   1,044,000  in multi-label vectors  46.36%  vector also occurs as benign  46.36%
+  benign                       rows      84,945  in multi-label vectors  16.55%
+  insert                       rows       3,631  in multi-label vectors   8.12%  vector also occurs as benign   8.12%
+  sup                          rows         903  in multi-label vectors 100.00%  vector also occurs as benign 100.00%
+  replay                       rows         110  in multi-label vectors  26.36%  vector also occurs as benign  26.36%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 100.00% of steps (mean over 20 file(s)); span 3363.94 h
+label runs in file order 10,433 for 5 labels
+  flood                        span           0.47 h  benign share inside   0.50%  benign rows inside 5,218
+  insert                       span        3363.53 h  benign share inside   6.95%  benign rows inside 78,302
+  sup                          span           1.04 h  benign share inside  95.51%  benign rows inside 19,205
+  replay                       span           0.32 h  benign share inside  97.84%  benign rows inside 4,988
+
+=== (iv) ATTRIBUTION ===
+  flood                        distinct sources       1  top: b4b15a0e843b (100.00%)  sources also emitting benign 100.00%
+  benign                       distinct sources       3  top: b4b15a0e843b (34.66%), b4b15a0e8444 (32.73%), b4b15a0e844a (32.62%)
+  insert                       distinct sources       1  top: b4b15a0e843b (100.00%)  sources also emitting benign 100.00%
+  sup                          distinct sources       1  top: b4b15a0e843b (100.00%)  sources also emitting benign 100.00%
+  replay                       distinct sources       1  top: b4b15a0e843b (100.00%)  sources also emitting benign 100.00%
+source alone -> label (majority per source): 96.99%, against 92.10% for the majority class
+
+=== (v) PREVALENCE ===
+  flood                          1,044,000  92.10%
+  benign                            84,945  7.49%
+  insert                             3,631  0.32%
+  sup                                  903  0.08%
+  replay                               110  0.01%
+benign 84,945 rows (7.49%); attack 92.51%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 189,589: flood 100,000, benign 84,945, insert 3,631, sup 903, replay 110
+  content                  random 70/30                                 macro-F1=0.756  benign=0.96  flood=0.97  insert=0.96  replay=0.88  sup=0.00
+  content                  time-ordered 70/30 per label                 macro-F1=0.721  benign=0.94  flood=0.97  insert=0.70  replay=1.00  sup=0.00
+  content                  independent: held-out groups (13 train / 7 test) macro-F1=0.102  benign=0.51  flood=0.00  insert=0.00  replay=0.00  sup=0.00
+  content + identifiers    random 70/30                                 macro-F1=0.944  benign=1.00  flood=1.00  insert=1.00  replay=1.00  sup=0.72
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.729  benign=0.98  flood=1.00  insert=0.70  replay=0.97  sup=0.00
+  content + identifiers    independent: held-out groups (13 train / 7 test) macro-F1=0.106  benign=0.53  flood=0.00  insert=0.00  replay=0.00  sup=0.00
+
+(run time 30 s)

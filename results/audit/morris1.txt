@@ -1,0 +1,46 @@
+DATASET AUDIT — Morris-1 (power system, binary set)
+rows 78,377 (all rows); content features 128; identifiers []; benign label 'Natural'
+note: 15 sets, each a 1% random sample of the scenario recordings; independent split = held-out sets
+
+=== (i) STRUCTURE ===
+  morris_power/data1.csv                                       fields per line={129: 4966}; header lines inside the data=0
+  morris_power/data2.csv                                       fields per line={129: 5069}; header lines inside the data=0
+  morris_power/data3.csv                                       fields per line={129: 5415}; header lines inside the data=0
+  morris_power/data4.csv                                       fields per line={129: 5202}; header lines inside the data=0
+  morris_power/data5.csv                                       fields per line={129: 5161}; header lines inside the data=0
+  morris_power/data6.csv                                       fields per line={129: 4967}; header lines inside the data=0
+  morris_power/data7.csv                                       fields per line={129: 5236}; header lines inside the data=0
+  morris_power/data8.csv                                       fields per line={129: 5315}; header lines inside the data=0
+  morris_power/data9.csv                                       fields per line={129: 5340}; header lines inside the data=0
+  morris_power/data10.csv                                      fields per line={129: 5569}; header lines inside the data=0
+  morris_power/data11.csv                                      fields per line={129: 5251}; header lines inside the data=0
+  morris_power/data12.csv                                      fields per line={129: 5224}; header lines inside the data=0
+  morris_power/data13.csv                                      fields per line={129: 5271}; header lines inside the data=0
+  morris_power/data14.csv                                      fields per line={129: 5115}; header lines inside the data=0
+  morris_power/data15.csv                                      fields per line={129: 5276}; header lines inside the data=0
+  columns checked 128; value kind contradicting the name or role: 0
+  NaN cells in content features 10,906; infinite 0
+
+=== (ii) LABELS ===
+rows 78,377; duplicates on all columns 9 (0.01%); without identifiers 9 (0.01%)
+feature vectors with >1 label 0; rows in them 0 (0.00%)
+  Attack                       rows      55,663  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Natural                      rows      22,714  in multi-label vectors   0.00%
+
+=== (iii) TIME ===
+no timestamp: time-ordered windows cannot be built
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  Attack                            55,663  71.02%
+  Natural                           22,714  28.98%
+benign 22,714 rows (28.98%); attack 71.02%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 78,368: Attack 55,662, Natural 22,706
+  content                  random 70/30                                 macro-F1=0.669  Attack=0.86  Natural=0.47
+  content                  independent: held-out groups (11 train / 4 test) macro-F1=0.597  Attack=0.83  Natural=0.36
+
+(run time 14 s)

@@ -1,0 +1,89 @@
+sensitivity to the round period (registered arrivals 30/60 min); per block: protected at the end / median latency / exposure all nodes / exposure reachable nodes
+
+==== ERENO
+--- T1
+     5 s ReSIDS     | block 1: 14/14   8 min  14.9%   8.2%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed GL   | block 1: 14/14  16 min  30.6%  17.2%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed FL   | block 1: 14/14  30 min  56.5%  48.1%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s ReSIDS     | block 1: 14/14  18 min  33.3%  20.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed GL   | block 1: 14/14  18 min  33.3%  20.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed FL   | block 1: 14/14  30 min  56.6%  48.2%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s ReSIDS     | block 1: 14/14  29 min  51.8%  42.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed GL   | block 1: 14/14  29 min  53.8%  44.9%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed FL   | block 1: 14/14  30 min  56.6%  48.2%  | block 2: 14/14   0 min   0.0%   0.0%
+   180 s ReSIDS     | block 1: 14/14  32 min  55.6%  47.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   180 s Fixed GL   | block 1:  4/14  48 min  96.0%  95.3%  | block 2: 14/14   2 min   9.8%   9.8%
+   180 s Fixed FL   | block 1: 14/14  32 min  55.6%  47.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s ReSIDS     | block 1: 14/14  32 min  54.5%  46.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s Fixed GL   | block 1:  1/14  52 min  99.4%  99.2%  | block 2: 11/14   2 min  21.4%  21.4%
+   300 s Fixed FL   | block 1: 14/14  32 min  54.5%  46.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   600 s ReSIDS     | block 1: 14/14  35 min  60.0%  54.8%  | block 2: 14/14   5 min   0.0%   0.0%
+   600 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 10/14   5 min  32.1%  32.1%
+   600 s Fixed FL   | block 1: 14/14  35 min  60.0%  54.8%  | block 2: 14/14   5 min   0.0%   0.0%
+--- T2
+     5 s ReSIDS     | block 1: 14/14   0 min   0.0%   0.0%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed GL   | block 1: 14/14   1 min   1.5%   2.1%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed FL   | block 1: 13/14   0 min   7.1%   4.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s ReSIDS     | block 1: 14/14   0 min   0.2%   0.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed GL   | block 1: 14/14   4 min   5.3%   7.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s ReSIDS     | block 1:  9/14  12 min  47.9%  34.0%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed GL   | block 1:  9/14  12 min  47.9%  34.0%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   0 min   0.0%   0.0%
+   180 s ReSIDS     | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   180 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 12/14   2 min  14.3%   0.0%
+   180 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s ReSIDS     | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   6.2%  10.9%
+   300 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   600 s ReSIDS     | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   5 min   0.0%   0.0%
+   600 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 10/14   5 min  33.9%  34.4%
+   600 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   5 min   0.0%   0.0%
+
+==== CICIDS2017
+--- T1
+     5 s ReSIDS     | block 1: 14/14   8 min  14.9%   8.2%  | block 2: 14/14   0 min   0.1%   0.1%
+     5 s Fixed GL   | block 1: 14/14  16 min  28.6%  14.9%  | block 2: 14/14   1 min   3.3%   3.3%
+     5 s Fixed FL   | block 1: 14/14  30 min  52.6%  43.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s ReSIDS     | block 1: 14/14  18 min  31.5%  18.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed GL   | block 1: 14/14  18 min  31.5%  18.3%  | block 2: 14/14   4 min  14.1%  14.1%
+    15 s Fixed FL   | block 1: 14/14  30 min  52.6%  43.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s ReSIDS     | block 1: 14/14  22 min  38.4%  26.5%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed GL   | block 1: 14/14  22 min  38.4%  26.5%  | block 2: 14/14  12 min  48.1%  48.1%
+    60 s Fixed FL   | block 1: 14/14  30 min  52.6%  43.4%  | block 2: 14/14   0 min   0.0%   0.0%
+   180 s ReSIDS     | block 1: 14/14  32 min  50.0%  40.6%  | block 2: 14/14   2 min   0.0%   0.0%
+   180 s Fixed GL   | block 1: 11/14  38 min  73.8%  68.9%  | block 2:  5/14  16 min  86.6%  86.6%
+   180 s Fixed FL   | block 1: 14/14  32 min  51.6%  42.5%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s ReSIDS     | block 1: 14/14  32 min  50.6%  41.5%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s Fixed GL   | block 1:  1/14   2 min  92.9%  91.5%  | block 2:  0/14       - 100.0% 100.0%
+   300 s Fixed FL   | block 1: 14/14  32 min  50.6%  41.5%  | block 2: 14/14   2 min   0.0%   0.0%
+   600 s ReSIDS     | block 1: 14/14  35 min  54.3%  48.4%  | block 2: 14/14   5 min   0.0%   0.0%
+   600 s Fixed GL   | block 1:  4/14  30 min  85.7%  83.9%  | block 2:  0/14       - 100.0% 100.0%
+   600 s Fixed FL   | block 1: 14/14  35 min  55.7%  50.0%  | block 2: 14/14   5 min   0.0%   0.0%
+--- T2
+     5 s ReSIDS     | block 1: 14/14   0 min   0.0%   0.0%  | block 2:  8/14   0 min  49.0%  10.8%
+     5 s Fixed GL   | block 1: 14/14   1 min   1.6%   2.2%  | block 2:  6/14   0 min  57.4%  25.6%
+     5 s Fixed FL   | block 1: 13/14   0 min   7.1%   4.3%  | block 2:  8/14  15 min  62.7%  34.8%
+    15 s ReSIDS     | block 1: 14/14   0 min   0.2%   0.3%  | block 2:  8/14   1 min  49.5%  11.6%
+    15 s Fixed GL   | block 1: 14/14   4 min   5.4%   7.5%  | block 2:  6/14   1 min  58.0%  26.6%
+    15 s Fixed FL   | block 1:  1/14   0 min  92.9%  97.8%  | block 2:  8/14  15 min  62.6%  34.5%
+    60 s ReSIDS     | block 1: 14/14   8 min  10.8%  14.8%  | block 2:  8/14   5 min  52.1%  16.1%
+    60 s Fixed GL   | block 1: 14/14   8 min  10.8%  14.8%  | block 2:  6/14   4 min  60.7%  31.2%
+    60 s Fixed FL   | block 1:  1/14   0 min  92.9%  97.8%  | block 2:  8/14  16 min  62.6%  34.5%
+   180 s ReSIDS     | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  12 min  56.6%  24.0%
+   180 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2:  6/14   9 min  65.4%  39.4%
+   180 s Fixed FL   | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  16 min  62.1%  33.7%
+   300 s ReSIDS     | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  18 min  59.8%  29.7%
+   300 s Fixed GL   | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  6/14  20 min  75.9%  57.8%
+   300 s Fixed FL   | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  18 min  61.6%  32.8%
+   600 s ReSIDS     | block 1:  2/14   5 min  85.7%  93.1%  | block 2:  8/14  25 min  66.1%  40.6%
+   600 s Fixed GL   | block 1:  1/14   5 min  92.9%  95.8%  | block 2:  3/14  25 min  89.3%  81.2%
+   600 s Fixed FL   | block 1:  1/14   5 min  92.9%  97.2%  | block 2:  8/14  25 min  67.9%  43.8%
+
+regret (exposure minus the best of the three, points) per period, over informative cells
+     5 s (6 cells): ReSIDS mean 0.0 max 0.1 worst 0; Fixed GL mean 7.4 max 15.7 worst 1; Fixed FL mean 17.9 max 41.6 worst 5
+    15 s (6 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 5.5 max 14.1 worst 1; Fixed FL mean 41.7 max 99.8 worst 5
+    60 s (6 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 9.8 max 48.1 worst 1; Fixed FL mean 27.3 max 82.0 worst 5
+   180 s (7 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 27.3 max 86.6 worst 7; Fixed FL mean 1.0 max 5.5 worst 0
+   300 s (6 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 38.5 max 100.0 worst 6; Fixed FL mean 0.3 max 1.8 worst 0
+   600 s (7 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 38.3 max 100.0 worst 7; Fixed FL mean 1.5 max 7.1 worst 1

@@ -1,0 +1,25 @@
+per-minute check (test, GL k>=2): recall 71.11%  FPR 0.0258% (FP 44)
+
+=== window 1 min: calibration 79,988 windows of training normal minutes; test 180 attack / 34,108 benign windows (23.7 days)
+  thresholds: T=4, f=0.6250; per specialist ArpSpoof=4, PingOfDeath=3, Smurf=3; max fused alerts in a calibration window 2
+  network-wide (ERENO policy)     attack windows 0/180 (0.0%)   benign false alarms 1/34108 (0.003%; 0.04 per day)
+  per specialist                  attack windows 0/180 (0.0%)   benign false alarms 0/34108 (0.000%; 0.00 per day)
+  network-wide OR per specialist  attack windows 0/180 (0.0%)   benign false alarms 1/34108 (0.003%; 0.04 per day)
+  per category (OR rule): {'ArpSpoof': '0% of 90', 'PingOfDeath': '0% of 50', 'Smurf': '0% of 40'}
+  attack intervals with an alarmed window (OR rule): 0/18
+
+=== window 5 min: calibration 16,076 windows of training normal minutes; test 50 attack / 6,840 benign windows (23.8 days)
+  thresholds: T=6, f=0.2500; per specialist ArpSpoof=6, PingOfDeath=5, Smurf=5; max fused alerts in a calibration window 4
+  network-wide (ERENO policy)     attack windows 1/50 (2.0%)   benign false alarms 0/6840 (0.000%; 0.00 per day)
+  per specialist                  attack windows 7/50 (14.0%)   benign false alarms 0/6840 (0.000%; 0.00 per day)
+  network-wide OR per specialist  attack windows 7/50 (14.0%)   benign false alarms 0/6840 (0.000%; 0.00 per day)
+  per category (OR rule): {'ArpSpoof': '12% of 25', 'PingOfDeath': '14% of 14', 'Smurf': '18% of 11'}
+  attack intervals with an alarmed window (OR rule): 5/18
+
+=== window 10 min: calibration 8,076 windows of training normal minutes; test 32 attack / 3,429 benign windows (23.8 days)
+  thresholds: T=6, f=0.1875; per specialist ArpSpoof=6, PingOfDeath=5, Smurf=5; max fused alerts in a calibration window 4
+  network-wide (ERENO policy)     attack windows 9/32 (28.1%)   benign false alarms 0/3429 (0.000%; 0.00 per day)
+  per specialist                  attack windows 11/32 (34.4%)   benign false alarms 0/3429 (0.000%; 0.00 per day)
+  network-wide OR per specialist  attack windows 11/32 (34.4%)   benign false alarms 0/3429 (0.000%; 0.00 per day)
+  per category (OR rule): {'ArpSpoof': '31% of 16', 'PingOfDeath': '22% of 9', 'Smurf': '57% of 7'}
+  attack intervals with an alarmed window (OR rule): 10/18

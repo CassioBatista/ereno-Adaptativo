@@ -1,0 +1,560 @@
+{
+ "ereno": {
+  "1.0": [
+   {
+    "prevalence": 0.06783926908752327,
+    "attack_samples": 200509,
+    "attack_windows": 282,
+    "alarmed": 280,
+    "tpr": 0.9929078014184397,
+    "sample_coverage": 0.9999900253853942,
+    "per_sample_recall": 0.9996558757960989,
+    "benign_windows": 724,
+    "false_alarms": 1
+   }
+  ],
+  "0.1": [
+   {
+    "prevalence": 0.007249773804895327,
+    "attack_samples": 20120,
+    "attack_windows": 304,
+    "alarmed": 294,
+    "tpr": 0.9671052631578947,
+    "sample_coverage": 0.99110337972167,
+    "per_sample_recall": 0.9996520874751491,
+    "benign_windows": 717,
+    "false_alarms": 1
+   },
+   {
+    "prevalence": 0.007208277195085082,
+    "attack_samples": 20004,
+    "attack_windows": 273,
+    "alarmed": 271,
+    "tpr": 0.9926739926739927,
+    "sample_coverage": 0.9951509698060388,
+    "per_sample_recall": 0.9996500699860028,
+    "benign_windows": 725,
+    "false_alarms": 1
+   },
+   {
+    "prevalence": 0.00718681207012547,
+    "attack_samples": 19944,
+    "attack_windows": 263,
+    "alarmed": 261,
+    "tpr": 0.9923954372623575,
+    "sample_coverage": 0.998094665062174,
+    "per_sample_recall": 0.9995988768551946,
+    "benign_windows": 726,
+    "false_alarms": 1
+   },
+   {
+    "prevalence": 0.007188600865990556,
+    "attack_samples": 19949,
+    "attack_windows": 274,
+    "alarmed": 270,
+    "tpr": 0.9854014598540146,
+    "sample_coverage": 0.9934833826256956,
+    "per_sample_recall": 0.999749360870219,
+    "benign_windows": 725,
+    "false_alarms": 1
+   },
+   {
+    "prevalence": 0.007245838930430722,
+    "attack_samples": 20109,
+    "attack_windows": 279,
+    "alarmed": 276,
+    "tpr": 0.989247311827957,
+    "sample_coverage": 0.9968670744442787,
+    "per_sample_recall": 0.9997016261375503,
+    "benign_windows": 725,
+    "false_alarms": 1
+   }
+  ],
+  "0.01": [
+   {
+    "prevalence": 0.0007507591916318277,
+    "attack_samples": 2070,
+    "attack_windows": 285,
+    "alarmed": 273,
+    "tpr": 0.9578947368421052,
+    "sample_coverage": 0.9826086956521739,
+    "per_sample_recall": 1.0,
+    "benign_windows": 725,
+    "false_alarms": 1
+   },
+   {
+    "prevalence": 0.0007387994092506245,
+    "attack_samples": 2037,
+    "attack_windows": 306,
+    "alarmed": 290,
+    "tpr": 0.9477124183006536,
+    "sample_coverage": 0.9685812469317624,
+    "per_sample_recall": 0.9990181639666176,
+    "benign_windows": 725,
+    "false_alarms": 1
+   },
+   {
+    "prevalence": 0.0007127043448487978,
+    "attack_samples": 1965,
+    "attack_windows": 267,
+    "alarmed": 258,
+    "tpr": 0.9662921348314607,
+    "sample_coverage": 0.9847328244274809,
+    "per_sample_recall": 1.0,
+    "benign_windows": 726,
+    "false_alarms": 1
+   },
+   {
+    "prevalence": 0.0007094423659685285,
+    "attack_samples": 1956,
+    "attack_windows": 306,
+    "alarmed": 291,
+    "tpr": 0.9509803921568627,
+    "sample_coverage": 0.971881390593047,
+    "per_sample_recall": 0.9994887525562373,
+    "benign_windows": 723,
+    "false_alarms": 1
+   },
+   {
+    "prevalence": 0.0007427860351873123,
+    "attack_samples": 2048,
+    "attack_windows": 280,
+    "alarmed": 266,
+    "tpr": 0.95,
+    "sample_coverage": 0.9833984375,
+    "per_sample_recall": 1.0,
+    "benign_windows": 726,
+    "false_alarms": 1
+   }
+  ],
+  "0.001": [
+   {
+    "prevalence": 7.476377731282289e-05,
+    "attack_samples": 206,
+    "attack_windows": 139,
+    "alarmed": 118,
+    "tpr": 0.8489208633093526,
+    "sample_coverage": 0.8980582524271845,
+    "per_sample_recall": 1.0,
+    "benign_windows": 497,
+    "false_alarms": 2
+   },
+   {
+    "prevalence": 6.496527805501942e-05,
+    "attack_samples": 179,
+    "attack_windows": 132,
+    "alarmed": 109,
+    "tpr": 0.8257575757575758,
+    "sample_coverage": 0.8603351955307262,
+    "per_sample_recall": 1.0,
+    "benign_windows": 495,
+    "false_alarms": 2
+   },
+   {
+    "prevalence": 6.605400967800123e-05,
+    "attack_samples": 182,
+    "attack_windows": 131,
+    "alarmed": 114,
+    "tpr": 0.8702290076335878,
+    "sample_coverage": 0.8956043956043956,
+    "per_sample_recall": 1.0,
+    "benign_windows": 497,
+    "false_alarms": 2
+   },
+   {
+    "prevalence": 7.367506465622054e-05,
+    "attack_samples": 203,
+    "attack_windows": 144,
+    "alarmed": 116,
+    "tpr": 0.8055555555555556,
+    "sample_coverage": 0.8571428571428571,
+    "per_sample_recall": 1.0,
+    "benign_windows": 732,
+    "false_alarms": 2
+   },
+   {
+    "prevalence": 7.766699947338871e-05,
+    "attack_samples": 214,
+    "attack_windows": 135,
+    "alarmed": 108,
+    "tpr": 0.8,
+    "sample_coverage": 0.8691588785046729,
+    "per_sample_recall": 1.0,
+    "benign_windows": 757,
+    "false_alarms": 1
+   }
+  ]
+ },
+ "cicids": {
+  "1.0": [
+   {
+    "prevalence": 0.2464032202765679,
+    "attack_samples": 155236,
+    "attack_windows": 914,
+    "alarmed": 642,
+    "tpr": 0.7024070021881839,
+    "sample_coverage": 0.995194413666933,
+    "per_sample_recall": 0.9970367698214332,
+    "benign_windows": 3841,
+    "false_alarms": 8
+   }
+  ],
+  "0.1": [
+   {
+    "prevalence": 0.03184614663053209,
+    "attack_samples": 15617,
+    "attack_windows": 463,
+    "alarmed": 123,
+    "tpr": 0.265658747300216,
+    "sample_coverage": 0.9569699686239355,
+    "per_sample_recall": 0.997310623038996,
+    "benign_windows": 4110,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.031144777709301803,
+    "attack_samples": 15262,
+    "attack_windows": 509,
+    "alarmed": 129,
+    "tpr": 0.25343811394891946,
+    "sample_coverage": 0.9539378849429957,
+    "per_sample_recall": 0.9969859782466256,
+    "benign_windows": 4080,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.031295015404705064,
+    "attack_samples": 15338,
+    "attack_windows": 483,
+    "alarmed": 126,
+    "tpr": 0.2608695652173913,
+    "sample_coverage": 0.9561872473594993,
+    "per_sample_recall": 0.9968705176685356,
+    "benign_windows": 4101,
+    "false_alarms": 9
+   },
+   {
+    "prevalence": 0.03146891664184676,
+    "attack_samples": 15426,
+    "attack_windows": 492,
+    "alarmed": 120,
+    "tpr": 0.24390243902439024,
+    "sample_coverage": 0.9498897964475561,
+    "per_sample_recall": 0.9968235446648516,
+    "benign_windows": 4083,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.031808634296551584,
+    "attack_samples": 15598,
+    "attack_windows": 501,
+    "alarmed": 127,
+    "tpr": 0.25349301397205587,
+    "sample_coverage": 0.9549301192460572,
+    "per_sample_recall": 0.9966662392614438,
+    "benign_windows": 4077,
+    "false_alarms": 10
+   }
+  ],
+  "0.01": [
+   {
+    "prevalence": 0.0033231518510354672,
+    "attack_samples": 1583,
+    "attack_windows": 174,
+    "alarmed": 97,
+    "tpr": 0.5574712643678161,
+    "sample_coverage": 0.9317751105495894,
+    "per_sample_recall": 0.9974731522425774,
+    "benign_windows": 4237,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.0032017837609726704,
+    "attack_samples": 1525,
+    "attack_windows": 171,
+    "alarmed": 96,
+    "tpr": 0.5614035087719298,
+    "sample_coverage": 0.9318032786885246,
+    "per_sample_recall": 0.9980327868852459,
+    "benign_windows": 4242,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.003030143947586699,
+    "attack_samples": 1443,
+    "attack_windows": 176,
+    "alarmed": 99,
+    "tpr": 0.5625,
+    "sample_coverage": 0.9237699237699237,
+    "per_sample_recall": 0.9958419958419958,
+    "benign_windows": 4230,
+    "false_alarms": 9
+   },
+   {
+    "prevalence": 0.0031871338890171953,
+    "attack_samples": 1518,
+    "attack_windows": 180,
+    "alarmed": 92,
+    "tpr": 0.5111111111111111,
+    "sample_coverage": 0.9104084321475626,
+    "per_sample_recall": 0.9960474308300395,
+    "benign_windows": 4228,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.0032896739506947784,
+    "attack_samples": 1567,
+    "attack_windows": 174,
+    "alarmed": 99,
+    "tpr": 0.5689655172413793,
+    "sample_coverage": 0.9253350350989151,
+    "per_sample_recall": 0.9974473516273133,
+    "benign_windows": 4230,
+    "false_alarms": 10
+   }
+  ],
+  "0.001": [
+   {
+    "prevalence": 0.0003663574385298539,
+    "attack_samples": 174,
+    "attack_windows": 84,
+    "alarmed": 6,
+    "tpr": 0.07142857142857142,
+    "sample_coverage": 0.26436781609195403,
+    "per_sample_recall": 0.9885057471264368,
+    "benign_windows": 4277,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.00030110651379720583,
+    "attack_samples": 143,
+    "attack_windows": 75,
+    "alarmed": 5,
+    "tpr": 0.06666666666666667,
+    "sample_coverage": 0.16783216783216784,
+    "per_sample_recall": 0.993006993006993,
+    "benign_windows": 4287,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.0002884763186210411,
+    "attack_samples": 137,
+    "attack_windows": 72,
+    "alarmed": 5,
+    "tpr": 0.06944444444444445,
+    "sample_coverage": 0.22627737226277372,
+    "per_sample_recall": 1.0,
+    "benign_windows": 4289,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.0002990015034300947,
+    "attack_samples": 142,
+    "attack_windows": 79,
+    "alarmed": 6,
+    "tpr": 0.0759493670886076,
+    "sample_coverage": 0.22535211267605634,
+    "per_sample_recall": 0.9929577464788732,
+    "benign_windows": 4285,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.0003368903337740982,
+    "attack_samples": 160,
+    "attack_windows": 82,
+    "alarmed": 7,
+    "tpr": 0.08536585365853659,
+    "sample_coverage": 0.31875,
+    "per_sample_recall": 1.0,
+    "benign_windows": 4280,
+    "false_alarms": 10
+   }
+  ]
+ },
+ "morris4": {
+  "1.0": [
+   {
+    "prevalence": 0.17290025825185337,
+    "attack_samples": 13457,
+    "attack_windows": 711,
+    "alarmed": 597,
+    "tpr": 0.8396624472573839,
+    "sample_coverage": 0.8824403656089768,
+    "per_sample_recall": 0.998067920041614,
+    "benign_windows": 171,
+    "false_alarms": 5
+   }
+  ],
+  "0.1": [
+   {
+    "prevalence": 0.02076393008716287,
+    "attack_samples": 1365,
+    "attack_windows": 532,
+    "alarmed": 210,
+    "tpr": 0.39473684210526316,
+    "sample_coverage": 0.5091575091575091,
+    "per_sample_recall": 0.9978021978021978,
+    "benign_windows": 321,
+    "false_alarms": 5
+   },
+   {
+    "prevalence": 0.02064474905295827,
+    "attack_samples": 1357,
+    "attack_windows": 550,
+    "alarmed": 252,
+    "tpr": 0.4581818181818182,
+    "sample_coverage": 0.5902726602800294,
+    "per_sample_recall": 0.9992630803242447,
+    "benign_windows": 307,
+    "false_alarms": 3
+   },
+   {
+    "prevalence": 0.02064474905295827,
+    "attack_samples": 1357,
+    "attack_windows": 569,
+    "alarmed": 236,
+    "tpr": 0.4147627416520211,
+    "sample_coverage": 0.548268238761975,
+    "per_sample_recall": 0.9963154016212233,
+    "benign_windows": 294,
+    "false_alarms": 5
+   },
+   {
+    "prevalence": 0.019839517639356243,
+    "attack_samples": 1303,
+    "attack_windows": 544,
+    "alarmed": 231,
+    "tpr": 0.42463235294117646,
+    "sample_coverage": 0.5617805065234075,
+    "per_sample_recall": 0.9969301611665388,
+    "benign_windows": 310,
+    "false_alarms": 3
+   },
+   {
+    "prevalence": 0.020331760767006542,
+    "attack_samples": 1336,
+    "attack_windows": 547,
+    "alarmed": 227,
+    "tpr": 0.4149908592321755,
+    "sample_coverage": 0.5239520958083832,
+    "per_sample_recall": 0.9977544910179641,
+    "benign_windows": 313,
+    "false_alarms": 5
+   }
+  ],
+  "0.01": [
+   {
+    "prevalence": 0.002201004402008804,
+    "attack_samples": 142,
+    "attack_windows": 128,
+    "alarmed": 15,
+    "tpr": 0.1171875,
+    "sample_coverage": 0.14788732394366197,
+    "per_sample_recall": 1.0,
+    "benign_windows": 700,
+    "false_alarms": 9
+   },
+   {
+    "prevalence": 0.0020153788912315516,
+    "attack_samples": 130,
+    "attack_windows": 116,
+    "alarmed": 13,
+    "tpr": 0.11206896551724138,
+    "sample_coverage": 0.15384615384615385,
+    "per_sample_recall": 1.0,
+    "benign_windows": 709,
+    "false_alarms": 7
+   },
+   {
+    "prevalence": 0.0019380145428611296,
+    "attack_samples": 125,
+    "attack_windows": 119,
+    "alarmed": 12,
+    "tpr": 0.10084033613445378,
+    "sample_coverage": 0.12,
+    "per_sample_recall": 1.0,
+    "benign_windows": 709,
+    "false_alarms": 9
+   },
+   {
+    "prevalence": 0.0019534883720930232,
+    "attack_samples": 126,
+    "attack_windows": 112,
+    "alarmed": 15,
+    "tpr": 0.13392857142857142,
+    "sample_coverage": 0.15873015873015872,
+    "per_sample_recall": 1.0,
+    "benign_windows": 715,
+    "false_alarms": 8
+   },
+   {
+    "prevalence": 0.002278327986237039,
+    "attack_samples": 147,
+    "attack_windows": 124,
+    "alarmed": 16,
+    "tpr": 0.12903225806451613,
+    "sample_coverage": 0.14965986394557823,
+    "per_sample_recall": 1.0,
+    "benign_windows": 707,
+    "false_alarms": 9
+   }
+  ],
+  "0.001": [
+   {
+    "prevalence": 0.00010872773023096877,
+    "attack_samples": 7,
+    "attack_windows": 7,
+    "alarmed": 0,
+    "tpr": 0.0,
+    "sample_coverage": 0.0,
+    "per_sample_recall": 1.0,
+    "benign_windows": 811,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.00015531809145129225,
+    "attack_samples": 10,
+    "attack_windows": 10,
+    "alarmed": 1,
+    "tpr": 0.1,
+    "sample_coverage": 0.1,
+    "per_sample_recall": 1.0,
+    "benign_windows": 808,
+    "false_alarms": 9
+   },
+   {
+    "prevalence": 0.00024848578971890047,
+    "attack_samples": 16,
+    "attack_windows": 16,
+    "alarmed": 0,
+    "tpr": 0.0,
+    "sample_coverage": 0.0,
+    "per_sample_recall": 1.0,
+    "benign_windows": 802,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.00013978845347374308,
+    "attack_samples": 9,
+    "attack_windows": 9,
+    "alarmed": 0,
+    "tpr": 0.0,
+    "sample_coverage": 0.0,
+    "per_sample_recall": 1.0,
+    "benign_windows": 809,
+    "false_alarms": 10
+   },
+   {
+    "prevalence": 0.00018637592023110615,
+    "attack_samples": 12,
+    "attack_windows": 12,
+    "alarmed": 2,
+    "tpr": 0.16666666666666666,
+    "sample_coverage": 0.16666666666666666,
+    "per_sample_recall": 1.0,
+    "benign_windows": 809,
+    "false_alarms": 9
+   }
+  ]
+ }
+}

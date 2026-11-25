@@ -1,0 +1,35 @@
+# Arrival-offset check of the trust-level grid (paper 2, 5.3; exploratory, not registered):
+# same as tl_grid_template.yaml, with the two late blocks shifted by an offset.
+# Placeholders filled by run_tl_arrival_offsets.sh.
+run_name: ev1-tl-cicids_T2_fixed_federated_retain_off5
+seed: 42
+grasp:
+  features_file: features/all_in_one_ev1_cicids_train_combined.json
+dataset:
+  name: all_in_one_ev1_cicids_train
+  test_file: all_in_one_ev1_cicids_test
+  partitioner: specialists
+  
+  partitioner_arg: null
+topology:
+  type: ring
+  num_nodes: 14
+simulation:
+  num_rounds: 97
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 1
+  eval_sample: 100000
+  monolithic: false
+scenario:
+  # nodes 3, 4, 11, 12 at 30 min + offset and 9, 10 at 60 min + offset (1-based); 0-based here
+  arrival_s: {2: 2100, 3: 2100, 10: 2100, 11: 2100, 8: 3900, 9: 3900}
+architecture:
+  manager: trust_level
+  trace: /home/cassi/datasets/disaster_fd_scenario2
+  t_end: 5880
+  delta_s: 60
+  policy: fixed_federated
+  node_holdings: retain
+  holdings_log: /home/cassi/ereno-Adaptativo/results/ev1_tl/arrival_offsets/cicids_T2_fixed_federated_retain_off5
+  aggregation: xgb_union

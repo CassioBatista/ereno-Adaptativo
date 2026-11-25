@@ -1,0 +1,4 @@
+decisions per node over the trace (1-s grid); network of the scenario (links both ways)
+
+T1: mode changes per node -- trust level, settle 5 s: 4-4 (mean 4.0); settle 0 s: 5-7 (mean 5.8); from the network directly: 3-8 (mean 5.3). ReSIDS rounds mixing F and G: ereno 0, cicids 0, morris4 0, ciciot 0
+T2: mode changes per node -- trust level, settle 5 s: 3-4 (mean 3.1); settle 0 s: 3-5 (mean 3.4); from the network directly: 3-6 (mean 3.5). ReSIDS rounds mixing F and G: ereno 0, cicids 0, morris4 0, ciciot 0

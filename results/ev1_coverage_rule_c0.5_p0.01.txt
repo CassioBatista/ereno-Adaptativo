@@ -1,0 +1,38 @@
+coverage rule (exploratory): cover >= 50 % of the type's training rows; precise = FPR <= 1 % on the benign training rows of the other nodes
+
+== ERENO: 14 specialists, 14 precise; types no precise specialist covers: 0
+   variant    kept   recall    FPR %   F1@6.8   types losing >= 5 points of recall
+   all       14/14    99.97    0.626    95.87   -
+   cover-1    4/14    93.83    0.578    93.02   inverse_replay 100->60
+   cover-2    8/14    93.87    0.626    92.74   inverse_replay 100->60
+   precise    4/14    93.83    0.578    93.02   inverse_replay 100->60
+   cover-1 keeps: random_replay (node 1), injection (node 3), masquerade_fake_normal (node 11), masquerade_fake_fault (node 13)
+   imprecise specialists (FPR on other nodes' benign): 
+
+== CICIDS2017: 17 specialists, 16 precise; types no precise specialist covers: 10 (DoS_GoldenEye_Attempted, FTP_Patator_Attempted, Heartbleed, Infiltration, Infiltration_Attempted, SSH_Patator_Attempted, Web_Attack_Brute_Force, Web_Attack_SQL_Injection, Web_Attack_SQL_Injection_Attempted, Web_Attack_XSS)
+   variant    kept   recall    FPR %   F1@6.8   types losing >= 5 points of recall
+   all       17/17    99.70    2.632    84.57   -
+   cover-1    9/17    93.22    2.411    82.40   DoS_GoldenEye 100->67; DoS_Slowhttptest 79->70; DoS_Slowloris 100->82; Infiltration_Portscan 100->58; Web_Attack_Brute_Force_Attempted 100->95; Web_Attack_SQL_Injection_Attempted 100->50
+   cover-2   15/17    99.59    2.596    84.70   DoS_GoldenEye 100->92
+   precise    8/17    92.78    0.197    94.92   DoS_GoldenEye 100->62; DoS_Slowhttptest 79->48; DoS_Slowloris 100->69; DoS_Slowloris_Attempted 100->79; Heartbleed 100->0; Infiltration 100->0; Infiltration_Portscan 100->57; SSH_Patator_Attempted 100->11; Web_Attack_Brute_Force 100->0; Web_Attack_Brute_Force_Attempted 100->92; Web_Attack_SQL_Injection 75->0; Web_Attack_SQL_Injection_Attempted 100->0; Web_Attack_XSS 100->0
+   cover-1 keeps: Portscan (node 1), DoS_Hulk (node 2), FTP_Patator (node 7), DoS_Slowloris (node 8), DoS_Slowhttptest_Attempt (node 9), SSH_Patator (node 10), Botnet (node 13), DoS_Hulk_Attempted (node 14), shared (DoS_GoldenEye_At (node 14)
+   imprecise specialists (FPR on other nodes' benign): shared (DoS_GoldenEy 2.6 %
+
+== Morris-4: 35 specialists, 20 precise; types no precise specialist covers: 12 (specific_1, specific_10, specific_13, specific_14, specific_15, specific_2, specific_27, specific_30, specific_35, specific_5, specific_6, specific_9)
+   variant    kept   recall    FPR %   F1@6.8   types losing >= 5 points of recall
+   all       35/35    99.81   42.003    25.74   -
+   cover-1   19/35    99.81   42.003    25.74   -
+   cover-2   26/35    99.81   42.003    25.74   -
+   precise    7/35    66.34    1.286    72.12   specific_1 100->0; specific_10 97->0; specific_11 100->68; specific_13 100->30; specific_14 100->0; specific_15 95->2; specific_18 100->72; specific_2 100->4; specific_25 100->91; specific_27 100->2; specific_28 100->90; specific_30 99->13; specific_33 100->51; specific_34 100->61; specific_35 100->13; specific_5 100->8; specific_6 100->10; specific_9 100->0
+   cover-1 keeps: specific_35 (node 1), specific_30 (node 1), specific_27 (node 2), specific_28 (node 4), specific_24 (node 8), specific_18 (node 8), specific_12 (node 9), specific_6 (node 9), specific_4 (node 9), specific_8 (node 10), specific_1 (node 10), specific_14 (node 11), specific_16 (node 11), specific_13 (node 12), specific_15 (node 12), specific_10 (node 13), specific_2 (node 13), specific_5 (node 13), specific_9 (node 14)
+   imprecise specialists (FPR on other nodes' benign): specific_35 18.1 %, specific_30 18.4 %, specific_27 5.7 %, specific_34 9.3 %, specific_26 1.0 %, specific_33 2.9 %, specific_6 5.3 %, specific_1 3.2 %, specific_14 12.9 %, specific_13 14.8 %, specific_15 14.2 %, specific_10 18.0 %, specific_2 10.2 %, specific_5 4.8 %, specific_9 13.6 %
+
+== CICIoT2023: 29 specialists, 19 precise; types no precise specialist covers: 10 (Backdoor_Malware, BrowserHijacking, CommandInjection, DictionaryBruteForce, Recon_HostDiscovery, Recon_PingSweep, Recon_PortScan, SqlInjection, Uploading_Attack, XSS)
+   variant    kept   recall    FPR %   F1@6.8   types losing >= 5 points of recall
+   all       29/29    99.97   28.569    33.80   -
+   cover-1   10/29    99.97   27.585    34.59   -
+   cover-2   13/29    99.97   27.603    34.58   -
+   precise    1/29    99.37    0.018    99.56   Backdoor_Malware 100->0; BrowserHijacking 97->0; CommandInjection 100->0; DictionaryBruteForce 98->0; Recon_HostDiscovery 100->0; Recon_OSScan 92->49; Recon_PingSweep 100->59; Recon_PortScan 98->51; SqlInjection 100->39; Uploading_Attack 100->0; XSS 100->0
+   cover-1 keeps: Recon_HostDiscovery (node 8), Recon_PortScan (node 9), DDoS_SlowLoris (node 11), DictionaryBruteForce (node 12), BrowserHijacking (node 12), SqlInjection (node 13), CommandInjection (node 13), Backdoor_Malware (node 14), shared (Recon_PingSweep, (node 14), XSS (node 14)
+   imprecise specialists (FPR on other nodes' benign): Recon_HostDiscovery 6.1 %, Recon_OSScan 11.9 %, Recon_PortScan 7.7 %, DictionaryBruteForce 16.1 %, BrowserHijacking 13.3 %, SqlInjection 6.4 %, CommandInjection 7.4 %, Backdoor_Malware 6.2 %, shared (Recon_PingSw 8.0 %, XSS 12.4 %
+

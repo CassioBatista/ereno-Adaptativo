@@ -1,0 +1,156 @@
+{
+ "dataset": "UNSW IoT attack traces",
+ "sample": "all rows",
+ "rows": 570460,
+ "feats": 41,
+ "ids": [
+  "dev",
+  "ts"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.7634452897661537,
+  "multi_rows": 0.17935701013217403,
+  "per_label": {
+   "Normal": {
+    "rows": 568160,
+    "multi": 0.1794476907913264,
+    "as_benign": null
+   },
+   "TcpSynReflection": {
+    "rows": 579,
+    "multi": 0.22797927461139897,
+    "as_benign": 0.18652849740932642
+   },
+   "TcpSynDevice": {
+    "rows": 558,
+    "multi": 0.2168458781362007,
+    "as_benign": 0.17921146953405018
+   },
+   "UdpReflection": {
+    "rows": 357,
+    "multi": 0.09803921568627451,
+    "as_benign": 0.09803921568627451
+   },
+   "ArpSpoof": {
+    "rows": 297,
+    "multi": 0.037037037037037035,
+    "as_benign": 0.037037037037037035
+   },
+   "UdpDevice": {
+    "rows": 209,
+    "multi": 0.18660287081339713,
+    "as_benign": 0.18660287081339713
+   },
+   "PingOfDeath": {
+    "rows": 180,
+    "multi": 0.06111111111111111,
+    "as_benign": 0.027777777777777776
+   },
+   "Smurf": {
+    "rows": 120,
+    "multi": 0.1,
+    "as_benign": 0.05
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.9999894821538445,
+  "per_label": {
+   "TcpSynReflection": {
+    "benign_share_inside": 0.9961705834404314,
+    "benign_inside": 534060
+   },
+   "TcpSynDevice": {
+    "benign_share_inside": 0.9962707362367685,
+    "benign_inside": 527353
+   },
+   "UdpReflection": {
+    "benign_share_inside": 0.9972729659139624,
+    "benign_inside": 528069
+   },
+   "ArpSpoof": {
+    "benign_share_inside": 0.9961137797871339,
+    "benign_inside": 528787
+   },
+   "UdpDevice": {
+    "benign_share_inside": 0.9979790322175142,
+    "benign_inside": 516034
+   },
+   "PingOfDeath": {
+    "benign_share_inside": 0.9973856434147667,
+    "benign_inside": 521515
+   },
+   "Smurf": {
+    "benign_share_inside": 0.9977728242316724,
+    "benign_inside": 519679
+   }
+  }
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 568160,
+  "benign_share": 0.9959681660414402
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.808556539066834,
+   "per_label": {
+    "ArpSpoof": 0.8901734104046243,
+    "Normal": 0.9972054958581457,
+    "PingOfDeath": 0.8932038834951457,
+    "Smurf": 0.8235294117647058,
+    "TcpSynDevice": 0.5793103448275863,
+    "TcpSynReflection": 0.5893416927899686,
+    "UdpDevice": 0.8256880733944955,
+    "UdpReflection": 0.87
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.35970592690231296,
+   "per_label": {
+    "ArpSpoof": 0.9060773480662984,
+    "Normal": 0.9691385359539463,
+    "PingOfDeath": 0.0,
+    "Smurf": 0.4536082474226804,
+    "TcpSynDevice": 0.19008264462809918,
+    "TcpSynReflection": 0.07659574468085106,
+    "UdpDevice": 0.2,
+    "UdpReflection": 0.08214489446662863
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.8972116027920912,
+   "per_label": {
+    "ArpSpoof": 0.8850574712643678,
+    "Normal": 0.9975357975357976,
+    "PingOfDeath": 0.912621359223301,
+    "Smurf": 0.8571428571428571,
+    "TcpSynDevice": 0.8451612903225807,
+    "TcpSynReflection": 0.8501529051987767,
+    "UdpDevice": 0.9090909090909091,
+    "UdpReflection": 0.9209302325581395
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.23424872280143502,
+   "per_label": {
+    "ArpSpoof": 0.7663551401869159,
+    "Normal": 0.7363778869265336,
+    "PingOfDeath": 0.0,
+    "Smurf": 0.07331378299120235,
+    "TcpSynDevice": 0.17391304347826086,
+    "TcpSynReflection": 0.0821917808219178,
+    "UdpDevice": 0.01364300795842131,
+    "UdpReflection": 0.02819514004822853
+   }
+  }
+ }
+}

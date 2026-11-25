@@ -1,0 +1,167 @@
+{
+  "dataset": "all_in_one_ev1_morris4_train",
+  "per_attack": {
+    "specific_1": [
+      4,
+      7,
+      8
+    ],
+    "specific_10": [
+      4,
+      5,
+      6,
+      7,
+      11
+    ],
+    "specific_11": [
+      6,
+      8,
+      11
+    ],
+    "specific_12": [
+      6,
+      7,
+      8,
+      13
+    ],
+    "specific_16": [
+      1,
+      6,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "specific_17": [
+      4,
+      10,
+      11,
+      12,
+      14
+    ],
+    "specific_19": [
+      3
+    ],
+    "specific_20": [
+      2
+    ],
+    "specific_21": [
+      3
+    ],
+    "specific_22": [
+      2
+    ],
+    "specific_23": [
+      2
+    ],
+    "specific_24": [
+      2
+    ],
+    "specific_25": [
+      14
+    ],
+    "specific_26": [
+      14
+    ],
+    "specific_27": [
+      11,
+      14
+    ],
+    "specific_28": [
+      14
+    ],
+    "specific_29": [
+      14
+    ],
+    "specific_3": [
+      5
+    ],
+    "specific_30": [
+      14
+    ],
+    "specific_31": [
+      14
+    ],
+    "specific_32": [
+      14
+    ],
+    "specific_33": [
+      14
+    ],
+    "specific_34": [
+      14
+    ],
+    "specific_35": [
+      14
+    ],
+    "specific_4": [
+      1,
+      4,
+      5,
+      7
+    ],
+    "specific_5": [
+      4,
+      6,
+      13
+    ],
+    "specific_6": [
+      1,
+      5,
+      6,
+      8,
+      14
+    ],
+    "specific_7": [
+      9
+    ],
+    "specific_8": [
+      9
+    ],
+    "specific_9": [
+      6,
+      7,
+      8,
+      11,
+      13
+    ]
+  },
+  "superset_grasp": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "n_superset": 14,
+  "global15": [],
+  "combined_grasp": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "n_combined": 14,
+  "tag": "grasppen005_ev1_morris4"
+}

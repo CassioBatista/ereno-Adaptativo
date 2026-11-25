@@ -1,0 +1,38 @@
+DATASET AUDIT — Hassler et al., schema S2 (physical)
+rows 6,236 (all rows); content features 15; identifiers ['timestamp_p']; benign label 'benign'
+note: 3 block(s) of the stacked CSV share this schema
+
+=== (i) STRUCTURE ===
+  columns checked 16; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 6,236; duplicates on all columns 0 (0.00%); without identifiers 63 (1.01%)
+feature vectors with >1 label 0; rows in them 0 (0.00%)
+  benign                       rows       4,290  in multi-label vectors   0.00%
+  DoS                          rows         973  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Replay                       rows         973  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 99.97% of steps (mean over 1 file(s)); span 10.56 h
+label runs in file order 3 for 3 labels
+  DoS                          span           1.41 h  benign share inside   0.00%  benign rows inside 0
+  Replay                       span           8.09 h  benign share inside  63.55%  benign rows inside 3,393
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  benign                             4,290  68.79%
+  DoS                                  973  15.60%
+  Replay                               973  15.60%
+benign 4,290 rows (68.79%); attack 31.21%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 6,236: benign 4,290, DoS 973, Replay 973
+  content                  random 70/30                                 macro-F1=0.992  DoS=0.99  Replay=0.99  benign=1.00
+  content                  time-ordered 70/30 per label                 macro-F1=0.600  DoS=0.12  Replay=0.68  benign=1.00
+  content + identifiers    random 70/30                                 macro-F1=0.999  DoS=1.00  Replay=1.00  benign=1.00
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.666  DoS=0.99  Replay=0.10  benign=0.90
+
+(run time 1 s)

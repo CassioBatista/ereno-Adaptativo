@@ -1,0 +1,72 @@
+DATASET AUDIT — UAV-NIDD, case2_ap
+rows 631,356 (all rows); content features 33; identifiers ['frame.number', 'frame.time_epoch', 'frame.time_relative', 'frame.time_delta_displayed', 'radiotap.mactime', 'radiotap.timestamp.ts', 'wlan_radio.end_tsf', 'wlan.seq', 'eapol.keydes.replay_counter', 'http.date', 'http.last_modified', 'ip.src', 'ip.dst', 'udp.srcport', 'udp.dstport', 'http.host', 'http.location']; benign label 'Normal'
+note: label column 'Normal'
+
+=== (i) STRUCTURE ===
+  uav_nidd/Access Point Case2 Label/Access Point Case2 Label.csv fields per line={51: 631356}; header lines inside the data=0
+  columns checked 50; value kind contradicting the name or role: 7: radiotap.datarate holds wifi-freq-MHz (a content feature); radiotap.dbm_antsignal holds real; ip.proto holds IPv4 (a content feature); ip.ttl holds IPv4 (a content feature); ip.src holds integer; udp.srcport holds real; udp.dstport holds real
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 631,356; duplicates on all columns 117 (0.02%); without identifiers 121 (0.02%)
+feature vectors with >1 label 0; rows in them 0 (0.00%)
+  Brute-Force                  rows     172,509  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  De-authentication            rows     155,564  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Normal                       rows     129,541  in multi-label vectors   0.00%
+  Scanning                     rows      70,319  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  DDoS                         rows      31,612  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Fake Landing                 rows      24,584  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  DoS                          rows      23,612  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Ewil Twin                    rows      10,034  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Replay                       rows       8,525  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  MITM                         rows       5,016  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Reconnaissance               rows          40  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+timestamp present in 3.74% of rows; non-decreasing in file order 100.00% of steps (mean over 1 file(s)); span 0.08 h
+label runs in file order 11 for 11 labels
+  Brute-Force                  no timestamp
+  De-authentication            no timestamp
+  Scanning                     no timestamp
+  DDoS                         no timestamp
+  Fake Landing                 no timestamp
+  DoS                          span           0.08 h  benign share inside   0.00%  benign rows inside 0
+  Ewil Twin                    no timestamp
+  Replay                       no timestamp
+  MITM                         no timestamp
+  Reconnaissance               no timestamp
+
+=== (iv) ATTRIBUTION ===
+  Brute-Force                  distinct sources       4  top: 6 (99.48%), 17 (0.25%), 0 (0.25%)  sources also emitting benign 99.99%
+  De-authentication            distinct sources       1  top: 0 (100.00%)  sources also emitting benign 100.00%
+  Normal                       distinct sources       4  top: 6 (85.88%), 0 (13.98%), 17 (0.13%)
+  Scanning                     distinct sources       4  top: 6 (83.52%), 0 (16.32%), 17 (0.14%)  sources also emitting benign 100.00%
+  DDoS                         distinct sources       1  top: 0 (100.00%)  sources also emitting benign 100.00%
+  Fake Landing                 distinct sources       4  top: 0 (98.10%), 17 (1.33%), 6 (0.44%)  sources also emitting benign 100.00%
+  DoS                          distinct sources       1  top: 0 (100.00%)  sources also emitting benign 100.00%
+  Ewil Twin                    distinct sources      33  top: 192.168.21.131 (47.17%), 192.168.21.132 (47.14%), 0 (5.34%)  sources also emitting benign 52.51%
+  Replay                       distinct sources       1  top: 0 (100.00%)  sources also emitting benign 100.00%
+  MITM                         distinct sources       5  top: 192.168.21.131 (46.53%), 192.168.21.132 (46.51%), 0 (6.84%)  sources also emitting benign 53.37%
+  Reconnaissance               distinct sources      20  top: 0.0.0.0 (5.00%), 0.0.0.1 (5.00%), 0.0.0.2 (5.00%)  sources also emitting benign 0.00%
+source alone -> label (majority per source): 53.41%, against 27.32% for the majority class
+
+=== (v) PREVALENCE ===
+  Brute-Force                      172,509  27.32%
+  De-authentication                155,564  24.64%
+  Normal                           129,541  20.52%
+  Scanning                          70,319  11.14%
+  DDoS                              31,612  5.01%
+  Fake Landing                      24,584  3.89%
+  DoS                               23,612  3.74%
+  Ewil Twin                         10,034  1.59%
+  Replay                             8,525  1.35%
+  MITM                               5,016  0.79%
+  Reconnaissance                        40  0.01%
+benign 129,541 rows (20.52%); attack 79.48%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 473,701: Normal 100,000, De-authentication 100,000, Brute-Force 100,000, Scanning 70,319, DDoS 31,591, Fake Landing 24,584, DoS 23,612, Ewil Twin 10,034, Replay 8,525, MITM 5,016, Reconnaissance 20
+  content                  random 70/30                                 macro-F1=1.000  Brute-Force=1.00  DDoS=1.00  De-authentication=1.00  DoS=1.00  Ewil Twin=1.00  Fake Landing=1.00  MITM=1.00  Normal=1.00  Reconnaissance=1.00  Replay=1.00  Scanning=1.00
+  content + identifiers    random 70/30                                 macro-F1=1.000  Brute-Force=1.00  DDoS=1.00  De-authentication=1.00  DoS=1.00  Ewil Twin=1.00  Fake Landing=1.00  MITM=1.00  Normal=1.00  Reconnaissance=1.00  Replay=1.00  Scanning=1.00
+
+(run time 47 s)

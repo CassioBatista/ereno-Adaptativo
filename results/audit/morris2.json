@@ -1,0 +1,98 @@
+{
+ "dataset": "Morris-2 (gas pipeline, 2014)",
+ "sample": "all rows",
+ "rows": 97019,
+ "feats": 24,
+ "ids": [
+  "time",
+  "crc_rate"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.92089178408353,
+  "multi_rows": 0.19856935239489173,
+  "per_label": {
+   "normal": {
+    "rows": 61156,
+    "multi": 0.20470599777617896,
+    "as_benign": null
+   },
+   "CMRI": {
+    "rows": 15466,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "MPCI": {
+    "rows": 7637,
+    "multi": 0.846012832263978,
+    "as_benign": 0.8359303391384051
+   },
+   "Recon": {
+    "rows": 6805,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "NMRI": {
+    "rows": 2763,
+    "multi": 0.014115092290988056,
+    "as_benign": 0.014115092290988056
+   },
+   "DoS": {
+    "rows": 1837,
+    "multi": 0.02286336418072945,
+    "as_benign": 0.02286336418072945
+   },
+   "MSCI": {
+    "rows": 782,
+    "multi": 0.23017902813299232,
+    "as_benign": 0.23017902813299232
+   },
+   "MFCI": {
+    "rows": 573,
+    "multi": 0.041884816753926704,
+    "as_benign": 0.038394415357766144
+   }
+  }
+ },
+ "time": {
+  "has_time": false
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 61156,
+  "benign_share": 0.6303507560374771
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.9794147226511283,
+   "per_label": {
+    "CMRI": 0.9970958373668926,
+    "DoS": 0.9880843263061412,
+    "MFCI": 0.9700598802395209,
+    "MPCI": 0.9746478873239437,
+    "MSCI": 0.9655172413793104,
+    "NMRI": 0.9466327827191868,
+    "Recon": 1.0,
+    "normal": 0.9932798258740307
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9790563966085135,
+   "per_label": {
+    "CMRI": 0.9968807142088846,
+    "DoS": 0.9881061299176578,
+    "MFCI": 0.9700598802395209,
+    "MPCI": 0.9746478873239437,
+    "MSCI": 0.9632829373650108,
+    "NMRI": 0.9463044851547694,
+    "Recon": 1.0,
+    "normal": 0.9931691386583209
+   }
+  }
+ }
+}

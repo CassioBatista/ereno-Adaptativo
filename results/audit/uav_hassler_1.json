@@ -1,0 +1,99 @@
+{
+ "dataset": "Hassler et al., schema S1 (cyber)",
+ "sample": "all rows",
+ "rows": 33102,
+ "feats": 30,
+ "ids": [
+  "timestamp_c",
+  "frame.number",
+  "wlan.seq",
+  "ip.id",
+  "tcp.seq_raw",
+  "tcp.ack_raw",
+  "time_since_last_packet"
+ ],
+ "structure": {
+  "value_kind_conflicts": [
+   "ip.src holds integer",
+   "ip.dst holds integer"
+  ]
+ },
+ "labels": {
+  "dup_all": 0.0037459972207117393,
+  "dup_feat": 0.8475620808410368,
+  "multi_rows": 0.6960002416772401,
+  "per_label": {
+   "Replay": {
+    "rows": 12006,
+    "multi": 0.7197234715975346,
+    "as_benign": 0.1271864067966017
+   },
+   "DoS attack": {
+    "rows": 11671,
+    "multi": 0.8486847742267158,
+    "as_benign": 0.10050552651872162
+   },
+   "benign": {
+    "rows": 9425,
+    "multi": 0.476710875331565,
+    "as_benign": null
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.9999093682970303,
+  "per_label": {
+   "Replay": {
+    "benign_share_inside": 0.22742845955558455,
+    "benign_inside": 6970
+   },
+   "DoS attack": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   }
+  }
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 9425,
+  "benign_share": 0.28472599842909796
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.6396716783146393,
+   "per_label": {
+    "DoS attack": 0.6980427650186672,
+    "Replay": 0.376017130620985,
+    "benign": 0.8449551393042657
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.5217834826317946,
+   "per_label": {
+    "DoS attack": 0.6610169491525424,
+    "Replay": 0.2052091554853986,
+    "benign": 0.6991243432574431
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.994111142247183,
+   "per_label": {
+    "DoS attack": 0.9919954259576901,
+    "Replay": 0.9913984461709212,
+    "benign": 0.9989395546129375
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.3847244731503827,
+   "per_label": {
+    "DoS attack": 0.28417442430181283,
+    "Replay": 0.2908790170132325,
+    "benign": 0.5791199781361027
+   }
+  }
+ }
+}

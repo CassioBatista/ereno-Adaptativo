@@ -1,0 +1,128 @@
+{
+ "dataset": "HAI 23.05",
+ "sample": "all rows",
+ "rows": 1180800,
+ "feats": 86,
+ "ids": [],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.0,
+  "multi_rows": 0.0,
+  "per_label": {
+   "normal": {
+    "rows": 1169416,
+    "multi": 0.0,
+    "as_benign": null
+   },
+   "P1-LC": {
+    "rows": 3768,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "P1-PC": {
+    "rows": 2813,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "P1-CC": {
+    "rows": 1658,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "P1-FC": {
+    "rows": 1618,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "P1-TC": {
+    "rows": 1444,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "P1-HC": {
+    "rows": 83,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.999999153115814,
+  "per_label": {
+   "P1-LC": {
+    "benign_share_inside": 0.9620043679377094,
+    "benign_inside": 212754
+   },
+   "P1-PC": {
+    "benign_share_inside": 0.9801940320033207,
+    "benign_inside": 557305
+   },
+   "P1-CC": {
+    "benign_share_inside": 0.960498189860749,
+    "benign_inside": 155472
+   },
+   "P1-FC": {
+    "benign_share_inside": 0.9873843135246305,
+    "benign_inside": 501218
+   },
+   "P1-TC": {
+    "benign_share_inside": 0.9624075929486312,
+    "benign_inside": 142163
+   },
+   "P1-HC": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   }
+  }
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 1169416,
+  "benign_share": 0.9903590785907859
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.9936845341123409,
+   "per_label": {
+    "P1-CC": 0.9949748743718593,
+    "P1-FC": 0.9917525773195877,
+    "P1-HC": 1.0,
+    "P1-LC": 0.9964633068081344,
+    "P1-PC": 0.991715976331361,
+    "P1-TC": 0.9817351598173516,
+    "normal": 0.9991498441380919
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.4624699418753286,
+   "per_label": {
+    "P1-CC": 0.008,
+    "P1-FC": 0.40916530278232405,
+    "P1-HC": 1.0,
+    "P1-LC": 0.7241962774957699,
+    "P1-PC": 0.0,
+    "P1-TC": 0.13733905579399142,
+    "normal": 0.9585889570552147
+   }
+  },
+  "content | independent: release test file": {
+   "macro_f1": 0.11684287107409873,
+   "per_label": {
+    "P1-CC": 0.0,
+    "P1-FC": 0.0,
+    "P1-HC": 0.0,
+    "P1-LC": 0.0,
+    "P1-PC": 0.0,
+    "P1-TC": 0.0,
+    "normal": 0.8179000975186911
+   }
+  }
+ }
+}

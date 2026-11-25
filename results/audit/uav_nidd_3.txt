@@ -1,0 +1,47 @@
+DATASET AUDIT — UAV-NIDD, case3_gcs
+rows 149,434 (all rows); content features 44; identifiers []; benign label 'Normal'
+note: label column 'label'
+
+=== (i) STRUCTURE ===
+  uav_nidd/GCS-Case 3/GCS-Case 3/GSC Case3 Label .csv          fields per line={45: 149434}; header lines inside the data=0
+  columns checked 44; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 149,434; duplicates on all columns 113,812 (76.16%); without identifiers 113,812 (76.16%)
+feature vectors with >1 label 1,172; rows in them 104,048 (69.63%)
+  Scanning                     rows      50,135  in multi-label vectors 100.00%  vector also occurs as benign  40.11%
+  Reco                         rows      50,135  in multi-label vectors 100.00%  vector also occurs as benign  40.11%
+  DDoS                         rows      14,292  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  DoS                          rows      14,121  in multi-label vectors   0.01%  vector also occurs as benign   0.00%
+  Normal                       rows      13,444  in multi-label vectors  16.30%
+  Bruteforce                   rows       5,103  in multi-label vectors   0.18%  vector also occurs as benign   0.02%
+  MITM                         rows       1,164  in multi-label vectors  82.22%  vector also occurs as benign  79.04%
+  Reply                        rows         792  in multi-label vectors  55.81%  vector also occurs as benign  50.38%
+  FakeLanding                  rows         200  in multi-label vectors  68.00%  vector also occurs as benign  65.50%
+  Evil                         rows          48  in multi-label vectors  85.42%  vector also occurs as benign  83.33%
+
+=== (iii) TIME ===
+no timestamp: time-ordered windows cannot be built
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  Scanning                          50,135  33.55%
+  Reco                              50,135  33.55%
+  DDoS                              14,292  9.56%
+  DoS                               14,121  9.45%
+  Normal                            13,444  9.00%
+  Bruteforce                         5,103  3.41%
+  MITM                               1,164  0.78%
+  Reply                                792  0.53%
+  FakeLanding                          200  0.13%
+  Evil                                  48  0.03%
+benign 13,444 rows (9.00%); attack 91.00%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 36,806: DDoS 14,292, DoS 14,121, Bruteforce 5,097, Scanning 1,152, Reco 1,152, Normal 503, MITM 208, Reply 202, FakeLanding 69, Evil 10
+  content                  random 70/30                                 macro-F1=0.594  Bruteforce=0.99  DDoS=1.00  DoS=1.00  Evil=0.00  FakeLanding=0.44  MITM=0.67  Normal=0.45  Reco=0.24  Reply=0.79  Scanning=0.36
+
+(run time 5 s)

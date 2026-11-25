@@ -1,0 +1,66 @@
+DATASET AUDIT — ERENO (converted release; attribution from the original)
+rows 5,911,386 (all rows); content features 53; identifiers ['F1_Time', 'F38_t', 'F39_GooseTimestamp', 'F40_SqNum', 'F41_StNum']; benign label 'normal'
+note: source = ethSrc of the original release (train.arff); the converted train/test files used by the pipeline carry no identity fields
+
+=== (i) STRUCTURE ===
+  ../ereno-Adaptativo/all_in_one_ereno_train.csv               fields per line={59: 2955738}; header lines inside the data=0
+  ../ereno-Adaptativo/all_in_one_ereno_test.csv                fields per line={59: 2955648}; header lines inside the data=0
+  columns checked 58; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 5,911,386; duplicates on all columns 55,409 (0.94%); without identifiers 3,093,590 (52.33%)
+feature vectors with >1 label 0; rows in them 0 (0.00%)
+  normal                       rows   5,514,564  in multi-label vectors   0.00%
+  random_replay                rows      78,000  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  injection                    rows      78,000  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  high_StNum                   rows      78,000  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  inverse_replay               rows      56,352  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  poisoned_high_rate           rows      37,144  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  masquerade_fake_normal       rows      34,839  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  masquerade_fake_fault        rows      34,487  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 98.54% of steps (mean over 1 file(s)); span 1.38 h
+label runs in file order 180 for 8 labels
+  random_replay                span           1.36 h  benign share inside  93.12%  benign rows inside 5,272,422
+  injection                    span           1.36 h  benign share inside  93.36%  benign rows inside 5,453,622
+  high_StNum                   span           1.37 h  benign share inside  93.17%  benign rows inside 5,377,138
+  inverse_replay               span           1.35 h  benign share inside  93.21%  benign rows inside 5,335,006
+  poisoned_high_rate           span           1.33 h  benign share inside  93.05%  benign rows inside 5,124,319
+  masquerade_fake_normal       span           1.37 h  benign share inside  93.34%  benign rows inside 5,485,998
+  masquerade_fake_fault        span           1.33 h  benign share inside  93.01%  benign rows inside 5,106,610
+
+=== (iv) ATTRIBUTION ===
+from a separate table (2,955,738 rows): source = ethSrc of the original release (train.arff); the converted train/test files used by the pipeline carry no identity fields
+  normal                       distinct sources       1  top:  00:a0:f4:08:2f:77 (100.00%)
+  random_replay                distinct sources       1  top:  00:a0:f4:08:2f:77 (100.00%)  sources also emitting benign 100.00%
+  injection                    distinct sources      13  top:  00:a0:f4:08:2f:77 (99.87%),  FF:FF:FF:FF:FF:DD (0.02%),  FF:FF:FF:FF:FF:55 (0.02%)  sources also emitting benign 99.87%
+  high_StNum                   distinct sources       2  top:  00:a0:f4:08:2f:77 (99.88%),  FF:FF:FF:FF:FF:FF (0.12%)  sources also emitting benign 99.88%
+  inverse_replay               distinct sources       1  top:  00:a0:f4:08:2f:77 (100.00%)  sources also emitting benign 100.00%
+  poisoned_high_rate           distinct sources       1  top:  00:a0:f4:08:2f:77 (100.00%)  sources also emitting benign 100.00%
+  masquerade_fake_normal       distinct sources       1  top:  00:a0:f4:08:2f:77 (100.00%)  sources also emitting benign 100.00%
+  masquerade_fake_fault        distinct sources       1  top:  00:a0:f4:08:2f:77 (100.00%)  sources also emitting benign 100.00%
+source alone -> label (majority per source): 93.36%, against 93.36% for the majority class
+
+=== (v) PREVALENCE ===
+  normal                         5,514,564  93.29%
+  random_replay                     78,000  1.32%
+  injection                         78,000  1.32%
+  high_StNum                        78,000  1.32%
+  inverse_replay                    56,352  0.95%
+  poisoned_high_rate                37,144  0.63%
+  masquerade_fake_normal            34,839  0.59%
+  masquerade_fake_fault             34,487  0.58%
+benign 5,514,564 rows (93.29%); attack 6.71%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 441,413: normal 100,000, injection 78,000, high_StNum 78,000, inverse_replay 56,352, poisoned_high_rate 37,144, masquerade_fake_normal 34,839, masquerade_fake_fault 34,487, random_replay 22,591
+  content                  random 70/30                                 macro-F1=1.000  high_StNum=1.00  injection=1.00  inverse_replay=1.00  masquerade_fake_fault=1.00  masquerade_fake_normal=1.00  normal=1.00  poisoned_high_rate=1.00  random_replay=1.00
+  content                  time-ordered 70/30 per label                 macro-F1=1.000  high_StNum=1.00  injection=1.00  inverse_replay=1.00  masquerade_fake_fault=1.00  masquerade_fake_normal=1.00  normal=1.00  poisoned_high_rate=1.00  random_replay=1.00
+  content                  independent: release test file               macro-F1=0.997  high_StNum=1.00  injection=1.00  inverse_replay=0.99  masquerade_fake_fault=1.00  masquerade_fake_normal=1.00  normal=0.99  poisoned_high_rate=1.00  random_replay=1.00
+  content + identifiers    random 70/30                                 macro-F1=1.000  high_StNum=1.00  injection=1.00  inverse_replay=1.00  masquerade_fake_fault=1.00  masquerade_fake_normal=1.00  normal=1.00  poisoned_high_rate=1.00  random_replay=1.00
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=1.000  high_StNum=1.00  injection=1.00  inverse_replay=1.00  masquerade_fake_fault=1.00  masquerade_fake_normal=1.00  normal=1.00  poisoned_high_rate=1.00  random_replay=1.00
+  content + identifiers    independent: release test file               macro-F1=0.997  high_StNum=1.00  injection=1.00  inverse_replay=0.99  masquerade_fake_fault=1.00  masquerade_fake_normal=1.00  normal=0.99  poisoned_high_rate=1.00  random_replay=1.00
+
+(run time 238 s)

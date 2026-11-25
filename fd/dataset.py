@@ -11,6 +11,10 @@ Supported partitioners (mirrors flwr-datasets strategies, pure numpy):
   attack       — each client receives ONE attack class + an IID slice of the
                  normal class (specialist sensors; use num_clients == number
                  of attack classes for a strict 1:1 mapping)
+  specialists  — evaluation-v1 (Paper 2): one specialist per attack type (types under
+                 100 rows share one), placed on the nodes in contiguous blocks by size;
+                 each node trains one binary model per specialist it holds against its
+                 slice of the benign rows (pass groups_out=[] to receive the groups)
 """
 
 import numpy as np
@@ -73,6 +77,12 @@ def load_and_partition(
                   f"(de {len(normal_idx):,}); ataques preservados")
 
     match partitioner:
+        case "specialists":
+            groups = _specialist_groups(y_all, num_clients, rng)
+            splits = [g["rows"] for g in groups]
+            if kwargs.get("groups_out") is not None:
+                kwargs["groups_out"].extend(
+                    [{"specialists": g["specialists"], "names": g["names"]} for g in groups])
         case "attack":
             splits = _attack_per_client(Xf, y_all, num_clients, rng)
         case "iid":
@@ -98,6 +108,83 @@ def load_and_partition(
 
 
 # ── partitioners ──────────────────────────────────────────────────────────────
+
+SMALL = 100   # types with fewer training rows share one specialist (evaluation-v1)
+
+
+def _specialist_units(counts: list[int], normal: int, num_clients: int):
+    """Specialists of evaluation-v1 and their placement (docs/EVALUATION_PROTOCOL.md,
+    section 2.3; scripts/ev1_partition_n14.py with N = num_clients):
+      one specialist per attack type; the types with fewer than SMALL rows share one;
+      specialists in decreasing order of rows (ties: class declaration order);
+      fewer specialists than nodes -> the extra nodes go to the largest specialists, one
+      at a time, a specialist on k nodes having its rows split into k parts;
+      otherwise contiguous blocks: q = S div N per node, the last r = S mod N nodes q + 1.
+    Returns [(codes, rows, node)] in placement order and whether specialists were split."""
+    types = [c for c in range(len(counts)) if c != normal and counts[c] > 0]
+    big = [c for c in types if counts[c] >= SMALL]
+    small = [c for c in types if counts[c] < SMALL]
+    sp = [([c], counts[c]) for c in big]
+    if small:
+        sp.append((small, sum(counts[c] for c in small)))
+    sp.sort(key=lambda s: (-s[1], min(s[0])))
+    if len(sp) < num_clients:
+        copies = [1] * len(sp)
+        for i in range(num_clients - len(sp)):
+            copies[i % len(sp)] += 1
+        units, node = [], 0
+        for (cs, rows), k in zip(sp, copies):
+            for part in np.array_split(np.arange(rows), k):
+                units.append((cs, len(part), node))
+                node += 1
+        return units, True
+    q, r = divmod(len(sp), num_clients)
+    node_of = [i for i, k in enumerate([q] * (num_clients - r) + [q + 1] * r) for _ in range(k)]
+    return [(cs, rows, node_of[j]) for j, (cs, rows) in enumerate(sp)], False
+
+
+def _specialist_groups(y: np.ndarray, num_clients: int, rng: np.random.Generator):
+    """Partitioner 'specialists' (evaluation-v1): node i holds the i-th of N disjoint
+    random slices of the benign rows plus the attack rows of the specialists placed on it,
+    and trains one binary model per specialist (fd/client_xgb.py). Same random draws as
+    the 'attack' partitioner (benign shuffle, then the per-class shuffles when specialists
+    are split over nodes), hence the same partitions as scripts/ev1_step1.py.
+    Returns, per node: rows (indices into y), specialists [[codes], ...], names."""
+    normal = util.normal_class
+    benign = np.where(y == normal)[0].copy()
+    rng.shuffle(benign)
+    slices = np.array_split(benign, num_clients)
+    counts = np.bincount(y, minlength=int(y.max()) + 1).tolist()
+    units, split = _specialist_units(counts, normal, num_clients)
+    nodes = [{"att": [], "specialists": []} for _ in range(num_clients)]
+    if split:
+        types = sorted((int(c) for c in np.unique(y) if c != normal),
+                       key=lambda c: -int((y == c).sum()))
+        per = {c: sum(1 for u in units if u[0] == [c]) for c in types}
+        cid = 0
+        for c in types:
+            idx = np.where(y == c)[0].copy()
+            rng.shuffle(idx)
+            for part in np.array_split(idx, per[c]):
+                cs, rows, node = units[cid]
+                assert cs == [c] and node == cid and rows == len(part), (cs, c, cid)
+                nodes[node]["att"].append(np.sort(part))
+                nodes[node]["specialists"].append([c])
+                cid += 1
+    else:
+        for cs, rows, node in units:
+            idx = np.where(np.isin(y, cs))[0]
+            assert len(idx) == rows
+            nodes[node]["att"].append(idx)
+            nodes[node]["specialists"].append(list(cs))
+    out = []
+    for i, nd in enumerate(nodes):
+        rows = np.concatenate(nd["att"] + [slices[i]]) if nd["att"] else slices[i]
+        out.append({"rows": rows, "specialists": nd["specialists"],
+                    "names": [",".join(map(str, cs)) for cs in nd["specialists"]]})
+    print(f"[specialists] {sum(len(n['specialists']) for n in nodes)} specialists on "
+          f"{num_clients} nodes: " + " ".join(str(len(n["specialists"])) for n in nodes))
+    return out
 
 def _attack_per_client(
     X: np.ndarray,

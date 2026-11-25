@@ -1,0 +1,70 @@
+DATASET AUDIT — X-IIoTID
+rows 820,834 (all rows); content features 59; identifiers ['Date', 'Timestamp', 'Scr_IP', 'Scr_port', 'Des_IP', 'Des_port']; benign label 'Normal'
+note: label = class2 (10 classes)
+
+=== (i) STRUCTURE ===
+  xiiotid/xiiotid.csv                                          fields per line={68: 820834}; header lines inside the data=0
+  columns checked 65; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 820,834; duplicates on all columns 6,222 (0.76%); without identifiers 119,689 (14.58%)
+feature vectors with >1 label 4; rows in them 8 (0.00%)
+  Normal                       rows     421,417  in multi-label vectors   0.00%
+  RDOS                         rows     141,261  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Reconnaissance               rows     127,590  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Weaponization                rows      67,260  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Lateral _movement            rows      31,596  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Exfiltration                 rows      22,134  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Tampering                    rows       5,122  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  C&C                          rows       2,863  in multi-label vectors   0.03%  vector also occurs as benign   0.03%
+  Exploitation                 rows       1,133  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  crypto-ransomware            rows         458  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+timestamp present in 99.95% of rows; non-decreasing in file order 50.01% of steps (mean over 1 file(s)); span 7270.85 h
+label runs in file order 552,753 for 10 labels
+  RDOS                         span           0.27 h  benign share inside   1.21%  benign rows inside 1,725
+  Reconnaissance               span         308.94 h  benign share inside  35.45%  benign rows inside 97,058
+  Weaponization                span         289.20 h  benign share inside  57.28%  benign rows inside 91,926
+  Lateral _movement            span         298.29 h  benign share inside  66.27%  benign rows inside 62,081
+  Exfiltration                 span          53.03 h  benign share inside  42.26%  benign rows inside 16,202
+  Tampering                    span        7270.85 h  benign share inside  51.37%  benign rows inside 421,417
+  C&C                          span         248.49 h  benign share inside  25.02%  benign rows inside 48,088
+  Exploitation                 span        4030.43 h  benign share inside  57.62%  benign rows inside 266,460
+  crypto-ransomware            span           7.34 h  benign share inside  90.66%  benign rows inside 6,457
+
+=== (iv) ATTRIBUTION ===
+  Normal                       distinct sources      31  top: 172.24.1.80 (24.53%), 192.168.10.153 (16.24%), 10.0.1.5 (15.07%)
+  RDOS                         distinct sources       2  top: 172.24.1.244 (53.34%), 172.24.1.233 (46.66%)  sources also emitting benign 0.00%
+  Reconnaissance               distinct sources       3  top: 192.168.2.199 (81.86%), 172.24.1.33 (18.13%), 172.24.1.1 (0.01%)  sources also emitting benign 0.01%
+  Weaponization                distinct sources       4  top: 192.168.2.199 (74.06%), 192.168.2.10 (25.94%), 192.168.10.155 (0.00%)  sources also emitting benign 25.94%
+  Lateral _movement            distinct sources       4  top: 192.168.2.10 (74.46%), 10.0.1.1 (18.84%), 172.24.1.1 (4.38%)  sources also emitting benign 97.68%
+  Exfiltration                 distinct sources       1  top: 192.168.2.10 (100.00%)  sources also emitting benign 100.00%
+  Tampering                    distinct sources       3  top: 192.168.2.10 (99.45%), 172.24.1.34 (0.33%), 172.24.1.1 (0.21%)  sources also emitting benign 100.00%
+  C&C                          distinct sources       2  top: 192.168.2.10 (64.09%), 192.168.2.199 (35.91%)  sources also emitting benign 64.09%
+  Exploitation                 distinct sources       3  top: 192.168.2.10 (88.70%), 192.168.10.155 (10.33%), 192.168.2.199 (0.97%)  sources also emitting benign 99.03%
+  crypto-ransomware            distinct sources       2  top: 172.24.1.1 (66.38%), ? (33.62%)  sources also emitting benign 66.38%
+source alone -> label (majority per source): 87.59%, against 51.34% for the majority class
+
+=== (v) PREVALENCE ===
+  Normal                           421,417  51.34%
+  RDOS                             141,261  17.21%
+  Reconnaissance                   127,590  15.54%
+  Weaponization                     67,260  8.19%
+  Lateral _movement                 31,596  3.85%
+  Exfiltration                      22,134  2.70%
+  Tampering                          5,122  0.62%
+  C&C                                2,863  0.35%
+  Exploitation                       1,133  0.14%
+  crypto-ransomware                    458  0.06%
+benign 421,417 rows (51.34%); attack 48.66%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 427,726: Reconnaissance 100,000, Normal 100,000, RDOS 100,000, Weaponization 64,420, Lateral _movement 31,596, Exfiltration 22,134, Tampering 5,122, C&C 2,863, Exploitation 1,133, crypto-ransomware 458
+  content                  random 70/30                                 macro-F1=0.990  C&C=0.97  Exfiltration=1.00  Exploitation=0.96  Lateral _movement=0.99  Normal=0.99  RDOS=1.00  Reconnaissance=0.99  Tampering=1.00  Weaponization=1.00  crypto-ransomware=0.99
+  content                  time-ordered 70/30 per label                 macro-F1=0.837  C&C=0.96  Exfiltration=0.99  Exploitation=0.43  Lateral _movement=0.96  Normal=0.94  RDOS=1.00  Reconnaissance=0.76  Tampering=0.99  Weaponization=0.37  crypto-ransomware=0.95
+  content + identifiers    random 70/30                                 macro-F1=1.000  C&C=1.00  Exfiltration=1.00  Exploitation=1.00  Lateral _movement=1.00  Normal=1.00  RDOS=1.00  Reconnaissance=1.00  Tampering=1.00  Weaponization=1.00  crypto-ransomware=1.00
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.696  C&C=0.68  Exfiltration=0.78  Exploitation=0.98  Lateral _movement=0.75  Normal=0.27  RDOS=0.91  Reconnaissance=0.99  Tampering=0.34  Weaponization=0.38  crypto-ransomware=0.88
+
+(run time 133 s)

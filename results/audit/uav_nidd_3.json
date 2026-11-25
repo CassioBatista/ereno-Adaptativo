@@ -1,0 +1,94 @@
+{
+ "dataset": "UAV-NIDD, case3_gcs",
+ "sample": "all rows",
+ "rows": 149434,
+ "feats": 44,
+ "ids": [],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.7616205147422943,
+  "dup_feat": 0.7616205147422943,
+  "multi_rows": 0.6962806322523656,
+  "per_label": {
+   "Scanning": {
+    "rows": 50135,
+    "multi": 1.0,
+    "as_benign": 0.4011369302882218
+   },
+   "Reco": {
+    "rows": 50135,
+    "multi": 1.0,
+    "as_benign": 0.4011369302882218
+   },
+   "DDoS": {
+    "rows": 14292,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "DoS": {
+    "rows": 14121,
+    "multi": 7.081651441116069e-05,
+    "as_benign": 0.0
+   },
+   "Normal": {
+    "rows": 13444,
+    "multi": 0.16304671228800952,
+    "as_benign": null
+   },
+   "Bruteforce": {
+    "rows": 5103,
+    "multi": 0.001763668430335097,
+    "as_benign": 0.0001959631589261219
+   },
+   "MITM": {
+    "rows": 1164,
+    "multi": 0.8221649484536082,
+    "as_benign": 0.7903780068728522
+   },
+   "Reply": {
+    "rows": 792,
+    "multi": 0.5580808080808081,
+    "as_benign": 0.5037878787878788
+   },
+   "FakeLanding": {
+    "rows": 200,
+    "multi": 0.68,
+    "as_benign": 0.655
+   },
+   "Evil": {
+    "rows": 48,
+    "multi": 0.8541666666666666,
+    "as_benign": 0.8333333333333334
+   }
+  }
+ },
+ "time": {
+  "has_time": false
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 13444,
+  "benign_share": 0.08996613889743968
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.594441535918756,
+   "per_label": {
+    "Bruteforce": 0.9944607363962202,
+    "DDoS": 1.0,
+    "DoS": 0.9996458505489316,
+    "Evil": 0.0,
+    "FakeLanding": 0.4375,
+    "MITM": 0.671875,
+    "Normal": 0.45454545454545453,
+    "Reco": 0.2375,
+    "Reply": 0.7903225806451613,
+    "Scanning": 0.35856573705179284
+   }
+  }
+ }
+}

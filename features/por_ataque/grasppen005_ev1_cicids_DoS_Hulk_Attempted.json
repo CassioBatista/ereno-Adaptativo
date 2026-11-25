@@ -1,0 +1,25 @@
+{
+  "dataset": "all_in_one_ev1_cicids_train",
+  "attack": "DoS_Hulk_Attempted",
+  "attack_id": 7,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    18,
+    54,
+    71,
+    74,
+    82
+  ],
+  "n_features": 5,
+  "f1_grasp_cv": 99.12390488110138,
+  "iterations": 6,
+  "evaluations": 3329,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 4953.6
+}

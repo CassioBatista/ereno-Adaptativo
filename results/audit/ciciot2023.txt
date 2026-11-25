@@ -1,0 +1,51 @@
+DATASET AUDIT — CICIoT2023
+rows 2,366,956 (10 of the 169 part files); content features 46; identifiers []; benign label 'Benign'
+
+=== (i) STRUCTURE ===
+  ciciot2023/part-00000-363d1ba3-8ab5-4f96-bc25-4d5862db7cb9-c000.csv fields per line={47: 238687}; header lines inside the data=0
+  ciciot2023/part-00001-363d1ba3-8ab5-4f96-bc25-4d5862db7cb9-c000.csv fields per line={47: 218805}; header lines inside the data=0
+  ciciot2023/part-00002-363d1ba3-8ab5-4f96-bc25-4d5862db7cb9-c000.csv fields per line={47: 275258}; header lines inside the data=0
+  ciciot2023/part-00003-363d1ba3-8ab5-4f96-bc25-4d5862db7cb9-c000.csv fields per line={47: 231023}; header lines inside the data=0
+  ciciot2023/part-00004-363d1ba3-8ab5-4f96-bc25-4d5862db7cb9-c000.csv fields per line={47: 227491}; header lines inside the data=0
+  ciciot2023/part-00005-363d1ba3-8ab5-4f96-bc25-4d5862db7cb9-c000.csv fields per line={47: 240046}; header lines inside the data=0
+  ciciot2023/part-00006-363d1ba3-8ab5-4f96-bc25-4d5862db7cb9-c000.csv fields per line={47: 233793}; header lines inside the data=0
+  ciciot2023/part-00007-363d1ba3-8ab5-4f96-bc25-4d5862db7cb9-c000.csv fields per line={47: 227910}; header lines inside the data=0
+  ciciot2023/part-00008-363d1ba3-8ab5-4f96-bc25-4d5862db7cb9-c000.csv fields per line={47: 246327}; header lines inside the data=0
+  ciciot2023/part-00009-363d1ba3-8ab5-4f96-bc25-4d5862db7cb9-c000.csv fields per line={47: 227616}; header lines inside the data=0
+  columns checked 46; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 2,366,956; duplicates on all columns 376,090 (15.89%); without identifiers 376,090 (15.89%)
+feature vectors with >1 label 0; rows in them 0 (0.00%)
+  DDoS                         rows   1,723,607  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  DoS                          rows     409,683  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Mirai                        rows     133,220  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Benign                       rows      55,859  in multi-label vectors   0.00%
+  Spoofing                     rows      24,760  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Recon                        rows      17,985  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Web                          rows       1,186  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  BruteForce                   rows         656  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+no timestamp: time-ordered windows cannot be built
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  DDoS                           1,723,607  72.82%
+  DoS                              409,683  17.31%
+  Mirai                            133,220  5.63%
+  Benign                            55,859  2.36%
+  Spoofing                          24,760  1.05%
+  Recon                             17,985  0.76%
+  Web                                1,186  0.05%
+  BruteForce                           656  0.03%
+benign 55,859 rows (2.36%); attack 97.64%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 400,440: DDoS 100,000, Mirai 100,000, DoS 100,000, Benign 55,859, Spoofing 24,760, Recon 17,979, Web 1,186, BruteForce 656
+  content                  random 70/30                                 macro-F1=0.835  Benign=0.93  BruteForce=0.66  DDoS=1.00  DoS=1.00  Mirai=1.00  Recon=0.84  Spoofing=0.87  Web=0.38
+
+(run time 49 s)

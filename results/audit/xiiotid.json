@@ -1,0 +1,188 @@
+{
+ "dataset": "X-IIoTID",
+ "sample": "all rows",
+ "rows": 820834,
+ "feats": 59,
+ "ids": [
+  "Date",
+  "Timestamp",
+  "Scr_IP",
+  "Scr_port",
+  "Des_IP",
+  "Des_port"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0075800953664200066,
+  "dup_feat": 0.14581389172475798,
+  "multi_rows": 9.746184977717784e-06,
+  "per_label": {
+   "Normal": {
+    "rows": 421417,
+    "multi": 9.491786045650745e-06,
+    "as_benign": null
+   },
+   "RDOS": {
+    "rows": 141261,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Reconnaissance": {
+    "rows": 127590,
+    "multi": 2.3512814483893722e-05,
+    "as_benign": 2.3512814483893722e-05
+   },
+   "Weaponization": {
+    "rows": 67260,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Lateral _movement": {
+    "rows": 31596,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Exfiltration": {
+    "rows": 22134,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Tampering": {
+    "rows": 5122,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "C&C": {
+    "rows": 2863,
+    "multi": 0.00034928396786587494,
+    "as_benign": 0.00034928396786587494
+   },
+   "Exploitation": {
+    "rows": 1133,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "crypto-ransomware": {
+    "rows": 458,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 0.9994505588218812,
+  "monotonic": 0.5001255512675802,
+  "per_label": {
+   "RDOS": {
+    "benign_share_inside": 0.012064118165414795,
+    "benign_inside": 1725
+   },
+   "Reconnaissance": {
+    "benign_share_inside": 0.354512216057477,
+    "benign_inside": 97058
+   },
+   "Weaponization": {
+    "benign_share_inside": 0.572751232094904,
+    "benign_inside": 91926
+   },
+   "Lateral _movement": {
+    "benign_share_inside": 0.6627133661411019,
+    "benign_inside": 62081
+   },
+   "Exfiltration": {
+    "benign_share_inside": 0.422631469115192,
+    "benign_inside": 16202
+   },
+   "Tampering": {
+    "benign_share_inside": 0.5136832430706145,
+    "benign_inside": 421417
+   },
+   "C&C": {
+    "benign_share_inside": 0.25018209060828667,
+    "benign_inside": 48088
+   },
+   "Exploitation": {
+    "benign_share_inside": 0.5762007425780042,
+    "benign_inside": 266460
+   },
+   "crypto-ransomware": {
+    "benign_share_inside": 0.9066273518674529,
+    "benign_inside": 6457
+   }
+  }
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.8759298469605303,
+  "majority": 0.513401004344362
+ },
+ "prevalence": {
+  "benign_rows": 421417,
+  "benign_share": 0.513401004344362
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.9896008762778736,
+   "per_label": {
+    "C&C": 0.9702176403207331,
+    "Exfiltration": 0.9996233521657251,
+    "Exploitation": 0.9577039274924471,
+    "Lateral _movement": 0.9932051619699763,
+    "Normal": 0.9913370246587186,
+    "RDOS": 0.9999,
+    "Reconnaissance": 0.9933467067870277,
+    "Tampering": 0.9980506822612085,
+    "Weaponization": 0.9998706439344941,
+    "crypto-ransomware": 0.9927536231884058
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.8365518418618152,
+   "per_label": {
+    "C&C": 0.9598136284216657,
+    "Exfiltration": 0.9936391528848313,
+    "Exploitation": 0.42740841248303935,
+    "Lateral _movement": 0.9623239052091296,
+    "Normal": 0.9448495104939345,
+    "RDOS": 0.9996334677284996,
+    "Reconnaissance": 0.7599343835732669,
+    "Tampering": 0.9928198433420365,
+    "Weaponization": 0.37439188912963495,
+    "crypto-ransomware": 0.9507042253521126
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9998856319858398,
+   "per_label": {
+    "C&C": 0.9994182664339732,
+    "Exfiltration": 1.0,
+    "Exploitation": 1.0,
+    "Lateral _movement": 0.9999472546020359,
+    "Normal": 0.9997333777703716,
+    "RDOS": 1.0,
+    "Reconnaissance": 0.9997832936038273,
+    "Tampering": 1.0,
+    "Weaponization": 0.9999741274481903,
+    "crypto-ransomware": 1.0
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.6958767033754669,
+   "per_label": {
+    "C&C": 0.6827682303762193,
+    "Exfiltration": 0.7777712713005798,
+    "Exploitation": 0.9825581395348837,
+    "Lateral _movement": 0.7451165349998035,
+    "Normal": 0.27483775755397044,
+    "RDOS": 0.9088981125215864,
+    "Reconnaissance": 0.9851150202976996,
+    "Tampering": 0.34008186746321495,
+    "Weaponization": 0.3826392079869669,
+    "crypto-ransomware": 0.8789808917197452
+   }
+  }
+ }
+}

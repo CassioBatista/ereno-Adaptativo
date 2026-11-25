@@ -1,0 +1,74 @@
+DATASET AUDIT — CICIDS2017, improved (Liu et al., version of 27 April 2023)
+rows 2,099,976 (all rows); content features 82; identifiers ['id', 'Flow ID', 'Src IP', 'Src Port', 'Dst IP', 'Dst Port', 'Timestamp']; benign label 'Benign'
+note: label = category of the original label ('Attempted' flows -> Benign); 'Infiltration - Portscan' kept as its own category
+
+=== (i) STRUCTURE ===
+  monday.csv                                                   fields per line={91: 371624}; header lines inside the data=0
+  tuesday.csv                                                  fields per line={91: 322078}; header lines inside the data=0
+  wednesday.csv                                                fields per line={91: 496641}; header lines inside the data=0
+  thursday.csv                                                 fields per line={91: 362076}; header lines inside the data=0
+  friday.csv                                                   fields per line={91: 547557}; header lines inside the data=0
+  columns checked 89; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 10
+
+=== (ii) LABELS ===
+rows 2,099,976; duplicates on all columns 0 (0.00%); without identifiers 385,135 (18.34%)
+feature vectors with >1 label 111; rows in them 91,138 (4.34%)
+  Benign                       rows   1,594,545  in multi-label vectors   0.00%
+  DoS                          rows     171,634  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  PortScan                     rows     159,066  in multi-label vectors  47.99%  vector also occurs as benign   1.66%
+  DDoS                         rows      95,144  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Infiltration-Portscan        rows      71,767  in multi-label vectors  20.61%  vector also occurs as benign   0.03%
+  BruteForce                   rows       6,933  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Bot                          rows         736  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Web                          rows         104  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Infiltration                 rows          36  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Heartbleed                   rows          11  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 55.34% of steps (mean over 1 file(s)); span 104.11 h
+label runs in file order 379,667 for 10 labels
+  DoS                          span           1.52 h  benign share inside  30.74%  benign rows inside 76,180
+  PortScan                     span           1.47 h  benign share inside  27.98%  benign rows inside 61,789
+  DDoS                         span           0.33 h  benign share inside  14.79%  benign rows inside 16,518
+  Infiltration-Portscan        span           1.76 h  benign share inside  52.53%  benign rows inside 79,449
+  BruteForce                   span           6.75 h  benign share inside  97.29%  benign rows inside 249,321
+  Bot                          span           0.96 h  benign share inside  98.57%  benign rows inside 50,744
+  Web                          span           1.39 h  benign share inside  99.82%  benign rows inside 57,278
+  Infiltration                 span           1.42 h  benign share inside  48.63%  benign rows inside 65,915
+  Heartbleed                   span           0.33 h  benign share inside  99.95%  benign rows inside 22,465
+
+=== (iv) ATTRIBUTION ===
+  Benign                       distinct sources     174  top: 192.168.10.3 (18.57%), 192.168.10.5 (9.46%), 192.168.10.9 (8.57%)
+  DoS                          distinct sources       1  top: 172.16.0.1 (100.00%)  sources also emitting benign 100.00%
+  PortScan                     distinct sources       1  top: 172.16.0.1 (100.00%)  sources also emitting benign 100.00%
+  DDoS                         distinct sources       1  top: 172.16.0.1 (100.00%)  sources also emitting benign 100.00%
+  Infiltration-Portscan        distinct sources       2  top: 192.168.10.8 (98.67%), 172.16.0.1 (1.33%)  sources also emitting benign 100.00%
+  BruteForce                   distinct sources       1  top: 172.16.0.1 (100.00%)  sources also emitting benign 100.00%
+  Bot                          distinct sources       5  top: 192.168.10.15 (29.89%), 192.168.10.9 (20.52%), 192.168.10.14 (18.89%)  sources also emitting benign 100.00%
+  Web                          distinct sources       1  top: 172.16.0.1 (100.00%)  sources also emitting benign 100.00%
+  Infiltration                 distinct sources       2  top: 192.168.10.8 (88.89%), 192.168.10.25 (11.11%)  sources also emitting benign 100.00%
+  Heartbleed                   distinct sources       1  top: 172.16.0.1 (100.00%)  sources also emitting benign 100.00%
+source alone -> label (majority per source): 83.72%, against 75.93% for the majority class
+
+=== (v) PREVALENCE ===
+  Benign                         1,594,545  75.93%
+  DoS                              171,634  8.17%
+  PortScan                         159,066  7.57%
+  DDoS                              95,144  4.53%
+  Infiltration-Portscan             71,767  3.42%
+  BruteForce                         6,933  0.33%
+  Bot                                  736  0.04%
+  Web                                  104  0.00%
+  Infiltration                          36  0.00%
+  Heartbleed                            11  0.00%
+benign 1,594,545 rows (75.93%); attack 24.07%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 474,731: Benign 100,000, DoS 100,000, PortScan 100,000, DDoS 95,144, Infiltration-Portscan 71,767, BruteForce 6,933, Bot 736, Web 104, Infiltration 36, Heartbleed 11
+  content                  random 70/30                                 macro-F1=0.955  Benign=1.00  Bot=1.00  BruteForce=1.00  DDoS=1.00  DoS=1.00  Heartbleed=0.80  Infiltration=0.90  Infiltration-Portscan=0.94  PortScan=0.96  Web=0.97
+  content                  time-ordered 70/30 per label                 macro-F1=0.942  Benign=0.98  Bot=1.00  BruteForce=0.99  DDoS=1.00  DoS=0.99  Heartbleed=1.00  Infiltration=0.85  Infiltration-Portscan=0.94  PortScan=0.96  Web=0.72
+  content + identifiers    random 70/30                                 macro-F1=0.982  Benign=1.00  Bot=1.00  BruteForce=1.00  DDoS=1.00  DoS=1.00  Heartbleed=1.00  Infiltration=0.90  Infiltration-Portscan=1.00  PortScan=1.00  Web=0.92
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.621  Benign=0.32  Bot=0.10  BruteForce=0.99  DDoS=0.94  DoS=0.98  Heartbleed=0.47  Infiltration=0.00  Infiltration-Portscan=0.92  PortScan=0.84  Web=0.66
+
+(run time 223 s)

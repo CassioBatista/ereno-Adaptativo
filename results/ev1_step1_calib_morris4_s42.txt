@@ -1,0 +1,131 @@
+evaluation-v1 step 1, CALIBRATED THRESHOLDS (exploratory, not pre-registered) -- Morris-4 -- seed 42 -- 14 nodes
+features (16): [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+specialists 35, IID 14 x 25 rounds, Centralized 350 rounds; 20 % of each node's benign rows held out for calibration; test 77,831 rows (prevalence 17.29 %)
+
+detector                                    F1   recall    prec.     FPR %       FP  F1@6.8%     P@1%   P@0.1%
+attack-based OR @0.5 (80% benign)        49.47    99.81    32.88   42.5840   27,413    25.48     2.31     0.23
+IID OR @0.5 (80% benign)                 50.10    99.88    33.44   41.5649   26,757    25.96     2.37     0.24
+Centralized @0.5 (80% benign)            79.99    84.34    76.07    5.5457    3,570    64.79    13.32     1.50
+attack-based OR calib A=1%               81.92    72.46    94.23    0.9274      597    78.26    44.11     7.25
+attack-based k=2 calib A=1%              72.96    57.52    99.72    0.0342       22    72.82    94.45    62.75
+IID OR calib A=1%                        81.77    71.26    95.92    0.6338      408    79.20    53.18    10.12
+Centralized calib A=1%                   85.23    79.44    91.93    1.4571      938    79.67    35.51     5.17
+attack-based OR calib A=0.1%             81.92    72.46    94.23    0.9274      597    78.26    44.11     7.25
+IID OR calib A=0.1%                      76.86    62.43    99.96    0.0047        3    76.84    99.27    93.06
+Centralized calib A=0.1%                 84.98    75.66    96.93    0.5002      322    82.91    60.44    13.15
+
+per-type recall % (* fewer than 100 test samples)
+type                                      n      AB@0.5     AB A=1%    AB A=.1%    IID A=1%    Cen A=1%
+ specific_1                             269      100.00      100.00      100.00      100.00      100.00
+ specific_10                            222       96.85       29.73       29.73        0.00       38.29
+ specific_11                            276      100.00      100.00      100.00      100.00      100.00
+ specific_12                            311      100.00      100.00      100.00      100.00      100.00
+ specific_13                            240      100.00       29.58       29.58       29.58       22.50
+ specific_14                            252      100.00        4.37        4.37        0.00        3.17
+ specific_15                            234       95.30        0.85        0.85        1.71        7.69
+ specific_16                            249      100.00       18.47       18.47      100.00      100.00
+ specific_17                            213      100.00      100.00      100.00      100.00      100.00
+ specific_18                            327      100.00       77.06       77.06       69.72       84.40
+ specific_19                            491      100.00      100.00      100.00      100.00      100.00
+ specific_2                             220      100.00       65.00       65.00       65.00       65.00
+ specific_20                            200      100.00      100.00      100.00      100.00      100.00
+ specific_21                            517      100.00      100.00      100.00      100.00      100.00
+ specific_22                            463      100.00      100.00      100.00      100.00      100.00
+ specific_23                            615      100.00      100.00      100.00      100.00      100.00
+ specific_24                            348      100.00      100.00      100.00       89.66      100.00
+ specific_25                            442      100.00       93.21       93.21       90.50       93.21
+ specific_26                            543      100.00       98.71       98.71       98.71       99.26
+ specific_27                            624      100.00       34.78       34.78       34.78       88.94
+ specific_28                            558      100.00       87.99       87.99       88.17       91.58
+ specific_29                            557      100.00       99.10       99.10       98.92       99.10
+ specific_3                             255      100.00      100.00      100.00      100.00      100.00
+ specific_30                            636       98.74        7.70        7.70        2.83       19.50
+ specific_31                            572      100.00      100.00      100.00      100.00      100.00
+ specific_32                            562      100.00      100.00      100.00      100.00      100.00
+ specific_33                            482      100.00       36.10       36.10       45.02       53.53
+ specific_34                            603      100.00       48.59       48.59       48.59       60.03
+ specific_35                            662      100.00       13.90       13.90        1.21       27.49
+ specific_4                             290      100.00      100.00      100.00      100.00      100.00
+ specific_5                             213      100.00       72.77       72.77       58.69       72.77
+ specific_6                             304      100.00       79.28       79.28       64.14       76.97
+ specific_7                             227      100.00      100.00      100.00      100.00      100.00
+ specific_8                             270      100.00      100.00      100.00      100.00      100.00
+ specific_9                             210      100.00       32.86       32.86        0.00       44.76
+
+thresholds, A = 1 % (per specialist a = 0.0286 %): node, name, n_cal, t, test FPR of the specialist, resolution-limited
+   1 specific_35                                2,146 0.7842   0.009  limited
+   1 specific_30                                2,146 0.8067   0.000  limited
+   2 specific_27                                2,146 0.8073   0.000  limited
+   2 specific_23                                2,146 0.1794   0.000  limited
+   3 specific_34                                2,146 0.8204   0.000  limited
+   3 specific_31                                2,146 0.8206   0.000  limited
+   4 specific_32                                2,146 0.1794   0.000  limited
+   4 specific_28                                2,146 0.7328   0.000  limited
+   5 specific_29                                2,146 0.8081   0.000  limited
+   5 specific_26                                2,146 0.5241   0.000  limited
+   6 specific_21                                2,146 0.1794   0.000  limited
+   6 specific_19                                2,146 0.1794   0.000  limited
+   7 specific_33                                2,146 0.8203   0.000  limited
+   7 specific_22                                2,146 0.1794   0.000  limited
+   8 specific_25                                2,146 0.8205   0.000  limited
+   8 specific_24                                2,146 0.2193   0.000  limited
+   8 specific_18                                2,146 0.5585   0.000  limited
+   9 specific_12                                2,146 0.1794   0.000  limited
+   9 specific_6                                 2,146 0.6275   0.207  limited
+   9 specific_4                                 2,146 0.1794   0.000  limited
+  10 specific_11                                2,146 0.1794   0.000  limited
+  10 specific_8                                 2,146 0.1794   0.000  limited
+  10 specific_1                                 2,146 0.7311   0.000  limited
+  11 specific_3                                 2,146 0.1794   0.000  limited
+  11 specific_14                                2,146 0.7749   0.000  limited
+  11 specific_16                                2,146 0.8202   0.000  limited
+  12 specific_13                                2,146 0.7601   0.143  limited
+  12 specific_15                                2,146 0.7822   0.146  limited
+  12 specific_7                                 2,146 0.1794   0.000  limited
+  13 specific_10                                2,146 0.7090   0.000  limited
+  13 specific_2                                 2,146 0.7211   0.000  limited
+  13 specific_5                                 2,146 0.6060   0.034  limited
+  14 specific_17                                2,146 0.1819   0.370  limited
+  14 specific_9                                 2,146 0.7359   0.053  limited
+  14 specific_20                                2,146 0.1806   0.000  limited
+  IID: t 0.5549-0.9393, n_cal 2,144, limited 0/14; Centralized t 0.6783, n_cal 30,041
+
+thresholds, A = 0.1 % (per specialist a = 0.0029 %): node, name, n_cal, t, test FPR of the specialist, resolution-limited
+   1 specific_35                                2,146 0.7842   0.009  limited
+   1 specific_30                                2,146 0.8067   0.000  limited
+   2 specific_27                                2,146 0.8073   0.000  limited
+   2 specific_23                                2,146 0.1794   0.000  limited
+   3 specific_34                                2,146 0.8204   0.000  limited
+   3 specific_31                                2,146 0.8206   0.000  limited
+   4 specific_32                                2,146 0.1794   0.000  limited
+   4 specific_28                                2,146 0.7328   0.000  limited
+   5 specific_29                                2,146 0.8081   0.000  limited
+   5 specific_26                                2,146 0.5241   0.000  limited
+   6 specific_21                                2,146 0.1794   0.000  limited
+   6 specific_19                                2,146 0.1794   0.000  limited
+   7 specific_33                                2,146 0.8203   0.000  limited
+   7 specific_22                                2,146 0.1794   0.000  limited
+   8 specific_25                                2,146 0.8205   0.000  limited
+   8 specific_24                                2,146 0.2193   0.000  limited
+   8 specific_18                                2,146 0.5585   0.000  limited
+   9 specific_12                                2,146 0.1794   0.000  limited
+   9 specific_6                                 2,146 0.6275   0.207  limited
+   9 specific_4                                 2,146 0.1794   0.000  limited
+  10 specific_11                                2,146 0.1794   0.000  limited
+  10 specific_8                                 2,146 0.1794   0.000  limited
+  10 specific_1                                 2,146 0.7311   0.000  limited
+  11 specific_3                                 2,146 0.1794   0.000  limited
+  11 specific_14                                2,146 0.7749   0.000  limited
+  11 specific_16                                2,146 0.8202   0.000  limited
+  12 specific_13                                2,146 0.7601   0.143  limited
+  12 specific_15                                2,146 0.7822   0.146  limited
+  12 specific_7                                 2,146 0.1794   0.000  limited
+  13 specific_10                                2,146 0.7090   0.000  limited
+  13 specific_2                                 2,146 0.7211   0.000  limited
+  13 specific_5                                 2,146 0.6060   0.034  limited
+  14 specific_17                                2,146 0.1819   0.370  limited
+  14 specific_9                                 2,146 0.7359   0.053  limited
+  14 specific_20                                2,146 0.1806   0.000  limited
+  IID: t 0.5841-0.9393, n_cal 2,144, limited 14/14; Centralized t 0.7853, n_cal 30,041
+
+elapsed 4 s

@@ -1,0 +1,90 @@
+{
+ "dataset": "Hassler et al., schema S2 (physical)",
+ "sample": "all rows",
+ "rows": 6236,
+ "feats": 15,
+ "ids": [
+  "timestamp_p"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.010102629890955742,
+  "multi_rows": 0.0,
+  "per_label": {
+   "benign": {
+    "rows": 4290,
+    "multi": 0.0,
+    "as_benign": null
+   },
+   "DoS": {
+    "rows": 973,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Replay": {
+    "rows": 973,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.9996792301523657,
+  "per_label": {
+   "DoS": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "Replay": {
+    "benign_share_inside": 0.6355122682150215,
+    "benign_inside": 3393
+   }
+  }
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 4290,
+  "benign_share": 0.6879409878127004
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.9921746534813836,
+   "per_label": {
+    "DoS": 0.9914821124361158,
+    "Replay": 0.9862068965517241,
+    "benign": 0.9988349514563106
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.5999227746327124,
+   "per_label": {
+    "DoS": 0.12140575079872204,
+    "Replay": 0.6783625730994152,
+    "benign": 1.0
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.998858444141463,
+   "per_label": {
+    "DoS": 0.9982905982905983,
+    "Replay": 0.9982847341337907,
+    "benign": 1.0
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.6662751485256023,
+   "per_label": {
+    "DoS": 0.993103448275862,
+    "Replay": 0.10256410256410256,
+    "benign": 0.9031578947368422
+   }
+  }
+ }
+}

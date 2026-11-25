@@ -1,0 +1,156 @@
+{
+ "dataset": "Morris-4 (gas pipeline, 2015)",
+ "sample": "all rows",
+ "rows": 274628,
+ "feats": 15,
+ "ids": [
+  "time",
+  "crc rate"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.9207327730602852,
+  "multi_rows": 0.3053949342383151,
+  "per_label": {
+   "normal": {
+    "rows": 214580,
+    "multi": 0.272373939789356,
+    "as_benign": null
+   },
+   "MPCI": {
+    "rows": 20412,
+    "multi": 0.5000489907897315,
+    "as_benign": 0.5000489907897315
+   },
+   "CMRI": {
+    "rows": 13035,
+    "multi": 0.2544687380130418,
+    "as_benign": 0.022094361334867665
+   },
+   "MSCI": {
+    "rows": 7900,
+    "multi": 0.5692405063291139,
+    "as_benign": 0.5675949367088607
+   },
+   "NMRI": {
+    "rows": 7753,
+    "multi": 0.39868438023990715,
+    "as_benign": 0.010834515671353025
+   },
+   "MFCI": {
+    "rows": 4898,
+    "multi": 0.5,
+    "as_benign": 0.0
+   },
+   "Recon": {
+    "rows": 3874,
+    "multi": 0.01858544140423335,
+    "as_benign": 0.0
+   },
+   "DoS": {
+    "rows": 2176,
+    "multi": 0.8230698529411765,
+    "as_benign": 0.8106617647058824
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 1.0,
+  "per_label": {
+   "MPCI": {
+    "benign_share_inside": 0.7808977661972656,
+    "benign_inside": 213385
+   },
+   "CMRI": {
+    "benign_share_inside": 0.7816858436343307,
+    "benign_inside": 213931
+   },
+   "MSCI": {
+    "benign_share_inside": 0.7812646096306686,
+    "benign_inside": 213904
+   },
+   "NMRI": {
+    "benign_share_inside": 0.7813161239570396,
+    "benign_inside": 214533
+   },
+   "MFCI": {
+    "benign_share_inside": 0.7810008662330608,
+    "benign_inside": 212779
+   },
+   "Recon": {
+    "benign_share_inside": 0.7827361269764925,
+    "benign_inside": 208308
+   },
+   "DoS": {
+    "benign_share_inside": 0.7812464529212795,
+    "benign_inside": 206485
+   }
+  }
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 214580,
+  "benign_share": 0.781347859650145
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.6568979992636658,
+   "per_label": {
+    "CMRI": 0.5979924304755636,
+    "DoS": 0.15104895104895105,
+    "MFCI": 0.9935745688197497,
+    "MPCI": 0.5773028226274829,
+    "MSCI": 0.4104774535809019,
+    "NMRI": 0.650094796713714,
+    "Recon": 0.9917570498915401,
+    "normal": 0.882935920951423
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.6164673633286755,
+   "per_label": {
+    "CMRI": 0.6610966057441253,
+    "DoS": 0.00819672131147541,
+    "MFCI": 0.9922375970300371,
+    "MPCI": 0.5668685927306617,
+    "MSCI": 0.34747348721147847,
+    "NMRI": 0.48826577263029564,
+    "Recon": 0.9900130264871906,
+    "normal": 0.8775871034841394
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.7366399426964245,
+   "per_label": {
+    "CMRI": 0.722318339100346,
+    "DoS": 0.6131078224101479,
+    "MFCI": 0.9935745688197497,
+    "MPCI": 0.5773028226274829,
+    "MSCI": 0.4247612775765558,
+    "NMRI": 0.6804428044280443,
+    "Recon": 0.9917570498915401,
+    "normal": 0.8898548567175288
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.4829172682230467,
+   "per_label": {
+    "CMRI": 0.501504082509669,
+    "DoS": 0.05968484172360898,
+    "MFCI": 0.9922375970300371,
+    "MPCI": 0.11829774158856968,
+    "MSCI": 0.16729750189250567,
+    "NMRI": 0.4794215795328142,
+    "Recon": 0.9900130264871906,
+    "normal": 0.5548817750199784
+   }
+  }
+ }
+}

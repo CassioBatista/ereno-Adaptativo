@@ -1,0 +1,53 @@
+{
+ "dataset": "Morris-1 (power system, binary set)",
+ "sample": "all rows",
+ "rows": 78377,
+ "feats": 128,
+ "ids": [],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0001148296056240989,
+  "dup_feat": 0.0001148296056240989,
+  "multi_rows": 0.0,
+  "per_label": {
+   "Attack": {
+    "rows": 55663,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Natural": {
+    "rows": 22714,
+    "multi": 0.0,
+    "as_benign": null
+   }
+  }
+ },
+ "time": {
+  "has_time": false
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 22714,
+  "benign_share": 0.28980440690508696
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.66858405873546,
+   "per_label": {
+    "Attack": 0.8645354431733133,
+    "Natural": 0.47263267429760664
+   }
+  },
+  "content | independent: held-out groups (11 train / 4 test)": {
+   "macro_f1": 0.59657173185315,
+   "per_label": {
+    "Attack": 0.8295071000699364,
+    "Natural": 0.36363636363636365
+   }
+  }
+ }
+}

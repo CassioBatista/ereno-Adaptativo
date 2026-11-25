@@ -1,0 +1,36 @@
+DATASET AUDIT — PDNet-IDS26
+rows 21,552 (all rows); content features 30; identifiers ['TCP_SrcPort', 'TCP_DstPort', 'TCP_Seq', 'TCP_Ack', 'subject_id', 'age', 'sex', 'test_time']; benign label 'Benign'
+note: identifiers = TCP ports, sequence and acknowledgement numbers, and patient identity (subject, age, sex, test time)
+
+=== (i) STRUCTURE ===
+  pdnet_ids26/PDNet-IDS26.csv                                  fields per line={39: 21552}; header lines inside the data=0
+  columns checked 38; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 21,552; duplicates on all columns 2,252 (10.45%); without identifiers 5,384 (24.98%)
+feature vectors with >1 label 32; rows in them 64 (0.30%)
+  FDI                          rows       5,388  in multi-label vectors   0.50%  vector also occurs as benign   0.45%
+  DOS                          rows       5,388  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Benign                       rows       5,388  in multi-label vectors   0.54%
+  Replay                       rows       5,388  in multi-label vectors   0.15%  vector also occurs as benign   0.09%
+
+=== (iii) TIME ===
+no timestamp: time-ordered windows cannot be built
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  FDI                                5,388  25.00%
+  DOS                                5,388  25.00%
+  Benign                             5,388  25.00%
+  Replay                             5,388  25.00%
+benign 5,388 rows (25.00%); attack 75.00%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 19,300: FDI 5,388, Benign 5,388, Replay 5,388, DOS 3,136
+  content                  random 70/30                                 macro-F1=0.868  Benign=0.78  DOS=1.00  FDI=0.76  Replay=0.93
+  content + identifiers    random 70/30                                 macro-F1=1.000  Benign=1.00  DOS=1.00  FDI=1.00  Replay=1.00
+
+(run time 3 s)

@@ -1,0 +1,27 @@
+DATASET AUDIT — Hassler et al., schema S5 (physical)
+rows 807 (all rows); content features 31; identifiers []; benign label '(none)'
+note: 1 block(s) of the stacked CSV share this schema
+
+=== (i) STRUCTURE ===
+  columns checked 31; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 807; duplicates on all columns 0 (0.00%); without identifiers 0 (0.00%)
+feature vectors with >1 label 0; rows in them 0 (0.00%)
+  FDI                          rows         807  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+no timestamp: time-ordered windows cannot be built
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  FDI                                  807  100.00%
+benign 0 rows (0.00%); attack 100.00%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+only one label in this table (['FDI']): no probe
+
+(run time 0 s)

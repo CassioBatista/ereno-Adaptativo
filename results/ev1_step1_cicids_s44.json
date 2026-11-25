@@ -1,0 +1,5378 @@
+{
+ "domain": "CICIDS2017, improved",
+ "seed": 44,
+ "nodes": 14,
+ "smoke": false,
+ "features": [
+  4,
+  6,
+  11,
+  13,
+  17,
+  20,
+  21,
+  23,
+  24,
+  25,
+  29,
+  37,
+  38,
+  40,
+  42,
+  46,
+  47,
+  49,
+  54,
+  55,
+  56,
+  57,
+  59,
+  65,
+  67,
+  68,
+  69,
+  70,
+  71,
+  75,
+  82
+ ],
+ "nthread": 8,
+ "specialists": [
+  {
+   "j": 0,
+   "name": "Portscan",
+   "codes": [
+    18
+   ],
+   "node": 1,
+   "attack": 111346,
+   "benign": 79129
+  },
+  {
+   "j": 1,
+   "name": "DoS_Hulk",
+   "codes": [
+    6
+   ],
+   "node": 2,
+   "attack": 110927,
+   "benign": 79129
+  },
+  {
+   "j": 2,
+   "name": "DDoS",
+   "codes": [
+    3
+   ],
+   "node": 3,
+   "attack": 66600,
+   "benign": 79128
+  },
+  {
+   "j": 3,
+   "name": "Infiltration_Portscan",
+   "codes": [
+    17
+   ],
+   "node": 4,
+   "attack": 50236,
+   "benign": 79128
+  },
+  {
+   "j": 4,
+   "name": "DoS_GoldenEye",
+   "codes": [
+    4
+   ],
+   "node": 5,
+   "attack": 5296,
+   "benign": 79128
+  },
+  {
+   "j": 5,
+   "name": "Botnet_Attempted",
+   "codes": [
+    2
+   ],
+   "node": 6,
+   "attack": 2846,
+   "benign": 79128
+  },
+  {
+   "j": 6,
+   "name": "FTP_Patator",
+   "codes": [
+    12
+   ],
+   "node": 7,
+   "attack": 2780,
+   "benign": 79128
+  },
+  {
+   "j": 7,
+   "name": "DoS_Slowloris",
+   "codes": [
+    10
+   ],
+   "node": 8,
+   "attack": 2701,
+   "benign": 79128
+  },
+  {
+   "j": 8,
+   "name": "DoS_Slowhttptest_Attempted",
+   "codes": [
+    9
+   ],
+   "node": 9,
+   "attack": 2357,
+   "benign": 79128
+  },
+  {
+   "j": 9,
+   "name": "SSH_Patator",
+   "codes": [
+    19
+   ],
+   "node": 10,
+   "attack": 2072,
+   "benign": 79128
+  },
+  {
+   "j": 10,
+   "name": "DoS_Slowloris_Attempted",
+   "codes": [
+    11
+   ],
+   "node": 11,
+   "attack": 1292,
+   "benign": 79128
+  },
+  {
+   "j": 11,
+   "name": "DoS_Slowhttptest",
+   "codes": [
+    8
+   ],
+   "node": 12,
+   "attack": 1218,
+   "benign": 79128
+  },
+  {
+   "j": 12,
+   "name": "Web_Attack_Brute_Force_Attempted",
+   "codes": [
+    22
+   ],
+   "node": 12,
+   "attack": 904,
+   "benign": 79128
+  },
+  {
+   "j": 13,
+   "name": "Botnet",
+   "codes": [
+    1
+   ],
+   "node": 13,
+   "attack": 515,
+   "benign": 79128
+  },
+  {
+   "j": 14,
+   "name": "Web_Attack_XSS_Attempted",
+   "codes": [
+    26
+   ],
+   "node": 13,
+   "attack": 458,
+   "benign": 79128
+  },
+  {
+   "j": 15,
+   "name": "DoS_Hulk_Attempted",
+   "codes": [
+    7
+   ],
+   "node": 14,
+   "attack": 406,
+   "benign": 79128
+  },
+  {
+   "j": 16,
+   "name": "shared (DoS_GoldenEye_Attempted, FTP_Patator_Attempted, Heartbleed, Infiltration, Infiltration_Attempted, SSH_Patator_Attempted, Web_Attack_Brute_Force, Web_Attack_SQL_Injection, Web_Attack_SQL_Injection_Attempted, Web_Attack_XSS)",
+   "codes": [
+    5,
+    13,
+    14,
+    15,
+    16,
+    20,
+    21,
+    23,
+    24,
+    25
+   ],
+   "node": 14,
+   "attack": 220,
+   "benign": 79128
+  }
+ ],
+ "iid": [
+  {
+   "node": 1,
+   "attack": 25835,
+   "benign": 79163
+  },
+  {
+   "node": 2,
+   "attack": 25857,
+   "benign": 79141
+  },
+  {
+   "node": 3,
+   "attack": 25848,
+   "benign": 79150
+  },
+  {
+   "node": 4,
+   "attack": 26262,
+   "benign": 78736
+  },
+  {
+   "node": 5,
+   "attack": 26144,
+   "benign": 78854
+  },
+  {
+   "node": 6,
+   "attack": 25934,
+   "benign": 79064
+  },
+  {
+   "node": 7,
+   "attack": 25936,
+   "benign": 79062
+  },
+  {
+   "node": 8,
+   "attack": 25936,
+   "benign": 79062
+  },
+  {
+   "node": 9,
+   "attack": 25758,
+   "benign": 79240
+  },
+  {
+   "node": 10,
+   "attack": 25847,
+   "benign": 79151
+  },
+  {
+   "node": 11,
+   "attack": 25776,
+   "benign": 79221
+  },
+  {
+   "node": 12,
+   "attack": 25389,
+   "benign": 79608
+  },
+  {
+   "node": 13,
+   "attack": 25748,
+   "benign": 79249
+  },
+  {
+   "node": 14,
+   "attack": 25904,
+   "benign": 79093
+  }
+ ],
+ "iid_rounds": 12,
+ "central_rounds": 170,
+ "results": {
+  "attack-based OR": {
+   "tp": 154765,
+   "fp": 13976,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.996965909969337,
+   "fpr": 0.029437287792877423,
+   "precision": 0.9171748419174949,
+   "f1": 0.9554073282979965,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.8306561291100343,
+   "precision_at": {
+    "0.01": 0.254896522431921,
+    "0.001": 0.03278973621678321
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 221,
+     "recall": 1.0,
+     "ci95": [
+      0.9834467733554344,
+      1.0
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 1060,
+     "recall": 0.8681408681408681,
+     "ci95": [
+      0.8478653921908761,
+      0.886623808440221
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 28544,
+     "recall": 1.0,
+     "ci95": [
+      0.9998707735041166,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 2271,
+     "recall": 1.0,
+     "ci95": [
+      0.9983769770692589,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 24,
+     "recall": 1.0,
+     "ci95": [
+      0.8575264022774743,
+      1.0
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 47508,
+     "recall": 0.9993058623083233,
+     "ci95": [
+      0.9990253094250109,
+      0.9995221408847348
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 175,
+     "recall": 1.0,
+     "ci95": [
+      0.9791413046509426,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 411,
+     "recall": 0.7873563218390804,
+     "ci95": [
+      0.7497167140118186,
+      0.821704973437698
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 1011,
+     "recall": 1.0,
+     "ci95": [
+      0.9963579052969267,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 1158,
+     "recall": 1.0,
+     "ci95": [
+      0.9968195076742828,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 555,
+     "recall": 1.0,
+     "ci95": [
+      0.9933754103382061,
+      1.0
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 1185,
+     "recall": 0.9941275167785235,
+     "ci95": [
+      0.987938084790981,
+      0.9976357945763681
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 4,
+     "recall": 1.0,
+     "ci95": [
+      0.3976353643835253,
+      1.0
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 4,
+     "recall": 1.0,
+     "ci95": [
+      0.3976353643835253,
+      1.0
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 11,
+     "recall": 1.0,
+     "ci95": [
+      0.7150858470818455,
+      1.0
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 14,
+     "recall": 1.0,
+     "ci95": [
+      0.7683642383498834,
+      1.0
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 21459,
+     "recall": 0.9966559843945938,
+     "ci95": [
+      0.9957905927538111,
+      0.9973826217425327
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 47644,
+     "recall": 0.9984073763621123,
+     "ci95": [
+      0.9980069935896039,
+      0.9987449948132039
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 879,
+     "recall": 0.9887514060742407,
+     "ci95": [
+      0.9794110010962679,
+      0.9945930480804968
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 9,
+     "recall": 1.0,
+     "ci95": [
+      0.6637328831200572,
+      1.0
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 22,
+     "recall": 1.0,
+     "ci95": [
+      0.8456274871844254,
+      1.0
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 388,
+     "recall": 1.0,
+     "ci95": [
+      0.9905376313649593,
+      1.0
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 3,
+     "recall": 0.75,
+     "ci95": [
+      0.19412044968324338,
+      0.9936905367902902
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 2,
+     "recall": 1.0,
+     "ci95": [
+      0.15811388300841897,
+      1.0
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 6,
+     "recall": 1.0,
+     "ci95": [
+      0.5407418735600995,
+      1.0
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 197,
+     "recall": 1.0,
+     "ci95": [
+      0.9814489523826306,
+      1.0
+     ],
+     "small": false
+    }
+   }
+  },
+  "attack-based k=2": {
+   "tp": 140390,
+   "fp": 935,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.9043649668891237,
+   "fpr": 0.001969366348478849,
+   "precision": 0.9933840438705113,
+   "f1": 0.9467866644636348,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.9365073651202539,
+   "precision_at": {
+    "0.01": 0.822649366385131,
+    "0.001": 0.3149164112289674
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 183,
+     "recall": 0.8280542986425339,
+     "ci95": [
+      0.7717173938173777,
+      0.8753549068584094
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 1052,
+     "recall": 0.8615888615888616,
+     "ci95": [
+      0.8409385950531942,
+      0.8804794614832228
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 28531,
+     "recall": 0.999544562780269,
+     "ci95": [
+      0.9992213144073518,
+      0.9997574772871041
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 2085,
+     "recall": 0.9180977542932629,
+     "ci95": [
+      0.9060522497478339,
+      0.9290509577353497
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 24,
+     "recall": 1.0,
+     "ci95": [
+      0.8575264022774743,
+      1.0
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 45102,
+     "recall": 0.9486969142424434,
+     "ci95": [
+      0.946675706552473,
+      0.95066310664576
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 175,
+     "recall": 1.0,
+     "ci95": [
+      0.9791413046509426,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 318,
+     "recall": 0.6091954022988506,
+     "ci95": [
+      0.5658580127299262,
+      0.6512890557922186
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 802,
+     "recall": 0.7932739861523245,
+     "ci95": [
+      0.7669800044207972,
+      0.8178476033757394
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 656,
+     "recall": 0.5664939550949913,
+     "ci95": [
+      0.5373811827848294,
+      0.5952681425037791
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 551,
+     "recall": 0.9927927927927928,
+     "ci95": [
+      0.9816502295558542,
+      0.9980328892785884
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 6,
+     "recall": 0.0050335570469798654,
+     "ci95": [
+      0.001849399340078447,
+      0.010923519018384929
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 4,
+     "recall": 1.0,
+     "ci95": [
+      0.3976353643835253,
+      1.0
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 12,
+     "recall": 0.8571428571428571,
+     "ci95": [
+      0.5718708390903011,
+      0.9822054845168084
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 12413,
+     "recall": 0.576517579304259,
+     "ci95": [
+      0.5698844535890141,
+      0.5831300387490277
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 47618,
+     "recall": 0.9978625314333612,
+     "ci95": [
+      0.9974058524670423,
+      0.998256823989607
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 271,
+     "recall": 0.3048368953880765,
+     "ci95": [
+      0.2747029604479168,
+      0.336270510654024
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 1,
+     "recall": 0.1111111111111111,
+     "ci95": [
+      0.002809136746599214,
+      0.48249651491733697
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 388,
+     "recall": 1.0,
+     "ci95": [
+      0.9905376313649593,
+      1.0
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 1,
+     "recall": 0.25,
+     "ci95": [
+      0.006309463209709866,
+      0.8058795503167565
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 197,
+     "recall": 1.0,
+     "ci95": [
+      0.9814489523826306,
+      1.0
+     ],
+     "small": false
+    }
+   }
+  },
+  "IID OR": {
+   "tp": 153373,
+   "fp": 10194,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.9879989177768044,
+   "fpr": 0.021471358883843192,
+   "precision": 0.9376769152701951,
+   "f1": 0.9621804060814987,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.8657988413479561,
+   "precision_at": {
+    "0.01": 0.3173107609432717,
+    "0.001": 0.044032619573963955
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 169,
+     "recall": 0.7647058823529411,
+     "ci95": [
+      0.703165865503,
+      0.8189976006695089
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 1221,
+     "recall": 1.0,
+     "ci95": [
+      0.996983363923803,
+      1.0
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 28544,
+     "recall": 1.0,
+     "ci95": [
+      0.9998707735041166,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 2232,
+     "recall": 0.9828269484808454,
+     "ci95": [
+      0.9765980081618137,
+      0.987760510972047
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 47425,
+     "recall": 0.997560000841379,
+     "ci95": [
+      0.9970741656886584,
+      0.9979833751622117
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 25,
+     "recall": 0.14285714285714285,
+     "ci95": [
+      0.09463197617459712,
+      0.20362274058431967
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 343,
+     "recall": 0.657088122605364,
+     "ci95": [
+      0.6146082284975678,
+      0.6977773540718648
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 1009,
+     "recall": 0.9980217606330366,
+     "ci95": [
+      0.9928723603093175,
+      0.9997603361850322
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 1083,
+     "recall": 0.9352331606217616,
+     "ci95": [
+      0.9194877150622046,
+      0.9487194856723833
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 551,
+     "recall": 0.9927927927927928,
+     "ci95": [
+      0.9816502295558542,
+      0.9980328892785884
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 1192,
+     "recall": 1.0,
+     "ci95": [
+      0.9969100861118653,
+      1.0
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 4,
+     "recall": 1.0,
+     "ci95": [
+      0.3976353643835253,
+      1.0
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 12,
+     "recall": 0.8571428571428571,
+     "ci95": [
+      0.5718708390903011,
+      0.9822054845168084
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 21347,
+     "recall": 0.9914541823417398,
+     "ci95": [
+      0.9901327780497232,
+      0.992640192931206
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 47650,
+     "recall": 0.9985331098072087,
+     "ci95": [
+      0.9981470306668204,
+      0.9988563141365492
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 552,
+     "recall": 0.6209223847019123,
+     "ci95": [
+      0.5881097023690599,
+      0.6529307591599613
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 2,
+     "recall": 0.2222222222222222,
+     "ci95": [
+      0.028144973477898197,
+      0.600093573716312
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 1,
+     "recall": 0.002577319587628866,
+     "ci95": [
+      6.524995356291049e-05,
+      0.014275592234210406
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 3,
+     "recall": 0.75,
+     "ci95": [
+      0.19412044968324338,
+      0.9936905367902902
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 1,
+     "recall": 0.5,
+     "ci95": [
+      0.01257911709342505,
+      0.9874208829065749
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 6,
+     "recall": 1.0,
+     "ci95": [
+      0.5407418735600995,
+      1.0
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 1,
+     "recall": 0.005076142131979695,
+     "ci95": [
+      0.00012850853386930334,
+      0.027956460269938085
+     ],
+     "small": false
+    }
+   }
+  },
+  "Centralized": {
+   "tp": 154929,
+   "fp": 2386,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.9980223659460434,
+   "fpr": 0.005025570168417683,
+   "precision": 0.9848329784190955,
+   "f1": 0.9913838061628343,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.9657180169497264,
+   "precision_at": {
+    "0.01": 0.6673262824278138,
+    "0.001": 0.1658239198605445
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 221,
+     "recall": 1.0,
+     "ci95": [
+      0.9834467733554344,
+      1.0
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 1047,
+     "recall": 0.8574938574938575,
+     "ci95": [
+      0.8366167728194503,
+      0.8766317643371214
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 28544,
+     "recall": 1.0,
+     "ci95": [
+      0.9998707735041166,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 2271,
+     "recall": 1.0,
+     "ci95": [
+      0.9983769770692589,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 24,
+     "recall": 1.0,
+     "ci95": [
+      0.8575264022774743,
+      1.0
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 47541,
+     "recall": 1.0,
+     "ci95": [
+      0.9999224093657892,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 175,
+     "recall": 1.0,
+     "ci95": [
+      0.9791413046509426,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 495,
+     "recall": 0.9482758620689655,
+     "ci95": [
+      0.9256335912846346,
+      0.9656403637804681
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 1011,
+     "recall": 1.0,
+     "ci95": [
+      0.9963579052969267,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 1158,
+     "recall": 1.0,
+     "ci95": [
+      0.9968195076742828,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 552,
+     "recall": 0.9945945945945946,
+     "ci95": [
+      0.9842850022970634,
+      0.9988838852355457
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 1192,
+     "recall": 1.0,
+     "ci95": [
+      0.9969100861118653,
+      1.0
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 4,
+     "recall": 1.0,
+     "ci95": [
+      0.3976353643835253,
+      1.0
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 10,
+     "recall": 0.9090909090909091,
+     "ci95": [
+      0.5872200830116173,
+      0.9977010277861857
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 12,
+     "recall": 0.8571428571428571,
+     "ci95": [
+      0.5718708390903011,
+      0.9822054845168084
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 21499,
+     "recall": 0.9985137708420417,
+     "ci95": [
+      0.9979025298740396,
+      0.9989832051319257
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 47693,
+     "recall": 0.9994341994970662,
+     "ci95": [
+      0.9991768959300418,
+      0.999627101834258
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 861,
+     "recall": 0.968503937007874,
+     "ci95": [
+      0.9547995300193949,
+      0.9789711468979995
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 2,
+     "recall": 0.2222222222222222,
+     "ci95": [
+      0.028144973477898197,
+      0.600093573716312
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 22,
+     "recall": 1.0,
+     "ci95": [
+      0.8456274871844254,
+      1.0
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 388,
+     "recall": 1.0,
+     "ci95": [
+      0.9905376313649593,
+      1.0
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 3,
+     "recall": 0.75,
+     "ci95": [
+      0.19412044968324338,
+      0.9936905367902902
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 1,
+     "recall": 0.5,
+     "ci95": [
+      0.01257911709342505,
+      0.9874208829065749
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 6,
+     "recall": 1.0,
+     "ci95": [
+      0.5407418735600995,
+      1.0
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 197,
+     "recall": 1.0,
+     "ci95": [
+      0.9814489523826306,
+      1.0
+     ],
+     "small": false
+    }
+   }
+  }
+ },
+ "local_mean": {
+  "recall": 0.1446001111671446,
+  "fpr": 0.0022511557427264337,
+  "precision": 0.908549257662254,
+  "f1": 0.2047065630124418,
+  "recall_own_types": 0.9379028670967103
+ },
+ "local": {
+  "1": {
+   "tp": 61398,
+   "fp": 9,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.39551392718183925,
+   "fpr": 1.8956467525464855e-05,
+   "precision": 0.9998534369045874,
+   "f1": 0.5668126826161011,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.5667307174461585,
+   "precision_at": {
+    "0.01": 0.9952774670499674,
+    "0.001": 0.9543070446603609
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 1047,
+     "recall": 0.8574938574938575,
+     "ci95": [
+      0.8366167728194503,
+      0.8766317643371214
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 468,
+     "recall": 0.0163957399103139,
+     "ci95": [
+      0.01495438845101034,
+      0.017936696563482513
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0016230229307411536
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.75906342107864e-05
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0070419076287241466
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.003642094703073317
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0031804923257171503
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.006624589661793964
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 12,
+     "recall": 0.8571428571428571,
+     "ci95": [
+      0.5718708390903011,
+      0.9822054845168084
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 12283,
+     "recall": 0.5704797733500534,
+     "ci95": [
+      0.5638354789698916,
+      0.5771050323419069
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 47588,
+     "recall": 0.9972338642078793,
+     "ci95": [
+      0.9967205595753944,
+      0.9976850981359705
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.9972338642078793,
+   "own_types": [
+    "Portscan"
+   ]
+  },
+  "2": {
+   "tp": 77665,
+   "fp": 16,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.5003027648225927,
+   "fpr": 3.3700386711937516e-05,
+   "precision": 0.9997940294280455,
+   "f1": 0.6668899221611132,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.6667304724112307,
+   "precision_at": {
+    "0.01": 0.9933755376341926,
+    "0.001": 0.9369501639974799
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 28511,
+     "recall": 0.9988438901345291,
+     "ci95": [
+      0.9983767714738674,
+      0.9992040576872968
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 1604,
+     "recall": 0.7062967855570234,
+     "ci95": [
+      0.6870868148121088,
+      0.7249731105899087
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 47495,
+     "recall": 0.9990324141267537,
+     "ci95": [
+      0.9987095845255591,
+      0.9992915211495054
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0070419076287241466
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 1,
+     "recall": 0.0009891196834817012,
+     "ci95": [
+      2.504202866303677e-05,
+      0.005498578129105411
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0031804923257171503
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.006624589661793964
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.23163576165011646
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0001713140804698069
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 54,
+     "recall": 0.0011316010058675609,
+     "ci95": [
+      0.0008502042919891873,
+      0.0014762391913648652
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.9990324141267537,
+   "own_types": [
+    "DoS_Hulk"
+   ]
+  },
+  "3": {
+   "tp": 75188,
+   "fp": 20,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.4843464144914839,
+   "fpr": 4.21254833899219e-05,
+   "precision": 0.9997340708435273,
+   "f1": 0.6525489923799275,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.6523518857395987,
+   "precision_at": {
+    "0.01": 0.9914630929033071,
+    "0.001": 0.9200589326191944
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 28522,
+     "recall": 0.999229260089686,
+     "ci95": [
+      0.9988333216717588,
+      0.9995169203577841
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 1586,
+     "recall": 0.698370761778952,
+     "ci95": [
+      0.6790269793897671,
+      0.7172014607876183
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 45025,
+     "recall": 0.9470772596285312,
+     "ci95": [
+      0.9450268166166729,
+      0.9490728914946016
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0070419076287241466
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 1,
+     "recall": 0.0009891196834817012,
+     "ci95": [
+      2.504202866303677e-05,
+      0.005498578129105411
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0031804923257171503
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.006624589661793964
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.23163576165011646
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0001713140804698069
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 54,
+     "recall": 0.0011316010058675609,
+     "ci95": [
+      0.0008502042919891873,
+      0.0014762391913648652
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.999229260089686,
+   "own_types": [
+    "DDoS"
+   ]
+  },
+  "4": {
+   "tp": 68897,
+   "fp": 2658,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.4438210208972146,
+   "fpr": 0.00559847674252062,
+   "precision": 0.9628537488645098,
+   "f1": 0.6075814295981764,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.5837626129932539,
+   "precision_at": {
+    "0.01": 0.4446791545445539,
+    "0.001": 0.0735204786292489
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00012922649588345273
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0016230229307411536
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 41,
+     "recall": 0.0008624134957194843,
+     "ci95": [
+      0.0006189516842193119,
+      0.0011697813593385116
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0070419076287241466
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.003642094703073317
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0031804923257171503
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.006624589661793964
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.23163576165011646
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 21459,
+     "recall": 0.9966559843945938,
+     "ci95": [
+      0.9957905927538111,
+      0.9973826217425327
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 47397,
+     "recall": 0.9932313495389774,
+     "ci95": [
+      0.9924543989331135,
+      0.9939473495197447
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.9966559843945938,
+   "own_types": [
+    "Infiltration_Portscan"
+   ]
+  },
+  "5": {
+   "tp": 2265,
+   "fp": 101,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.014590687727073616,
+   "fpr": 0.0002127336911191056,
+   "precision": 0.9573119188503804,
+   "f1": 0.028743290059770814,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.02867930434808415,
+   "precision_at": {
+    "0.01": 0.40926076338199974,
+    "0.001": 0.06424456005816807
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00012922649588345273
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 2247,
+     "recall": 0.9894319682959049,
+     "ci95": [
+      0.9843161784690916,
+      0.9932174545693061
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.75906342107864e-05
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0070419076287241466
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.003642094703073317
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0031804923257171503
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.006624589661793964
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.23163576165011646
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0001713140804698069
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 18,
+     "recall": 0.00037720033528918694,
+     "ci95": [
+      0.0002235676583457268,
+      0.0005960738906198629
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.9894319682959049,
+   "own_types": [
+    "DoS_GoldenEye"
+   ]
+  },
+  "6": {
+   "tp": 1303,
+   "fp": 17,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.008393671571027338,
+   "fpr": 3.580666088143361e-05,
+   "precision": 0.9871212121212121,
+   "f1": 0.016645800863588744,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.01663951051817346,
+   "precision_at": {
+    "0.01": 0.7030740693499151,
+    "0.001": 0.19005460651017994
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 1052,
+     "recall": 0.8615888615888616,
+     "ci95": [
+      0.8409385950531942,
+      0.8804794614832228
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00012922649588345273
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0016230229307411536
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 24,
+     "recall": 1.0,
+     "ci95": [
+      0.8575264022774743,
+      1.0
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.75906342107864e-05
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 150,
+     "recall": 0.8571428571428571,
+     "ci95": [
+      0.7963772594156804,
+      0.9053680238254029
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0070419076287241466
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.003642094703073317
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0031804923257171503
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.006624589661793964
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 12,
+     "recall": 0.8571428571428571,
+     "ci95": [
+      0.5718708390903011,
+      0.9822054845168084
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0001713140804698069
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 65,
+     "recall": 0.0013621123218776194,
+     "ci95": [
+      0.0010514019840426909,
+      0.001735799238023285
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.8615888615888616,
+   "own_types": [
+    "Botnet_Attempted"
+   ]
+  },
+  "7": {
+   "tp": 1187,
+   "fp": 5,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.007646422221649617,
+   "fpr": 1.0531370847480476e-05,
+   "precision": 0.9958053691275168,
+   "f1": 0.015176311146342086,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.01517462254102896,
+   "precision_at": {
+    "0.01": 0.8800089352187646,
+    "0.001": 0.42089018965210645
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00012922649588345273
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0016230229307411536
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.75906342107864e-05
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0070419076287241466
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.003642094703073317
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0031804923257171503
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.006624589661793964
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 1185,
+     "recall": 0.9941275167785235,
+     "ci95": [
+      0.987938084790981,
+      0.9976357945763681
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.23163576165011646
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 2,
+     "recall": 9.288932237239329e-05,
+     "ci95": [
+      1.1249525846693087e-05,
+      0.00033550746150527174
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.729959928384818e-05
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.9941275167785235,
+   "own_types": [
+    "FTP_Patator"
+   ]
+  },
+  "8": {
+   "tp": 1084,
+   "fp": 90,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.006982916333840089,
+   "fpr": 0.00018956467525464856,
+   "precision": 0.9233390119250426,
+   "f1": 0.013861006329518573,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.013833294935554264,
+   "precision_at": {
+    "0.01": 0.2711831210902397,
+    "0.001": 0.03556216388813927
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 21,
+     "recall": 0.0007357062780269058,
+     "ci95": [
+      0.00045546964409222244,
+      0.0011243865083748555
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 6,
+     "recall": 0.002642007926023778,
+     "ci95": [
+      0.0009701683035322876,
+      0.005741605026508236
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 9,
+     "recall": 0.00018931027954817946,
+     "ci95": [
+      8.656825153143434e-05,
+      0.0003593393229688039
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 248,
+     "recall": 0.47509578544061304,
+     "ci95": [
+      0.4315446066612665,
+      0.5189304371663541
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.003642094703073317
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 799,
+     "recall": 0.6899827288428325,
+     "ci95": [
+      0.6624547170454387,
+      0.716542020194133
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.006624589661793964
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.23163576165011646
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0001713140804698069
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.729959928384818e-05
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 1,
+     "recall": 0.1111111111111111,
+     "ci95": [
+      0.002809136746599214,
+      0.48249651491733697
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.6899827288428325,
+   "own_types": [
+    "DoS_Slowloris"
+   ]
+  },
+  "9": {
+   "tp": 1813,
+   "fp": 835,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.011678991986394908,
+   "fpr": 0.0017587389315292393,
+   "precision": 0.6846676737160121,
+   "f1": 0.022966228370195838,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.022551017007480533,
+   "precision_at": {
+    "0.01": 0.0628598490575332,
+    "0.001": 0.006603302709866734
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00012922649588345273
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0016230229307411536
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 24,
+     "recall": 1.0,
+     "ci95": [
+      0.8575264022774743,
+      1.0
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.75906342107864e-05
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 175,
+     "recall": 1.0,
+     "ci95": [
+      0.9791413046509426,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0070419076287241466
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 1009,
+     "recall": 0.9980217606330366,
+     "ci95": [
+      0.9928723603093175,
+      0.9997603361850322
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0031804923257171503
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 552,
+     "recall": 0.9945945945945946,
+     "ci95": [
+      0.9842850022970634,
+      0.9988838852355457
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 4,
+     "recall": 1.0,
+     "ci95": [
+      0.3976353643835253,
+      1.0
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 1,
+     "recall": 0.07142857142857142,
+     "ci95": [
+      0.0018067806591253865,
+      0.3386844899318212
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 48,
+     "recall": 0.002229343736937439,
+     "ci95": [
+      0.0016441855378454928,
+      0.002954712445114529
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.729959928384818e-05
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.9980217606330366,
+   "own_types": [
+    "DoS_Slowhttptest_Attempted"
+   ]
+  },
+  "10": {
+   "tp": 856,
+   "fp": 1,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.005514184854028705,
+   "fpr": 2.1062741694960948e-06,
+   "precision": 0.9988331388564761,
+   "f1": 0.010967820466004242,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.010967575851636763,
+   "precision_at": {
+    "0.01": 0.963562492482334,
+    "0.001": 0.7238027740964526
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00012922649588345273
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0016230229307411536
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.75906342107864e-05
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0070419076287241466
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.003642094703073317
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0031804923257171503
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.006624589661793964
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.23163576165011646
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0001713140804698069
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.729959928384818e-05
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 856,
+     "recall": 0.9628796400449944,
+     "ci95": [
+      0.948261996602062,
+      0.9743128398476991
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.9628796400449944,
+   "own_types": [
+    "SSH_Patator"
+   ]
+  },
+  "11": {
+   "tp": 2793,
+   "fp": 732,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.017991960627689454,
+   "fpr": 0.0015417926920711414,
+   "precision": 0.7923404255319149,
+   "f1": 0.035184963561579984,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.034629106302561344,
+   "precision_at": {
+    "0.01": 0.10544464618164966,
+    "0.001": 0.011546313536524981
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00012922649588345273
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 622,
+     "recall": 0.27388815499779834,
+     "ci95": [
+      0.2556280329380039,
+      0.29273336889377366
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 1249,
+     "recall": 0.026272059906186238,
+     "ci95": [
+      0.024852788177770743,
+      0.027749568910085613
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 20,
+     "recall": 0.038314176245210725,
+     "ci95": [
+      0.02355758219539616,
+      0.05855467888840707
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 297,
+     "recall": 0.29376854599406527,
+     "ci95": [
+      0.2658316358985531,
+      0.32291186421192813
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 75,
+     "recall": 0.06476683937823834,
+     "ci95": [
+      0.05128051432761667,
+      0.08051228493779543
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 481,
+     "recall": 0.8666666666666667,
+     "ci95": [
+      0.8355264068362802,
+      0.8938344947640569
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.23163576165011646
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 47,
+     "recall": 0.0021828990757512424,
+     "ci95": [
+      0.0016043395275107638,
+      0.0029017478650881865
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      7.729959928384818e-05
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0094623686350407
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 1,
+     "recall": 0.25,
+     "ci95": [
+      0.006309463209709866,
+      0.8058795503167565
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 1,
+     "recall": 0.5,
+     "ci95": [
+      0.01257911709342505,
+      0.9874208829065749
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.018551047617369316
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.8666666666666667,
+   "own_types": [
+    "DoS_Slowloris_Attempted"
+   ]
+  },
+  "12": {
+   "tp": 1862,
+   "fp": 226,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.011994640418459636,
+   "fpr": 0.00047601796230611746,
+   "precision": 0.8917624521072797,
+   "f1": 0.023670895731102693,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.023553103582416753,
+   "precision_at": {
+    "0.01": 0.20288490313321755,
+    "0.001": 0.024602544287642282
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.016553226644565586
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 106,
+     "recall": 0.0037135650224215245,
+     "ci95": [
+      0.0030413340304815137,
+      0.0044897018824991315
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 79,
+     "recall": 0.03478643769264641,
+     "ci95": [
+      0.027635533605385905,
+      0.04316750485554052
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 436,
+     "recall": 0.009171031320334028,
+     "ci95": [
+      0.00833370603118889,
+      0.010069085011094265
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 340,
+     "recall": 0.6513409961685823,
+     "ci95": [
+      0.6087348856718149,
+      0.6922221541635962
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 2,
+     "recall": 0.0019782393669634025,
+     "ci95": [
+      0.00023966381496771315,
+      0.007127639690682566
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 223,
+     "recall": 0.192573402417962,
+     "ci95": [
+      0.1702339017395467,
+      0.21648605332689114
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.006624589661793964
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.23163576165011646
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0001713140804698069
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 91,
+     "recall": 0.0019069572506286673,
+     "ci95": [
+      0.0015356323662289392,
+      0.002340812279315973
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 388,
+     "recall": 1.0,
+     "ci95": [
+      0.9905376313649593,
+      1.0
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 197,
+     "recall": 1.0,
+     "ci95": [
+      0.9814489523826306,
+      1.0
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.8,
+   "own_types": [
+    "DoS_Slowhttptest",
+    "Web_Attack_Brute_Force_Attempted"
+   ]
+  },
+  "13": {
+   "tp": 3498,
+   "fp": 241,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.022533432966579916,
+   "fpr": 0.0005076120748485588,
+   "precision": 0.9355442631719711,
+   "f1": 0.0440069193269382,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.043775884272618186,
+   "precision_at": {
+    "0.01": 0.30958033964507947,
+    "0.001": 0.04254497865014792
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 221,
+     "recall": 1.0,
+     "ci95": [
+      0.9834467733554344,
+      1.0
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0030166360761969906
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 3,
+     "recall": 0.00010510089686098655,
+     "ci95": [
+      2.1674856124059476e-05,
+      0.00030711839271016766
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 873,
+     "recall": 0.3844121532364597,
+     "ci95": [
+      0.36434490758824833,
+      0.4047781112273552
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.14247359772252563
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 1800,
+     "recall": 0.03786205590963589,
+     "ci95": [
+      0.03616413427592244,
+      0.039616702192186916
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.020858695349057415
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 2,
+     "recall": 0.0038314176245210726,
+     "ci95": [
+      0.00046433971386858824,
+      0.013771306574660915
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 2,
+     "recall": 0.0019782393669634025,
+     "ci95": [
+      0.00023966381496771315,
+      0.007127639690682566
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.0031804923257171503
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 1,
+     "recall": 0.0018018018018018018,
+     "ci95": [
+      4.561663157358553e-05,
+      0.00999774796096522
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.00308991388813472
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.28491415291815436
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.23163576165011646
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 4,
+     "recall": 0.00018577864474478658,
+     "ci95": [
+      5.062067350954721e-05,
+      0.00047559817463275323
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 30,
+     "recall": 0.0006286672254819782,
+     "ci95": [
+      0.00042419807356621034,
+      0.0008973409313385829
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.004140873543816317
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.3362671168799428
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.15437251281557457
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 366,
+     "recall": 0.9432989690721649,
+     "ci95": [
+      0.9154097406487051,
+      0.9641283435341649
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.6023646356164746
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.841886116991581
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 0,
+     "recall": 0.0,
+     "ci95": [
+      0.0,
+      0.45925812643990044
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 196,
+     "recall": 0.9949238578680203,
+     "ci95": [
+      0.972043539730062,
+      0.9998714914661307
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.9976076555023924,
+   "own_types": [
+    "Botnet",
+    "Web_Attack_XSS_Attempted"
+   ]
+  },
+  "14": {
+   "tp": 14451,
+   "fp": 10012,
+   "n_attack": 155236,
+   "n_benign": 474772,
+   "recall": 0.09309052024015048,
+   "fpr": 0.021088016984994903,
+   "precision": 0.5907288558230798,
+   "f1": 0.16083561956382617,
+   "fp_zero_bound": false,
+   "f1_at_6.8": 0.13470681748690685,
+   "precision_at": {
+    "0.01": 0.04268632652360588,
+    "0.001": 0.004399358908522872
+   },
+   "per_type": {
+    "Botnet": {
+     "n": 221,
+     "k": 183,
+     "recall": 0.8280542986425339,
+     "ci95": [
+      0.7717173938173777,
+      0.8753549068584094
+     ],
+     "small": false
+    },
+    "Botnet_Attempted": {
+     "n": 1221,
+     "k": 895,
+     "recall": 0.733005733005733,
+     "ci95": [
+      0.7072405963270451,
+      0.7576435836234542
+     ],
+     "small": false
+    },
+    "DDoS": {
+     "n": 28544,
+     "k": 8663,
+     "recall": 0.30349635650224216,
+     "ci95": [
+      0.29816534977450154,
+      0.30886738478490544
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye": {
+     "n": 2271,
+     "k": 173,
+     "recall": 0.07617789520035227,
+     "ci95": [
+      0.06559937438207143,
+      0.08786459094227998
+     ],
+     "small": false
+    },
+    "DoS_GoldenEye_Attempted": {
+     "n": 24,
+     "k": 24,
+     "recall": 1.0,
+     "ci95": [
+      0.8575264022774743,
+      1.0
+     ],
+     "small": true
+    },
+    "DoS_Hulk": {
+     "n": 47541,
+     "k": 694,
+     "recall": 0.014597926000715172,
+     "ci95": [
+      0.013539008908678494,
+      0.015716705032054558
+     ],
+     "small": false
+    },
+    "DoS_Hulk_Attempted": {
+     "n": 175,
+     "k": 175,
+     "recall": 1.0,
+     "ci95": [
+      0.9791413046509426,
+      1.0
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest": {
+     "n": 522,
+     "k": 179,
+     "recall": 0.342911877394636,
+     "ci95": [
+      0.30222264592813514,
+      0.38539177150243226
+     ],
+     "small": false
+    },
+    "DoS_Slowhttptest_Attempted": {
+     "n": 1011,
+     "k": 802,
+     "recall": 0.7932739861523245,
+     "ci95": [
+      0.7669800044207972,
+      0.8178476033757394
+     ],
+     "small": false
+    },
+    "DoS_Slowloris": {
+     "n": 1158,
+     "k": 732,
+     "recall": 0.6321243523316062,
+     "ci95": [
+      0.6036104720522524,
+      0.6599651007571048
+     ],
+     "small": false
+    },
+    "DoS_Slowloris_Attempted": {
+     "n": 555,
+     "k": 553,
+     "recall": 0.9963963963963964,
+     "ci95": [
+      0.9870436730855151,
+      0.9995632885603107
+     ],
+     "small": false
+    },
+    "FTP_Patator": {
+     "n": 1192,
+     "k": 6,
+     "recall": 0.0050335570469798654,
+     "ci95": [
+      0.001849399340078447,
+      0.010923519018384929
+     ],
+     "small": false
+    },
+    "FTP_Patator_Attempted": {
+     "n": 4,
+     "k": 4,
+     "recall": 1.0,
+     "ci95": [
+      0.3976353643835253,
+      1.0
+     ],
+     "small": true
+    },
+    "Heartbleed": {
+     "n": 4,
+     "k": 4,
+     "recall": 1.0,
+     "ci95": [
+      0.3976353643835253,
+      1.0
+     ],
+     "small": true
+    },
+    "Infiltration": {
+     "n": 11,
+     "k": 11,
+     "recall": 1.0,
+     "ci95": [
+      0.7150858470818455,
+      1.0
+     ],
+     "small": true
+    },
+    "Infiltration_Attempted": {
+     "n": 14,
+     "k": 10,
+     "recall": 0.7142857142857143,
+     "ci95": [
+      0.4189647428163391,
+      0.9161106816928725
+     ],
+     "small": true
+    },
+    "Infiltration_Portscan": {
+     "n": 21531,
+     "k": 108,
+     "recall": 0.005016023408109238,
+     "ci95": [
+      0.004116502714658313,
+      0.00605289329380576
+     ],
+     "small": false
+    },
+    "Portscan": {
+     "n": 47720,
+     "k": 315,
+     "recall": 0.0066010058675607716,
+     "ci95": [
+      0.005894124290208939,
+      0.0073688727232999185
+     ],
+     "small": false
+    },
+    "SSH_Patator": {
+     "n": 889,
+     "k": 294,
+     "recall": 0.33070866141732286,
+     "ci95": [
+      0.2998243480493989,
+      0.362719792094973
+     ],
+     "small": false
+    },
+    "SSH_Patator_Attempted": {
+     "n": 9,
+     "k": 9,
+     "recall": 1.0,
+     "ci95": [
+      0.6637328831200572,
+      1.0
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force": {
+     "n": 22,
+     "k": 22,
+     "recall": 1.0,
+     "ci95": [
+      0.8456274871844254,
+      1.0
+     ],
+     "small": true
+    },
+    "Web_Attack_Brute_Force_Attempted": {
+     "n": 388,
+     "k": 388,
+     "recall": 1.0,
+     "ci95": [
+      0.9905376313649593,
+      1.0
+     ],
+     "small": false
+    },
+    "Web_Attack_SQL_Injection": {
+     "n": 4,
+     "k": 3,
+     "recall": 0.75,
+     "ci95": [
+      0.19412044968324338,
+      0.9936905367902902
+     ],
+     "small": true
+    },
+    "Web_Attack_SQL_Injection_Attempted": {
+     "n": 2,
+     "k": 1,
+     "recall": 0.5,
+     "ci95": [
+      0.01257911709342505,
+      0.9874208829065749
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS": {
+     "n": 6,
+     "k": 6,
+     "recall": 1.0,
+     "ci95": [
+      0.5407418735600995,
+      1.0
+     ],
+     "small": true
+    },
+    "Web_Attack_XSS_Attempted": {
+     "n": 197,
+     "k": 197,
+     "recall": 1.0,
+     "ci95": [
+      0.9814489523826306,
+      1.0
+     ],
+     "small": false
+    }
+   },
+   "recall_own_types": 0.9781818181818182,
+   "own_types": [
+    "DoS_GoldenEye_Attempted",
+    "DoS_Hulk_Attempted",
+    "FTP_Patator_Attempted",
+    "Heartbleed",
+    "Infiltration",
+    "Infiltration_Attempted",
+    "SSH_Patator_Attempted",
+    "Web_Attack_Brute_Force",
+    "Web_Attack_SQL_Injection",
+    "Web_Attack_SQL_Injection_Attempted",
+    "Web_Attack_XSS"
+   ]
+  }
+ }
+}

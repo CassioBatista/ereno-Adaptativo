@@ -1,0 +1,25 @@
+{
+  "dataset": "all_in_one_ev1_ciciot_train",
+  "attack": "Uploading_Attack",
+  "attack_id": 28,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    19,
+    40,
+    43,
+    44,
+    45
+  ],
+  "n_features": 5,
+  "f1_grasp_cv": 75.32467532467533,
+  "iterations": 6,
+  "evaluations": 1077,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 281.7
+}

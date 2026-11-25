@@ -7,7 +7,9 @@ so training continuity is preserved across paradigm switches.
 
 from __future__ import annotations
 
-from flwr.common import Parameters, Scalar, NDArrays, ndarrays_to_parameters, parameters_to_ndarrays
+import numpy as np
+from flwr.common import (FitIns, Parameters, Scalar, NDArrays, ndarrays_to_parameters,
+                         parameters_to_ndarrays)
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
 from flwr.server.criterion import Criterion
@@ -48,6 +50,30 @@ class HybridStrategy(Strategy):
     monitor       : optional MonitorRecorder (fd.monitor) notified on every
                     architecture change and node failure; defaults to NullMonitor
                     (no overhead). The monitor only observes (read-only).
+    node_holdings : None (default, legacy behaviour) | 'retain' | 'reformed' (xgb with
+                    fusion 'or' only). Per-node knowledge in BOTH modes: the gossip
+                    strategy's pool_parameters hold what each node holds.
+                    - gossip round: unchanged (each node keeps its pool plus what it
+                      receives; the head takes the union of its neighbourhood);
+                    - federated round, 'retain': the aggregate is the content-deduplicated
+                      union of the participants' fresh boosters and of everything the
+                      participants hold, and every participant then holds it;
+                    - federated round, 'reformed': the aggregate is the participants'
+                      fresh boosters only, and every participant then holds it only;
+                    - nodes outside the round (inactive or in local mode) keep what they
+                      hold; no state is kept by the server between rounds (a returning
+                      aggregator starts from what the participants hold);
+                    - nodes in local mode (outside the round's exchange, or every node
+                      in a round whose mode is 'local') train their own specialist and
+                      keep it, exchanging nothing;
+                    - with an arrival schedule (clients) and a round time (manager
+                      time_of), a node contributes nothing before its block arrives;
+                    - clients always train their own specialist from scratch
+                      (fresh_only): no warm-started variants.
+    holdings_log  : optional fd.holdings_log.HoldingsLog; with node_holdings, what every
+                    node holds is logged after every round.
+                    The mode-switch transfer (_transfer_model) is not used: the per-node
+                    pools already are the state carried across switches.
     """
 
     def __init__(
@@ -57,10 +83,19 @@ class HybridStrategy(Strategy):
         arch_manager:  ArchitectureManager,
         round_eval_fn=None,
         monitor=None,
+        node_holdings: str | None = None,
+        holdings_log=None,
     ) -> None:
+        if node_holdings not in (None, "retain", "reformed"):
+            raise ValueError(f"node_holdings inválido: '{node_holdings}'")
+        if holdings_log is not None and node_holdings is None:
+            raise ValueError("holdings_log requires node_holdings")
+        self.holdings_log = holdings_log
         self._strategies  = {"federated": fed_strategy, "gossip": glow_strategy}
         self.arch_manager = arch_manager
         self.round_eval_fn = round_eval_fn
+        self.node_holdings = node_holdings
+        self._round_mode: dict[int, str] = {}
         self._monitor = monitor if monitor is not None else NullMonitor()
         self._prev_mode:  str | None = None
         self._last_params: Parameters | None = None
@@ -79,8 +114,10 @@ class HybridStrategy(Strategy):
 
     # ── internal ──────────────────────────────────────────────────────────────
 
-    def _active(self, round: int) -> tuple[str, Strategy]:
+    def _active(self, round: int) -> tuple[str, Strategy | None]:
         mode = self.arch_manager.get_mode(round)
+        if mode == "local":                      # every node local: no exchange this round
+            return mode, None
         return mode, self._strategies[mode]
 
     def _filter_manager(
@@ -206,10 +243,15 @@ class HybridStrategy(Strategy):
         mode, strategy = self._active(server_round)
         self.arch_manager.notify_round_start(server_round, mode)
         active = self.arch_manager.get_active_clients(server_round)
+        self._round_mode[server_round] = mode
+        if strategy is None:                     # 'local' round: no exchange; with
+            return self._with_local_fits(        # node_holdings every node trains alone
+                server_round, [], active, client_manager)
         self._monitor.round_start(server_round, mode, active)
 
         if self._prev_mode is not None and mode != self._prev_mode:
-            parameters = self._transfer_model(self._prev_mode, mode, parameters)
+            if self.node_holdings is None:       # legacy: carry the state across the switch
+                parameters = self._transfer_model(self._prev_mode, mode, parameters)
             print(f"[Hybrid] mode switch: {self._prev_mode} → {mode} at round {server_round}")
             reason_info = self.arch_manager.consume_switch_reason()
             # Nodes dropped silently (removed from participation) raise no Flower
@@ -236,7 +278,38 @@ class HybridStrategy(Strategy):
         if hasattr(glow, "ctrl_digest_hex") and hasattr(self.arch_manager, "digest_hex"):
             glow.ctrl_digest_hex = self.arch_manager.digest_hex()
         filtered_manager  = self._filter_manager(client_manager, server_round)
-        return strategy.configure_fit(server_round, parameters, filtered_manager)
+        instructions = strategy.configure_fit(server_round, parameters, filtered_manager)
+        return self._with_local_fits(server_round, instructions, active, client_manager)
+
+    def _round_time(self, server_round: int) -> float | None:
+        f = getattr(self.arch_manager, "time_of", None)
+        return float(f(server_round)) if f is not None else None
+
+    def _with_local_fits(self, server_round: int, instructions, active,
+                         client_manager: ClientManager):
+        """node_holdings: tag the exchange instructions (round time, own specialist only)
+        and add a local fit for every node outside the exchange (local mode): it trains its
+        own specialist and keeps it, exchanging nothing. Legacy mode: unchanged."""
+        if self.node_holdings is None:
+            return instructions
+        t_s = self._round_time(server_round)
+        extra = {"fresh_only": 1}
+        if t_s is not None:
+            extra["t_s"] = t_s
+        out = [(proxy, FitIns(ins.parameters, {**ins.config, **extra, "local": 0}))
+               for proxy, ins in instructions]
+        in_exchange = {proxy.cid for proxy, _ in instructions}
+        pools = self._strategies["gossip"].pool_parameters
+        all_cids = list(client_manager.all().keys())
+        n = max(len(all_cids), len(self.cid_map)) or 1
+        empty = ndarrays_to_parameters([np.array([], dtype=np.uint8)])
+        for cid, proxy in client_manager.all().items():
+            if cid in in_exchange:
+                continue
+            node = resolve_node_index(cid, all_cids, self.cid_map, n)
+            out.append((proxy, FitIns(pools.get(node) or empty,
+                                      {"mode": "local", **extra, "local": 1})))
+        return out
 
     def _resolve_failed_nodes(self, results: FitResults, failures: FitFailures) -> list[int]:
         """Identify which logical node indices failed this round.
@@ -275,8 +348,27 @@ class HybridStrategy(Strategy):
                     server_round, failed,
                     detail=f"{len(failures)} client failure(s) in aggregate_fit")
         # aggregate THIS round with the mode it was configured/run in...
-        _, strategy = self._active(server_round)
+        mode, strategy = self._active(server_round)
+        if self.node_holdings is not None:
+            # local fits: each node keeps its own fresh specialist, nothing is exchanged
+            pools = self._strategies["gossip"].pool_parameters
+            all_cids = [p.cid for p, _ in results]
+            n = max(len(all_cids), len(self.cid_map)) or 1
+            exchange = []
+            for proxy, res in results:
+                if int((res.metrics or {}).get("local", 0)):
+                    node = resolve_node_index(proxy.cid, all_cids, self.cid_map, n)
+                    pools[node] = dedup_union([pools.get(node), res.parameters])
+                else:
+                    exchange.append((proxy, res))
+            results = exchange
+            if strategy is None or not results:
+                return None, {}
+        if strategy is None:
+            return None, {}
         params, metrics = strategy.aggregate_fit(server_round, results, failures)
+        if params is not None and mode == "federated" and self.node_holdings is not None:
+            params = self._federated_holdings(params, results)
         if params is not None:
             self.final_parameters = params
             # accumulate the retained union (xgb only; deterministic -> bounded)
@@ -288,6 +380,21 @@ class HybridStrategy(Strategy):
         self.arch_manager.observe(server_round, self._reported_nodes(results))
         return params, metrics
 
+    def _federated_holdings(self, fresh: Parameters, results: FitResults) -> Parameters:
+        """Federated round with per-node knowledge (node_holdings): see the class doc."""
+        glow = self._strategies["gossip"]
+        pools = glow.pool_parameters
+        participants = sorted(self._reported_nodes(results))
+        if self.node_holdings == "retain":
+            agg = dedup_union([fresh] + [pools.get(i) for i in participants])
+        else:
+            agg = dedup_union([fresh])
+        for i in participants:
+            pools[i] = agg
+        print(f"[Hybrid] federated ({self.node_holdings}): {len(participants)} participants "
+              f"{participants} -> aggregate of {len(agg.tensors)} boosters")
+        return agg
+
     def configure_evaluate(
         self,
         server_round: int,
@@ -295,6 +402,8 @@ class HybridStrategy(Strategy):
         client_manager: ClientManager,
     ) -> list[tuple[ClientProxy, any]]:
         _, strategy = self._active(server_round)
+        if strategy is None:
+            return []
         self._sync_participation(strategy, self.arch_manager.get_active_clients(server_round))
         filtered_manager = self._filter_manager(client_manager, server_round)
         return strategy.configure_evaluate(server_round, parameters, filtered_manager)
@@ -307,6 +416,8 @@ class HybridStrategy(Strategy):
     ) -> tuple[float | None, dict[str, Scalar]]:
         learn_cid_map(self.cid_map, results)
         _, strategy = self._active(server_round)
+        if strategy is None:
+            return None, {}
         return strategy.aggregate_evaluate(server_round, results, failures)
 
     def evaluate(
@@ -315,11 +426,24 @@ class HybridStrategy(Strategy):
         parameters:   Parameters,
     ) -> tuple[float, dict[str, Scalar]] | None:
         mode, strategy = self._active(server_round)
+        if self.holdings_log is not None and server_round > 0:
+            glow = self._strategies["gossip"]
+            nm = getattr(self.arch_manager, "node_modes", None)
+            rc = getattr(self.arch_manager, "reachable", None)
+            self.holdings_log.snapshot(
+                server_round, self._round_time(server_round),
+                self._round_mode.get(server_round, mode),
+                self.arch_manager.get_active_clients(server_round),
+                nm(server_round) if nm is not None else None,
+                glow.pool_parameters, glow.topology.num_nodes,
+                reachable=rc(server_round) if rc is not None else None)
         if self.round_eval_fn is not None and server_round > 0:
             # label with the mode the round was actually run in (configure_fit),
             # not any post-aggregation commit that only takes effect next round
-            run_mode = self._prev_mode or mode
+            run_mode = self._round_mode.get(server_round) or self._prev_mode or mode
             return self.round_eval_fn(server_round, run_mode, parameters)
+        if strategy is None:
+            return None
         return strategy.evaluate(server_round, parameters)
 
     # ── convenience accessors ─────────────────────────────────────────────────

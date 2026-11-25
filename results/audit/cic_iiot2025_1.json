@@ -1,0 +1,156 @@
+{
+ "dataset": "CIC IIoT 2025 (DataSense), 1sec windows",
+ "sample": "all rows",
+ "rows": 227191,
+ "feats": 71,
+ "ids": [
+  "dev",
+  "tstart"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.35121989867556375,
+  "multi_rows": 0.3483016492730786,
+  "per_label": {
+   "benign": {
+    "rows": 136800,
+    "multi": 0.506578947368421,
+    "as_benign": null
+   },
+   "recon": {
+    "rows": 33648,
+    "multi": 0.1741262482168331,
+    "as_benign": 0.17299690917736568
+   },
+   "dos": {
+    "rows": 18420,
+    "multi": 0.041150922909880566,
+    "as_benign": 0.04049945711183496
+   },
+   "ddos": {
+    "rows": 18056,
+    "multi": 0.08185644661054498,
+    "as_benign": 0.08052724856003544
+   },
+   "mitm": {
+    "rows": 8062,
+    "multi": 0.07119821384271893,
+    "as_benign": 0.07095013644257009
+   },
+   "malware": {
+    "rows": 7541,
+    "multi": 0.047208593024797775,
+    "as_benign": 0.04628033417318658
+   },
+   "web": {
+    "rows": 2796,
+    "multi": 0.14198855507868383,
+    "as_benign": 0.14198855507868383
+   },
+   "bruteforce": {
+    "rows": 1868,
+    "multi": 0.21895074946466808,
+    "as_benign": 0.21895074946466808
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.9959945420132928,
+  "per_label": {
+   "recon": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "dos": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "ddos": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "mitm": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "malware": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "web": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "bruteforce": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   }
+  }
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 136800,
+  "benign_share": 0.6021365282955751
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.908685211110869,
+   "per_label": {
+    "benign": 0.9403572604802158,
+    "bruteforce": 0.805439330543933,
+    "ddos": 0.9234105470675209,
+    "dos": 0.956221413236255,
+    "malware": 0.937129840546697,
+    "mitm": 0.9122055674518201,
+    "recon": 0.8641002884402041,
+    "web": 0.9306174411203055
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.6544060860612365,
+   "per_label": {
+    "benign": 0.960213138170671,
+    "bruteforce": 0.01866251944012442,
+    "ddos": 0.5545302750681079,
+    "dos": 0.463484292125663,
+    "malware": 0.7679934007011755,
+    "mitm": 0.5848911651728553,
+    "recon": 0.9276052484928314,
+    "web": 0.9578686493184635
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9985517832378309,
+   "per_label": {
+    "benign": 1.0,
+    "bruteforce": 0.991899189918992,
+    "ddos": 0.9998154300479882,
+    "dos": 0.9994570135746607,
+    "malware": 1.0,
+    "mitm": 0.9979372937293729,
+    "recon": 0.9999009312462849,
+    "web": 0.9994044073853484
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.585302622591687,
+   "per_label": {
+    "benign": 1.0,
+    "bruteforce": 0.8183716075156576,
+    "ddos": 0.5451807228915663,
+    "dos": 0.022623215728521412,
+    "malware": 0.8197790255388516,
+    "mitm": 0.4326386050946737,
+    "recon": 0.16986947063089194,
+    "web": 0.8739583333333333
+   }
+  }
+ }
+}

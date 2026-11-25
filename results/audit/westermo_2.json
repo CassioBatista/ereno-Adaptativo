@@ -1,0 +1,168 @@
+{
+ "dataset": "Westermo, attacker-involvement labelling (NST_M_Label)",
+ "sample": "all rows",
+ "rows": 68729,
+ "feats": 47,
+ "ids": [
+  "sAddress",
+  "rAddress",
+  "sMACs",
+  "rMACs",
+  "sIPs",
+  "rIPs",
+  "startDate",
+  "endDate",
+  "start",
+  "end",
+  "startOffset",
+  "endOffset"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.2023745434969227,
+  "multi_rows": 0.19635088536134673,
+  "per_label": {
+   "Normal": {
+    "rows": 54028,
+    "multi": 0.20868808765825128,
+    "as_benign": null
+   },
+   "BAD-MISCONF-DUPLICATION": {
+    "rows": 4611,
+    "multi": 0.2246801127738018,
+    "as_benign": 0.22381262199089136
+   },
+   "BAD-MISCONF": {
+    "rows": 3889,
+    "multi": 0.2306505528413474,
+    "as_benign": 0.2303934173309334
+   },
+   "BAD-SSH": {
+    "rows": 2968,
+    "multi": 0.05357142857142857,
+    "as_benign": 0.052223719676549867
+   },
+   "BAD-PORTSCAN2": {
+    "rows": 2179,
+    "multi": 0.02799449288664525,
+    "as_benign": 0.027535566773749427
+   },
+   "BAD-MITM": {
+    "rows": 708,
+    "multi": 0.025423728813559324,
+    "as_benign": 0.025423728813559324
+   },
+   "BAD-PORTSCAN1": {
+    "rows": 267,
+    "multi": 0.12359550561797752,
+    "as_benign": 0.10861423220973783
+   },
+   "GOOD-SSH": {
+    "rows": 79,
+    "multi": 0.20253164556962025,
+    "as_benign": 0.189873417721519
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.7742695844488419,
+  "per_label": {
+   "BAD-MISCONF-DUPLICATION": {
+    "benign_share_inside": 0.7836173586416048,
+    "benign_inside": 50903
+   },
+   "BAD-MISCONF": {
+    "benign_share_inside": 0.7853895620836158,
+    "benign_inside": 47509
+   },
+   "BAD-SSH": {
+    "benign_share_inside": 0.7897178317435448,
+    "benign_inside": 51413
+   },
+   "BAD-PORTSCAN2": {
+    "benign_share_inside": 0.787695692376367,
+    "benign_inside": 49409
+   },
+   "BAD-MITM": {
+    "benign_share_inside": 0.7875015388403299,
+    "benign_inside": 51175
+   },
+   "BAD-PORTSCAN1": {
+    "benign_share_inside": 0.7868291603547174,
+    "benign_inside": 46227
+   },
+   "GOOD-SSH": {
+    "benign_share_inside": 0.7885246712968309,
+    "benign_inside": 47798
+   }
+  }
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.6942047752768118,
+  "majority": 0.7861019365915407
+ },
+ "prevalence": {
+  "benign_rows": 54028,
+  "benign_share": 0.7861019365915407
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.6099906290434075,
+   "per_label": {
+    "BAD-MISCONF": 0.0,
+    "BAD-MISCONF-DUPLICATION": 0.040474528960223306,
+    "BAD-MITM": 0.9784172661870504,
+    "BAD-PORTSCAN1": 0.24489795918367346,
+    "BAD-PORTSCAN2": 0.9335324869305451,
+    "BAD-SSH": 0.9669565217391304,
+    "GOOD-SSH": 0.7906976744186046,
+    "Normal": 0.9249485949280329
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.5979824075736987,
+   "per_label": {
+    "BAD-MISCONF": 0.0,
+    "BAD-MISCONF-DUPLICATION": 0.0014295925661186562,
+    "BAD-MITM": 0.9521531100478469,
+    "BAD-PORTSCAN1": 0.2,
+    "BAD-PORTSCAN2": 0.9285714285714286,
+    "BAD-SSH": 0.9770642201834863,
+    "GOOD-SSH": 0.8,
+    "Normal": 0.9246409092207087
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.8935681032047894,
+   "per_label": {
+    "BAD-MISCONF": 0.6789168278529981,
+    "BAD-MISCONF-DUPLICATION": 0.7901140684410647,
+    "BAD-MITM": 0.995260663507109,
+    "BAD-PORTSCAN1": 0.9182389937106918,
+    "BAD-PORTSCAN2": 0.9908256880733946,
+    "BAD-SSH": 0.9842342342342343,
+    "GOOD-SSH": 0.8292682926829268,
+    "Normal": 0.9616860571358957
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.5539275540187272,
+   "per_label": {
+    "BAD-MISCONF": 0.013617021276595745,
+    "BAD-MISCONF-DUPLICATION": 0.03409090909090909,
+    "BAD-MITM": 0.8554216867469879,
+    "BAD-PORTSCAN1": 0.0,
+    "BAD-PORTSCAN2": 0.8288973384030418,
+    "BAD-SSH": 0.975,
+    "GOOD-SSH": 0.8,
+    "Normal": 0.9243934766322826
+   }
+  }
+ }
+}

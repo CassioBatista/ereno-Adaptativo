@@ -1,0 +1,90 @@
+[load] all_in_one_ereno_test.csv: 2,955,648 rows, 15 of 58 columns
+run ev1-tl-faithful-ereno_T1_switching_d600: 7 rounds, 14 nodes, holdings retain, arrival {2: 1800.0, 3: 1800.0, 10: 1800.0, 11: 1800.0, 8: 3600.0, 9: 3600.0}
+types by arrival: 0 s: random_replay, inverse_replay, masquerade_fake_fault, high_StNum; 1800 s: masquerade_fake_normal, injection; 3600 s: poisoned_high_rate
+
+per phase of 900 s: mean over the node-rounds, split by group (U unreachable / R reachable: reaches the aggregator or a ring neighbour)
+phase       group     n boosters   recall   late 1800   late 3600    FPR %
+900-1800    U         7      0.4    18.38         nan         nan    0.063
+900-1800    R        21      5.6    78.87         nan         nan    0.313
+1800-2700   U         8      8.0    73.81       15.70         nan    0.438
+1800-2700   R         6      8.7    82.53       43.80         nan    0.492
+2700-3600   R        28      8.3    78.14       29.65         nan    0.461
+3600-4500   R        14     14.0    99.97       99.99      100.00    0.626
+4500-5400   R        14     14.0    99.97       99.99      100.00    0.626
+
+per node at the last round of each phase: boosters / recall present / recall_late_1800 / recall_late_3600 / FPR % (mode)
+  t=  1500 s (round 2):
+    node  1 FR   8   99.93     —       —    0.438
+    node  2 FR   8   99.93     —       —    0.438
+    node  3 FR   8   99.93     —       —    0.438
+    node  4 FR   8   99.93     —       —    0.438
+    node  5 FR   8   99.93     —       —    0.438
+    node  6 FR   8   99.93     —       —    0.438
+    node  7 FR   8   99.93     —       —    0.438
+    node  8 FR   8   99.93     —       —    0.438
+    node  9 FR   8   99.93     —       —    0.438
+    node 10 FR   8   99.93     —       —    0.438
+    node 11 FR   8   99.93     —       —    0.438
+    node 12 FR   8   99.93     —       —    0.438
+    node 13 FR   8   99.93     —       —    0.438
+    node 14 FR   8   99.93     —       —    0.438
+  t=  2100 s (round 3):
+    node  1 LU   8   73.81   15.70     —    0.438
+    node  2 LU   8   73.81   15.70     —    0.438
+    node  3 LR   9   90.38   69.12     —    0.438
+    node  4 LR   9   90.38   69.12     —    0.438
+    node  5 LU   8   73.81   15.70     —    0.438
+    node  6 LU   8   73.81   15.70     —    0.438
+    node  7 LR   8   73.81   15.70     —    0.438
+    node  8 LR   8   73.81   15.70     —    0.438
+    node  9 LU   8   73.81   15.70     —    0.438
+    node 10 LU   8   73.81   15.70     —    0.438
+    node 11 LR   9   83.39   46.57     —    0.578
+    node 12 LR   9   83.39   46.57     —    0.621
+    node 13 LU   8   73.81   15.70     —    0.438
+    node 14 LU   8   73.81   15.70     —    0.438
+  t=  3300 s (round 5):
+    node  1 GR   8   73.81   15.70     —    0.438
+    node  2 GR   8   73.81   15.70     —    0.438
+    node  3 GR   9   90.38   69.12     —    0.438
+    node  4 GR   9   90.38   69.12     —    0.438
+    node  5 GR   9   90.38   69.12     —    0.438
+    node  6 GR   8   73.81   15.70     —    0.438
+    node  7 GR   8   73.81   15.70     —    0.438
+    node  8 GR   8   73.81   15.70     —    0.438
+    node  9 GR   8   73.81   15.70     —    0.438
+    node 10 GR   8   73.81   15.70     —    0.438
+    node 11 GR   9   83.39   46.57     —    0.578
+    node 12 GR   9   83.39   46.57     —    0.621
+    node 13 GR   8   73.81   15.70     —    0.438
+    node 14 GR   8   73.81   15.70     —    0.438
+  t=  3900 s (round 6):
+    node  1 FR  14   99.97   99.99  100.00  0.626
+    node  2 FR  14   99.97   99.99  100.00  0.626
+    node  3 FR  14   99.97   99.99  100.00  0.626
+    node  4 FR  14   99.97   99.99  100.00  0.626
+    node  5 FR  14   99.97   99.99  100.00  0.626
+    node  6 FR  14   99.97   99.99  100.00  0.626
+    node  7 FR  14   99.97   99.99  100.00  0.626
+    node  8 FR  14   99.97   99.99  100.00  0.626
+    node  9 FR  14   99.97   99.99  100.00  0.626
+    node 10 FR  14   99.97   99.99  100.00  0.626
+    node 11 FR  14   99.97   99.99  100.00  0.626
+    node 12 FR  14   99.97   99.99  100.00  0.626
+    node 13 FR  14   99.97   99.99  100.00  0.626
+    node 14 FR  14   99.97   99.99  100.00  0.626
+  t=  4500 s (round 7):
+    node  1 FR  14   99.97   99.99  100.00  0.626
+    node  2 FR  14   99.97   99.99  100.00  0.626
+    node  3 FR  14   99.97   99.99  100.00  0.626
+    node  4 FR  14   99.97   99.99  100.00  0.626
+    node  5 FR  14   99.97   99.99  100.00  0.626
+    node  6 FR  14   99.97   99.99  100.00  0.626
+    node  7 FR  14   99.97   99.99  100.00  0.626
+    node  8 FR  14   99.97   99.99  100.00  0.626
+    node  9 FR  14   99.97   99.99  100.00  0.626
+    node 10 FR  14   99.97   99.99  100.00  0.626
+    node 11 FR  14   99.97   99.99  100.00  0.626
+    node 12 FR  14   99.97   99.99  100.00  0.626
+    node 13 FR  14   99.97   99.99  100.00  0.626
+    node 14 FR  14   99.97   99.99  100.00  0.626

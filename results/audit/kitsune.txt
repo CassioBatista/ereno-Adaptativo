@@ -1,0 +1,52 @@
+DATASET AUDIT — Kitsune (five captures)
+rows 1,862,222 (stride sample of each capture, at most 400,000 packets (sample cache of inspect_kitsune.py)); content features 100; identifiers ['f65', 'f66', 'f67', 'f68', 'f69', 'f70', 'f71', 'f72', 'f73', 'f74', 'f75', 'f76', 'f77', 'f78', 'f79', 'cap']; benign label 'normal'
+note: no timestamp column: _t is the packet index inside its capture; the jitter statistics (f65-f79) carry the capture time and are treated as identifiers; the capture id is an identifier
+
+=== (i) STRUCTURE ===
+  kitsune/Mirai_dataset.csv                                    fields per line={116: 764137}; header lines inside the data=0
+  kitsune/OS_Scan_dataset.csv                                  fields per line={115: 1697851}; header lines inside the data=0
+  kitsune/Fuzzing_dataset.csv                                  fields per line={115: 2244139}; header lines inside the data=0
+  kitsune/SYN_DoS_dataset.csv                                  fields per line={115: 2771276}; header lines inside the data=0
+  kitsune/SSDP_Flood_dataset.csv                               fields per line={115: 4077266}; header lines inside the data=0
+  columns checked 116; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 1,862,222; duplicates on all columns 1 (0.00%); without identifiers 8 (0.00%)
+feature vectors with >1 label 2; rows in them 4 (0.00%)
+  normal                       rows   1,323,834  in multi-label vectors   0.00%
+  Mirai                        rows     321,258  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  SSDP_Flood                   rows     130,923  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Fuzzing                      rows      72,159  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  OS_Scan                      rows      13,074  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  SYN_DoS                      rows         974  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+packet order (no timestamp) present in 100.00% of rows; non-decreasing in file order 100.00% of steps (mean over 1 file(s)); span 4,077,260 packets
+label runs in file order 48,710 for 6 labels
+  Mirai                        span  642,514 packets  benign share inside  54.56%  benign rows inside 385,787
+  SSDP_Flood                   span 1,455,498 packets  benign share inside  14.17%  benign rows inside 21,781
+  Fuzzing                      span  944,052 packets  benign share inside  81.37%  benign rows inside 372,367
+  OS_Scan                      span  255,550 packets  benign share inside  78.75%  benign rows inside 120,833
+  SYN_DoS                      span   88,788 packets  benign share inside  56.94%  benign rows inside 11,818
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  normal                         1,323,834  71.09%
+  Mirai                            321,258  17.25%
+  SSDP_Flood                       130,923  7.03%
+  Fuzzing                           72,159  3.87%
+  OS_Scan                           13,074  0.70%
+  SYN_DoS                              974  0.05%
+benign 1,323,834 rows (71.09%); attack 28.91%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 386,207: normal 100,000, Mirai 100,000, SSDP_Flood 100,000, Fuzzing 72,159, OS_Scan 13,074, SYN_DoS 974
+  content                  random 70/30                                 macro-F1=0.995  Fuzzing=1.00  Mirai=0.99  OS_Scan=1.00  SSDP_Flood=1.00  SYN_DoS=1.00  normal=0.99
+  content                  time-ordered 70/30 per label                 macro-F1=0.872  Fuzzing=1.00  Mirai=1.00  OS_Scan=1.00  SSDP_Flood=1.00  SYN_DoS=0.25  normal=1.00
+  content + identifiers    random 70/30                                 macro-F1=1.000  Fuzzing=1.00  Mirai=1.00  OS_Scan=1.00  SSDP_Flood=1.00  SYN_DoS=1.00  normal=1.00
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.710  Fuzzing=1.00  Mirai=1.00  OS_Scan=0.08  SSDP_Flood=1.00  SYN_DoS=0.25  normal=0.94
+
+(run time 677 s)

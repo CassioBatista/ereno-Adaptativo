@@ -1,9 +1,9 @@
 {
   "dataset": "all_in_one_ev1_morris4_train",
-  "method": "GRASP lambda=0.05: penalized global (multiclass) U binary per attack type (evaluation-v1, best-subset retention rule, per-type seeding)",
+  "tag": "bsr005crc",
+  "method": "GRASP lambda=0.05: penalized global (multiclass) U binary per attack type (evaluation-v1, best-subset retention rule, per-type seeding; Morris-4 data rebuilt with Q2d before Q2a and crc rate as content, amendments of 2026-11-16 and 2026-11-17)",
   "global": [
     2,
-    3,
     4,
     5,
     6,
@@ -14,7 +14,8 @@
     11,
     12,
     13,
-    14
+    14,
+    16
   ],
   "per_type": {
     "specific_1": [
@@ -23,6 +24,24 @@
       8
     ],
     "specific_10": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      12,
+      13
+    ],
+    "specific_11": [
+      8
+    ],
+    "specific_12": [
+      8
+    ],
+    "specific_13": [
       1,
       4,
       5,
@@ -30,14 +49,34 @@
       7,
       8,
       10,
+      11,
+      12,
       13,
-      15
+      14,
+      15,
+      16
     ],
-    "specific_11": [
-      8
+    "specific_14": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      11,
+      13,
+      16
     ],
-    "specific_12": [
-      8
+    "specific_15": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      10,
+      11,
+      13,
+      16
     ],
     "specific_16": [
       4,
@@ -48,17 +87,34 @@
       10,
       12
     ],
-    "specific_19": [
-      3
+    "specific_18": [
+      4,
+      5,
+      7,
+      8,
+      16
     ],
-    "specific_20": [
+    "specific_19": [
       2
     ],
+    "specific_2": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      13,
+      15
+    ],
+    "specific_20": [
+      3,
+      16
+    ],
     "specific_21": [
-      3
+      2
     ],
     "specific_22": [
-      3
+      2
     ],
     "specific_23": [
       3
@@ -69,61 +125,82 @@
       14
     ],
     "specific_25": [
-      14
+      10,
+      14,
+      15,
+      16
     ],
     "specific_26": [
-      14
+      14,
+      16
     ],
     "specific_27": [
+      3,
+      13,
       14,
-      15
+      16
     ],
     "specific_28": [
-      14
+      2,
+      6,
+      14,
+      16
     ],
     "specific_29": [
-      14
+      10,
+      14,
+      16
     ],
     "specific_3": [
       5
     ],
     "specific_30": [
-      14
+      6,
+      9,
+      12,
+      14,
+      16
     ],
     "specific_31": [
-      14
+      6,
+      10,
+      14,
+      16
     ],
     "specific_32": [
       14
     ],
     "specific_33": [
-      14
+      12,
+      14,
+      16
     ],
     "specific_34": [
       14
     ],
     "specific_35": [
-      14
+      2,
+      6,
+      14,
+      16
     ],
     "specific_4": [
       5
     ],
     "specific_5": [
-      1,
-      3,
       5,
       6,
-      7,
       8,
-      11,
+      10,
       13
     ],
     "specific_6": [
       4,
       5,
       6,
+      7,
       8,
-      10
+      15
     ],
     "specific_7": [
       9
@@ -132,15 +209,13 @@
       9
     ],
     "specific_9": [
-      1,
       4,
       5,
       6,
       7,
       8,
       11,
-      12,
-      13
+      15
     ]
   },
   "features": [
@@ -158,9 +233,10 @@
     12,
     13,
     14,
-    15
+    15,
+    16
   ],
-  "n_features": 15,
+  "n_features": 16,
   "names": [
     "address",
     "function",
@@ -176,7 +252,8 @@
     "pump",
     "solenoid",
     "pressure measurement",
-    "command response"
+    "command response",
+    "crc rate"
   ],
   "per_type_names": {
     "specific_1": [
@@ -185,6 +262,24 @@
       "cycle time"
     ],
     "specific_10": [
+      "length",
+      "setpoint",
+      "gain",
+      "reset rate",
+      "deadband",
+      "cycle time",
+      "rate",
+      "system mode",
+      "pump",
+      "solenoid"
+    ],
+    "specific_11": [
+      "cycle time"
+    ],
+    "specific_12": [
+      "cycle time"
+    ],
+    "specific_13": [
       "address",
       "setpoint",
       "gain",
@@ -192,14 +287,34 @@
       "deadband",
       "cycle time",
       "system mode",
+      "control scheme",
+      "pump",
       "solenoid",
-      "command response"
+      "pressure measurement",
+      "command response",
+      "crc rate"
     ],
-    "specific_11": [
-      "cycle time"
+    "specific_14": [
+      "length",
+      "setpoint",
+      "gain",
+      "reset rate",
+      "deadband",
+      "cycle time",
+      "control scheme",
+      "solenoid",
+      "crc rate"
     ],
-    "specific_12": [
-      "cycle time"
+    "specific_15": [
+      "setpoint",
+      "gain",
+      "reset rate",
+      "deadband",
+      "cycle time",
+      "system mode",
+      "control scheme",
+      "solenoid",
+      "crc rate"
     ],
     "specific_16": [
       "setpoint",
@@ -210,17 +325,34 @@
       "system mode",
       "pump"
     ],
-    "specific_19": [
-      "length"
+    "specific_18": [
+      "setpoint",
+      "gain",
+      "deadband",
+      "cycle time",
+      "crc rate"
     ],
-    "specific_20": [
+    "specific_19": [
       "function"
     ],
+    "specific_2": [
+      "setpoint",
+      "gain",
+      "reset rate",
+      "deadband",
+      "cycle time",
+      "solenoid",
+      "command response"
+    ],
+    "specific_20": [
+      "length",
+      "crc rate"
+    ],
     "specific_21": [
-      "length"
+      "function"
     ],
     "specific_22": [
-      "length"
+      "function"
     ],
     "specific_23": [
       "length"
@@ -231,61 +363,82 @@
       "pressure measurement"
     ],
     "specific_25": [
-      "pressure measurement"
+      "system mode",
+      "pressure measurement",
+      "command response",
+      "crc rate"
     ],
     "specific_26": [
-      "pressure measurement"
+      "pressure measurement",
+      "crc rate"
     ],
     "specific_27": [
+      "length",
+      "solenoid",
       "pressure measurement",
-      "command response"
+      "crc rate"
     ],
     "specific_28": [
-      "pressure measurement"
+      "function",
+      "reset rate",
+      "pressure measurement",
+      "crc rate"
     ],
     "specific_29": [
-      "pressure measurement"
+      "system mode",
+      "pressure measurement",
+      "crc rate"
     ],
     "specific_3": [
       "gain"
     ],
     "specific_30": [
-      "pressure measurement"
+      "reset rate",
+      "rate",
+      "pump",
+      "pressure measurement",
+      "crc rate"
     ],
     "specific_31": [
-      "pressure measurement"
+      "reset rate",
+      "system mode",
+      "pressure measurement",
+      "crc rate"
     ],
     "specific_32": [
       "pressure measurement"
     ],
     "specific_33": [
-      "pressure measurement"
+      "pump",
+      "pressure measurement",
+      "crc rate"
     ],
     "specific_34": [
       "pressure measurement"
     ],
     "specific_35": [
-      "pressure measurement"
+      "function",
+      "reset rate",
+      "pressure measurement",
+      "crc rate"
     ],
     "specific_4": [
       "gain"
     ],
     "specific_5": [
-      "address",
-      "length",
       "gain",
       "reset rate",
-      "deadband",
       "cycle time",
-      "control scheme",
+      "system mode",
       "solenoid"
     ],
     "specific_6": [
       "setpoint",
       "gain",
       "reset rate",
+      "deadband",
       "cycle time",
-      "system mode"
+      "command response"
     ],
     "specific_7": [
       "rate"
@@ -294,15 +447,13 @@
       "rate"
     ],
     "specific_9": [
-      "address",
       "setpoint",
       "gain",
       "reset rate",
       "deadband",
       "cycle time",
       "control scheme",
-      "pump",
-      "solenoid"
+      "command response"
     ]
   }
 }

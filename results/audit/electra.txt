@@ -1,0 +1,62 @@
+DATASET AUDIT — Electra Modbus
+rows 16,289,277 (all rows); content features 5; identifiers ['Time', 'smac', 'dmac', 'sip', 'dip']; benign label 'NORMAL'
+note: all eight labels of the release
+
+=== (i) STRUCTURE ===
+  electra/electra_modbus.csv                                   fields per line={11: 16289277}; header lines inside the data=0
+  columns checked 10; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 16,289,277; duplicates on all columns 0 (0.00%); without identifiers 16,248,113 (99.75%)
+feature vectors with >1 label 274; rows in them 15,834,423 (97.21%)
+  NORMAL                       rows  13,894,323  in multi-label vectors  99.60%
+  MITM_UNALTERED               rows   1,550,617  in multi-label vectors  92.98%  vector also occurs as benign  83.02%
+  READ_ATTACK                  rows     785,961  in multi-label vectors  70.30%  vector also occurs as benign  65.78%
+  RECOGNITION_ATTACK           rows      30,580  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  RESPONSE_ATTACK              rows      16,353  in multi-label vectors   3.01%  vector also occurs as benign   0.18%
+  WRITE_ATTACK                 rows       9,417  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  FORCE_ERROR_ATTACK           rows       1,129  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  REPLAY_ATTACK                rows         897  in multi-label vectors  97.10%  vector also occurs as benign  97.10%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 99.94% of steps (mean over 1 file(s)); span 13.98 h
+label runs in file order 144,519 for 8 labels
+  MITM_UNALTERED               span          13.94 h  benign share inside  85.27%  benign rows inside 13,856,580
+  READ_ATTACK                  span          13.86 h  benign share inside  86.15%  benign rows inside 13,777,920
+  RECOGNITION_ATTACK           span          13.78 h  benign share inside  86.18%  benign rows inside 13,692,429
+  RESPONSE_ATTACK              span          13.90 h  benign share inside  85.24%  benign rows inside 13,814,835
+  WRITE_ATTACK                 span          13.76 h  benign share inside  86.17%  benign rows inside 13,673,523
+  FORCE_ERROR_ATTACK           span          13.90 h  benign share inside  85.25%  benign rows inside 13,814,145
+  REPLAY_ATTACK                span          11.40 h  benign share inside  85.83%  benign rows inside 11,333,457
+
+=== (iv) ATTRIBUTION ===
+  NORMAL                       distinct sources       2  top: 00:0e:8c:e1:de:9c (98.55%), 00:1b:1b:c1:41:1b (1.45%)
+  MITM_UNALTERED               distinct sources       3  top: 08:00:27:79:b0:4a (56.39%), 00:0e:8c:e1:dd:58 (42.75%), 00:1b:1b:c1:41:1b (0.87%)  sources also emitting benign 0.87%
+  READ_ATTACK                  distinct sources       2  top: 00:0e:8c:e1:dd:58 (97.32%), 08:00:27:79:b0:4a (2.68%)  sources also emitting benign 0.00%
+  RECOGNITION_ATTACK           distinct sources       2  top: 08:00:27:79:b0:4a (54.28%), 00:0e:8c:e1:dd:58 (45.72%)  sources also emitting benign 0.00%
+  RESPONSE_ATTACK              distinct sources       1  top: 08:00:27:79:b0:4a (100.00%)  sources also emitting benign 0.00%
+  WRITE_ATTACK                 distinct sources       2  top: 00:0e:8c:e1:dd:58 (64.08%), 08:00:27:79:b0:4a (35.92%)  sources also emitting benign 0.00%
+  FORCE_ERROR_ATTACK           distinct sources       1  top: 08:00:27:79:b0:4a (100.00%)  sources also emitting benign 0.00%
+  REPLAY_ATTACK                distinct sources       2  top: 00:0e:8c:e1:dd:58 (98.55%), 08:00:27:79:b0:4a (1.45%)  sources also emitting benign 0.00%
+source alone -> label (majority per source): 95.36%, against 85.30% for the majority class
+
+=== (v) PREVALENCE ===
+  NORMAL                        13,894,323  85.30%
+  MITM_UNALTERED                 1,550,617  9.52%
+  READ_ATTACK                      785,961  4.83%
+  RECOGNITION_ATTACK                30,580  0.19%
+  RESPONSE_ATTACK                   16,353  0.10%
+  WRITE_ATTACK                       9,417  0.06%
+  FORCE_ERROR_ATTACK                 1,129  0.01%
+  REPLAY_ATTACK                        897  0.01%
+benign 13,894,323 rows (85.30%); attack 14.70%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 358,376: MITM_UNALTERED 100,000, NORMAL 100,000, READ_ATTACK 100,000, RECOGNITION_ATTACK 30,580, RESPONSE_ATTACK 16,353, WRITE_ATTACK 9,417, FORCE_ERROR_ATTACK 1,129, REPLAY_ATTACK 897
+  content                  random 70/30                                 macro-F1=0.668  FORCE_ERROR_ATTACK=1.00  MITM_UNALTERED=0.27  NORMAL=0.57  READ_ATTACK=0.50  RECOGNITION_ATTACK=1.00  REPLAY_ATTACK=0.02  RESPONSE_ATTACK=0.97  WRITE_ATTACK=1.00
+  content                  time-ordered 70/30 per label                 macro-F1=0.674  FORCE_ERROR_ATTACK=1.00  MITM_UNALTERED=0.29  NORMAL=0.57  READ_ATTACK=0.50  RECOGNITION_ATTACK=1.00  REPLAY_ATTACK=0.06  RESPONSE_ATTACK=0.97  WRITE_ATTACK=1.00
+  content + identifiers    random 70/30                                 macro-F1=0.977  FORCE_ERROR_ATTACK=1.00  MITM_UNALTERED=1.00  NORMAL=1.00  READ_ATTACK=1.00  RECOGNITION_ATTACK=1.00  REPLAY_ATTACK=0.85  RESPONSE_ATTACK=0.98  WRITE_ATTACK=1.00
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.833  FORCE_ERROR_ATTACK=1.00  MITM_UNALTERED=0.93  NORMAL=1.00  READ_ATTACK=0.99  RECOGNITION_ATTACK=1.00  REPLAY_ATTACK=0.01  RESPONSE_ATTACK=0.73  WRITE_ATTACK=1.00
+
+(run time 157 s)

@@ -1,0 +1,16 @@
+evaluation-v1 section 6, window alarms -- ERENO -- seed 42; 2,955,648 test rows (200,509 attack), 14 specialists, OR at 0.5; time span 1.38 h
+alarm: n_f >= ceil(1.25 max benign) + 1 OR fraction > 1.25 max benign OR any S_s >= max(ceil(1.25 max benign S_s) + 1, 2); blocked-5 out-of-sample calibration
+
+=== 1-s windows (primary): 282 attack + 724 benign windows; samples per window median 4758, mean 2938.0
+  network-wide  attack windows alarmed 276/282 = 97.87 % [95.43, 99.22]; false alarms 1 of 724 (0.138 %)
+  full rule     attack windows alarmed 280/282 = 99.29 % [97.46, 99.91]; false alarms 1 of 724 (0.138 %)
+  per type, full rule (windows holding the type: alarmed / windows):
+    injection                              47/48      97.92 %  [88.9, 99.9]
+    high_StNum                             49/50      98.00 %  [89.4, 99.9]
+    random_replay                          39/39     100.00 %  [91.0, 100.0]
+    inverse_replay                         39/39     100.00 %  [91.0, 100.0]
+    masquerade_fake_fault                  39/39     100.00 %  [91.0, 100.0]
+    masquerade_fake_normal                 39/39     100.00 %  [91.0, 100.0]
+    poisoned_high_rate                     39/39     100.00 %  [91.0, 100.0]
+  folds: 0: 202 win (52 attack), 574 benign for calibration, T=326, f=0.0436, T_s 2-294; 1: 201 win (74 attack), 597 benign for calibration, T=209, f=0.0436, T_s 2-193; 2: 201 win (57 attack), 580 benign for calibration, T=326, f=0.0436, T_s 2-294; 3: 201 win (38 attack), 561 benign for calibration, T=326, f=0.0436, T_s 2-294; 4: 201 win (61 attack), 584 benign for calibration, T=326, f=0.0436, T_s 2-294
+

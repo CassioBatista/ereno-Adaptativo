@@ -1,0 +1,193 @@
+{
+ "dataset": "ToN_IoT (network part)",
+ "sample": "every second flow of each of the 23 files",
+ "rows": 11169511,
+ "feats": 33,
+ "ids": [
+  "ts",
+  "src_ip",
+  "src_port",
+  "dst_ip",
+  "dst_port",
+  "dns_query",
+  "ssl_subject",
+  "ssl_issuer",
+  "http_uri",
+  "http_referrer",
+  "http_user_agent"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.06258823685298309,
+  "dup_feat": 0.6900093477682236,
+  "multi_rows": 0.49694619576452365,
+  "per_label": {
+   "scanning": {
+    "rows": 3570004,
+    "multi": 0.7907366490345669,
+    "as_benign": 0.3444828073021767
+   },
+   "ddos": {
+    "rows": 3082733,
+    "multi": 0.18707328853974703,
+    "as_benign": 0.04200298890627245
+   },
+   "dos": {
+    "rows": 1687636,
+    "multi": 0.9472208462014321,
+    "as_benign": 2.2516703838979496e-05
+   },
+   "xss": {
+    "rows": 1054458,
+    "multi": 0.08278565860375663,
+    "as_benign": 0.007298536309649128
+   },
+   "password": {
+    "rows": 859318,
+    "multi": 0.10866640754644963,
+    "as_benign": 0.08779171389404156
+   },
+   "normal": {
+    "rows": 397992,
+    "multi": 0.20098896460230356,
+    "as_benign": null
+   },
+   "backdoor": {
+    "rows": 254099,
+    "multi": 0.9944982073916072,
+    "as_benign": 0.0002676122298789055
+   },
+   "injection": {
+    "rows": 226289,
+    "multi": 0.02532160202219286,
+    "as_benign": 0.001970930977643633
+   },
+   "ransomware": {
+    "rows": 36463,
+    "multi": 0.9143241093711434,
+    "as_benign": 0.9087842470449496
+   },
+   "mitm": {
+    "rows": 519,
+    "multi": 0.03275529865125241,
+    "as_benign": 0.009633911368015413
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.9999988361172514,
+  "per_label": {
+   "scanning": {
+    "benign_share_inside": 0.006750472349438703,
+    "benign_inside": 24263
+   },
+   "ddos": {
+    "benign_share_inside": 0.014372606457297824,
+    "benign_inside": 44953
+   },
+   "dos": {
+    "benign_share_inside": 0.029351204485272633,
+    "benign_inside": 51032
+   },
+   "xss": {
+    "benign_share_inside": 0.014801457535270485,
+    "benign_inside": 15842
+   },
+   "password": {
+    "benign_share_inside": 0.020189846355577093,
+    "benign_inside": 17707
+   },
+   "backdoor": {
+    "benign_share_inside": 0.075701138554436,
+    "benign_inside": 20811
+   },
+   "injection": {
+    "benign_share_inside": 0.05133042388264936,
+    "benign_inside": 12244
+   },
+   "ransomware": {
+    "benign_share_inside": 0.728415015641293,
+    "benign_inside": 97797
+   },
+   "mitm": {
+    "benign_share_inside": 0.9473310330830119,
+    "benign_inside": 9335
+   }
+  }
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.6312366763415157,
+  "majority": 0.3196204381731662
+ },
+ "prevalence": {
+  "benign_rows": 397992,
+  "benign_share": 0.035631998571826466
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.9149328683555338,
+   "per_label": {
+    "backdoor": 0.9611886479612369,
+    "ddos": 0.9770636782501562,
+    "dos": 0.9922356892280579,
+    "injection": 0.9760702746365105,
+    "mitm": 0.6072607260726073,
+    "normal": 0.9518161104409597,
+    "password": 0.9818731614323982,
+    "ransomware": 0.7820082478181644,
+    "scanning": 0.9403191398583497,
+    "xss": 0.9794930078568957
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.8315359852040899,
+   "per_label": {
+    "backdoor": 0.898654520391957,
+    "ddos": 0.9641309170335484,
+    "dos": 0.9828394675792625,
+    "injection": 0.9718201571118168,
+    "mitm": 0.4788732394366197,
+    "normal": 0.7386051162403133,
+    "password": 0.9740462484144795,
+    "ransomware": 0.49992157682856697,
+    "scanning": 0.8326710497796402,
+    "xss": 0.9737975592246949
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9986004936739435,
+   "per_label": {
+    "backdoor": 0.9998333333333334,
+    "ddos": 1.0,
+    "dos": 0.9999499991666527,
+    "injection": 0.9999666666666667,
+    "mitm": 0.987012987012987,
+    "normal": 0.999916670833125,
+    "password": 1.0,
+    "ransomware": 0.9993752788933512,
+    "scanning": 0.9999500008333194,
+    "xss": 1.0
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.3313247775111834,
+   "per_label": {
+    "backdoor": 0.8532673020619199,
+    "ddos": 0.33153735074453056,
+    "dos": 0.2432103894505224,
+    "injection": 0.16409438108192947,
+    "mitm": 0.06806282722513089,
+    "normal": 0.21195139543916108,
+    "password": 0.28094790918632273,
+    "ransomware": 0.420854366006178,
+    "scanning": 0.05232746867493345,
+    "xss": 0.6869943852412055
+   }
+  }
+ }
+}

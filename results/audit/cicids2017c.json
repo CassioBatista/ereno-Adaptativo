@@ -1,0 +1,189 @@
+{
+ "dataset": "CICIDS2017, improved (Liu et al., version of 27 April 2023)",
+ "sample": "all rows",
+ "rows": 2099976,
+ "feats": 82,
+ "ids": [
+  "id",
+  "Flow ID",
+  "Src IP",
+  "Src Port",
+  "Dst IP",
+  "Dst Port",
+  "Timestamp"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.18339971504436242,
+  "multi_rows": 0.043399543613831776,
+  "per_label": {
+   "Benign": {
+    "rows": 1594545,
+    "multi": 9.407072236907707e-06,
+    "as_benign": null
+   },
+   "DoS": {
+    "rows": 171634,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "PortScan": {
+    "rows": 159066,
+    "multi": 0.4798574176756818,
+    "as_benign": 0.01659059761356921
+   },
+   "DDoS": {
+    "rows": 95144,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Infiltration-Portscan": {
+    "rows": 71767,
+    "multi": 0.20613931194002816,
+    "as_benign": 0.000334415539175387
+   },
+   "BruteForce": {
+    "rows": 6933,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Bot": {
+    "rows": 736,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Web": {
+    "rows": 104,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Infiltration": {
+    "rows": 36,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Heartbleed": {
+    "rows": 11,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.5534346837462351,
+  "per_label": {
+   "DoS": {
+    "benign_share_inside": 0.30740797533634096,
+    "benign_inside": 76180
+   },
+   "PortScan": {
+    "benign_share_inside": 0.27977179597473456,
+    "benign_inside": 61789
+   },
+   "DDoS": {
+    "benign_share_inside": 0.14792857014920027,
+    "benign_inside": 16518
+   },
+   "Infiltration-Portscan": {
+    "benign_share_inside": 0.5252756988337345,
+    "benign_inside": 79449
+   },
+   "BruteForce": {
+    "benign_share_inside": 0.9729448125687794,
+    "benign_inside": 249321
+   },
+   "Bot": {
+    "benign_share_inside": 0.9857031857031857,
+    "benign_inside": 50744
+   },
+   "Web": {
+    "benign_share_inside": 0.9981875849569551,
+    "benign_inside": 57278
+   },
+   "Infiltration": {
+    "benign_share_inside": 0.48626018959094097,
+    "benign_inside": 65915
+   },
+   "Heartbleed": {
+    "benign_share_inside": 0.9995105890727888,
+    "benign_inside": 22465
+   }
+  }
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.8371833773338362,
+  "majority": 0.7593158207522371
+ },
+ "prevalence": {
+  "benign_rows": 1594545,
+  "benign_share": 0.7593158207522371
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.9553992526611739,
+   "per_label": {
+    "Benign": 0.9996834019295819,
+    "Bot": 0.9954545454545455,
+    "BruteForce": 0.9997595575859581,
+    "DDoS": 1.0,
+    "DoS": 0.999950002499875,
+    "Heartbleed": 0.8,
+    "Infiltration": 0.9,
+    "Infiltration-Portscan": 0.9365541740674955,
+    "PortScan": 0.955924178407615,
+    "Web": 0.9666666666666667
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.9422055144260557,
+   "per_label": {
+    "Benign": 0.9811401912450782,
+    "Bot": 1.0,
+    "BruteForce": 0.9924921288447566,
+    "DDoS": 0.9997196523689375,
+    "DoS": 0.9885882848714707,
+    "Heartbleed": 1.0,
+    "Infiltration": 0.8461538461538461,
+    "Infiltration-Portscan": 0.9383960255500355,
+    "PortScan": 0.9555650152264318,
+    "Web": 0.72
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9818131129629453,
+   "per_label": {
+    "Benign": 0.9998499874989583,
+    "Bot": 0.9977426636568849,
+    "BruteForce": 1.0,
+    "DDoS": 1.0,
+    "DoS": 0.999950002499875,
+    "Heartbleed": 1.0,
+    "Infiltration": 0.9,
+    "Infiltration-Portscan": 0.9999535553388138,
+    "PortScan": 1.0,
+    "Web": 0.9206349206349206
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.6214488777972249,
+   "per_label": {
+    "Benign": 0.321444395214887,
+    "Bot": 0.0973568281938326,
+    "BruteForce": 0.9923334930522281,
+    "DDoS": 0.9387466495650602,
+    "DoS": 0.9828803943298543,
+    "Heartbleed": 0.47058823529411764,
+    "Infiltration": 0.0,
+    "Infiltration-Portscan": 0.9159983833570866,
+    "PortScan": 0.8399679851720797,
+    "Web": 0.6551724137931034
+   }
+  }
+ }
+}

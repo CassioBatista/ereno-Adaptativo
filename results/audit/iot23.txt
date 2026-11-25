@@ -1,0 +1,81 @@
+DATASET AUDIT — IoT-23
+rows 664,788 (uniform sample of up to 20,000 flows per capture and detailed label (scan cache of inspect_iot23.py)); content features 12; identifiers ['ts', 'orig_h', 'orig_p', 'resp_h', 'resp_p']; benign label 'Benign'
+
+=== (i) STRUCTURE ===
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-Honeypot-Capture-4-1/bro/conn.log.labeled fields per line={21: 452}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-Honeypot-Capture-5-1/bro/conn.log.labeled fields per line={21: 1374}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-Honeypot-Capture-7-1/Somfy-01/bro/conn.log.labeled fields per line={21: 130}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-1-1/bro/conn.log.labeled fields per line={21: 1008748}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-17-1/bro/conn.log.labeled fields per line={21: 54659855}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-20-1/bro/conn.log.labeled fields per line={21: 3209}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-21-1/bro/conn.log.labeled fields per line={21: 3286}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-3-1/bro/conn.log.labeled fields per line={21: 156103}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-33-1/bro/conn.log.labeled fields per line={21: 54454591}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-34-1/bro/conn.log.labeled fields per line={21: 23145}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-35-1/bro/conn.log.labeled fields per line={21: 10447787}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-36-1/bro/conn.log.labeled fields per line={21: 13645098}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-39-1/bro/conn.log.labeled fields per line={21: 73568981}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-42-1/bro/conn.log.labeled fields per line={21: 4426}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-43-1/bro/conn.log.labeled fields per line={21: 67321809}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-44-1/bro/conn.log.labeled fields per line={21: 237}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-48-1/bro/conn.log.labeled fields per line={21: 3394338}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-49-1/bro/conn.log.labeled fields per line={21: 5410561}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-52-1/bro/conn.log.labeled fields per line={21: 19781378}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-60-1/bro/conn.log.labeled fields per line={21: 3581028}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-7-1/bro/conn.log.labeled fields per line={21: 11454714}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-8-1/bro/conn.log.labeled fields per line={21: 10403}; header lines inside the data=0
+  iot23/opt/Malware-Project/BigDataset/IoTScenarios/CTU-IoT-Malware-Capture-9-1/bro/conn.log.labeled fields per line={21: 6378293}; header lines inside the data=0
+  columns checked 17; value kind contradicting the name or role: 0
+  NaN cells in content features 1,080,306; infinite 0
+
+=== (ii) LABELS ===
+rows 664,788; duplicates on all columns 0 (0.00%); without identifiers 541,587 (81.47%)
+feature vectors with >1 label 5,031; rows in them 434,738 (65.39%)
+  PortScan                     rows     200,127  in multi-label vectors  86.42%  vector also occurs as benign  54.63%
+  Benign                       rows     183,361  in multi-label vectors  50.02%
+  DDoS                         rows     114,395  in multi-label vectors  28.20%  vector also occurs as benign  10.72%
+  Okiru                        rows     100,003  in multi-label vectors  99.98%  vector also occurs as benign  79.98%
+  C&C                          rows      57,486  in multi-label vectors  65.75%  vector also occurs as benign  57.62%
+  Attack                       rows       9,398  in multi-label vectors   0.21%  vector also occurs as benign   0.01%
+  FileDownload                 rows          18  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 49.74% of steps (mean over 23 file(s)); span 11985.16 h
+label runs in file order 168,542 for 7 labels
+  PortScan                     span        7283.64 h  benign share inside  28.15%  benign rows inside 180,754
+  DDoS                         span       10248.75 h  benign share inside  26.99%  benign rows inside 157,798
+  Okiru                        span        4179.76 h  benign share inside  29.57%  benign rows inside 146,489
+  C&C                          span       11942.75 h  benign share inside  27.93%  benign rows inside 177,440
+  Attack                       span        6848.70 h  benign share inside  27.39%  benign rows inside 158,843
+  FileDownload                 span        1182.28 h  benign share inside  27.39%  benign rows inside 25,463
+
+=== (iv) ATTRIBUTION ===
+  PortScan                     distinct sources       9  top: 192.168.100.111 (19.99%), 192.168.1.197 (19.99%), 192.168.100.103 (9.99%)  sources also emitting benign 100.00%
+  Benign                       distinct sources  19,414  top: 192.168.100.111 (15.71%), 192.168.1.197 (13.45%), 192.168.100.103 (12.23%)
+  DDoS                         distinct sources       6  top: 192.168.1.195 (30.07%), 192.168.100.111 (17.48%), 192.168.1.196 (17.48%)  sources also emitting benign 100.00%
+  Okiru                        distinct sources       4  top: 192.168.1.198 (40.00%), 192.168.100.111 (20.00%), 192.168.1.197 (20.00%)  sources also emitting benign 100.00%
+  C&C                          distinct sources      13  top: 192.168.1.198 (33.40%), 192.168.100.113 (14.33%), 192.168.100.111 (11.89%)  sources also emitting benign 100.00%
+  Attack                       distinct sources       7  top: 192.168.2.5 (63.43%), 192.168.1.200 (29.28%), 192.168.1.194 (7.19%)  sources also emitting benign 100.00%
+  FileDownload                 distinct sources       3  top: 192.168.1.193 (72.22%), 192.168.1.197 (16.67%), 192.168.1.1 (11.11%)  sources also emitting benign 100.00%
+source alone -> label (majority per source): 52.50%, against 30.10% for the majority class
+
+=== (v) PREVALENCE ===
+  PortScan                         200,127  30.10%
+  Benign                           183,361  27.58%
+  DDoS                             114,395  17.21%
+  Okiru                            100,003  15.04%
+  C&C                               57,486  8.65%
+  Attack                             9,398  1.41%
+  FileDownload                          18  0.00%
+benign 183,361 rows (27.58%); attack 72.42%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 466,902: Benign 100,000, PortScan 100,000, Okiru 100,000, DDoS 100,000, C&C 57,486, Attack 9,398, FileDownload 18
+  content                  random 70/30                                 macro-F1=0.725  Attack=0.97  Benign=0.73  C&C=0.80  DDoS=0.86  FileDownload=0.55  Okiru=0.67  PortScan=0.51
+  content                  time-ordered 70/30 per label                 macro-F1=0.504  Attack=0.05  Benign=0.57  C&C=0.53  DDoS=1.00  FileDownload=0.71  Okiru=0.69  PortScan=0.00
+  content                  independent: held-out groups (15 train / 8 test) macro-F1=0.457  Benign=0.51  C&C=0.90  DDoS=0.50  FileDownload=0.00  Okiru=0.68  PortScan=0.16
+  content + identifiers    random 70/30                                 macro-F1=0.984  Attack=1.00  Benign=1.00  C&C=1.00  DDoS=1.00  FileDownload=0.89  Okiru=1.00  PortScan=1.00
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.429  Attack=0.06  Benign=0.34  C&C=0.67  DDoS=0.63  FileDownload=0.16  Okiru=0.83  PortScan=0.33
+  content + identifiers    independent: held-out groups (15 train / 8 test) macro-F1=0.534  Benign=0.52  C&C=0.49  DDoS=0.49  FileDownload=0.00  Okiru=1.00  PortScan=0.70
+
+(run time 1134 s)

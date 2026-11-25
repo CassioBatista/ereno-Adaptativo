@@ -1,0 +1,22 @@
+{
+  "dataset": "all_in_one_ev1_cicids_train",
+  "attack": "Web_Attack_Brute_Force",
+  "attack_id": 21,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    60,
+    70
+  ],
+  "n_features": 2,
+  "f1_grasp_cv": 97.99999999999999,
+  "iterations": 6,
+  "evaluations": 2107,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 715.3
+}

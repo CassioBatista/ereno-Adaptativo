@@ -1,0 +1,144 @@
+{
+ "dataset": "Kitsune (five captures)",
+ "sample": "stride sample of each capture, at most 400,000 packets (sample cache of inspect_kitsune.py)",
+ "rows": 1862222,
+ "feats": 100,
+ "ids": [
+  "f65",
+  "f66",
+  "f67",
+  "f68",
+  "f69",
+  "f70",
+  "f71",
+  "f72",
+  "f73",
+  "f74",
+  "f75",
+  "f76",
+  "f77",
+  "f78",
+  "f79",
+  "cap"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 5.369929041757642e-07,
+  "dup_feat": 4.295943233406114e-06,
+  "multi_rows": 2.147971616703057e-06,
+  "per_label": {
+   "normal": {
+    "rows": 1323834,
+    "multi": 1.5107634340861468e-06,
+    "as_benign": null
+   },
+   "Mirai": {
+    "rows": 321258,
+    "multi": 6.225525901300513e-06,
+    "as_benign": 6.225525901300513e-06
+   },
+   "SSDP_Flood": {
+    "rows": 130923,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Fuzzing": {
+    "rows": 72159,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "OS_Scan": {
+    "rows": 13074,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "SYN_DoS": {
+    "rows": 974,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.9999978520272299,
+  "per_label": {
+   "Mirai": {
+    "benign_share_inside": 0.5456328805097271,
+    "benign_inside": 385787
+   },
+   "SSDP_Flood": {
+    "benign_share_inside": 0.14173141243379014,
+    "benign_inside": 21781
+   },
+   "Fuzzing": {
+    "benign_share_inside": 0.8137390734265735,
+    "benign_inside": 372367
+   },
+   "OS_Scan": {
+    "benign_share_inside": 0.7874883505712293,
+    "benign_inside": 120833
+   },
+   "SYN_DoS": {
+    "benign_share_inside": 0.5693775293890924,
+    "benign_inside": 11818
+   }
+  }
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 1323834,
+  "benign_share": 0.7108894643066187
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.9945001487882079,
+   "per_label": {
+    "Fuzzing": 0.9999076212471132,
+    "Mirai": 0.9856061730227037,
+    "OS_Scan": 0.9997449630196379,
+    "SSDP_Flood": 1.0,
+    "SYN_DoS": 0.9965870307167235,
+    "normal": 0.9851551047230694
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.8717933560330241,
+   "per_label": {
+    "Fuzzing": 0.9958139748838493,
+    "Mirai": 0.9980330055009168,
+    "OS_Scan": 0.9983403549087195,
+    "SSDP_Flood": 0.9977449260836883,
+    "SYN_DoS": 0.2454308093994778,
+    "normal": 0.9953970654214925
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9995094436055926,
+   "per_label": {
+    "Fuzzing": 0.9999769037115736,
+    "Mirai": 0.9994834796807571,
+    "OS_Scan": 0.9998724977687109,
+    "SSDP_Flood": 1.0,
+    "SYN_DoS": 0.9982905982905983,
+    "normal": 0.9994331821819151
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.7097701548951404,
+   "per_label": {
+    "Fuzzing": 0.996134732192159,
+    "Mirai": 0.9998666488865182,
+    "OS_Scan": 0.07753816331475648,
+    "SSDP_Flood": 1.0,
+    "SYN_DoS": 0.2454308093994778,
+    "normal": 0.9396505755779304
+   }
+  }
+ }
+}

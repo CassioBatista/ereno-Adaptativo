@@ -1,0 +1,170 @@
+{
+ "dataset": "IoT-23",
+ "sample": "uniform sample of up to 20,000 flows per capture and detailed label (scan cache of inspect_iot23.py)",
+ "rows": 664788,
+ "feats": 12,
+ "ids": [
+  "ts",
+  "orig_h",
+  "orig_p",
+  "resp_h",
+  "resp_p"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.8146762576941822,
+  "multi_rows": 0.6539498306226947,
+  "per_label": {
+   "PortScan": {
+    "rows": 200127,
+    "multi": 0.8642412068336607,
+    "as_benign": 0.546253129262918
+   },
+   "Benign": {
+    "rows": 183361,
+    "multi": 0.5002372369260639,
+    "as_benign": null
+   },
+   "DDoS": {
+    "rows": 114395,
+    "multi": 0.2819528825560558,
+    "as_benign": 0.107172516281306
+   },
+   "Okiru": {
+    "rows": 100003,
+    "multi": 0.999820005399838,
+    "as_benign": 0.7998360049198524
+   },
+   "C&C": {
+    "rows": 57486,
+    "multi": 0.6574992172007097,
+    "as_benign": 0.5761576731725986
+   },
+   "Attack": {
+    "rows": 9398,
+    "multi": 0.0021281123643328366,
+    "as_benign": 0.00010640561821664184
+   },
+   "FileDownload": {
+    "rows": 18,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.49738909047432833,
+  "per_label": {
+   "PortScan": {
+    "benign_share_inside": 0.2815105764648349,
+    "benign_inside": 180754
+   },
+   "DDoS": {
+    "benign_share_inside": 0.2698531863772007,
+    "benign_inside": 157798
+   },
+   "Okiru": {
+    "benign_share_inside": 0.2957175271717188,
+    "benign_inside": 146489
+   },
+   "C&C": {
+    "benign_share_inside": 0.279346847272338,
+    "benign_inside": 177440
+   },
+   "Attack": {
+    "benign_share_inside": 0.2738535487018752,
+    "benign_inside": 158843
+   },
+   "FileDownload": {
+    "benign_share_inside": 0.27392529799044707,
+    "benign_inside": 25463
+   }
+  }
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.525041065723208,
+  "majority": 0.3010388274156573
+ },
+ "prevalence": {
+  "benign_rows": 183361,
+  "benign_share": 0.2758187572579529
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.7252110510087814,
+   "per_label": {
+    "Attack": 0.9747109826589595,
+    "Benign": 0.7260590391828604,
+    "C&C": 0.7987078142972517,
+    "DDoS": 0.8610716143575516,
+    "FileDownload": 0.5454545454545454,
+    "Okiru": 0.6654612187618071,
+    "PortScan": 0.5050121423484946
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.5044045779308478,
+   "per_label": {
+    "Attack": 0.04773434797647873,
+    "Benign": 0.5663544918487686,
+    "C&C": 0.5276378186129224,
+    "DDoS": 0.9980490570442381,
+    "FileDownload": 0.7058823529411765,
+    "Okiru": 0.6851739770923501,
+    "PortScan": 0.0
+   }
+  },
+  "content | independent: held-out groups (15 train / 8 test)": {
+   "macro_f1": 0.45728411430940774,
+   "per_label": {
+    "Benign": 0.5079171131831702,
+    "C&C": 0.8953375652772132,
+    "DDoS": 0.4997284705747849,
+    "FileDownload": 0.0,
+    "Okiru": 0.6771382846304309,
+    "PortScan": 0.16358325219084713
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9835702960057126,
+   "per_label": {
+    "Attack": 0.9989350372736954,
+    "Benign": 0.99906619976655,
+    "C&C": 0.9991015274034142,
+    "DDoS": 0.9999833330555509,
+    "FileDownload": 0.8888888888888888,
+    "Okiru": 0.9999833336111065,
+    "PortScan": 0.9990337520407824
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.42938730804463543,
+   "per_label": {
+    "Attack": 0.057803468208092484,
+    "Benign": 0.3363259478900695,
+    "C&C": 0.6685724624570292,
+    "DDoS": 0.6252344629235963,
+    "FileDownload": 0.15789473684210525,
+    "Okiru": 0.8266124300856573,
+    "PortScan": 0.333267647905898
+   }
+  },
+  "content + identifiers | independent: held-out groups (15 train / 8 test)": {
+   "macro_f1": 0.5336942505056522,
+   "per_label": {
+    "Benign": 0.5152705328832975,
+    "C&C": 0.4927091327705295,
+    "DDoS": 0.4945223799903252,
+    "FileDownload": 0.0,
+    "Okiru": 1.0,
+    "PortScan": 0.6996634573897608
+   }
+  }
+ }
+}

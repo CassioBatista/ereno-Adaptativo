@@ -175,6 +175,8 @@ publisher identity, a device address, or none---and whether the traffic carries
 timestamps. The profile in force is reported with the stream, so no field depends on an
 implicit vocabulary.
 
+% NOT IN PAPER 2 (user, 2026-11-25): this subsubsection and "False positives and the window"
+% (sec:api-fp) are left out of the paper; kept here as record. Do not cite sec:api-fp.
 \subsubsection{Behavioural contract}
 
 What a consumer may rely on is not expressible in a schema, so it is stated separately:
@@ -193,12 +195,16 @@ nothing.
 
 \subsubsection{False positives and the window}
 \label{sec:api-fp}
+% 2026-11-25: recomputed on the evaluation-v1 detector (OR at 0.5, 14 specialists of step 1):
+% scripts/ev1_windows_cadence.py -> results/ev1_windows_cadence_ereno_s42.txt (load, medians,
+% cadence); 97.9 / 99.3 % at 0.14 %: scripts/ev1_windows.py (blocked-5). Earlier values (k >= 2,
+% model of the scenario streams): 56 / 973 and 6.7 % at 0.25 s.
 
-The alarm load sets how alarms must be aggregated. Replaying a benign-only stream, in which
-every alarm is by construction a false positive, 252 of 724 one-second windows contain at
-least one flagged sample (34.8\%). The two populations separate on volume rather than on
-corroboration: a median of 56 flagged samples per window for false positives against 973
-for true alarms. Triaging on volume, plus the flagged \emph{fraction}---which recovers
+The alarm load sets how alarms must be aggregated. In the ERENO test trace, 252 of the 724
+one-second windows that hold no attack, in which every flagged sample is a false positive,
+contain at least one flagged sample (34.8\%). The two populations separate on volume rather
+than on corroboration: a median of 52 flagged samples per window for false positives against
+966 for true alarms. Triaging on volume, plus the flagged \emph{fraction}---which recovers
 sparse attack windows of one or two samples, where no volume threshold can be met---keeps
 97.9\% of attack windows at a window false-positive rate of 0.14\%, with thresholds
 selected out of sample on earlier blocks of the trace and a 25\% safety margin over the
@@ -209,7 +215,7 @@ calibrated once. Calibrated at a 1-s cycle and then held fixed, the rule keeps 9
 of attack windows with no false window when the cycle is \emph{stretched} to 2, 5 and
 10\,s---the direction in which degradation pushes the detector. \emph{Shortening} it is not
 safe: false positives cluster in time, so a short window that lands on a cluster carries a
-high flagged fraction, and at 0.25\,s 6.7\% of benign windows alarm. Neither the volume nor
+high flagged fraction, and at 0.25\,s 6.1\% of benign windows alarm. Neither the volume nor
 the fraction is invariant to the window length, and neither alone holds across cadences;
 the rule is therefore calibrated at the shortest cadence the detector may use.
 
@@ -238,25 +244,16 @@ itself compromised, are outside the scope of this version.
 \subsection{Implementation status and future work}
 \label{sec:api-status}
 
-\begin{table}[htbp]
-\centering
-\caption{What is implemented and what is specified.}
-\label{tab:api-status}
-\begin{tabular}{@{}lp{0.62\linewidth}@{}}
-\toprule
-State & Component \\
-\midrule
-Implemented & event emission; \texttt{/events}, \texttt{/status}, \texttt{/health}; the
-JSONL audit trail; contiguous-seq reconciliation; the trust-level schema; the agent policy
-(bands, settle time, stale fallback) as a replay over Disaster-FD telemetry, with
-conformance checks \\
-Specified only & the trust-level endpoint of the live agent and the trust state in
-\texttt{/status} \\
-Future work & intrusion notification to Disaster-FD, node isolation and readmission, and
-Byzantine-resilient trust of the monitors \\
-\bottomrule
-\end{tabular}
-\end{table}
+The specialists, their OR fusion, FL and GL on any overlay graph, and the switching
+strategy with the transfer of specialists are implemented, together with the emission of
+events, the observation endpoints, the JSONL audit trail, the reconciliation of contiguous
+sequences and the trust-level schema. The policy of the agent (bands, settle time and stale
+fallback) runs as a replay over the telemetry recorded by Disaster-FD, with conformance
+checks, and sets the learning mode of each node in every round of the runs of
+Section~\ref{sec:res-switching}. Only the live binding is specified: the agent does not yet
+read \texttt{/trust\_level} from a running Disaster-FD. Intrusion notification to
+Disaster-FD, the isolation and readmission of nodes, and trust in the monitors that resists
+Byzantine behaviour are left to future work.
 
 The policy is verifiable today on recorded telemetry: replayed over the Disaster-FD run, it
 produces event streams that conform to the schema and to the policy, with exactly the

@@ -1,0 +1,45 @@
+DATASET AUDIT — Morris-2 (gas pipeline, 2014)
+rows 97,019 (all rows); content features 24; identifiers ['time', 'crc_rate']; benign label 'normal'
+note: the Modbus address field names the slave, the same for normal and attack traffic: no emitter address
+note: the 'time' column is not a clock (values 1.0-1.3): no time order
+
+=== (i) STRUCTURE ===
+  morris_ics/gas_final.arff                                    fields per line={27: 97019}; header lines inside the data=0
+  columns checked 26; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 97,019; duplicates on all columns 0 (0.00%); without identifiers 89,344 (92.09%)
+feature vectors with >1 label 105; rows in them 19,265 (19.86%)
+  normal                       rows      61,156  in multi-label vectors  20.47%
+  CMRI                         rows      15,466  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  MPCI                         rows       7,637  in multi-label vectors  84.60%  vector also occurs as benign  83.59%
+  Recon                        rows       6,805  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  NMRI                         rows       2,763  in multi-label vectors   1.41%  vector also occurs as benign   1.41%
+  DoS                          rows       1,837  in multi-label vectors   2.29%  vector also occurs as benign   2.29%
+  MSCI                         rows         782  in multi-label vectors  23.02%  vector also occurs as benign  23.02%
+  MFCI                         rows         573  in multi-label vectors   4.19%  vector also occurs as benign   3.84%
+
+=== (iii) TIME ===
+no timestamp: time-ordered windows cannot be built
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  normal                            61,156  63.04%
+  CMRI                              15,466  15.94%
+  MPCI                               7,637  7.87%
+  Recon                              6,805  7.01%
+  NMRI                               2,763  2.85%
+  DoS                                1,837  1.89%
+  MSCI                                 782  0.81%
+  MFCI                                 573  0.59%
+benign 61,156 rows (63.04%); attack 36.96%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 97,019: normal 61,156, CMRI 15,466, MPCI 7,637, Recon 6,805, NMRI 2,763, DoS 1,837, MSCI 782, MFCI 573
+  content                  random 70/30                                 macro-F1=0.979  CMRI=1.00  DoS=0.99  MFCI=0.97  MPCI=0.97  MSCI=0.97  NMRI=0.95  Recon=1.00  normal=0.99
+  content + identifiers    random 70/30                                 macro-F1=0.979  CMRI=1.00  DoS=0.99  MFCI=0.97  MPCI=0.97  MSCI=0.96  NMRI=0.95  Recon=1.00  normal=0.99
+
+(run time 9 s)

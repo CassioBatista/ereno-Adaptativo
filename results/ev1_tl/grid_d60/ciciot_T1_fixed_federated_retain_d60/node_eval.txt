@@ -1,0 +1,106 @@
+[load] all_in_one_ev1_ciciot_test.csv: 690,232 rows, 28 of 46 columns
+run ev1-tl-ciciot_T1_fixed_federated_retain_d60: 82 rounds, 14 nodes, holdings retain, arrival {2: 1800.0, 3: 1800.0, 10: 1800.0, 11: 1800.0, 8: 3600.0, 9: 3600.0}
+types by arrival: 0 s: Backdoor_Malware, CommandInjection, DDoS_ACK_Fragmentation, DDoS_ICMP_Flood, DDoS_ICMP_Fragmentation, DDoS_PSHACK_Flood, DDoS_TCP_Flood, DDoS_UDP_Flood, DoS_SYN_Flood, DoS_TCP_Flood, Mirai_greeth_flood, Mirai_greip_flood, Mirai_udpplain, Recon_HostDiscovery, Recon_PingSweep, SqlInjection, Uploading_Attack, XSS; 1800 s: BrowserHijacking, DDoS_HTTP_Flood, DDoS_RSTFINFlood, DDoS_SYN_Flood, DDoS_SlowLoris, DDoS_SynonymousIP_Flood, DictionaryBruteForce, DoS_UDP_Flood; 3600 s: DoS_HTTP_Flood, Recon_OSScan, Recon_PortScan, VulnerabilityScan
+
+per phase of 900 s: mean over the node-rounds, split by group (U unreachable / R reachable: reaches the aggregator or a ring neighbour)
+phase       group     n boosters   recall   late 1800   late 3600    FPR %
+0-900       U       196      1.2    41.78         nan         nan    2.328
+900-1800    U         4      1.0    36.90         nan         nan    0.099
+900-1800    R       206     16.3    98.10         nan         nan   18.537
+1800-2700   U        30     17.0    99.94       99.91         nan   19.172
+1800-2700   R       180     17.7    99.94       99.92         nan   19.879
+2700-3600   R       210     17.6    99.94       99.92         nan   19.778
+3600-4500   R       210     29.0    99.97      100.00       96.44   28.569
+4500-5400   R       112     29.0    99.97      100.00       96.44   28.569
+
+per node at the last round of each phase: boosters / recall present / recall_late_1800 / recall_late_3600 / FPR % (mode)
+  t=   840 s (round 14):
+    node  1 LU   2   51.04     —       —    0.042
+    node  2 LU   2   96.43     —       —    0.054
+    node  3 LU   0    0.00     —       —    0.000
+    node  4 LU   0    0.00     —       —    0.000
+    node  5 LU   2   96.56     —       —    0.354
+    node  6 LU   2   21.18     —       —    0.108
+    node  7 LU   2   34.65     —       —    0.096
+    node  8 LU   2   88.41     —       —    6.205
+    node  9 LU   0    0.00     —       —    0.000
+    node 10 LU   0    0.00     —       —    0.000
+    node 11 LU   0    0.00     —       —    0.000
+    node 12 LU   0    0.00     —       —    0.000
+    node 13 LU   2   99.68     —       —    9.547
+    node 14 LU   3   97.00     —       —    16.190
+  t=  1740 s (round 29):
+    node  1 FR  17   99.95     —       —    19.172
+    node  2 FR  17   99.95     —       —    19.172
+    node  3 FR  17   99.95     —       —    19.172
+    node  4 FR  17   99.95     —       —    19.172
+    node  5 FR  17   99.95     —       —    19.172
+    node  6 FR  17   99.95     —       —    19.172
+    node  7 FR  17   99.95     —       —    19.172
+    node  8 FR  17   99.95     —       —    19.172
+    node  9 FR  17   99.95     —       —    19.172
+    node 10 FR  17   99.95     —       —    19.172
+    node 11 FR  17   99.95     —       —    19.172
+    node 12 FR  17   99.95     —       —    19.172
+    node 13 FR  17   99.95     —       —    19.172
+    node 14 FR  17   99.95     —       —    19.172
+  t=  2640 s (round 44):
+    node  1 LU  17   99.94   99.91     —    19.172
+    node  2 LR  17   99.94   99.91     —    19.172
+    node  3 LR  19   99.94   99.93     —    19.172
+    node  4 LR  19   99.94   99.91     —    19.172
+    node  5 LR  17   99.94   99.91     —    19.172
+    node  6 LR  17   99.94   99.91     —    19.172
+    node  7 LR  17   99.94   99.91     —    19.172
+    node  8 LR  17   99.94   99.91     —    19.172
+    node  9 LR  17   99.94   99.91     —    19.172
+    node 10 LR  17   99.94   99.91     —    19.172
+    node 11 LR  19   99.99   99.98     —    19.196
+    node 12 LR  19   99.97   99.96     —    27.639
+    node 13 LR  17   99.94   99.91     —    19.172
+    node 14 LU  17   99.94   99.91     —    19.172
+  t=  3540 s (round 59):
+    node  1 LR  17   99.94   99.91     —    19.172
+    node  2 LR  17   99.94   99.91     —    19.172
+    node  3 LR  19   99.94   99.93     —    19.172
+    node  4 LR  19   99.94   99.91     —    19.172
+    node  5 LR  17   99.94   99.91     —    19.172
+    node  6 LR  17   99.94   99.91     —    19.172
+    node  7 LR  17   99.94   99.91     —    19.172
+    node  8 LR  17   99.94   99.91     —    19.172
+    node  9 LR  17   99.94   99.91     —    19.172
+    node 10 LR  17   99.94   99.91     —    19.172
+    node 11 LR  19   99.99   99.98     —    19.196
+    node 12 LR  19   99.97   99.96     —    27.639
+    node 13 LR  17   99.94   99.91     —    19.172
+    node 14 LR  17   99.94   99.91     —    19.172
+  t=  4440 s (round 74):
+    node  1 FR  29   99.97  100.00   96.44  28.569
+    node  2 FR  29   99.97  100.00   96.44  28.569
+    node  3 FR  29   99.97  100.00   96.44  28.569
+    node  4 FR  29   99.97  100.00   96.44  28.569
+    node  5 FR  29   99.97  100.00   96.44  28.569
+    node  6 FR  29   99.97  100.00   96.44  28.569
+    node  7 FR  29   99.97  100.00   96.44  28.569
+    node  8 FR  29   99.97  100.00   96.44  28.569
+    node  9 FR  29   99.97  100.00   96.44  28.569
+    node 10 FR  29   99.97  100.00   96.44  28.569
+    node 11 FR  29   99.97  100.00   96.44  28.569
+    node 12 FR  29   99.97  100.00   96.44  28.569
+    node 13 FR  29   99.97  100.00   96.44  28.569
+    node 14 FR  29   99.97  100.00   96.44  28.569
+  t=  4920 s (round 82):
+    node  1 FR  29   99.97  100.00   96.44  28.569
+    node  2 FR  29   99.97  100.00   96.44  28.569
+    node  3 FR  29   99.97  100.00   96.44  28.569
+    node  4 FR  29   99.97  100.00   96.44  28.569
+    node  5 FR  29   99.97  100.00   96.44  28.569
+    node  6 FR  29   99.97  100.00   96.44  28.569
+    node  7 FR  29   99.97  100.00   96.44  28.569
+    node  8 FR  29   99.97  100.00   96.44  28.569
+    node  9 FR  29   99.97  100.00   96.44  28.569
+    node 10 FR  29   99.97  100.00   96.44  28.569
+    node 11 FR  29   99.97  100.00   96.44  28.569
+    node 12 FR  29   99.97  100.00   96.44  28.569
+    node 13 FR  29   99.97  100.00   96.44  28.569
+    node 14 FR  29   99.97  100.00   96.44  28.569

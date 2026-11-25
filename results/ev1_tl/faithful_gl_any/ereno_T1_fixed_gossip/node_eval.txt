@@ -1,0 +1,105 @@
+[load] all_in_one_ereno_test.csv: 2,955,648 rows, 15 of 58 columns
+run ev1-tl-faithful-ereno_T1_fixed_gossip: 82 rounds, 14 nodes, holdings retain, arrival {2: 1800.0, 3: 1800.0, 10: 1800.0, 11: 1800.0, 8: 3600.0, 9: 3600.0}
+types by arrival: 0 s: random_replay, inverse_replay, masquerade_fake_fault, high_StNum; 1800 s: masquerade_fake_normal, injection; 3600 s: poisoned_high_rate
+
+per phase of 900 s: mean over the node-rounds, split by group (U unreachable / R reachable: reaches the aggregator or a ring neighbour)
+phase       group     n boosters   recall   late 1800   late 3600    FPR %
+0-900       U       196      0.6    27.57         nan         nan    0.063
+900-1800    R       210      3.1    62.20         nan         nan    0.300
+1800-2700   U       120      6.5    70.97       15.70         nan    0.438
+1800-2700   R        90      7.5    80.70       43.80         nan    0.498
+2700-3600   R       210      8.4    83.82       54.02         nan    0.485
+3600-4500   R       210     12.4    99.34       97.78      100.00    0.612
+4500-5400   R       112     13.9    99.97       99.99      100.00    0.626
+
+per node at the last round of each phase: boosters / recall present / recall_late_1800 / recall_late_3600 / FPR % (mode)
+  t=   870 s (round 14):
+    node  1 LU   1   44.13     —       —    0.000
+    node  2 LU   1   44.13     —       —    0.000
+    node  3 LU   0    0.00     —       —    0.000
+    node  4 LU   0    0.00     —       —    0.000
+    node  5 LU   1   38.10     —       —    0.000
+    node  6 LU   1   41.71     —       —    0.000
+    node  7 LU   1   62.54     —       —    0.000
+    node  8 LU   1   62.54     —       —    0.000
+    node  9 LU   0    0.00     —       —    0.000
+    node 10 LU   0    0.00     —       —    0.000
+    node 11 LU   0    0.00     —       —    0.000
+    node 12 LU   0    0.00     —       —    0.000
+    node 13 LU   1   46.34     —       —    0.438
+    node 14 LU   1   46.44     —       —    0.438
+  t=  1770 s (round 29):
+    node  1 GR   8   99.93     —       —    0.438
+    node  2 GR   3   74.92     —       —    0.438
+    node  3 GR   3   74.92     —       —    0.438
+    node  4 GR   4   92.04     —       —    0.438
+    node  5 GR   5   92.04     —       —    0.438
+    node  6 GR   6   99.93     —       —    0.438
+    node  7 GR   7   99.93     —       —    0.438
+    node  8 GR   7   99.93     —       —    0.438
+    node  9 GR   7   99.93     —       —    0.438
+    node 10 GR   7   99.93     —       —    0.438
+    node 11 GR   7   99.93     —       —    0.438
+    node 12 GR   8   99.93     —       —    0.438
+    node 13 GR   8   99.93     —       —    0.438
+    node 14 GR   8   99.93     —       —    0.438
+  t=  2670 s (round 44):
+    node  1 LU   8   73.81   15.70     —    0.438
+    node  2 LU   3   56.55   15.69     —    0.438
+    node  3 GR   6   84.93   69.12     —    0.438
+    node  4 GR   6   84.93   69.12     —    0.438
+    node  5 LU   5   68.36   15.70     —    0.438
+    node  6 LU   6   73.81   15.70     —    0.438
+    node  7 GR   7   73.81   15.70     —    0.438
+    node  8 GR   7   73.81   15.70     —    0.438
+    node  9 LU   7   73.81   15.70     —    0.438
+    node 10 LU   7   73.81   15.70     —    0.438
+    node 11 GR  10   83.39   46.57     —    0.626
+    node 12 GR  10   83.39   46.57     —    0.626
+    node 13 LU   8   73.81   15.70     —    0.438
+    node 14 LU   8   73.81   15.70     —    0.438
+  t=  3570 s (round 59):
+    node  1 GR  12   99.95   99.99     —    0.626
+    node  2 GR  12   99.95   99.99     —    0.626
+    node  3 GR  12   99.95   99.99     —    0.626
+    node  4 GR   7   84.93   69.12     —    0.438
+    node  5 GR   8   90.38   69.12     —    0.438
+    node  6 GR   9   90.38   69.12     —    0.438
+    node  7 GR   9   90.38   69.12     —    0.438
+    node  8 GR   9   90.38   69.12     —    0.438
+    node  9 GR   9   90.38   69.12     —    0.438
+    node 10 GR  12   99.95   99.99     —    0.626
+    node 11 GR  12   99.95   99.99     —    0.626
+    node 12 GR  12   99.95   99.99     —    0.626
+    node 13 GR  12   99.95   99.99     —    0.626
+    node 14 GR  12   99.95   99.99     —    0.626
+  t=  4470 s (round 74):
+    node  1 GR  14   99.97   99.99  100.00  0.626
+    node  2 GR  14   99.97   99.99  100.00  0.626
+    node  3 GR  14   99.97   99.99  100.00  0.626
+    node  4 GR  14   99.97   99.99  100.00  0.626
+    node  5 GR  12   99.96   99.99  100.00  0.626
+    node  6 GR  12   99.96   99.99  100.00  0.626
+    node  7 GR  12   99.96   99.99  100.00  0.626
+    node  8 GR  13   99.97   99.99  100.00  0.626
+    node  9 GR  14   99.97   99.99  100.00  0.626
+    node 10 GR  14   99.97   99.99  100.00  0.626
+    node 11 GR  14   99.97   99.99  100.00  0.626
+    node 12 GR  14   99.97   99.99  100.00  0.626
+    node 13 GR  14   99.97   99.99  100.00  0.626
+    node 14 GR  14   99.97   99.99  100.00  0.626
+  t=  4950 s (round 82):
+    node  1 GR  14   99.97   99.99  100.00  0.626
+    node  2 GR  14   99.97   99.99  100.00  0.626
+    node  3 GR  14   99.97   99.99  100.00  0.626
+    node  4 GR  14   99.97   99.99  100.00  0.626
+    node  5 GR  14   99.97   99.99  100.00  0.626
+    node  6 GR  14   99.97   99.99  100.00  0.626
+    node  7 GR  14   99.97   99.99  100.00  0.626
+    node  8 GR  14   99.97   99.99  100.00  0.626
+    node  9 GR  14   99.97   99.99  100.00  0.626
+    node 10 GR  14   99.97   99.99  100.00  0.626
+    node 11 GR  14   99.97   99.99  100.00  0.626
+    node 12 GR  14   99.97   99.99  100.00  0.626
+    node 13 GR  14   99.97   99.99  100.00  0.626
+    node 14 GR  14   99.97   99.99  100.00  0.626

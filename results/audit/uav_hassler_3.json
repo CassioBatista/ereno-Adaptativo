@@ -1,0 +1,85 @@
+{
+ "dataset": "Hassler et al., schema S3 (cyber)",
+ "sample": "all rows",
+ "rows": 9156,
+ "feats": 31,
+ "ids": [
+  "timestamp_c",
+  "frame.number",
+  "wlan.seq"
+ ],
+ "structure": {
+  "value_kind_conflicts": [
+   "wlan_radio.frequency holds wifi-freq-MHz (a content feature)"
+  ]
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.15476190476190477,
+  "multi_rows": 0.0,
+  "per_label": {
+   "evil_twin": {
+    "rows": 5683,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "FDI": {
+    "rows": 3473,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 1.0,
+  "per_label": {
+   "evil_twin": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   },
+   "FDI": {
+    "benign_share_inside": 0.0,
+    "benign_inside": 0
+   }
+  }
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 0,
+  "benign_share": 0.0
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 1.0,
+   "per_label": {
+    "FDI": 1.0,
+    "evil_twin": 1.0
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 1.0,
+   "per_label": {
+    "FDI": 1.0,
+    "evil_twin": 1.0
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 1.0,
+   "per_label": {
+    "FDI": 1.0,
+    "evil_twin": 1.0
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 1.0,
+   "per_label": {
+    "FDI": 1.0,
+    "evil_twin": 1.0
+   }
+  }
+ }
+}

@@ -1,0 +1,264 @@
+{
+  "dataset": "all_in_one_ev1_ciciot_train",
+  "per_attack": {
+    "Backdoor_Malware": [
+      1,
+      15,
+      40,
+      45
+    ],
+    "BrowserHijacking": [
+      40
+    ],
+    "CommandInjection": [
+      3,
+      18,
+      19,
+      20,
+      21,
+      28,
+      36,
+      38,
+      40,
+      42
+    ],
+    "DDoS_ACK_Fragmentation": [
+      9,
+      19,
+      41,
+      44
+    ],
+    "DDoS_HTTP_Flood": [
+      18,
+      46
+    ],
+    "DDoS_ICMP_Flood": [
+      41
+    ],
+    "DDoS_ICMP_Fragmentation": [
+      41
+    ],
+    "DDoS_PSHACK_Flood": [
+      39,
+      40,
+      42
+    ],
+    "DDoS_RSTFINFlood": [
+      36,
+      40
+    ],
+    "DDoS_SYN_Flood": [
+      41
+    ],
+    "DDoS_SlowLoris": [
+      19,
+      40,
+      42
+    ],
+    "DDoS_SynonymousIP_Flood": [
+      9,
+      40,
+      46
+    ],
+    "DDoS_TCP_Flood": [
+      46
+    ],
+    "DDoS_UDP_Flood": [
+      40,
+      41
+    ],
+    "DictionaryBruteForce": [
+      40
+    ],
+    "DoS_HTTP_Flood": [
+      37,
+      46
+    ],
+    "DoS_SYN_Flood": [
+      9,
+      18,
+      22,
+      46
+    ],
+    "DoS_TCP_Flood": [
+      2,
+      41,
+      42
+    ],
+    "DoS_UDP_Flood": [
+      34,
+      39,
+      42,
+      46
+    ],
+    "Mirai_greeth_flood": [
+      3,
+      27,
+      41,
+      44
+    ],
+    "Mirai_greip_flood": [
+      3,
+      19,
+      41
+    ],
+    "Mirai_udpplain": [
+      27,
+      41,
+      42
+    ],
+    "Recon_HostDiscovery": [
+      1,
+      2,
+      4,
+      6,
+      10,
+      15,
+      16,
+      17,
+      18,
+      19,
+      30,
+      37,
+      40
+    ],
+    "Recon_OSScan": [
+      1,
+      2,
+      5,
+      15,
+      16,
+      17,
+      20,
+      21,
+      27,
+      40
+    ],
+    "Recon_PingSweep": [
+      40,
+      41,
+      46
+    ],
+    "Recon_PortScan": [
+      1,
+      2,
+      4,
+      5,
+      9,
+      15,
+      17,
+      19,
+      21,
+      22,
+      37,
+      40,
+      44
+    ],
+    "SqlInjection": [
+      11,
+      12,
+      15,
+      18,
+      20,
+      26,
+      28,
+      40,
+      44,
+      46
+    ],
+    "Uploading_Attack": [
+      19,
+      40,
+      43,
+      44,
+      45
+    ],
+    "VulnerabilityScan": [
+      46
+    ],
+    "XSS": [
+      1,
+      5,
+      36,
+      40,
+      45,
+      46
+    ]
+  },
+  "superset_grasp": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    9,
+    10,
+    11,
+    12,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    26,
+    27,
+    28,
+    30,
+    34,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "n_superset": 34,
+  "global15": [],
+  "combined_grasp": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    9,
+    10,
+    11,
+    12,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    26,
+    27,
+    28,
+    30,
+    34,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "n_combined": 34,
+  "tag": "grasppen005_ev1_ciciot"
+}

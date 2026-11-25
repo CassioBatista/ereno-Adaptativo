@@ -1,0 +1,168 @@
+{
+ "dataset": "Westermo, timing labelling (IT_M_Label)",
+ "sample": "all rows",
+ "rows": 68729,
+ "feats": 47,
+ "ids": [
+  "sAddress",
+  "rAddress",
+  "sMACs",
+  "rMACs",
+  "sIPs",
+  "rIPs",
+  "startDate",
+  "endDate",
+  "start",
+  "end",
+  "startOffset",
+  "endOffset"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.2023745434969227,
+  "multi_rows": 0.20742335840765908,
+  "per_label": {
+   "Normal": {
+    "rows": 23852,
+    "multi": 0.22601878249203422,
+    "as_benign": null
+   },
+   "BAD-SSH": {
+    "rows": 22150,
+    "multi": 0.1946726862302483,
+    "as_benign": 0.18830699774266366
+   },
+   "BAD-MITM": {
+    "rows": 6422,
+    "multi": 0.21800062285892247,
+    "as_benign": 0.21114917471192776
+   },
+   "BAD-PORTSCAN2": {
+    "rows": 5571,
+    "multi": 0.1351642434033387,
+    "as_benign": 0.12744570095135524
+   },
+   "BAD-MISCONF-DUPLICATION": {
+    "rows": 4611,
+    "multi": 0.2246801127738018,
+    "as_benign": 0.21817393190197354
+   },
+   "BAD-MISCONF": {
+    "rows": 3889,
+    "multi": 0.2306505528413474,
+    "as_benign": 0.22242221650809976
+   },
+   "BAD-PORTSCAN1": {
+    "rows": 1566,
+    "multi": 0.20242656449553,
+    "as_benign": 0.18646232439335889
+   },
+   "GOOD-SSH": {
+    "rows": 668,
+    "multi": 0.2245508982035928,
+    "as_benign": 0.20808383233532934
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.7742695844488419,
+  "per_label": {
+   "BAD-SSH": {
+    "benign_share_inside": 0.3424156785648461,
+    "benign_inside": 22294
+   },
+   "BAD-MITM": {
+    "benign_share_inside": 0.34308408486841097,
+    "benign_inside": 22331
+   },
+   "BAD-PORTSCAN2": {
+    "benign_share_inside": 0.33830679227838617,
+    "benign_inside": 21223
+   },
+   "BAD-MISCONF-DUPLICATION": {
+    "benign_share_inside": 0.3435089825890177,
+    "benign_inside": 22314
+   },
+   "BAD-MISCONF": {
+    "benign_share_inside": 0.34496040733332234,
+    "benign_inside": 20867
+   },
+   "BAD-PORTSCAN1": {
+    "benign_share_inside": 0.33909698939736893,
+    "benign_inside": 19925
+   },
+   "GOOD-SSH": {
+    "benign_share_inside": 0.34753714483600207,
+    "benign_inside": 21075
+   }
+  }
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.3373976050866446,
+  "majority": 0.3470441880428931
+ },
+ "prevalence": {
+  "benign_rows": 23852,
+  "benign_share": 0.3470441880428931
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.23601327261709326,
+   "per_label": {
+    "BAD-MISCONF": 0.0,
+    "BAD-MISCONF-DUPLICATION": 0.049723756906077346,
+    "BAD-MITM": 0.20562471184877823,
+    "BAD-PORTSCAN1": 0.06451612903225806,
+    "BAD-PORTSCAN2": 0.5166524338172502,
+    "BAD-SSH": 0.3284263380120963,
+    "GOOD-SSH": 0.1735159817351598,
+    "Normal": 0.5496468295851262
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.19855823427522679,
+   "per_label": {
+    "BAD-MISCONF": 0.0,
+    "BAD-MISCONF-DUPLICATION": 0.02100840336134454,
+    "BAD-MITM": 0.20635651773376323,
+    "BAD-PORTSCAN1": 0.04032258064516129,
+    "BAD-PORTSCAN2": 0.34601332473672897,
+    "BAD-SSH": 0.3007230004518753,
+    "GOOD-SSH": 0.15384615384615385,
+    "Normal": 0.5201958934267871
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.7485700533736218,
+   "per_label": {
+    "BAD-MISCONF": 0.6741363211951448,
+    "BAD-MISCONF-DUPLICATION": 0.7412263787119167,
+    "BAD-MITM": 0.8596765779864372,
+    "BAD-PORTSCAN1": 0.758985200845666,
+    "BAD-PORTSCAN2": 0.9225526641883519,
+    "BAD-SSH": 0.9534287867370007,
+    "GOOD-SSH": 0.28936170212765955,
+    "Normal": 0.7891927951967979
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.12870193640544514,
+   "per_label": {
+    "BAD-MISCONF": 0.01867572156196944,
+    "BAD-MISCONF-DUPLICATION": 0.0298932384341637,
+    "BAD-MITM": 0.27072888546085616,
+    "BAD-PORTSCAN1": 0.1976284584980237,
+    "BAD-PORTSCAN2": 0.1977294228949858,
+    "BAD-SSH": 0.27593537414965985,
+    "GOOD-SSH": 0.03902439024390244,
+    "Normal": 0.0
+   }
+  }
+ }
+}

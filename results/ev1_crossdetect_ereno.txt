@@ -1,0 +1,18 @@
+cross-detection -- ERENO (step-1 specialists, seed 42; cover = flags >= 50 % of the rows; precise = benign FPR <= 1 %)
+7 attack types, 14 specialists on 14 nodes, 14 precise; 2 groups of types linked by a shared precise specialist
+types covered by a precise specialist of another node: 2 of 7 (28.7 % of the attack rows); by any specialist of another node: 2 (28.7 %)
+
+grp type                                   rows  own %  own node  other nodes, precise  other nodes, any           covered by (precise)
+  1 random_replay                        39,000  100.0       1,2  -                     -                          -
+  1 injection                            39,000  100.0       3,4  -                     -                          -
+  1 high_StNum                           39,000  100.0       5,6  3,4,7,8,9,10          3,4,7,8,9,10               injection; injection; inverse_replay; inverse_replay; poisoned_high_rate; poisoned_high_rate
+  1 inverse_replay                       30,319   95.9       7,8  -                     -                          -
+  1 poisoned_high_rate                   18,570  100.0      9,10  1,2,5,6,13,14         1,2,5,6,13,14              random_replay; random_replay; high_StNum; high_StNum; masquerade_fake_fault; masquerade_fake_fault
+  1 masquerade_fake_fault                17,200   99.5     13,14  -                     -                          -
+  2 masquerade_fake_normal               17,420  100.0     11,12  -                     -                          -
+
+per group: types, attack rows %, nodes holding a precise specialist that covers every type of the group
+  group  1:  6 types,  91.3 % of rows; nodes covering all: -; random_replay, inverse_replay, masquerade_fake_fault, injection, high_StNum, poisoned_high_rate
+  group  2:  1 types,   8.7 % of rows; nodes covering all: [11, 12]; masquerade_fake_normal
+
+benign false-positive rate per specialist (%): random_replay 0.00, random_replay 0.00, injection 0.00, injection 0.00, high_StNum 0.00, high_StNum 0.00, inverse_replay 0.00, inverse_replay 0.00, poisoned_high_rate 0.00, poisoned_high_rate 0.00, masquerade_fake_fa 0.44, masquerade_fake_fa 0.44, masquerade_fake_no 0.14, masquerade_fake_no 0.18

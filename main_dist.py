@@ -387,6 +387,7 @@ def main(args: list[str] | None = None) -> None:
     from fd.arch_manager import DistributedArchManager
     uses_gossip = (
         isinstance(arch_manager, DistributedArchManager)   # GL is the fallback
+        or getattr(arch_manager, "uses_gossip", False)     # trust level: any mode
         or getattr(arch_manager, "default_mode", None) == "gossip"
         or any(e.get("mode") == "gossip"
                for e in getattr(arch_manager, "schedule", []))
@@ -406,6 +407,13 @@ def main(args: list[str] | None = None) -> None:
             kwargs["alpha"] = float(partitioner_arg)
         elif partitioner == "shard":
             kwargs["shards_per_client"] = int(float(partitioner_arg))
+    spec_groups: list[dict] | None = None
+    if partitioner == "specialists":
+        if conf.get("architecture", {}).get("node_holdings") is None:
+            raise ValueError("partitioner 'specialists' requires architecture.node_holdings "
+                             "(several boosters per node)")
+        spec_groups = []
+        kwargs["groups_out"] = spec_groups
 
     partitions, X_f, y_all = load_and_partition(
         f"{dataset}.csv", features, num_clients, seed=seed,
@@ -441,6 +449,12 @@ def main(args: list[str] | None = None) -> None:
         )
     client_splits = []
     for X_c, y_c in partitions:
+        if spec_groups is not None:
+            # evaluation-v1: every specialist trains on ALL the rows of its node (no
+            # 80/20 split, as in scripts/ev1_step1.py); the client's local test is only a
+            # sanity check, on its first rows
+            client_splits.append((X_c, y_c, X_c[:1000], y_c[:1000]))
+            continue
         Xct, Xce, yct, yce = train_test_split(X_c, y_c, test_size=0.2, random_state=seed)
         client_splits.append((Xct, yct, Xce, yce))
 
@@ -452,10 +466,11 @@ def main(args: list[str] | None = None) -> None:
         nc = util.normal_class
         _bin = lambda y: (y != nc).astype(np.int64)
         y_tr, y_te = _bin(y_tr), _bin(y_te)
-        client_splits = [
-            (Xct, _bin(yct), Xce, _bin(yce))
-            for Xct, yct, Xce, yce in client_splits
-        ]
+        if spec_groups is None:          # 'specialists' clients binarize per specialist
+            client_splits = [
+                (Xct, _bin(yct), Xce, _bin(yce))
+                for Xct, yct, Xce, yce in client_splits
+            ]
 
     # ── ④ Estratégias ─────────────────────────────────────────────────────────
     xgb_fusion  = sim_conf.get("xgb_fusion", "sum")   # sum | or
@@ -472,12 +487,45 @@ def main(args: list[str] | None = None) -> None:
     )
     eval_sample = sim_conf.get("eval_sample")
     monitor = build_monitor(conf)
+    node_holdings = conf.get("architecture", {}).get("node_holdings")
+    if node_holdings is not None and not (_is_xgb and xgb_fusion == "or"):
+        raise ValueError("architecture.node_holdings requires strategy xgb_bagging with "
+                         "xgb_fusion: or")
+    n_tl = getattr(arch_manager, "n_rounds", None)
+    if n_tl is not None and num_rounds != n_tl:
+        print(f"  [aviso] num_rounds={num_rounds}, the trust-level trace covers {n_tl} "
+              f"rounds of {arch_manager.delta:g} s")
+    # scenario (evaluation-v1 section 9): when each node's block of specialists arrives
+    #   scenario:
+    #     arrival_s: {2: 1800, 3: 1800, 10: 1800, 11: 1800, 8: 3600, 9: 3600}  # 0-based
+    scen_conf = conf.get("scenario", {}) or {}
+    arrival = {int(k): float(v) for k, v in (scen_conf.get("arrival_s") or {}).items()}
+    if arrival and node_holdings is None:
+        raise ValueError("scenario.arrival_s requires architecture.node_holdings")
+    holdings_log = None
+    log_dir = conf.get("architecture", {}).get("holdings_log")
+    if log_dir:
+        if node_holdings is None:
+            raise ValueError("architecture.holdings_log requires architecture.node_holdings")
+        from fd.holdings_log import HoldingsLog
+        holdings_log = HoldingsLog(log_dir)
+        holdings_log.header({
+            "run_name": conf.get("run_name"), "conf": conf_path, "dataset": dataset,
+            "test_file": test_file, "features": sorted(int(f) for f in features),
+            "num_nodes": num_clients, "num_rounds": num_rounds, "seed": seed,
+            "node_holdings": node_holdings, "arrival_s": arrival,
+            "node_specialist": client_specialist, "class_names": class_names,
+            "architecture": conf.get("architecture", {}),
+        })
+        print(f"  holdings log: {holdings_log.dir}")
     hybrid = HybridStrategy(
         fed_strategy, glow_strategy, arch_manager,
         round_eval_fn=_make_round_eval_fn(
             strategy_name, X_te, y_te,
             eval_sample=int(eval_sample) if eval_sample else None, k=fusion_k),
         monitor=monitor,
+        node_holdings=node_holdings,
+        holdings_log=holdings_log,
     )
 
     print(f"\n  ④ Strategy: {strategy_name}  |  ArchManager: {arch_manager.__class__.__name__}")
@@ -489,7 +537,10 @@ def main(args: list[str] | None = None) -> None:
             "max_depth": 4, "eta": 0.1,
             "objective": "binary:logistic", "seed": seed,
         }
-        client_app = make_xgb_client_app(client_splits, xgb_params)
+        client_app = make_xgb_client_app(
+            client_splits, xgb_params, arrival=arrival,
+            specialist_groups=[g["specialists"] for g in spec_groups] if spec_groups else None,
+            normal_class=util.normal_class if spec_groups else None)
     else:
         client_app = make_glow_client_app(client_splits, base_clf) \
             if initial_mode == "gossip" \
@@ -506,6 +557,8 @@ def main(args: list[str] | None = None) -> None:
         num_supernodes= num_clients,
     )
     monitor.stop()
+    if holdings_log is not None:
+        holdings_log.close()
 
     # ── resultado final (P1) ──────────────────────────────────────────────────
     print(f"\n{'='*60}")
@@ -518,6 +571,10 @@ def main(args: list[str] | None = None) -> None:
             # Preferir os parâmetros agregados do último round (no modo misto,
             # o modelo final pode ter saído do gossip, não da fed_strategy).
             boosters = _boosters_from_parameters(hybrid.final_parameters)
+            if getattr(arch_manager, "conflicts", None):
+                print(f"  [TLArch] {len(arch_manager.conflicts)} round(s) with FL and GL "
+                      f"at once (minority skipped): "
+                      f"{[(c['round'], c['run']) for c in arch_manager.conflicts]}")
             if not boosters and fed_strategy.get_global_model() is not None:
                 boosters = [fed_strategy.get_global_model()]
             if not boosters:
@@ -544,7 +601,9 @@ def main(args: list[str] | None = None) -> None:
                 _print_result(f"DISTRIBUÍDO [{strategy_name}]", result)
 
     # ── baseline monolítico (P2): mesmas features, mesmo split 80/20 ──────────
-    if result is not None:
+    # simulation.monolithic: false pula este baseline (não altera o resultado distribuído;
+    # na grade da avaliação v1 ele já existe como "Centralized" do passo 1)
+    if result is not None and sim_conf.get("monolithic", True):
         if _is_xgb:
             n_pos = int(y_tr.sum())
             n_neg = len(y_tr) - n_pos
@@ -583,7 +642,7 @@ def main(args: list[str] | None = None) -> None:
             # GOSSIP: modelo evoluído de cada nó (conjunto acumulado; união OR)
             client_models = [_boosters_from_parameters(glow.get_node_model(cid))
                              for cid in range(num_clients)]
-            arch_label = "GOSSIP"
+            arch_label = (f"POR NÓ ({node_holdings})" if node_holdings else "GOSSIP")
         else:
             # FEDERADO: reproduz o modelo local de cada cliente (treino do zero,
             # mesmos params do XgbClient) — determinístico

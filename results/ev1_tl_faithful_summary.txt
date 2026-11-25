@@ -1,0 +1,82 @@
+faithful replay (links: scenario, rounds at 60 r + 30 s, retention); per block: protected at end / median latency / exposure all / reachable
+
+==== ERENO (reference: block 30 min 99.99 %, block 60 min 100.00 %; attacks present 0/30/60 min 99.93 / 99.95 / 99.97 %)
+--- T1
+  ReSIDS   | 30 min: 14/14  29 min  51.8%  42.4%  | 60 min: 14/14   0 min   0.0%   0.0%
+  FL       | 30 min: 14/14  30 min  56.6%  48.2%  | 60 min: 14/14   0 min   0.0%   0.0%
+  GL       | 30 min: 14/14  29 min  53.8%  44.9%  | 60 min: 14/14   0 min   0.0%   0.0%
+--- T2
+  ReSIDS   | 30 min:  9/14  12 min  47.9%  34.0%  | 60 min: 14/14   0 min   0.0%   0.0%
+  FL       | 30 min:  0/14       - 100.0% 100.0%  | 60 min: 14/14   0 min   0.0%   0.0%
+  GL       | 30 min:  9/14  12 min  47.9%  34.0%  | 60 min: 14/14   0 min   0.0%   0.0%
+
+==== CICIDS2017 (reference: block 30 min 99.61 %, block 60 min 98.89 %; attacks present 0/30/60 min 99.55 / 99.71 / 99.70 %)
+--- T1
+  ReSIDS   | 30 min: 14/14  22 min  38.4%  26.5%  | 60 min: 14/14   0 min   0.0%   0.0%
+  FL       | 30 min: 14/14  30 min  52.6%  43.4%  | 60 min: 14/14   0 min   0.0%   0.0%
+  GL       | 30 min: 14/14  22 min  38.4%  26.5%  | 60 min: 14/14  12 min  48.1%  48.1%
+--- T2
+  ReSIDS   | 30 min: 14/14   8 min  10.8%  14.8%  | 60 min:  8/14   5 min  52.1%  16.1%
+  FL       | 30 min:  1/14   0 min  92.9%  97.8%  | 60 min:  8/14  16 min  62.6%  34.5%
+  GL       | 30 min: 14/14   8 min  10.8%  14.8%  | 60 min:  6/14   4 min  60.7%  31.2%
+
+==== Morris-4 (reference: block 30 min 99.68 %, block 60 min 100.00 %; attacks present 0/30/60 min 98.77 / 99.28 / 99.81 %)
+--- T1
+  ReSIDS   | 30 min: 14/14   0 min   0.0%   0.0%  | 60 min: 14/14   0 min   0.0%   0.0%
+  FL       | 30 min: 14/14   0 min   0.0%   0.0%  | 60 min: 14/14   0 min   0.0%   0.0%
+  GL       | 30 min: 14/14  30 min  41.1%  37.0%  | 60 min: 14/14   0 min   6.5%   6.5%
+--- T2
+  ReSIDS   | 30 min: 14/14   0 min   0.0%   0.0%  | 60 min:  9/14   0 min  35.7%   0.0%
+  FL       | 30 min: 14/14   0 min   0.0%   0.0%  | 60 min:  8/14  16 min  57.0%  24.7%
+  GL       | 30 min: 14/14   3 min   4.7%   6.5%  | 60 min:  9/14   0 min  35.7%   0.0%
+
+==== CICIoT2023 (reference: block 30 min 100.00 %, block 60 min 96.44 %; attacks present 0/30/60 min 99.95 / 100.00 / 99.97 %)
+--- T1
+  ReSIDS   | 30 min: 14/14   0 min   0.0%   0.0%  | 60 min: 14/14   0 min   0.0%   0.0%
+  FL       | 30 min: 14/14   0 min   0.0%   0.0%  | 60 min: 14/14   0 min   0.0%   0.0%
+  GL       | 30 min: 14/14   0 min   0.0%   0.0%  | 60 min: 14/14   0 min   3.1%   3.1%
+--- T2
+  ReSIDS   | 30 min: 14/14   0 min   0.0%   0.0%  | 60 min:  9/14   0 min  35.7%   0.0%
+  FL       | 30 min: 14/14   0 min   0.0%   0.0%  | 60 min:  8/14  16 min  59.8%  29.6%
+  GL       | 30 min: 14/14   0 min   0.0%   0.0%  | 60 min:  9/14   0 min  35.7%   0.0%
+
+regret (exposure minus the best of the three), 12 informative cells of 16
+  CICIDS2017 T1 block 30 min: ReSIDS  38.4 (+0.0)  FL  52.6 (+14.2)  GL  38.4 (+0.0)
+  CICIDS2017 T1 block 60 min: ReSIDS   0.0 (+0.0)  FL   0.0 (+0.0)  GL  48.1 (+48.1)
+  CICIDS2017 T2 block 30 min: ReSIDS  10.8 (+0.0)  FL  92.9 (+82.0)  GL  10.8 (+0.0)
+  CICIDS2017 T2 block 60 min: ReSIDS  52.1 (+0.0)  FL  62.6 (+10.5)  GL  60.7 (+8.6)
+  CICIoT2023 T1 block 60 min: ReSIDS   0.0 (+0.0)  FL   0.0 (+0.0)  GL   3.1 (+3.1)
+  CICIoT2023 T2 block 60 min: ReSIDS  35.7 (+0.0)  FL  59.8 (+24.1)  GL  35.7 (+0.0)
+  ERENO      T1 block 30 min: ReSIDS  51.8 (+0.0)  FL  56.6 (+4.9)  GL  53.8 (+2.0)
+  ERENO      T2 block 30 min: ReSIDS  47.9 (+0.0)  FL 100.0 (+52.1)  GL  47.9 (+0.0)
+  Morris-4   T1 block 30 min: ReSIDS   0.0 (+0.0)  FL   0.0 (+0.0)  GL  41.1 (+41.1)
+  Morris-4   T1 block 60 min: ReSIDS   0.0 (+0.0)  FL   0.0 (+0.0)  GL   6.5 (+6.5)
+  Morris-4   T2 block 30 min: ReSIDS   0.0 (+0.0)  FL   0.0 (+0.0)  GL   4.7 (+4.7)
+  Morris-4   T2 block 60 min: ReSIDS  35.7 (+0.0)  FL  57.0 (+21.2)  GL  35.7 (+0.0)
+  ReSIDS  mean   0.0, max   0.0; best (within 1) 12, worst 0
+  FL      mean  17.4, max  82.0; best (within 1) 5, worst 7
+  GL      mean   9.5, max  48.1; best (within 1) 5, worst 5
+
+gain of ReSIDS over each fixed mode (figure, lower row): points of nodes protected against the attacks present, mean / max / min over the rounds
+  CICIDS2017 T1 vs FL:   9.1 /  92.9 /    0.0  vs GL:  21.4 /  92.9 /    0.0
+  CICIDS2017 T2 vs FL:  39.9 /  92.9 /    0.0  vs GL:  10.1 /  92.9 /    0.0
+  CICIoT2023 T1 vs FL:   0.0 /   0.0 /    0.0  vs GL:   6.2 /  64.3 /    0.0
+  CICIoT2023 T2 vs FL:   9.4 /  50.0 /    0.0  vs GL:   4.5 /  64.3 /    0.0
+  ERENO      T1 vs FL:   3.1 /  57.1 /    0.0  vs GL:  14.8 / 100.0 /    0.0
+  ERENO      T2 vs FL:  36.5 /  64.3 /    0.0  vs GL:  11.4 / 100.0 /    0.0
+  Morris-4   T1 vs FL:   0.0 /   0.0 /    0.0  vs GL:  41.5 / 100.0 /    0.0
+  Morris-4   T2 vs FL:   8.3 /  42.9 /    0.0  vs GL:  15.5 / 100.0 /    0.0
+
+scenario 2 questions (holdings logs): clients holding the block's specialists
+  ERENO      ReSIDS  a) 3-4 outside region: before 45 min [1, 8, 9, 10, 11, 12, 13, 14], before 60 min [1, 8, 9, 10, 11, 12, 13, 14], end [1, 8, 9, 10, 11, 12, 13, 14] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [1, 8, 9, 10, 11, 12, 13, 14] (1 and 8: True)
+  ERENO      FL      a) 3-4 outside region: before 45 min [], before 60 min [], end [] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [1, 8, 9, 10, 11, 12, 13, 14] (1 and 8: True)
+  ERENO      GL      a) 3-4 outside region: before 45 min [1, 8, 9, 10, 11, 12, 13, 14], before 60 min [1, 8, 9, 10, 11, 12, 13, 14], end [1, 8, 9, 10, 11, 12, 13, 14] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [9, 10, 11, 12, 13, 14] (1 and 8: False)
+  CICIDS2017 ReSIDS  a) 3-4 outside region: before 45 min [1, 8, 9, 10, 11, 12, 13, 14], before 60 min [1, 8, 9, 10, 11, 12, 13, 14], end [1, 8, 9, 10, 11, 12, 13, 14] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [1, 8, 9, 10, 11, 12, 13, 14] (1 and 8: True)
+  CICIDS2017 FL      a) 3-4 outside region: before 45 min [], before 60 min [], end [] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [1, 8, 9, 10, 11, 12, 13, 14] (1 and 8: True)
+  CICIDS2017 GL      a) 3-4 outside region: before 45 min [1, 8, 9, 10, 11, 12, 13, 14], before 60 min [1, 8, 9, 10, 11, 12, 13, 14], end [1, 8, 9, 10, 11, 12, 13, 14] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [9, 10, 11, 12, 13, 14] (1 and 8: False)
+  Morris-4   ReSIDS  a) 3-4 outside region: before 45 min [1, 8, 9, 10, 11, 12, 13, 14], before 60 min [1, 8, 9, 10, 11, 12, 13, 14], end [1, 8, 9, 10, 11, 12, 13, 14] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [1, 8, 9, 10, 11, 12, 13, 14] (1 and 8: True)
+  Morris-4   FL      a) 3-4 outside region: before 45 min [], before 60 min [], end [] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [1, 8, 9, 10, 11, 12, 13, 14] (1 and 8: True)
+  Morris-4   GL      a) 3-4 outside region: before 45 min [1, 8, 9, 10, 11, 12, 13, 14], before 60 min [1, 8, 9, 10, 11, 12, 13, 14], end [1, 8, 9, 10, 11, 12, 13, 14] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [9, 10, 11, 12, 13, 14] (1 and 8: False)
+  CICIoT2023 ReSIDS  a) 3-4 outside region: before 45 min [1, 8, 9, 10, 11, 12, 13, 14], before 60 min [1, 8, 9, 10, 11, 12, 13, 14], end [1, 8, 9, 10, 11, 12, 13, 14] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [1, 8, 9, 10, 11, 12, 13, 14] (1 and 8: True)
+  CICIoT2023 FL      a) 3-4 outside region: before 45 min [], before 60 min [], end [] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [1, 8, 9, 10, 11, 12, 13, 14] (1 and 8: True)
+  CICIoT2023 GL      a) 3-4 outside region: before 45 min [1, 8, 9, 10, 11, 12, 13, 14], before 60 min [1, 8, 9, 10, 11, 12, 13, 14], end [1, 8, 9, 10, 11, 12, 13, 14] | b) client 5 holds 11-12 before 45 min: False | c) 9-10 at the end held by [9, 10, 11, 12, 13, 14] (1 and 8: False)

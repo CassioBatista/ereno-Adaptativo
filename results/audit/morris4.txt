@@ -1,0 +1,54 @@
+DATASET AUDIT — Morris-4 (gas pipeline, 2015)
+rows 274,628 (all rows); content features 15; identifiers ['time', 'crc rate']; benign label 'normal'
+note: the Modbus address field names the slave, the same for normal and attack traffic: no emitter address
+
+=== (i) STRUCTURE ===
+  morris_ics/IanArffDataset.arff                               fields per line={20: 274628}; header lines inside the data=0
+  columns checked 17; value kind contradicting the name or role: 0
+  NaN cells in content features 2,311,020; infinite 0
+
+=== (ii) LABELS ===
+rows 274,628; duplicates on all columns 0 (0.00%); without identifiers 252,859 (92.07%)
+feature vectors with >1 label 585; rows in them 83,870 (30.54%)
+  normal                       rows     214,580  in multi-label vectors  27.24%
+  MPCI                         rows      20,412  in multi-label vectors  50.00%  vector also occurs as benign  50.00%
+  CMRI                         rows      13,035  in multi-label vectors  25.45%  vector also occurs as benign   2.21%
+  MSCI                         rows       7,900  in multi-label vectors  56.92%  vector also occurs as benign  56.76%
+  NMRI                         rows       7,753  in multi-label vectors  39.87%  vector also occurs as benign   1.08%
+  MFCI                         rows       4,898  in multi-label vectors  50.00%  vector also occurs as benign   0.00%
+  Recon                        rows       3,874  in multi-label vectors   1.86%  vector also occurs as benign   0.00%
+  DoS                          rows       2,176  in multi-label vectors  82.31%  vector also occurs as benign  81.07%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 100.00% of steps (mean over 1 file(s)); span 76.58 h
+label runs in file order 73,297 for 8 labels
+  MPCI                         span          76.17 h  benign share inside  78.09%  benign rows inside 213,385
+  CMRI                         span          76.23 h  benign share inside  78.17%  benign rows inside 213,931
+  MSCI                         span          76.31 h  benign share inside  78.13%  benign rows inside 213,904
+  NMRI                         span          76.57 h  benign share inside  78.13%  benign rows inside 214,533
+  MFCI                         span          75.97 h  benign share inside  78.10%  benign rows inside 212,779
+  Recon                        span          74.16 h  benign share inside  78.27%  benign rows inside 208,308
+  DoS                          span          73.70 h  benign share inside  78.12%  benign rows inside 206,485
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  normal                           214,580  78.13%
+  MPCI                              20,412  7.43%
+  CMRI                              13,035  4.75%
+  MSCI                               7,900  2.88%
+  NMRI                               7,753  2.82%
+  MFCI                               4,898  1.78%
+  Recon                              3,874  1.41%
+  DoS                                2,176  0.79%
+benign 214,580 rows (78.13%); attack 21.87%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 160,048: normal 100,000, MPCI 20,412, CMRI 13,035, MSCI 7,900, NMRI 7,753, MFCI 4,898, Recon 3,874, DoS 2,176
+  content                  random 70/30                                 macro-F1=0.657  CMRI=0.60  DoS=0.15  MFCI=0.99  MPCI=0.58  MSCI=0.41  NMRI=0.65  Recon=0.99  normal=0.88
+  content                  time-ordered 70/30 per label                 macro-F1=0.616  CMRI=0.66  DoS=0.01  MFCI=0.99  MPCI=0.57  MSCI=0.35  NMRI=0.49  Recon=0.99  normal=0.88
+  content + identifiers    random 70/30                                 macro-F1=0.737  CMRI=0.72  DoS=0.61  MFCI=0.99  MPCI=0.58  MSCI=0.42  NMRI=0.68  Recon=0.99  normal=0.89
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.483  CMRI=0.50  DoS=0.06  MFCI=0.99  MPCI=0.12  MSCI=0.17  NMRI=0.48  Recon=0.99  normal=0.55
+
+(run time 20 s)

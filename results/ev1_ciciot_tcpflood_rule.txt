@@ -1,0 +1,51 @@
+training rows of the specialist (node 2): 161,178 DDoS_TCP_Flood, 2,800 benign
+  Header_Length quantiles 1/5/50/95/99 %: attack 53.46, 53.46, 54, 77.1, 177.1
+                                           benign 924.6, 5424, 5.228e+05, 3.744e+06, 6.034e+06
+
+trees 10; splits 49, on Header_Length 10; thresholds: 247.8
+first tree:
+0:[f1<247.759995] yes=1,no=2,missing=2
+	1:[f26<0.469999999] yes=3,no=4,missing=4
+		3:leaf=0.199712679
+		4:leaf=-0.0434260704
+	2:[f11<0.5] yes=5,no=6,missing=6
+		5:[f26<0.689999998] yes=7,no=8,missing=8
+			7:leaf=0.148789957
+			8:leaf=-0.170279905
+		6:[f25<10.7289] yes=9,no=10,missing=10
+			9:leaf=-0.044980038
+			10:leaf=-0.198922172
+
+
+test, per class: flagged %, Header_Length quantiles 5/50/95 %
+  Benign                       0.0   5167, 5.135e+05, 3.875e+06
+  Backdoor_Malware             0.0   557.7, 1.225e+04, 1.475e+05
+  BrowserHijacking             1.3   851.4, 2.726e+04, 1.381e+06
+  CommandInjection             0.0   815, 2.038e+04, 4.525e+06
+  DDoS_ACK_Fragmentation       1.1   591.3, 743.9, 919.3
+  DDoS_HTTP_Flood             10.5   122.8, 827.3, 1.174e+04
+  DDoS_ICMP_Flood             99.7   0, 0, 4.21
+  DDoS_ICMP_Fragmentation      0.0   0, 6.9, 320.7
+  DDoS_PSHACK_Flood           99.6   53.46, 54, 76.68
+  DDoS_RSTFINFlood            99.6   53.46, 54, 61.12
+  DDoS_SYN_Flood              98.4   53.46, 54, 108
+  DDoS_SlowLoris               0.0   557.8, 4.477e+04, 7.507e+05
+  DDoS_SynonymousIP_Flood     99.8   54, 91.8, 174.4
+  DDoS_TCP_Flood              99.7   53.46, 54, 78.12
+  DDoS_UDP_Flood              99.7   7442, 2.47e+04, 4.267e+04
+  DictionaryBruteForce         0.0   592.9, 1.716e+04, 1.468e+05
+  DoS_HTTP_Flood              16.4   128.7, 6314, 2.118e+04
+  DoS_SYN_Flood               98.2   54, 98.8, 201.7
+  DoS_TCP_Flood               98.7   54, 81, 162
+  DoS_UDP_Flood               99.1   84, 1.63e+04, 4.528e+04
+  Mirai_greeth_flood          97.4   0, 0, 29.62
+  Mirai_greip_flood           94.4   0, 0, 141.8
+  Mirai_udpplain              98.7   1.214e+05, 1.185e+06, 4.205e+06
+  Recon_HostDiscovery          5.4   61, 2444, 9.743e+04
+  Recon_OSScan                10.3   58, 2.634e+04, 9.095e+05
+  Recon_PingSweep              3.1   355.8, 7002, 9.686e+04
+  Recon_PortScan              16.4   58, 3242, 3.97e+05
+  SqlInjection                 0.0   277, 8078, 7.356e+04
+  Uploading_Attack             0.0   494.8, 5789, 7.636e+04
+  VulnerabilityScan            0.4   1619, 1.768e+04, 1.686e+06
+  XSS                          0.0   938.6, 7745, 1.364e+05

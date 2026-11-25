@@ -1,0 +1,98 @@
+{
+ "dataset": "Morris-3 (water tank, 2014)",
+ "sample": "all rows",
+ "rows": 236179,
+ "feats": 21,
+ "ids": [
+  "time",
+  "crc_rate"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.47880632909784526,
+  "dup_feat": 0.9189089631169579,
+  "multi_rows": 0.15139364634450989,
+  "per_label": {
+   "normal": {
+    "rows": 172415,
+    "multi": 0.10885943798393412,
+    "as_benign": null
+   },
+   "Recon": {
+    "rows": 34002,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "CMRI": {
+    "rows": 12460,
+    "multi": 1.0,
+    "as_benign": 0.9897271268057785
+   },
+   "NMRI": {
+    "rows": 9187,
+    "multi": 0.4700119734407315,
+    "as_benign": 0.02351148361815609
+   },
+   "MPCI": {
+    "rows": 3725,
+    "multi": 0.026040268456375838,
+    "as_benign": 0.004832214765100671
+   },
+   "MSCI": {
+    "rows": 1833,
+    "multi": 0.06110201854882706,
+    "as_benign": 0.02673213311511184
+   },
+   "MFCI": {
+    "rows": 1320,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "DoS": {
+    "rows": 1237,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": false
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 172415,
+  "benign_share": 0.730018333552094
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.8620534735271437,
+   "per_label": {
+    "CMRI": 0.0,
+    "DoS": 0.9946236559139785,
+    "MFCI": 1.0,
+    "MPCI": 0.987487969201155,
+    "MSCI": 0.966824644549763,
+    "NMRI": 0.9560509554140127,
+    "Recon": 1.0,
+    "normal": 0.9914405631382399
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.8622227909701965,
+   "per_label": {
+    "CMRI": 0.0,
+    "DoS": 0.9946236559139785,
+    "MFCI": 1.0,
+    "MPCI": 0.987986544930322,
+    "MSCI": 0.967680608365019,
+    "NMRI": 0.9560509554140127,
+    "Recon": 1.0,
+    "normal": 0.9914405631382399
+   }
+  }
+ }
+}

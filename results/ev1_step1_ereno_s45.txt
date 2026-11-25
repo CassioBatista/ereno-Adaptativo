@@ -1,0 +1,38 @@
+evaluation-v1 step 1 -- ERENO -- seed 45 -- 14 nodes
+features (15): [5, 7, 14, 15, 20, 25, 40, 42, 43, 44, 45, 46, 55, 57, 58]
+specialists 14 (10 rounds each), IID 14 x 10 rounds, Centralized 140 rounds; nthread 8; test 2,955,648 rows (200,509 attack, prevalence 6.78 %)
+
+detector                    F1   recall    prec.     FPR %       FP  F1@6.8%     P@1%   P@0.1%
+attack-based OR          95.79    99.97    91.95    0.6368   17,545    95.80    61.33    13.58
+attack-based k=2         96.08    99.96    92.49    0.5905   16,268    96.09    63.10    14.49
+IID OR                   78.76    99.37    65.23    3.8539  106,180    78.80    20.66     2.52
+Centralized              99.79    99.96    99.63    0.0271      747    99.79    97.38    78.68
+Local (mean, nodes)      52.31    36.05    97.00    0.0877   (recall on own types 99.35)
+
+per-type recall % [exact 95 % interval] (* fewer than 100 test samples)
+type                                            n   attack-based OR  attack-based k=2            IID OR       Centralized
+ random_replay                             39,000 100.00            100.00             98.91            100.00           
+ inverse_replay                            30,319 100.00            100.00            100.00            100.00           
+ masquerade_fake_fault                     17,200  99.63             99.60             99.42             99.51           
+ masquerade_fake_normal                    17,420 100.00             99.96            100.00            100.00           
+ injection                                 39,000 100.00            100.00             98.09             99.99           
+ high_StNum                                39,000 100.00            100.00            100.00            100.00           
+ poisoned_high_rate                        18,570 100.00            100.00            100.00            100.00           
+
+Local, per node: recall (all attacks) / recall (own types) / FPR %
+  node  1:  36.85 /  99.99 / 0.0000   random_replay
+  node  2:  36.85 /  99.99 / 0.0000   random_replay
+  node  3:  38.90 / 100.00 / 0.0000   injection
+  node  4:  38.90 / 100.00 / 0.0000   injection
+  node  5:  33.11 /  99.98 / 0.0000   high_StNum
+  node  6:  35.38 / 100.00 / 0.0000   high_StNum
+  node  7:  39.15 /  95.95 / 0.0000   inverse_replay
+  node  8:  39.15 /  95.95 / 0.0000   inverse_replay
+  node  9:  34.85 / 100.00 / 0.0002   poisoned_high_rate
+  node 10:  34.89 / 100.00 / 0.0002   poisoned_high_rate
+  node 11:  24.98 / 100.00 / 0.1904   masquerade_fake_normal
+  node 12:  24.98 /  99.96 / 0.1589   masquerade_fake_normal
+  node 13:  42.62 /  99.52 / 0.4400   masquerade_fake_fault
+  node 14:  44.15 /  99.49 / 0.4376   masquerade_fake_fault
+
+elapsed 46 s

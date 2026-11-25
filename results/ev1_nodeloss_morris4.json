@@ -1,0 +1,1074 @@
+{
+ "domain": "Morris-4",
+ "removal_order": [
+  7,
+  8,
+  10,
+  4,
+  1,
+  12,
+  14,
+  11,
+  6,
+  3,
+  5,
+  13,
+  2,
+  9
+ ],
+ "seed_order": 42,
+ "seed_other_orders": 2026,
+ "n_other_orders": 1000,
+ "retention": {
+  "recall": 0.998067920041614,
+  "fpr": 0.42002982570603037
+ },
+ "re_formed": [
+  {
+   "N": 14,
+   "removed": [],
+   "recall": 0.998067920041614,
+   "fpr": 0.42002982570603037,
+   "per_type": {
+    "specific_1": 1.0,
+    "specific_10": 0.9684684684684685,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 1.0,
+    "specific_17": 1.0,
+    "specific_18": 1.0,
+    "specific_19": 1.0,
+    "specific_2": 1.0,
+    "specific_20": 1.0,
+    "specific_21": 1.0,
+    "specific_22": 1.0,
+    "specific_23": 1.0,
+    "specific_24": 1.0,
+    "specific_25": 1.0,
+    "specific_26": 1.0,
+    "specific_27": 1.0,
+    "specific_28": 0.9982078853046595,
+    "specific_29": 1.0,
+    "specific_3": 1.0,
+    "specific_30": 0.9889937106918238,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 1.0,
+    "specific_34": 1.0,
+    "specific_35": 1.0,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 1.0,
+    "specific_7": 1.0,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [],
+   "rows_without_specialist": 0,
+   "orders_recall_p5_p95": [
+    0.998067920041614,
+    0.998067920041614
+   ],
+   "orders_recall_min_max": [
+    0.998067920041614,
+    0.998067920041614
+   ],
+   "orders_fpr_p5_p95": [
+    0.42002982570603037,
+    0.42002982570603037
+   ]
+  },
+  {
+   "N": 13,
+   "removed": [
+    7
+   ],
+   "recall": 0.998067920041614,
+   "fpr": 0.42002982570603037,
+   "per_type": {
+    "specific_1": 1.0,
+    "specific_10": 0.9684684684684685,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 1.0,
+    "specific_17": 1.0,
+    "specific_18": 1.0,
+    "specific_19": 1.0,
+    "specific_2": 1.0,
+    "specific_20": 1.0,
+    "specific_21": 1.0,
+    "specific_22": 1.0,
+    "specific_23": 1.0,
+    "specific_24": 1.0,
+    "specific_25": 1.0,
+    "specific_26": 1.0,
+    "specific_27": 1.0,
+    "specific_28": 0.9982078853046595,
+    "specific_29": 1.0,
+    "specific_3": 1.0,
+    "specific_30": 0.9889937106918238,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 1.0,
+    "specific_34": 1.0,
+    "specific_35": 1.0,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 1.0,
+    "specific_7": 1.0,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_22",
+    "specific_33"
+   ],
+   "rows_without_specialist": 945,
+   "orders_recall_p5_p95": [
+    0.9651482499814223,
+    0.998067920041614
+   ],
+   "orders_recall_min_max": [
+    0.9651482499814223,
+    0.998067920041614
+   ],
+   "orders_fpr_p5_p95": [
+    0.3621027122751421,
+    0.42002982570603037
+   ]
+  },
+  {
+   "N": 12,
+   "removed": [
+    7,
+    8
+   ],
+   "recall": 0.9936092739838003,
+   "fpr": 0.42002982570603037,
+   "per_type": {
+    "specific_1": 1.0,
+    "specific_10": 0.9684684684684685,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 1.0,
+    "specific_17": 1.0,
+    "specific_18": 1.0,
+    "specific_19": 1.0,
+    "specific_2": 1.0,
+    "specific_20": 1.0,
+    "specific_21": 1.0,
+    "specific_22": 1.0,
+    "specific_23": 1.0,
+    "specific_24": 0.8275862068965517,
+    "specific_25": 1.0,
+    "specific_26": 1.0,
+    "specific_27": 1.0,
+    "specific_28": 0.9982078853046595,
+    "specific_29": 1.0,
+    "specific_3": 1.0,
+    "specific_30": 0.9889937106918238,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 1.0,
+    "specific_34": 1.0,
+    "specific_35": 1.0,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 1.0,
+    "specific_7": 1.0,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_18",
+    "specific_22",
+    "specific_24",
+    "specific_25",
+    "specific_33"
+   ],
+   "rows_without_specialist": 2062,
+   "orders_recall_p5_p95": [
+    0.9633424983280078,
+    0.998067920041614
+   ],
+   "orders_recall_min_max": [
+    0.9260607862079215,
+    0.998067920041614
+   ],
+   "orders_fpr_p5_p95": [
+    0.36162115139652656,
+    0.42002982570603037
+   ]
+  },
+  {
+   "N": 11,
+   "removed": [
+    7,
+    8,
+    10
+   ],
+   "recall": 0.9929404770751282,
+   "fpr": 0.4199987572622487,
+   "per_type": {
+    "specific_1": 1.0,
+    "specific_10": 0.9684684684684685,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 1.0,
+    "specific_17": 1.0,
+    "specific_18": 1.0,
+    "specific_19": 1.0,
+    "specific_2": 1.0,
+    "specific_20": 1.0,
+    "specific_21": 1.0,
+    "specific_22": 1.0,
+    "specific_23": 1.0,
+    "specific_24": 0.8275862068965517,
+    "specific_25": 1.0,
+    "specific_26": 1.0,
+    "specific_27": 1.0,
+    "specific_28": 0.9982078853046595,
+    "specific_29": 1.0,
+    "specific_3": 1.0,
+    "specific_30": 0.9889937106918238,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 1.0,
+    "specific_34": 1.0,
+    "specific_35": 1.0,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 1.0,
+    "specific_7": 0.960352422907489,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_1",
+    "specific_11",
+    "specific_18",
+    "specific_22",
+    "specific_24",
+    "specific_25",
+    "specific_33",
+    "specific_8"
+   ],
+   "rows_without_specialist": 2877,
+   "orders_recall_p5_p95": [
+    0.9322285799212305,
+    0.9979192985063535
+   ],
+   "orders_recall_min_max": [
+    0.8745634242401724,
+    0.998067920041614
+   ],
+   "orders_fpr_p5_p95": [
+    0.3251615559076646,
+    0.42002982570603037
+   ]
+  },
+  {
+   "N": 10,
+   "removed": [
+    4,
+    7,
+    8,
+    10
+   ],
+   "recall": 0.9929404770751282,
+   "fpr": 0.4199987572622487,
+   "per_type": {
+    "specific_1": 1.0,
+    "specific_10": 0.9684684684684685,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 1.0,
+    "specific_17": 1.0,
+    "specific_18": 1.0,
+    "specific_19": 1.0,
+    "specific_2": 1.0,
+    "specific_20": 1.0,
+    "specific_21": 1.0,
+    "specific_22": 1.0,
+    "specific_23": 1.0,
+    "specific_24": 0.8275862068965517,
+    "specific_25": 1.0,
+    "specific_26": 1.0,
+    "specific_27": 1.0,
+    "specific_28": 0.9982078853046595,
+    "specific_29": 1.0,
+    "specific_3": 1.0,
+    "specific_30": 0.9889937106918238,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 1.0,
+    "specific_34": 1.0,
+    "specific_35": 1.0,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 1.0,
+    "specific_7": 0.960352422907489,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_1",
+    "specific_11",
+    "specific_18",
+    "specific_22",
+    "specific_24",
+    "specific_25",
+    "specific_28",
+    "specific_32",
+    "specific_33",
+    "specific_8"
+   ],
+   "rows_without_specialist": 3997,
+   "orders_recall_p5_p95": [
+    0.9204131678680241,
+    0.9973248123653118
+   ],
+   "orders_recall_min_max": [
+    0.8307200713383369,
+    0.998067920041614
+   ],
+   "orders_fpr_p5_p95": [
+    0.2982190014602169,
+    0.42002982570603037
+   ]
+  },
+  {
+   "N": 9,
+   "removed": [
+    1,
+    4,
+    7,
+    8,
+    10
+   ],
+   "recall": 0.958237348591811,
+   "fpr": 0.35894926523130455,
+   "per_type": {
+    "specific_1": 1.0,
+    "specific_10": 0.9684684684684685,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 1.0,
+    "specific_17": 1.0,
+    "specific_18": 1.0,
+    "specific_19": 1.0,
+    "specific_2": 1.0,
+    "specific_20": 1.0,
+    "specific_21": 1.0,
+    "specific_22": 1.0,
+    "specific_23": 1.0,
+    "specific_24": 0.8275862068965517,
+    "specific_25": 0.920814479638009,
+    "specific_26": 1.0,
+    "specific_27": 1.0,
+    "specific_28": 0.9838709677419355,
+    "specific_29": 0.9982046678635548,
+    "specific_3": 1.0,
+    "specific_30": 0.789308176100629,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 0.966804979253112,
+    "specific_34": 1.0,
+    "specific_35": 0.5770392749244713,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 1.0,
+    "specific_7": 0.960352422907489,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_1",
+    "specific_11",
+    "specific_18",
+    "specific_22",
+    "specific_24",
+    "specific_25",
+    "specific_28",
+    "specific_30",
+    "specific_32",
+    "specific_33",
+    "specific_35",
+    "specific_8"
+   ],
+   "rows_without_specialist": 5295,
+   "orders_recall_p5_p95": [
+    0.8886601768596271,
+    0.9965817046890094
+   ],
+   "orders_recall_min_max": [
+    0.6860370067622799,
+    0.998067920041614
+   ],
+   "orders_fpr_p5_p95": [
+    0.28479510361326,
+    0.4199987572622487
+   ]
+  },
+  {
+   "N": 8,
+   "removed": [
+    1,
+    4,
+    7,
+    8,
+    10,
+    12
+   ],
+   "recall": 0.9571226870773575,
+   "fpr": 0.358467704352689,
+   "per_type": {
+    "specific_1": 1.0,
+    "specific_10": 0.9414414414414415,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 1.0,
+    "specific_17": 1.0,
+    "specific_18": 0.9755351681957186,
+    "specific_19": 1.0,
+    "specific_2": 1.0,
+    "specific_20": 1.0,
+    "specific_21": 1.0,
+    "specific_22": 1.0,
+    "specific_23": 1.0,
+    "specific_24": 0.8275862068965517,
+    "specific_25": 0.920814479638009,
+    "specific_26": 1.0,
+    "specific_27": 1.0,
+    "specific_28": 0.9838709677419355,
+    "specific_29": 0.9982046678635548,
+    "specific_3": 1.0,
+    "specific_30": 0.789308176100629,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 0.966804979253112,
+    "specific_34": 1.0,
+    "specific_35": 0.5770392749244713,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 0.9967105263157895,
+    "specific_7": 0.960352422907489,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_1",
+    "specific_11",
+    "specific_13",
+    "specific_15",
+    "specific_18",
+    "specific_22",
+    "specific_24",
+    "specific_25",
+    "specific_28",
+    "specific_30",
+    "specific_32",
+    "specific_33",
+    "specific_35",
+    "specific_7",
+    "specific_8"
+   ],
+   "rows_without_specialist": 5996,
+   "orders_recall_p5_p95": [
+    0.8622278368135543,
+    0.9939102325927027
+   ],
+   "orders_recall_min_max": [
+    0.6540833766812811,
+    0.9973248123653118
+   ],
+   "orders_fpr_p5_p95": [
+    0.25514959455680863,
+    0.4195482648274148
+   ]
+  },
+  {
+   "N": 7,
+   "removed": [
+    1,
+    4,
+    7,
+    8,
+    10,
+    12,
+    14
+   ],
+   "recall": 0.9337147952738352,
+   "fpr": 0.358467704352689,
+   "per_type": {
+    "specific_1": 1.0,
+    "specific_10": 0.9279279279279279,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 1.0,
+    "specific_17": 1.0,
+    "specific_18": 0.9755351681957186,
+    "specific_19": 1.0,
+    "specific_2": 1.0,
+    "specific_20": 0.04,
+    "specific_21": 1.0,
+    "specific_22": 1.0,
+    "specific_23": 1.0,
+    "specific_24": 0.4827586206896552,
+    "specific_25": 0.920814479638009,
+    "specific_26": 1.0,
+    "specific_27": 1.0,
+    "specific_28": 0.9838709677419355,
+    "specific_29": 0.9982046678635548,
+    "specific_3": 1.0,
+    "specific_30": 0.789308176100629,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 0.966804979253112,
+    "specific_34": 1.0,
+    "specific_35": 0.5770392749244713,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 0.9967105263157895,
+    "specific_7": 0.960352422907489,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_1",
+    "specific_11",
+    "specific_13",
+    "specific_15",
+    "specific_17",
+    "specific_18",
+    "specific_20",
+    "specific_22",
+    "specific_24",
+    "specific_25",
+    "specific_28",
+    "specific_30",
+    "specific_32",
+    "specific_33",
+    "specific_35",
+    "specific_7",
+    "specific_8",
+    "specific_9"
+   ],
+   "rows_without_specialist": 6619,
+   "orders_recall_p5_p95": [
+    0.8017388719625473,
+    0.9889425577766218
+   ],
+   "orders_recall_min_max": [
+    0.6046667162071784,
+    0.9968046369919001
+   ],
+   "orders_fpr_p5_p95": [
+    0.22537359803647433,
+    0.41895796439556343
+   ]
+  },
+  {
+   "N": 6,
+   "removed": [
+    1,
+    4,
+    7,
+    8,
+    10,
+    11,
+    12,
+    14
+   ],
+   "recall": 0.9289589061455005,
+   "fpr": 0.3559200919625936,
+   "per_type": {
+    "specific_1": 0.9330855018587361,
+    "specific_10": 0.9279279279279279,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 0.9397590361445783,
+    "specific_17": 1.0,
+    "specific_18": 0.908256880733945,
+    "specific_19": 1.0,
+    "specific_2": 0.9590909090909091,
+    "specific_20": 0.04,
+    "specific_21": 1.0,
+    "specific_22": 1.0,
+    "specific_23": 1.0,
+    "specific_24": 0.4827586206896552,
+    "specific_25": 0.920814479638009,
+    "specific_26": 1.0,
+    "specific_27": 1.0,
+    "specific_28": 0.9838709677419355,
+    "specific_29": 0.9982046678635548,
+    "specific_3": 1.0,
+    "specific_30": 0.789308176100629,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 0.966804979253112,
+    "specific_34": 1.0,
+    "specific_35": 0.5770392749244713,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 0.9967105263157895,
+    "specific_7": 0.960352422907489,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_1",
+    "specific_11",
+    "specific_13",
+    "specific_14",
+    "specific_15",
+    "specific_16",
+    "specific_17",
+    "specific_18",
+    "specific_20",
+    "specific_22",
+    "specific_24",
+    "specific_25",
+    "specific_28",
+    "specific_3",
+    "specific_30",
+    "specific_32",
+    "specific_33",
+    "specific_35",
+    "specific_7",
+    "specific_8",
+    "specific_9"
+   ],
+   "rows_without_specialist": 7375,
+   "orders_recall_p5_p95": [
+    0.7320836739243517,
+    0.9790443635282753
+   ],
+   "orders_recall_min_max": [
+    0.45076911644497286,
+    0.9965817046890094
+   ],
+   "orders_fpr_p5_p95": [
+    0.19215832478951128,
+    0.4169695839935378
+   ]
+  },
+  {
+   "N": 5,
+   "removed": [
+    1,
+    4,
+    6,
+    7,
+    8,
+    10,
+    11,
+    12,
+    14
+   ],
+   "recall": 0.8717396150702237,
+   "fpr": 0.3559200919625936,
+   "per_type": {
+    "specific_1": 0.9330855018587361,
+    "specific_10": 0.9279279279279279,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 0.9397590361445783,
+    "specific_17": 1.0,
+    "specific_18": 0.908256880733945,
+    "specific_19": 0.5010183299389002,
+    "specific_2": 0.9590909090909091,
+    "specific_20": 0.04,
+    "specific_21": 0.5009671179883946,
+    "specific_22": 0.5010799136069114,
+    "specific_23": 1.0,
+    "specific_24": 0.3793103448275862,
+    "specific_25": 0.920814479638009,
+    "specific_26": 1.0,
+    "specific_27": 1.0,
+    "specific_28": 0.9838709677419355,
+    "specific_29": 0.9982046678635548,
+    "specific_3": 1.0,
+    "specific_30": 0.789308176100629,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 0.966804979253112,
+    "specific_34": 1.0,
+    "specific_35": 0.5770392749244713,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 0.9967105263157895,
+    "specific_7": 0.960352422907489,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_1",
+    "specific_11",
+    "specific_13",
+    "specific_14",
+    "specific_15",
+    "specific_16",
+    "specific_17",
+    "specific_18",
+    "specific_19",
+    "specific_20",
+    "specific_21",
+    "specific_22",
+    "specific_24",
+    "specific_25",
+    "specific_28",
+    "specific_3",
+    "specific_30",
+    "specific_32",
+    "specific_33",
+    "specific_35",
+    "specific_7",
+    "specific_8",
+    "specific_9"
+   ],
+   "rows_without_specialist": 8383,
+   "orders_recall_p5_p95": [
+    0.6191275915880211,
+    0.9551906071189715
+   ],
+   "orders_recall_min_max": [
+    0.448539793416066,
+    0.9958385970127072
+   ],
+   "orders_fpr_p5_p95": [
+    0.14070898188709727,
+    0.4076179824152608
+   ]
+  },
+  {
+   "N": 4,
+   "removed": [
+    1,
+    3,
+    4,
+    6,
+    7,
+    8,
+    10,
+    11,
+    12,
+    14
+   ],
+   "recall": 0.8326521512967229,
+   "fpr": 0.2925870693136981,
+   "per_type": {
+    "specific_1": 0.9330855018587361,
+    "specific_10": 0.9279279279279279,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 0.9397590361445783,
+    "specific_17": 1.0,
+    "specific_18": 0.908256880733945,
+    "specific_19": 0.5010183299389002,
+    "specific_2": 0.9590909090909091,
+    "specific_20": 0.04,
+    "specific_21": 0.5009671179883946,
+    "specific_22": 0.5010799136069114,
+    "specific_23": 1.0,
+    "specific_24": 0.3793103448275862,
+    "specific_25": 0.9095022624434389,
+    "specific_26": 0.996316758747698,
+    "specific_27": 1.0,
+    "specific_28": 0.9480286738351255,
+    "specific_29": 0.9946140035906643,
+    "specific_3": 1.0,
+    "specific_30": 0.5220125786163522,
+    "specific_31": 1.0,
+    "specific_32": 1.0,
+    "specific_33": 0.966804979253112,
+    "specific_34": 0.6567164179104478,
+    "specific_35": 0.3957703927492447,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 0.9967105263157895,
+    "specific_7": 0.960352422907489,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_1",
+    "specific_11",
+    "specific_13",
+    "specific_14",
+    "specific_15",
+    "specific_16",
+    "specific_17",
+    "specific_18",
+    "specific_19",
+    "specific_20",
+    "specific_21",
+    "specific_22",
+    "specific_24",
+    "specific_25",
+    "specific_28",
+    "specific_3",
+    "specific_30",
+    "specific_31",
+    "specific_32",
+    "specific_33",
+    "specific_34",
+    "specific_35",
+    "specific_7",
+    "specific_8",
+    "specific_9"
+   ],
+   "rows_without_specialist": 9558,
+   "orders_recall_p5_p95": [
+    0.5443263728914319,
+    0.9118674295905477
+   ],
+   "orders_recall_min_max": [
+    0.3350672512447054,
+    0.9924203017017166
+   ],
+   "orders_fpr_p5_p95": [
+    0.09840385870071768,
+    0.40061204834249853
+   ]
+  },
+  {
+   "N": 3,
+   "removed": [
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    10,
+    11,
+    12,
+    14
+   ],
+   "recall": 0.5669168462510218,
+   "fpr": 0.2844160685991239,
+   "per_type": {
+    "specific_1": 0.9330855018587361,
+    "specific_10": 0.9279279279279279,
+    "specific_11": 1.0,
+    "specific_12": 1.0,
+    "specific_13": 1.0,
+    "specific_14": 1.0,
+    "specific_15": 0.9529914529914529,
+    "specific_16": 0.9397590361445783,
+    "specific_17": 1.0,
+    "specific_18": 0.908256880733945,
+    "specific_19": 0.5010183299389002,
+    "specific_2": 0.9590909090909091,
+    "specific_20": 0.04,
+    "specific_21": 0.5009671179883946,
+    "specific_22": 0.5010799136069114,
+    "specific_23": 1.0,
+    "specific_24": 0.3448275862068966,
+    "specific_25": 0.05429864253393665,
+    "specific_26": 0.09944751381215469,
+    "specific_27": 0.9935897435897436,
+    "specific_28": 0.12365591397849462,
+    "specific_29": 0.12028725314183124,
+    "specific_3": 1.0,
+    "specific_30": 0.42138364779874216,
+    "specific_31": 0.0,
+    "specific_32": 0.0,
+    "specific_33": 0.6784232365145229,
+    "specific_34": 0.09950248756218906,
+    "specific_35": 0.2824773413897281,
+    "specific_4": 1.0,
+    "specific_5": 1.0,
+    "specific_6": 0.9967105263157895,
+    "specific_7": 0.960352422907489,
+    "specific_8": 1.0,
+    "specific_9": 1.0
+   },
+   "types_without_specialist": [
+    "specific_1",
+    "specific_11",
+    "specific_13",
+    "specific_14",
+    "specific_15",
+    "specific_16",
+    "specific_17",
+    "specific_18",
+    "specific_19",
+    "specific_20",
+    "specific_21",
+    "specific_22",
+    "specific_24",
+    "specific_25",
+    "specific_26",
+    "specific_28",
+    "specific_29",
+    "specific_3",
+    "specific_30",
+    "specific_31",
+    "specific_32",
+    "specific_33",
+    "specific_34",
+    "specific_35",
+    "specific_7",
+    "specific_8",
+    "specific_9"
+   ],
+   "rows_without_specialist": 10658,
+   "orders_recall_p5_p95": [
+    0.41376235416511853,
+    0.839488741918704
+   ],
+   "orders_recall_min_max": [
+    0.2907780337370885,
+    0.9551906071189715
+   ],
+   "orders_fpr_p5_p95": [
+    0.0500357287103489,
+    0.3884176841582005
+   ]
+  }
+ ],
+ "attack_test_rows": 13457,
+ "type_cover": {
+  "specific_35": [
+   1
+  ],
+  "specific_30": [
+   1
+  ],
+  "specific_27": [
+   2
+  ],
+  "specific_23": [
+   2
+  ],
+  "specific_34": [
+   3
+  ],
+  "specific_31": [
+   3
+  ],
+  "specific_32": [
+   4
+  ],
+  "specific_28": [
+   4
+  ],
+  "specific_29": [
+   5
+  ],
+  "specific_26": [
+   5
+  ],
+  "specific_21": [
+   6
+  ],
+  "specific_19": [
+   6
+  ],
+  "specific_33": [
+   7
+  ],
+  "specific_22": [
+   7
+  ],
+  "specific_25": [
+   8
+  ],
+  "specific_24": [
+   8
+  ],
+  "specific_18": [
+   8
+  ],
+  "specific_12": [
+   9
+  ],
+  "specific_6": [
+   9
+  ],
+  "specific_4": [
+   9
+  ],
+  "specific_11": [
+   10
+  ],
+  "specific_8": [
+   10
+  ],
+  "specific_1": [
+   10
+  ],
+  "specific_3": [
+   11
+  ],
+  "specific_14": [
+   11
+  ],
+  "specific_16": [
+   11
+  ],
+  "specific_13": [
+   12
+  ],
+  "specific_15": [
+   12
+  ],
+  "specific_7": [
+   12
+  ],
+  "specific_10": [
+   13
+  ],
+  "specific_2": [
+   13
+  ],
+  "specific_5": [
+   13
+  ],
+  "specific_17": [
+   14
+  ],
+  "specific_9": [
+   14
+  ],
+  "specific_20": [
+   14
+  ]
+ }
+}

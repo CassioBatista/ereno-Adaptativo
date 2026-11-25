@@ -1,0 +1,99 @@
+2026-11-21 06:48:13 start ereno_T2_switching_retain_off5 (97 rounds, arrivals 2100/3900 s)
+2026-11-21 06:51:55 done  ereno_T2_switching_retain_off5 in 3 min
+2026-11-21 06:51:55 start ereno_T2_fixed_gossip_retain_off5 (97 rounds, arrivals 2100/3900 s)
+2026-11-21 06:55:47 done  ereno_T2_fixed_gossip_retain_off5 in 3 min
+2026-11-21 06:55:47 start ereno_T2_fixed_federated_retain_off5 (97 rounds, arrivals 2100/3900 s)
+2026-11-21 06:59:05 done  ereno_T2_fixed_federated_retain_off5 in 3 min
+2026-11-21 06:59:05 start ereno_T1_switching_retain_off5 (82 rounds, arrivals 2100/3900 s)
+2026-11-21 07:02:20 done  ereno_T1_switching_retain_off5 in 3 min
+2026-11-21 07:02:20 start ereno_T1_fixed_gossip_retain_off5 (82 rounds, arrivals 2100/3900 s)
+2026-11-21 07:05:44 done  ereno_T1_fixed_gossip_retain_off5 in 3 min
+2026-11-21 07:05:44 start ereno_T1_fixed_federated_retain_off5 (82 rounds, arrivals 2100/3900 s)
+2026-11-21 07:08:55 done  ereno_T1_fixed_federated_retain_off5 in 3 min
+2026-11-21 07:08:55 start cicids_T2_switching_retain_off5 (97 rounds, arrivals 2100/3900 s)
+2026-11-21 07:19:30 done  cicids_T2_switching_retain_off5 in 10 min
+2026-11-21 07:19:30 start cicids_T2_fixed_gossip_retain_off5 (97 rounds, arrivals 2100/3900 s)
+2026-11-21 07:28:04 done  cicids_T2_fixed_gossip_retain_off5 in 8 min
+2026-11-21 07:28:04 start cicids_T2_fixed_federated_retain_off5 (97 rounds, arrivals 2100/3900 s)
+2026-11-21 07:35:02 done  cicids_T2_fixed_federated_retain_off5 in 6 min
+2026-11-21 07:35:02 start cicids_T1_switching_retain_off5 (82 rounds, arrivals 2100/3900 s)
+2026-11-21 07:41:34 done  cicids_T1_switching_retain_off5 in 6 min
+2026-11-21 07:41:34 start cicids_T1_fixed_gossip_retain_off5 (82 rounds, arrivals 2100/3900 s)
+2026-11-21 07:47:55 done  cicids_T1_fixed_gossip_retain_off5 in 6 min
+2026-11-21 07:47:55 start cicids_T1_fixed_federated_retain_off5 (82 rounds, arrivals 2100/3900 s)
+2026-11-21 07:53:26 done  cicids_T1_fixed_federated_retain_off5 in 5 min
+2026-11-21 07:53:26 start ereno_T2_switching_retain_off20 (97 rounds, arrivals 3000/4800 s)
+2026-11-21 07:57:15 done  ereno_T2_switching_retain_off20 in 3 min
+2026-11-21 07:57:15 start ereno_T2_fixed_gossip_retain_off20 (97 rounds, arrivals 3000/4800 s)
+2026-11-21 08:00:39 done  ereno_T2_fixed_gossip_retain_off20 in 3 min
+2026-11-21 08:00:39 start ereno_T2_fixed_federated_retain_off20 (97 rounds, arrivals 3000/4800 s)
+2026-11-21 08:03:48 done  ereno_T2_fixed_federated_retain_off20 in 3 min
+2026-11-21 08:03:48 start ereno_T1_switching_retain_off20 (82 rounds, arrivals 3000/4800 s)
+2026-11-21 08:06:59 done  ereno_T1_switching_retain_off20 in 3 min
+2026-11-21 08:06:59 start ereno_T1_fixed_gossip_retain_off20 (82 rounds, arrivals 3000/4800 s)
+2026-11-21 08:10:18 done  ereno_T1_fixed_gossip_retain_off20 in 3 min
+2026-11-21 08:10:18 start ereno_T1_fixed_federated_retain_off20 (82 rounds, arrivals 3000/4800 s)
+2026-11-21 08:13:27 done  ereno_T1_fixed_federated_retain_off20 in 3 min
+2026-11-21 08:13:28 start cicids_T2_switching_retain_off20 (97 rounds, arrivals 3000/4800 s)
+2026-11-21 08:20:20 done  cicids_T2_switching_retain_off20 in 6 min
+2026-11-21 08:20:20 start cicids_T2_fixed_gossip_retain_off20 (97 rounds, arrivals 3000/4800 s)
+2026-11-21 08:26:54 done  cicids_T2_fixed_gossip_retain_off20 in 6 min
+2026-11-21 08:26:54 start cicids_T2_fixed_federated_retain_off20 (97 rounds, arrivals 3000/4800 s)
+2026-11-21 08:32:43 done  cicids_T2_fixed_federated_retain_off20 in 5 min
+2026-11-21 08:32:43 start cicids_T1_switching_retain_off20 (82 rounds, arrivals 3000/4800 s)
+2026-11-21 08:38:30 done  cicids_T1_switching_retain_off20 in 5 min
+2026-11-21 08:38:30 start cicids_T1_fixed_gossip_retain_off20 (82 rounds, arrivals 3000/4800 s)
+2026-11-21 08:44:17 done  cicids_T1_fixed_gossip_retain_off20 in 5 min
+2026-11-21 08:44:17 start cicids_T1_fixed_federated_retain_off20 (82 rounds, arrivals 3000/4800 s)
+2026-11-21 08:49:37 done  cicids_T1_fixed_federated_retain_off20 in 5 min
+arrival-offset check (exploratory): blocks at 30+o and 60+o min; protected = recall on the block's types >= 95 % of the domain reference
+
+==== ERENO (reference: block 1 99.99 %, block 2 100.00 %)
+--- T1
+ offset config      | block 1: arrival prot. end median lat.  exposure  | block 2: arrival prot. end median lat.  exposure
+    0 m ReSIDS                | 30 min     14/14       0 min      3.9%            | 60 min     14/14       0 min      0.0%
+    0 m Fixed GL              | 30 min     14/14      26 min     49.1%            | 60 min     14/14       0 min      0.0%
+    0 m Fixed FL              | 30 min     14/14      30 min     56.6%            | 60 min     14/14       0 min      0.0%
+    5 m ReSIDS                | 35 min     14/14      24 min     47.6%            | 65 min     14/14       0 min      0.0%
+    5 m Fixed GL              | 35 min     14/14      24 min     49.0%            | 65 min     14/14       0 min      0.0%
+    5 m Fixed FL              | 35 min     14/14      25 min     52.1%            | 65 min     14/14       0 min      0.0%
+   20 m ReSIDS                | 50 min     14/14      11 min     32.3%            | 80 min     14/14       0 min      0.0%
+   20 m Fixed GL              | 50 min     14/14      14 min     43.9%            | 80 min     14/14       0 min      0.0%
+   20 m Fixed FL              | 50 min     14/14      10 min     30.3%            | 80 min     14/14       0 min      0.0%
+--- T2
+ offset config      | block 1: arrival prot. end median lat.  exposure  | block 2: arrival prot. end median lat.  exposure
+    0 m ReSIDS                | 30 min     14/14       0 min      0.0%            | 60 min     14/14       0 min      0.0%
+    0 m Fixed GL              | 30 min     10/14      12 min     44.6%            | 60 min     14/14       0 min      0.0%
+    0 m Fixed FL              | 30 min     14/14       0 min      0.0%            | 60 min     14/14       0 min      0.0%
+    5 m ReSIDS                | 35 min     10/14      32 min     61.2%            | 65 min     14/14       0 min      0.0%
+    5 m Fixed GL              | 35 min      9/14      28 min     66.1%            | 65 min     14/14       0 min      0.0%
+    5 m Fixed FL              | 35 min      0/14           -    100.0%            | 65 min     14/14       0 min      0.0%
+   20 m ReSIDS                | 50 min      0/14           -    100.0%            | 80 min     14/14       0 min      0.0%
+   20 m Fixed GL              | 50 min      0/14           -    100.0%            | 80 min     14/14       0 min      0.0%
+   20 m Fixed FL              | 50 min      0/14           -    100.0%            | 80 min     14/14       0 min      0.0%
+
+==== CICIDS2017 (reference: block 1 99.61 %, block 2 98.89 %)
+--- T1
+ offset config      | block 1: arrival prot. end median lat.  exposure  | block 2: arrival prot. end median lat.  exposure
+    0 m ReSIDS                | 30 min     14/14       0 min      3.9%            | 60 min     14/14       1 min      4.0%
+    0 m Fixed GL              | 30 min     14/14      18 min     32.7%            | 60 min     14/14      12 min     50.0%
+    0 m Fixed FL              | 30 min     14/14      30 min     52.6%            | 60 min     14/14       0 min      0.0%
+    5 m ReSIDS                | 35 min     14/14      18 min     34.8%            | 65 min     14/14       0 min      0.0%
+    5 m Fixed GL              | 35 min     14/14      13 min     26.5%            | 65 min     14/14       6 min     36.1%
+    5 m Fixed FL              | 35 min     14/14      25 min     48.4%            | 65 min     14/14       0 min      0.0%
+   20 m ReSIDS                | 50 min     14/14      11 min     30.5%            | 80 min     14/14       0 min      0.0%
+   20 m Fixed GL              | 50 min     14/14      16 min     44.8%            | 80 min      3/14       1 min     85.7%
+   20 m Fixed FL              | 50 min     14/14      10 min     28.1%            | 80 min     14/14       0 min      0.0%
+--- T2
+ offset config      | block 1: arrival prot. end median lat.  exposure  | block 2: arrival prot. end median lat.  exposure
+    0 m ReSIDS                | 30 min     14/14       0 min      0.0%            | 60 min      8/14       4 min     52.4%
+    0 m Fixed GL              | 30 min     14/14       8 min     10.8%            | 60 min      8/14       4 min     49.6%
+    0 m Fixed FL              | 30 min     14/14       0 min      0.0%            | 60 min      8/14      16 min     63.9%
+    5 m ReSIDS                | 35 min      2/14       5 min     86.8%            | 65 min      8/14       6 min     52.8%
+    5 m Fixed GL              | 35 min      3/14      10 min     81.4%            | 65 min      8/14       6 min     51.7%
+    5 m Fixed FL              | 35 min      1/14       0 min     92.9%            | 65 min      8/14      11 min     59.5%
+   20 m ReSIDS                | 50 min      1/14       0 min     92.9%            | 80 min      8/14       0 min     42.9%
+   20 m Fixed GL              | 50 min      1/14       0 min     92.9%            | 80 min      8/14       6 min     61.9%
+   20 m Fixed FL              | 50 min      1/14       0 min     92.9%            | 80 min      8/14       0 min     42.9%
+
+2026-11-21 08:49:37 offsets complete

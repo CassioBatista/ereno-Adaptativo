@@ -1,6 +1,8 @@
 """Architecture manager — decides whether each round runs as 'federated' or 'gossip'.
 
-Two managers:
+Three managers:
+  * TrustLevelArchManager — each node's mode from the trust level of its Disaster-FD
+    monitor (API 1.9.0, docs/TRUST_LEVEL.md), on the telemetry of a run.
   * FixedArchManager      — static schedule from conf/base.yaml (phase 1).
   * DistributedArchManager — v2: the switch is DISTRIBUTED and AUTOMATIC. There
     is no central schedule and no server-side policy. The control plane is
@@ -20,6 +22,8 @@ from __future__ import annotations
 
 import math
 from typing import TYPE_CHECKING
+
+import numpy as np
 
 if TYPE_CHECKING:
     from fd.topology import Topology
@@ -404,6 +408,140 @@ class DistributedArchManager(ArchitectureManager):
         return reason
 
 
+# ── Trust level (API 1.9.0) — each node decides its own mode from its monitor's TL ──
+
+class TrustLevelArchManager(ArchitectureManager):
+    """Mode of every node from the trust level of its colocated Disaster-FD monitor.
+
+    Each node applies the agent policy of docs/TRUST_LEVEL.md to the telemetry of a
+    Disaster-FD run (fd/trust_level.py): local below T_GL, gossip from T_GL, federated from
+    T_FL, a new band committed after the settle time S, local after F seconds without a TL.
+    Round r is the learning round at r * delta seconds after run_t0.
+
+    The Flower simulation runs one data-plane mode per round. A round therefore runs the
+    non-local mode that the nodes hold at that time, with those nodes as the active clients;
+    the nodes in local mode take no part and keep what they hold (HybridStrategy with
+    node_holdings). A round in which every node is local runs nothing ("local"). If, during
+    a switch, some nodes are already federated while others are still in gossip, the round
+    runs the mode held by more nodes (ties: federated) and the other nodes skip it; such
+    rounds are listed in `conflicts`.
+    """
+
+    uses_gossip = True
+    POLICIES = ("switching", "fixed_local", "fixed_gossip", "fixed_federated")
+
+    def __init__(self, run: str, t_end: float, delta_s: float = 60.0,
+                 settle: float = 5.0, stale: float = 15.0, gl: float = 30.0,
+                 fl: float = 50.0, n_nodes: int | None = None,
+                 policy: str = "switching", links: str = "monitor",
+                 round_offset_s: float = 0.0, gl_peers: str = "any") -> None:
+        """policy: 'switching' (ReSIDS: each node's mode from its trust level) or a fixed
+        mode for every node, which ignores the trust level: the counterfactuals of
+        evaluation-v1 section 9. Under a fixed policy the failures still happen: a round
+        takes the nodes that can reach its counterpart (federated: the aggregator; gossip:
+        at least one ring neighbour), read from the probes of the same run (LinkStates);
+        with no such node the round exchanges nothing.
+        links: 'monitor' (a ring link is up for a node when its own monitor gets answers) or
+        'scenario' (up only when both ends answer each other: the network of the scenario,
+        the same constraint for every policy; see LinkStates).
+        round_offset_s: round r runs at r * delta + offset. The scenario events fall on
+        multiples of 15 min (with about 10 s of jitter); an offset of delta / 2 keeps every
+        round away from them, so a round never samples a network in transition and an event
+        at 30 min reaches the first round of the new phase.
+        gl_peers: which nodes take part in a round of fixed GL. 'any' (default): a node with
+        at least one ring link up. 'both': a node with both ring links up, the condition of GL
+        in the scenario documents and of the gossip band of ReSIDS (trust level 30 = both
+        neighbours), so that fixed GL and ReSIDS gossip with the same nodes."""
+        from fd.trust_level import LinkStates, NodeModes
+        if policy not in self.POLICIES:
+            raise ValueError(f"policy inválida: '{policy}'. Use {self.POLICIES}.")
+        if links not in ("monitor", "scenario"):
+            raise ValueError(f"links inválido: '{links}'. Use 'monitor' | 'scenario'.")
+        if gl_peers not in ("any", "both"):
+            raise ValueError(f"gl_peers inválido: '{gl_peers}'. Use 'any' | 'both'.")
+        self.policy = policy
+        self.link_model = links
+        self.gl_peers = gl_peers
+        self.modes = NodeModes(run, t_end, settle=settle, stale=stale, gl=gl, fl=fl)
+        self.links = LinkStates(self.modes.trace, stale=stale, symmetric=(links == "scenario"))
+        if n_nodes is not None and int(n_nodes) != self.modes.n_nodes:
+            raise ValueError(f"the trace has {self.modes.n_nodes} monitors, the run "
+                             f"{n_nodes} nodes")
+        self.delta = float(delta_s)
+        self.t_end = float(t_end)
+        self.offset = float(round_offset_s)
+        # rounds at r * delta + offset < t_end, r >= 1
+        self.n_rounds = int(np.ceil((self.t_end - self.offset) / self.delta)) - 1
+        self.default_mode = "local"
+        self.conflicts: list[dict] = []
+        self._cache: dict[int, tuple[str, list[int], list[str]]] = {}
+        print(f"[TLArch] trace {run}: {self.modes.n_nodes} monitors, run_t0 "
+              f"{self.modes.t0:.2f} ({self.modes.t0_source}); policy '{self.policy}', "
+              f"links '{self.link_model}', gl_peers '{self.gl_peers}', "
+              f"TL policy {self.modes.params}; delta {self.delta:g} s, offset {self.offset:g} s, "
+              f"{self.n_rounds} rounds")
+
+    def time_of(self, round: int) -> float:
+        return round * self.delta + self.offset
+
+    def reachable(self, round: int) -> list[bool]:
+        """Environment: whether each node reaches the aggregator or a ring neighbour."""
+        t = self.time_of(round)
+        return [self.links.reachable(i, t) for i in range(self.modes.n_nodes)]
+
+    def _decide_fixed(self, round: int) -> tuple[str, list[int], list[str]]:
+        t = self.time_of(round)
+        n = self.modes.n_nodes
+        if self.policy == "fixed_local":
+            mode, nodes = "local", []
+        elif self.policy == "fixed_federated":
+            nodes = [i for i in range(n) if self.links.aggregator_up(i, t)]
+            mode = "federated" if nodes else "local"
+        else:                                                    # fixed_gossip
+            ok = self.links.both_peers_up if self.gl_peers == "both" else self.links.peer_up
+            nodes = [i for i in range(n) if ok(i, t)]
+            mode = "gossip" if nodes else "local"
+        m = [mode if i in nodes else "local" for i in range(n)]
+        return mode, nodes, m
+
+    def _decide(self, round: int) -> tuple[str, list[int], list[str]]:
+        if round not in self._cache and self.policy != "switching":
+            self._cache[round] = self._decide_fixed(round)
+        if round not in self._cache:
+            t = self.time_of(round)
+            m = self.modes.modes(t)
+            fl = [i for i, x in enumerate(m) if x == "federated"]
+            gl = [i for i, x in enumerate(m) if x == "gossip"]
+            if fl and gl:
+                mode, nodes = ("federated", fl) if len(fl) >= len(gl) else ("gossip", gl)
+                self.conflicts.append({"round": round, "t": t, "federated": fl,
+                                       "gossip": gl, "run": mode})
+            elif fl:
+                mode, nodes = "federated", fl
+            elif gl:
+                mode, nodes = "gossip", gl
+            else:
+                mode, nodes = "local", []
+            self._cache[round] = (mode, nodes, m)
+        return self._cache[round]
+
+    def get_mode(self, round: int) -> str:
+        return self._decide(round)[0]
+
+    def get_active_clients(self, round: int) -> list[int] | None:
+        return list(self._decide(round)[1])
+
+    def node_modes(self, round: int) -> list[str]:
+        return list(self._decide(round)[2])
+
+    def notify_round_start(self, round: int, mode: str) -> None:
+        _, nodes, m = self._decide(round)
+        conflict = any(c["round"] == round for c in self.conflicts)
+        print(f"[TLArch] round={round}  t={self.time_of(round):.0f}s  mode={mode}  "
+              f"nodes={''.join(x[0].upper() for x in m)}  active={nodes}"
+              + ("  CONFLICT (FL and GL at once; minority skips)" if conflict else ""))
+
+
 def load_arch_manager(conf: dict, num_nodes: int | None = None) -> ArchitectureManager:
     """Factory — instantiates the manager specified in conf/base.yaml.
 
@@ -457,6 +595,36 @@ def load_arch_manager(conf: dict, num_nodes: int | None = None) -> ArchitectureM
             topology        = topology,
             peer_timeout    = int(arch_conf.get("peer_timeout", 2)),
             min_witnesses   = int(arch_conf.get("min_witnesses", 1)),
+        )
+
+    if kind == "trust_level":
+        # architecture:
+        #   manager: trust_level
+        #   trace: ~/datasets/disaster_fd_scenario2    # Disaster-FD run (CSV telemetry)
+        #   t_end: 5880                                 # trace length (s)
+        #   delta_s: 60                                 # learning-round period
+        #   settle_s: 5, stale_s: 15, t_gl: 30, t_fl: 50   # docs/TRUST_LEVEL.md
+        #   policy: switching   # | fixed_local | fixed_gossip | fixed_federated
+        #   links: monitor      # | scenario (a link is up only when both ends answer)
+        #   round_offset_s: 0   # rounds at r * delta + offset (delta/2 avoids event instants)
+        #   gl_peers: any       # | both (fixed GL: only nodes with both ring links up)
+        #   node_holdings: retain                       # required (HybridStrategy)
+        if arch_conf.get("node_holdings") not in ("retain", "reformed"):
+            raise ValueError("manager: trust_level requires architecture.node_holdings: "
+                             "retain | reformed (per-node knowledge in both modes)")
+        return TrustLevelArchManager(
+            run     = arch_conf["trace"],
+            t_end   = float(arch_conf["t_end"]),
+            delta_s = float(arch_conf.get("delta_s", 60.0)),
+            settle  = float(arch_conf.get("settle_s", 5.0)),
+            stale   = float(arch_conf.get("stale_s", 15.0)),
+            gl      = float(arch_conf.get("t_gl", 30.0)),
+            fl      = float(arch_conf.get("t_fl", 50.0)),
+            n_nodes = num_nodes,
+            policy  = arch_conf.get("policy", "switching"),
+            links   = arch_conf.get("links", "monitor"),
+            round_offset_s = float(arch_conf.get("round_offset_s", 0.0)),
+            gl_peers = arch_conf.get("gl_peers", "any"),
         )
 
     if kind == "api":

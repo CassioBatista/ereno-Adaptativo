@@ -1,0 +1,511 @@
+{
+ "domain": "ERENO",
+ "removal_order": [
+  7,
+  8,
+  10,
+  4,
+  1,
+  12,
+  14,
+  11,
+  6,
+  3,
+  5,
+  13,
+  2,
+  9
+ ],
+ "seed_order": 42,
+ "seed_other_orders": 2026,
+ "n_other_orders": 1000,
+ "retention": {
+  "recall": 0.9996558757960989,
+  "fpr": 0.006258123455840159
+ },
+ "re_formed": [
+  {
+   "N": 14,
+   "removed": [],
+   "recall": 0.9996558757960989,
+   "fpr": 0.006258123455840159,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 1.0,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.9996555683122847,
+    "injection": 1.0,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [],
+   "rows_without_specialist": 0,
+   "orders_recall_p5_p95": [
+    0.9996558757960989,
+    0.9996558757960989
+   ],
+   "orders_recall_min_max": [
+    0.9996558757960989,
+    0.9996558757960989
+   ],
+   "orders_fpr_p5_p95": [
+    0.006258123455840159,
+    0.006258123455840159
+   ]
+  },
+  {
+   "N": 13,
+   "removed": [
+    7
+   ],
+   "recall": 0.9996558757960989,
+   "fpr": 0.006258123455840159,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 1.0,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.9996555683122847,
+    "injection": 1.0,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [],
+   "rows_without_specialist": 0,
+   "orders_recall_p5_p95": [
+    0.9996359265668873,
+    0.9996558757960989
+   ],
+   "orders_recall_min_max": [
+    0.9996359265668873,
+    0.9996558757960989
+   ],
+   "orders_fpr_p5_p95": [
+    0.005783737227050977,
+    0.006258123455840159
+   ]
+  },
+  {
+   "N": 12,
+   "removed": [
+    7,
+    8
+   ],
+   "recall": 0.9502166985023116,
+   "fpr": 0.006258123455840159,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 0.6730433061776444,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.9996555683122847,
+    "injection": 1.0,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [
+    "inverse_replay"
+   ],
+   "rows_without_specialist": 30319,
+   "orders_recall_p5_p95": [
+    0.9502166985023116,
+    0.9996558757960989
+   ],
+   "orders_recall_min_max": [
+    0.8493533956081772,
+    0.9996558757960989
+   ],
+   "orders_fpr_p5_p95": [
+    0.005783737227050977,
+    0.006258123455840159
+   ]
+  },
+  {
+   "N": 11,
+   "removed": [
+    7,
+    8,
+    10
+   ],
+   "recall": 0.9502166985023116,
+   "fpr": 0.006255945707276475,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 0.6730433061776444,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.9996555683122847,
+    "injection": 1.0,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [
+    "inverse_replay"
+   ],
+   "rows_without_specialist": 30319,
+   "orders_recall_p5_p95": [
+    0.912811893730456,
+    0.9996558757960989
+   ],
+   "orders_recall_min_max": [
+    0.8487748679610392,
+    0.9996558757960989
+   ],
+   "orders_fpr_p5_p95": [
+    0.004378000529192901,
+    0.006258123455840159
+   ]
+  },
+  {
+   "N": 10,
+   "removed": [
+    4,
+    7,
+    8,
+    10
+   ],
+   "recall": 0.9502166985023116,
+   "fpr": 0.006255945707276475,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 0.6730433061776444,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.9996555683122847,
+    "injection": 1.0,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [
+    "inverse_replay"
+   ],
+   "rows_without_specialist": 30319,
+   "orders_recall_p5_p95": [
+    0.8493533956081772,
+    0.9996558757960989
+   ],
+   "orders_recall_min_max": [
+    0.7624794896987168,
+    0.9996558757960989
+   ],
+   "orders_fpr_p5_p95": [
+    0.0018823006752109422,
+    0.006258123455840159
+   ]
+  },
+  {
+   "N": 9,
+   "removed": [
+    1,
+    4,
+    7,
+    8,
+    10
+   ],
+   "recall": 0.9502166985023116,
+   "fpr": 0.006255945707276475,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 0.6730433061776444,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.9996555683122847,
+    "injection": 1.0,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [
+    "inverse_replay"
+   ],
+   "rows_without_specialist": 30319,
+   "orders_recall_p5_p95": [
+    0.8487748679610392,
+    0.9996558757960989
+   ],
+   "orders_recall_min_max": [
+    0.7229899904742431,
+    0.9996558757960989
+   ],
+   "orders_fpr_p5_p95": [
+    0.001836204997279629,
+    0.006258123455840159
+   ]
+  },
+  {
+   "N": 8,
+   "removed": [
+    1,
+    4,
+    7,
+    8,
+    10,
+    12
+   ],
+   "recall": 0.9501967492730999,
+   "fpr": 0.005781559478487293,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 0.6730433061776444,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.9994259471871412,
+    "injection": 1.0,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [
+    "inverse_replay"
+   ],
+   "rows_without_specialist": 30319,
+   "orders_recall_p5_p95": [
+    0.8240727348897057,
+    0.9996558757960989
+   ],
+   "orders_recall_min_max": [
+    0.6885775700841359,
+    0.9996558757960989
+   ],
+   "orders_fpr_p5_p95": [
+    0.0014079144464217595,
+    0.006258123455840159
+   ]
+  },
+  {
+   "N": 7,
+   "removed": [
+    1,
+    4,
+    7,
+    8,
+    10,
+    12,
+    14
+   ],
+   "recall": 0.9499922696736804,
+   "fpr": 0.005781559478487293,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 0.6716910188330749,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.9994259471871412,
+    "injection": 1.0,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [
+    "inverse_replay"
+   ],
+   "rows_without_specialist": 30319,
+   "orders_recall_p5_p95": [
+    0.762469515084111,
+    0.9996359265668873
+   ],
+   "orders_recall_min_max": [
+    0.6361160845647826,
+    0.9996558757960989
+   ],
+   "orders_fpr_p5_p95": [
+    0.0014057366978580755,
+    0.006255945707276475
+   ]
+  },
+  {
+   "N": 6,
+   "removed": [
+    1,
+    4,
+    7,
+    8,
+    10,
+    11,
+    12,
+    14
+   ],
+   "recall": 0.8631632495299463,
+   "fpr": 0.004375822780629217,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 0.6716910188330749,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.0,
+    "injection": 1.0,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [
+    "inverse_replay",
+    "masquerade_fake_normal"
+   ],
+   "rows_without_specialist": 47739,
+   "orders_recall_p5_p95": [
+    0.707494426684089,
+    0.9995511423427378
+   ],
+   "orders_recall_min_max": [
+    0.5421701768997901,
+    0.9996459011814931
+   ],
+   "orders_fpr_p5_p95": [
+    2.177748563684083e-06,
+    0.006255945707276475
+   ]
+  },
+  {
+   "N": 5,
+   "removed": [
+    1,
+    4,
+    6,
+    7,
+    8,
+    10,
+    11,
+    12,
+    14
+   ],
+   "recall": 0.8631632495299463,
+   "fpr": 0.004375822780629217,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 0.6716910188330749,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.0,
+    "injection": 1.0,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [
+    "inverse_replay",
+    "masquerade_fake_normal"
+   ],
+   "rows_without_specialist": 47739,
+   "orders_recall_p5_p95": [
+    0.6587230498381619,
+    0.9738166366597011
+   ],
+   "orders_recall_min_max": [
+    0.49411747103621284,
+    0.9995511423427378
+   ],
+   "orders_fpr_p5_p95": [
+    0.0,
+    0.006255945707276475
+   ]
+  },
+  {
+   "N": 4,
+   "removed": [
+    1,
+    3,
+    4,
+    6,
+    7,
+    8,
+    10,
+    11,
+    12,
+    14
+   ],
+   "recall": 0.712252317851069,
+   "fpr": 0.004375822780629217,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 0.6716910188330749,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.0,
+    "injection": 0.22412820512820514,
+    "high_StNum": 1.0,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [
+    "injection",
+    "inverse_replay",
+    "masquerade_fake_normal"
+   ],
+   "rows_without_specialist": 86739,
+   "orders_recall_p5_p95": [
+    0.5668573480492147,
+    0.9137295582741922
+   ],
+   "orders_recall_min_max": [
+    0.3539142881366921,
+    0.9738066620450953
+   ],
+   "orders_fpr_p5_p95": [
+    0.0,
+    0.006209850029345162
+   ]
+  },
+  {
+   "N": 3,
+   "removed": [
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    10,
+    11,
+    12,
+    14
+   ],
+   "recall": 0.708945733109237,
+   "fpr": 0.004375822780629217,
+   "per_type": {
+    "random_replay": 0.9999743589743589,
+    "inverse_replay": 0.6716910188330749,
+    "masquerade_fake_fault": 0.9963953488372093,
+    "masquerade_fake_normal": 0.0,
+    "injection": 0.22412820512820514,
+    "high_StNum": 0.983,
+    "poisoned_high_rate": 1.0
+   },
+   "types_without_specialist": [
+    "high_StNum",
+    "injection",
+    "inverse_replay",
+    "masquerade_fake_normal"
+   ],
+   "rows_without_specialist": 125739,
+   "orders_recall_p5_p95": [
+    0.5194330429058047,
+    0.8377229949777816
+   ],
+   "orders_recall_min_max": [
+    0.35388935160017754,
+    0.8518819604107546
+   ],
+   "orders_fpr_p5_p95": [
+    0.0,
+    0.006209850029345162
+   ]
+  }
+ ],
+ "attack_test_rows": 200509,
+ "type_cover": {
+  "random_replay": [
+   1,
+   2
+  ],
+  "injection": [
+   3,
+   4
+  ],
+  "high_StNum": [
+   5,
+   6
+  ],
+  "inverse_replay": [
+   7,
+   8
+  ],
+  "poisoned_high_rate": [
+   9,
+   10
+  ],
+  "masquerade_fake_normal": [
+   11,
+   12
+  ],
+  "masquerade_fake_fault": [
+   13,
+   14
+  ]
+ }
+}

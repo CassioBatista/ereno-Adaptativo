@@ -50,9 +50,11 @@ class XgbBaggingStrategy(FedAvg):
             return None, {}
 
         if self.fusion == "or":
-            # um tensor por booster de cliente — fusão acontece na predição
-            arrays = [parameters_to_ndarrays(fit_res.parameters)[0]
-                      for _, fit_res in results]
+            # um tensor por booster — fusão acontece na predição. Um cliente do
+            # particionador 'specialists' envia um tensor por especialista; os demais,
+            # um só (o mesmo resultado de antes).
+            arrays = [a for _, fit_res in results
+                      for a in parameters_to_ndarrays(fit_res.parameters)]
             return ndarrays_to_parameters(arrays), {}
 
         # fusion == 'sum': merge all client trees into one booster

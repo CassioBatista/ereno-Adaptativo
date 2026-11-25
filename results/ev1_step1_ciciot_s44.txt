@@ -1,0 +1,61 @@
+evaluation-v1 step 1 -- CICIoT2023 -- seed 44 -- 14 nodes
+features (28): [1, 2, 3, 4, 5, 6, 8, 9, 15, 16, 17, 18, 19, 20, 21, 24, 25, 28, 34, 36, 37, 38, 39, 40, 41, 42, 45, 46]
+specialists 29 (10 rounds each), IID 14 x 21 rounds, Centralized 290 rounds; nthread 8; test 690,232 rows (673,567 attack, prevalence 97.59 %)
+
+detector                    F1   recall    prec.     FPR %       FP  F1@6.8%     P@1%   P@0.1%
+attack-based OR          99.61    99.98    99.25   30.4350    5,072    32.40     3.21     0.33
+attack-based k=2         99.75    99.96    99.55   18.3018    3,050    44.35     5.23     0.54
+IID OR                   99.57    99.15    99.98    0.7381      123    94.76    57.57    11.85
+Centralized              99.77    99.55   100.00    0.0540        9    99.41    94.90    64.85
+Local (mean, nodes)      92.72    88.73    99.87    4.8909   (recall on own types 98.68)
+
+per-type recall % [exact 95 % interval] (* fewer than 100 test samples)
+type                                            n   attack-based OR  attack-based k=2            IID OR       Centralized
+*Backdoor_Malware                              46 100.00 [92-100]   100.00 [92-100]     4.35 [1-15]      28.26 [16-43]   
+*BrowserHijacking                              77  97.40 [91-100]    89.61 [81-95]      6.49 [2-15]       6.49 [2-15]    
+*CommandInjection                              77 100.00 [95-100]   100.00 [95-100]     6.49 [2-15]      18.18 [10-29]   
+ DDoS_ACK_Fragmentation                     4,280 100.00             99.95             98.27             99.98           
+ DDoS_HTTP_Flood                              429 100.00            100.00             94.41             99.77           
+ DDoS_ICMP_Flood                          108,160 100.00             99.99             99.90            100.00           
+ DDoS_ICMP_Fragmentation                    6,696 100.00             99.93             97.70            100.00           
+ DDoS_PSHACK_Flood                         61,653 100.00            100.00             99.93            100.00           
+ DDoS_RSTFINFlood                          60,867 100.00             99.99             99.83            100.00           
+ DDoS_SYN_Flood                            60,783 100.00            100.00             99.89            100.00           
+ DDoS_SlowLoris                               360 100.00             93.61             30.56             99.72           
+ DDoS_SynonymousIP_Flood                   54,280 100.00            100.00             99.93            100.00           
+ DDoS_TCP_Flood                            67,695 100.00            100.00             99.91            100.00           
+ DDoS_UDP_Flood                            81,621 100.00            100.00             99.87            100.00           
+ DictionaryBruteForce                         183  98.36             87.98              3.83             22.95           
+ DoS_HTTP_Flood                             1,044 100.00            100.00             92.91            100.00           
+ DoS_SYN_Flood                             30,251 100.00            100.00             99.66            100.00           
+ DoS_TCP_Flood                             40,101 100.00            100.00             99.65            100.00           
+ DoS_UDP_Flood                             50,039 100.00             99.99             99.81            100.00           
+ Mirai_greeth_flood                        14,697 100.00             99.99             99.59            100.00           
+ Mirai_greip_flood                         11,427 100.00             99.99             98.92             99.99           
+ Mirai_udpplain                            13,356 100.00             99.99             99.69             99.99           
+ Recon_HostDiscovery                        1,961  99.54             99.24             46.97             65.17           
+ Recon_OSScan                               1,508  93.30             90.72             20.76             24.87           
+*Recon_PingSweep                               32 100.00 [89-100]   100.00 [89-100]    12.50 [4-29]       6.25 [1-21]    
+ Recon_PortScan                             1,239  97.82             95.56             35.67             39.14           
+*SqlInjection                                  74 100.00 [95-100]   100.00 [95-100]     8.11 [3-17]       6.76 [2-15]    
+*Uploading_Attack                              23 100.00 [85-100]   100.00 [85-100]     4.35 [0-22]      26.09 [10-48]   
+ VulnerabilityScan                            565 100.00             99.65             11.68            100.00           
+*XSS                                           43 100.00 [92-100]   100.00 [92-100]     4.65 [1-16]      16.28 [7-31]    
+
+Local, per node: recall (all attacks) / recall (own types) / FPR %
+  node  1:  96.28 /  99.81 / 0.1800   DDoS_ICMP_Flood, DDoS_UDP_Flood
+  node  2:  98.01 /  99.83 / 0.2040   DDoS_PSHACK_Flood, DDoS_TCP_Flood
+  node  3:  31.41 /  99.88 / 0.0060   DDoS_RSTFINFlood, DDoS_SYN_Flood
+  node  4:  96.82 /  99.76 / 0.0240   DDoS_SynonymousIP_Flood, DoS_UDP_Flood
+  node  5:  97.22 /  99.52 / 0.2700   DoS_SYN_Flood, DoS_TCP_Flood
+  node  6:  96.96 /  99.44 / 0.2100   Mirai_greeth_flood, Mirai_udpplain
+  node  7:  79.30 /  99.07 / 0.0540   DDoS_ICMP_Fragmentation, Mirai_greip_flood
+  node  8:  81.82 /  98.27 / 5.1425   DDoS_ACK_Fragmentation, Recon_HostDiscovery
+  node  9:  90.77 /  92.54 / 13.7234   Recon_OSScan, Recon_PortScan
+  node 10:  75.07 /  99.25 / 0.4440   DoS_HTTP_Flood, VulnerabilityScan
+  node 11:  99.26 /  99.87 / 0.3840   DDoS_HTTP_Flood, DDoS_SlowLoris
+  node 12:  99.90 /  97.69 / 20.0000   BrowserHijacking, DictionaryBruteForce
+  node 13:  99.62 /  99.34 / 12.0552   CommandInjection, SqlInjection
+  node 14:  99.72 /  97.22 / 15.7756   Backdoor_Malware, Recon_PingSweep, Uploading_Attack, XSS
+
+elapsed 42 s

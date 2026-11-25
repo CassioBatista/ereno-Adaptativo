@@ -1,0 +1,54 @@
+coverage rule (cover >= 90 %, precise <= 1 %), step-1 seeds 42-46: min-max over the seeds; d = change from 'all' in the same seed (min..max)
+
+== ERENO
+   variant       kept        recall %        d recall           FPR %           d FPR        F1@6.8
+   all          14-14     99.97-99.97     +0.00-+0.00     0.626-0.671   +0.000-+0.000   95.59-95.87
+   cover-1        5-5     99.95-99.96     -0.01--0.01     0.578-0.653   -0.067--0.018   95.70-96.17
+   cover-2      10-10     99.96-99.96     -0.01--0.01     0.626-0.671   -0.001--0.000   95.58-95.87
+   precise        5-5     99.95-99.96     -0.01--0.01     0.578-0.653   -0.067--0.018   95.70-96.17
+   precise-2    10-10     99.96-99.96     -0.01--0.01     0.626-0.671   -0.001--0.000   95.58-95.87
+   types no precise specialist covers: 0-0
+   precise: types losing >= 5 points in some seed: -
+   cover-1: types losing >= 5 points in some seed: -
+   cover-2: types losing >= 5 points in some seed: -
+   precise-2: types losing >= 5 points in some seed: -
+
+== CICIDS2017
+   variant       kept        recall %        d recall           FPR %           d FPR        F1@6.8
+   all          17-17     99.70-99.78     +0.00-+0.00     2.150-2.999   +0.000-+0.000   82.84-87.01
+   cover-1      13-14     97.05-99.70     -2.67--0.01     2.101-2.987   -0.049--0.012   81.59-86.29
+   cover-2      16-17     99.70-99.78     -0.01-+0.00     2.112-2.999   -0.043-+0.000   82.84-87.21
+   precise      12-13     96.88-99.56     -2.85--0.14     0.446-1.005   -2.186--1.183   91.98-96.82
+   precise-2    15-16     99.55-99.73     -0.15--0.05     0.495-1.021   -2.137--1.170   93.25-96.50
+   types no precise specialist covers: 10-10
+   precise: types losing >= 5 points in some seed: DoS_Hulk (3/5 seeds); DoS_Slowhttptest (4/5 seeds); DoS_Slowloris (4/5 seeds); Heartbleed (5/5 seeds); Infiltration (5/5 seeds); SSH_Patator_Attempted (5/5 seeds); Web_Attack_Brute_Force (5/5 seeds); Web_Attack_Brute_Force_Attempted (4/5 seeds); Web_Attack_SQL_Injection (5/5 seeds); Web_Attack_SQL_Injection_Attempted (2/5 seeds); Web_Attack_XSS (5/5 seeds)
+   cover-1: types losing >= 5 points in some seed: DoS_Hulk s43 100->91; DoS_Hulk s45 100->94; DoS_Hulk s46 100->91
+   cover-2: types losing >= 5 points in some seed: -
+   precise-2: types losing >= 5 points in some seed: DoS_Slowhttptest s42 79->69; DoS_Slowhttptest s43 79->69; DoS_Slowhttptest s44 79->69; DoS_Slowhttptest s45 79->69; DoS_Slowloris s42 100->93; DoS_Slowloris s43 100->93; DoS_Slowloris s44 100->93; DoS_Slowloris s45 100->93; Heartbleed s42 100->0; Heartbleed s43 100->0; Heartbleed s44 100->0; Heartbleed s45 100->0; Heartbleed s46 100->0; Infiltration s42 100->0; Infiltration s43 100->0; Infiltration s44 100->0; Infiltration s45 100->0; Infiltration s46 100->91; SSH_Patator_Attempted s42 100->11; SSH_Patator_Attempted s43 100->11; SSH_Patator_Attempted s44 100->11; SSH_Patator_Attempted s45 100->11; SSH_Patator_Attempted s46 100->11; Web_Attack_Brute_Force s42 100->0; Web_Attack_Brute_Force s43 100->0; Web_Attack_Brute_Force s44 100->0; Web_Attack_Brute_Force s45 100->0; Web_Attack_Brute_Force s46 100->0; Web_Attack_Brute_Force_Attempted s43 100->95; Web_Attack_SQL_Injection s42 75->25; Web_Attack_SQL_Injection s43 75->25; Web_Attack_SQL_Injection s44 75->25; Web_Attack_SQL_Injection s45 100->25; Web_Attack_SQL_Injection s46 75->25; Web_Attack_SQL_Injection_Attempted s45 100->50; Web_Attack_XSS s42 100->0; Web_Attack_XSS s43 100->0; Web_Attack_XSS s44 100->0; Web_Attack_XSS s45 100->0; Web_Attack_XSS s46 100->0
+
+== Morris-4
+   variant       kept        recall %        d recall           FPR %           d FPR        F1@6.8
+   all          35-35     99.78-99.95     +0.00-+0.00   42.003-42.783   +0.000-+0.000   25.41-25.74
+   cover-1      23-23     99.78-99.95     +0.00-+0.00   42.003-42.783   +0.000-+0.000   25.41-25.74
+   cover-2      28-29     99.78-99.95     +0.00-+0.00   42.003-42.783   +0.000-+0.000   25.41-25.74
+   precise        8-8     64.85-66.49   -34.93--33.45     0.631-1.435 -42.090--41.344   71.43-74.76
+   precise-2    14-14     65.36-67.39   -34.41--32.56     0.898-1.724 -41.823--40.717   70.56-73.58
+   types no precise specialist covers: 15-15
+   precise: types losing >= 5 points in some seed: specific_1 (5/5 seeds); specific_10 (5/5 seeds); specific_13 (5/5 seeds); specific_14 (5/5 seeds); specific_15 (5/5 seeds); specific_18 (5/5 seeds); specific_2 (5/5 seeds); specific_25 (5/5 seeds); specific_27 (5/5 seeds); specific_28 (5/5 seeds); specific_30 (5/5 seeds); specific_33 (5/5 seeds); specific_34 (5/5 seeds); specific_35 (5/5 seeds); specific_5 (5/5 seeds); specific_6 (5/5 seeds); specific_9 (5/5 seeds)
+   cover-1: types losing >= 5 points in some seed: -
+   cover-2: types losing >= 5 points in some seed: -
+   precise-2: types losing >= 5 points in some seed: specific_1 s42 100->0; specific_1 s43 100->0; specific_1 s44 100->0; specific_1 s45 100->0; specific_1 s46 100->0; specific_10 s42 97->0; specific_10 s43 97->0; specific_10 s44 100->0; specific_10 s45 95->0; specific_10 s46 100->0; specific_13 s42 100->30; specific_13 s43 100->30; specific_13 s44 100->30; specific_13 s45 100->30; specific_13 s46 100->30; specific_14 s42 100->0; specific_14 s43 94->0; specific_14 s44 100->0; specific_14 s45 100->0; specific_14 s46 100->0; specific_15 s42 95->2; specific_15 s43 100->2; specific_15 s44 100->2; specific_15 s45 100->2; specific_15 s46 100->2; specific_18 s42 100->72; specific_18 s43 100->72; specific_18 s44 100->72; specific_18 s45 100->72; specific_18 s46 100->72; specific_2 s42 100->4; specific_2 s43 100->4; specific_2 s44 100->4; specific_2 s45 100->4; specific_2 s46 100->4; specific_25 s42 100->91; specific_25 s43 100->90; specific_25 s44 100->91; specific_25 s45 100->91; specific_25 s46 100->91; specific_27 s42 100->2; specific_27 s43 100->1; specific_27 s44 100->2; specific_27 s45 100->2; specific_27 s46 100->2; specific_28 s42 100->90; specific_28 s43 100->88; specific_28 s44 100->91; specific_28 s45 100->91; specific_28 s46 100->91; specific_30 s42 99->13; specific_30 s43 99->6; specific_30 s44 99->15; specific_30 s45 98->14; specific_30 s46 99->17; specific_33 s42 100->51; specific_33 s43 100->44; specific_33 s44 100->51; specific_33 s45 100->51; specific_33 s46 100->51; specific_34 s42 100->61; specific_34 s43 100->51; specific_34 s44 100->61; specific_34 s45 100->61; specific_34 s46 100->61; specific_35 s42 100->13; specific_35 s43 100->5; specific_35 s44 100->15; specific_35 s45 100->14; specific_35 s46 100->17; specific_5 s42 100->8; specific_5 s43 100->8; specific_5 s44 100->8; specific_5 s45 100->8; specific_5 s46 100->8; specific_6 s42 100->10; specific_6 s43 100->10; specific_6 s44 100->10; specific_6 s45 100->10; specific_6 s46 100->10; specific_9 s42 100->0; specific_9 s43 100->0; specific_9 s44 100->0; specific_9 s45 100->0; specific_9 s46 100->0
+
+== CICIoT2023
+   variant       kept        recall %        d recall           FPR %           d FPR        F1@6.8
+   all          29-29     99.97-99.98     +0.00-+0.00   28.569-31.203   +0.000-+0.000   31.86-33.80
+   cover-1      11-11     99.97-99.98     -0.00-+0.00   28.401-30.897   -0.306--0.108   32.07-33.93
+   cover-2      13-14     99.97-99.98     -0.00-+0.00   28.455-31.011   -0.192--0.024   31.99-33.89
+   precise        1-1     99.16-99.37     -0.82--0.60     0.012-0.024 -31.179--28.551   99.49-99.56
+   precise-2      3-4     99.36-99.54     -0.62--0.43     0.210-0.762 -30.441--27.957   94.81-98.26
+   types no precise specialist covers: 11-11
+   precise: types losing >= 5 points in some seed: Backdoor_Malware (5/5 seeds); BrowserHijacking (5/5 seeds); CommandInjection (5/5 seeds); DictionaryBruteForce (5/5 seeds); Recon_HostDiscovery (5/5 seeds); Recon_OSScan (5/5 seeds); Recon_PingSweep (5/5 seeds); Recon_PortScan (5/5 seeds); SqlInjection (5/5 seeds); Uploading_Attack (5/5 seeds); XSS (5/5 seeds)
+   cover-1: types losing >= 5 points in some seed: -
+   cover-2: types losing >= 5 points in some seed: -
+   precise-2: types losing >= 5 points in some seed: Backdoor_Malware s42 100->4; Backdoor_Malware s43 100->7; Backdoor_Malware s44 100->4; Backdoor_Malware s45 100->4; Backdoor_Malware s46 100->4; BrowserHijacking s42 97->4; BrowserHijacking s43 96->8; BrowserHijacking s44 97->6; BrowserHijacking s45 97->3; BrowserHijacking s46 97->3; CommandInjection s42 100->8; CommandInjection s43 100->5; CommandInjection s44 100->10; CommandInjection s45 100->6; CommandInjection s46 100->0; DictionaryBruteForce s42 98->5; DictionaryBruteForce s43 98->8; DictionaryBruteForce s44 98->3; DictionaryBruteForce s45 98->3; DictionaryBruteForce s46 98->2; Recon_HostDiscovery s42 100->13; Recon_HostDiscovery s43 99->18; Recon_HostDiscovery s44 100->29; Recon_HostDiscovery s45 100->17; Recon_HostDiscovery s46 99->17; Recon_OSScan s42 92->62; Recon_OSScan s43 92->60; Recon_OSScan s44 93->13; Recon_OSScan s45 93->59; Recon_OSScan s46 92->19; Recon_PingSweep s42 100->72; Recon_PingSweep s43 100->72; Recon_PingSweep s44 100->6; Recon_PingSweep s45 100->62; Recon_PingSweep s46 100->9; Recon_PortScan s42 98->66; Recon_PortScan s43 98->67; Recon_PortScan s44 98->20; Recon_PortScan s45 98->64; Recon_PortScan s46 98->30; SqlInjection s42 100->46; SqlInjection s43 100->46; SqlInjection s44 100->4; SqlInjection s45 100->41; SqlInjection s46 100->1; Uploading_Attack s42 100->9; Uploading_Attack s43 100->13; Uploading_Attack s44 100->9; Uploading_Attack s45 100->9; Uploading_Attack s46 100->4; XSS s42 100->2; XSS s43 100->7; XSS s44 100->0; XSS s45 100->0; XSS s46 100->0
+

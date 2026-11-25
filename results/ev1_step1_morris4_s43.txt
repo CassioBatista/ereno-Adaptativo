@@ -1,0 +1,66 @@
+evaluation-v1 step 1 -- Morris-4 -- seed 43 -- 14 nodes
+features (16): [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+specialists 35 (10 rounds each), IID 14 x 25 rounds, Centralized 350 rounds; nthread 8; test 77,831 rows (13,457 attack, prevalence 17.29 %)
+
+detector                    F1   recall    prec.     FPR %       FP  F1@6.8%     P@1%   P@0.1%
+attack-based OR          49.38    99.78    32.81   42.7207   27,501    25.41     2.30     0.23
+attack-based k=2         50.26    98.43    33.74   40.4061   26,011    26.17     2.40     0.24
+IID OR                   50.50    99.90    33.79   40.9187   26,341    26.26     2.41     0.24
+Centralized              80.50    84.23    77.08    5.2366    3,371    65.80    13.98     1.58
+Local (mean, nodes)      35.08    28.65    56.40    7.6745   (recall on own types 93.87)
+
+per-type recall % [exact 95 % interval] (* fewer than 100 test samples)
+type                                            n   attack-based OR  attack-based k=2            IID OR       Centralized
+ specific_1                                   269 100.00            100.00            100.00            100.00           
+ specific_10                                  222  96.85             80.18            100.00             43.69           
+ specific_11                                  276 100.00            100.00            100.00            100.00           
+ specific_12                                  311 100.00             93.25            100.00            100.00           
+ specific_13                                  240 100.00            100.00            100.00             22.50           
+ specific_14                                  252  94.05             94.05            100.00              3.17           
+ specific_15                                  234 100.00             92.74            100.00             27.35           
+ specific_16                                  249 100.00            100.00            100.00            100.00           
+ specific_17                                  213 100.00            100.00            100.00            100.00           
+ specific_18                                  327 100.00            100.00            100.00             88.38           
+ specific_19                                  491 100.00            100.00            100.00            100.00           
+ specific_2                                   220 100.00             99.09            100.00             65.91           
+ specific_20                                  200 100.00            100.00            100.00            100.00           
+ specific_21                                  517 100.00            100.00            100.00            100.00           
+ specific_22                                  463 100.00            100.00            100.00            100.00           
+ specific_23                                  615 100.00            100.00            100.00            100.00           
+ specific_24                                  348 100.00             82.76            100.00            100.00           
+ specific_25                                  442 100.00            100.00            100.00             93.67           
+ specific_26                                  543 100.00            100.00            100.00             99.82           
+ specific_27                                  624 100.00             98.40            100.00             96.96           
+ specific_28                                  558 100.00             99.82             99.82             93.37           
+ specific_29                                  557 100.00            100.00            100.00             99.28           
+ specific_3                                   255 100.00            100.00            100.00            100.00           
+ specific_30                                  636  98.74             97.80             97.96             47.01           
+ specific_31                                  572 100.00            100.00            100.00            100.00           
+ specific_32                                  562 100.00            100.00            100.00            100.00           
+ specific_33                                  482 100.00            100.00            100.00             95.64           
+ specific_34                                  603 100.00            100.00            100.00             66.67           
+ specific_35                                  662 100.00            100.00            100.00             40.33           
+ specific_4                                   290 100.00            100.00            100.00            100.00           
+ specific_5                                   213 100.00            100.00            100.00             72.77           
+ specific_6                                   304 100.00             99.34            100.00             77.96           
+ specific_7                                   227 100.00            100.00            100.00            100.00           
+ specific_8                                   270 100.00            100.00            100.00            100.00           
+ specific_9                                   210 100.00             88.10            100.00             44.76           
+
+Local, per node: recall (all attacks) / recall (own types) / FPR %
+  node  1:  43.80 /  99.38 / 19.7518   specific_30, specific_35
+  node  2:  42.93 /  99.76 / 3.7826   specific_23, specific_27
+  node  3:  30.50 /  99.66 / 8.8825   specific_31, specific_34
+  node  4:  29.25 /  95.18 / 0.6431   specific_28, specific_32
+  node  5:  27.67 /  98.82 / 0.2874   specific_26, specific_29
+  node  6:  16.72 / 100.00 / 0.0000   specific_19, specific_21
+  node  7:  26.22 /  99.79 / 2.1220   specific_22, specific_33
+  node  8:  49.89 /  88.00 / 0.0482   specific_18, specific_24, specific_25
+  node  9:  15.34 /  94.70 / 4.9570   specific_12, specific_4, specific_6
+  node 10:  11.65 / 100.00 / 3.8354   specific_1, specific_11, specific_8
+  node 11:  17.24 /  76.19 / 6.8584   specific_14, specific_16, specific_3
+  node 12:  27.99 /  73.47 / 19.0589   specific_13, specific_15, specific_7
+  node 13:  30.97 /  93.28 / 21.5289   specific_10, specific_2, specific_5
+  node 14:  30.96 /  95.99 / 15.6865   specific_17, specific_20, specific_9
+
+elapsed 4 s

@@ -1,0 +1,68 @@
+DATASET AUDIT — UAV-NIDD, case1_uav
+rows 885,384 (all rows); content features 30; identifiers ['frame.number', 'frame.time_epoch', 'frame.time_relative', 'frame.time_delta_displayed', 'radiotap.mactime', 'radiotap.timestamp.ts', 'wlan_radio.start_tsf', 'wlan_radio.timestamp', 'wlan.seq', 'ip.src', 'ip.dst', 'wlan.bssid', 'udp.srcport', 'udp.dstport']; benign label 'Normal'
+note: label column 'Label'
+
+=== (i) STRUCTURE ===
+  uav_nidd/UAV-Case1-Label/UAV-Case1-Label.csv                 fields per line={45: 860652, 1: 13225, 2: 7809, 4: 2437, 3: 913, 5: 348}; header lines inside the data=0
+  columns checked 44; value kind contradicting the name or role: 7: radiotap.dbm_antsignal holds real; wlan_radio.signal_dbm holds real; ip.proto holds IPv4 (a content feature); ip.ttl holds IPv4 (a content feature); ip.src holds integer; udp.srcport holds real; udp.dstport holds real
+  NaN cells in content features 706,067; infinite 0
+
+=== (ii) LABELS ===
+rows 885,384; duplicates on all columns 35,933 (4.06%); without identifiers 52,315 (5.91%)
+feature vectors with >1 label 0; rows in them 0 (0.00%)
+  DDoS                         rows     193,180  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  BruteForce                   rows     175,925  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  UDP Flooding                 rows     152,775  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  MITM                         rows     151,586  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  ICMP Flooding                rows      47,544  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Jamming                      rows      41,600  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  replay                       rows      25,977  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  FakeLanding                  rows      24,050  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Normal                       rows      17,949  in multi-label vectors   0.00%
+  De-authentication            rows      14,606  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Scanning                     rows       9,030  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  DoS                          rows       6,424  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Reconnassiance               rows           6  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+no timestamp: time-ordered windows cannot be built
+
+=== (iv) ATTRIBUTION ===
+  DDoS                         distinct sources       3  top: 6 (99.99%), 0 (0.01%), 17 (0.00%)  sources also emitting benign 0.01%
+  BruteForce                   distinct sources       4  top: 6 (99.49%), 0 (0.25%), 17 (0.25%)  sources also emitting benign 0.51%
+  UDP Flooding                 distinct sources      11  top: 0 (99.57%), 24 (0.41%), -54 (0.01%)  sources also emitting benign 99.57%
+  MITM                         distinct sources       5  top: 0 (98.51%), 17 (0.96%), 6 (0.38%)  sources also emitting benign 99.47%
+  ICMP Flooding                distinct sources      18  top: 0 (98.76%), 24 (1.04%), -52 (0.04%)  sources also emitting benign 98.76%
+  Jamming                      distinct sources       1  top: 0 (100.00%)  sources also emitting benign 100.00%
+  replay                       distinct sources      16  top: 0 (96.24%), 24 (3.42%), -52 (0.07%)  sources also emitting benign 96.24%
+  FakeLanding                  distinct sources       4  top: 0 (98.05%), 17 (1.36%), 6 (0.45%)  sources also emitting benign 99.42%
+  Normal                       distinct sources       4  top: 17 (96.79%), 0 (2.64%), 192.168.1.3 (0.41%)
+  De-authentication            distinct sources      16  top: 0 (95.28%), 24 (4.31%), -52 (0.09%)  sources also emitting benign 95.28%
+  Scanning                     distinct sources       1  top: 0 (100.00%)  sources also emitting benign 100.00%
+  DoS                          distinct sources      10  top: 0 (84.88%), 24 (14.49%), -51 (0.16%)  sources also emitting benign 84.88%
+  Reconnassiance               distinct sources       1  top: 0 (100.00%)  sources also emitting benign 100.00%
+source alone -> label (majority per source): 41.12%, against 21.82% for the majority class
+
+=== (v) PREVALENCE ===
+  DDoS                             193,180  21.82%
+  BruteForce                       175,925  19.87%
+  UDP Flooding                     152,775  17.26%
+  MITM                             151,586  17.12%
+  ICMP Flooding                     47,544  5.37%
+  Jamming                           41,600  4.70%
+  replay                            25,977  2.93%
+  FakeLanding                       24,050  2.72%
+  Normal                            17,949  2.03%
+  De-authentication                 14,606  1.65%
+  Scanning                           9,030  1.02%
+  DoS                                6,424  0.73%
+  Reconnassiance                         6  0.00%
+benign 17,949 rows (2.03%); attack 97.97%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+labels left out (< 10 distinct rows): {'Reconnassiance': 6}
+probe rows 575,589: UDP Flooding 100,000, BruteForce 100,000, MITM 100,000, DDoS 100,000, ICMP Flooding 47,544, Jamming 41,600, replay 25,977, FakeLanding 24,050, De-authentication 14,606, Scanning 9,030, DoS 6,424, Normal 6,358
+  content                  random 70/30                                 macro-F1=0.964  BruteForce=1.00  DDoS=1.00  De-authentication=0.91  DoS=1.00  FakeLanding=0.79  ICMP Flooding=1.00  Jamming=1.00  MITM=0.93  Normal=1.00  Scanning=1.00  UDP Flooding=1.00  replay=0.95
+  content + identifiers    random 70/30                                 macro-F1=1.000  BruteForce=1.00  DDoS=1.00  De-authentication=1.00  DoS=1.00  FakeLanding=1.00  ICMP Flooding=1.00  Jamming=1.00  MITM=1.00  Normal=1.00  Scanning=1.00  UDP Flooding=1.00  replay=1.00
+
+(run time 74 s)

@@ -1,0 +1,63 @@
+DATASET AUDIT — UNSW IoT attack traces
+rows 570,460 (all rows); content features 41; identifiers ['dev', 'ts']; benign label 'Normal'
+note: label = attack category of the annotated interval covering the device-minute; counters belong to the victim device (no source)
+
+=== (i) STRUCTURE ===
+  unsw_iot_attack/flowdata/flowdata/00166cab6b88_flowstats.csv fields per line={124: 70363}; header lines inside the data=0
+  unsw_iot_attack/flowdata/flowdata/0017882b9a25_flowstats.csv fields per line={42: 43728}; header lines inside the data=0
+  unsw_iot_attack/flowdata/flowdata/44650d56ccd3_flowstats.csv fields per line={52: 43728}; header lines inside the data=0
+  unsw_iot_attack/flowdata/flowdata/50c7bf005639_flowstats.csv fields per line={36: 70371}; header lines inside the data=0
+  unsw_iot_attack/flowdata/flowdata/70ee50183443_flowstats.csv fields per line={52: 70358}; header lines inside the data=0
+  unsw_iot_attack/flowdata/flowdata/74c63b29d71d_flowstats.csv fields per line={36: 43735}; header lines inside the data=0
+  unsw_iot_attack/flowdata/flowdata/d073d5018308_flowstats.csv fields per line={42: 43730}; header lines inside the data=0
+  unsw_iot_attack/flowdata/flowdata/ec1a5979f489_flowstats.csv fields per line={82: 70360}; header lines inside the data=0
+  unsw_iot_attack/flowdata/flowdata/ec1a59832811_flowstats.csv fields per line={82: 70358}; header lines inside the data=0
+  unsw_iot_attack/flowdata/flowdata/f4f5d88f0a3c_flowstats.csv fields per line={80: 43729}; header lines inside the data=0
+  columns checked 43; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 570,460; duplicates on all columns 0 (0.00%); without identifiers 435,515 (76.34%)
+feature vectors with >1 label 183; rows in them 102,316 (17.94%)
+  Normal                       rows     568,160  in multi-label vectors  17.94%
+  TcpSynReflection             rows         579  in multi-label vectors  22.80%  vector also occurs as benign  18.65%
+  TcpSynDevice                 rows         558  in multi-label vectors  21.68%  vector also occurs as benign  17.92%
+  UdpReflection                rows         357  in multi-label vectors   9.80%  vector also occurs as benign   9.80%
+  ArpSpoof                     rows         297  in multi-label vectors   3.70%  vector also occurs as benign   3.70%
+  UdpDevice                    rows         209  in multi-label vectors  18.66%  vector also occurs as benign  18.66%
+  PingOfDeath                  rows         180  in multi-label vectors   6.11%  vector also occurs as benign   2.78%
+  Smurf                        rows         120  in multi-label vectors  10.00%  vector also occurs as benign   5.00%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 100.00% of steps (mean over 1 file(s)); span 3629.54 h
+label runs in file order 446 for 8 labels
+  TcpSynReflection             span        3498.97 h  benign share inside  99.62%  benign rows inside 534,060
+  TcpSynDevice                 span        3476.09 h  benign share inside  99.63%  benign rows inside 527,353
+  UdpReflection                span        3476.78 h  benign share inside  99.73%  benign rows inside 528,069
+  ArpSpoof                     span        3481.51 h  benign share inside  99.61%  benign rows inside 528,787
+  UdpDevice                    span        3434.38 h  benign share inside  99.80%  benign rows inside 516,034
+  PingOfDeath                  span        3454.58 h  benign share inside  99.74%  benign rows inside 521,515
+  Smurf                        span        3447.59 h  benign share inside  99.78%  benign rows inside 519,679
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  Normal                           568,160  99.60%
+  TcpSynReflection                     579  0.10%
+  TcpSynDevice                         558  0.10%
+  UdpReflection                        357  0.06%
+  ArpSpoof                             297  0.05%
+  UdpDevice                            209  0.04%
+  PingOfDeath                          180  0.03%
+  Smurf                                120  0.02%
+benign 568,160 rows (99.60%); attack 0.40%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 102,300: Normal 100,000, TcpSynReflection 579, TcpSynDevice 558, UdpReflection 357, ArpSpoof 297, UdpDevice 209, PingOfDeath 180, Smurf 120
+  content                  random 70/30                                 macro-F1=0.809  ArpSpoof=0.89  Normal=1.00  PingOfDeath=0.89  Smurf=0.82  TcpSynDevice=0.58  TcpSynReflection=0.59  UdpDevice=0.83  UdpReflection=0.87
+  content                  time-ordered 70/30 per label                 macro-F1=0.360  ArpSpoof=0.91  Normal=0.97  PingOfDeath=0.00  Smurf=0.45  TcpSynDevice=0.19  TcpSynReflection=0.08  UdpDevice=0.20  UdpReflection=0.08
+  content + identifiers    random 70/30                                 macro-F1=0.897  ArpSpoof=0.89  Normal=1.00  PingOfDeath=0.91  Smurf=0.86  TcpSynDevice=0.85  TcpSynReflection=0.85  UdpDevice=0.91  UdpReflection=0.92
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.234  ArpSpoof=0.77  Normal=0.74  PingOfDeath=0.00  Smurf=0.07  TcpSynDevice=0.17  TcpSynReflection=0.08  UdpDevice=0.01  UdpReflection=0.03
+
+(run time 24 s)

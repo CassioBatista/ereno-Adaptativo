@@ -1,0 +1,38 @@
+# Faithful replay of the Disaster-FD traces (paper 2, 5.3): the network of the scenario for every
+# policy (links: scenario -- a ring link is up only when both ends answer each other), rounds at
+# 60 r + 30 s (never on the instant of a scenario event), registered arrivals at 30 and 60 min.
+# Placeholders filled by run_tl_faithful.sh.
+run_name: ev1-tl-faithful-cicids_T2_fixed_gossip_d600
+seed: 42
+grasp:
+  features_file: features/all_in_one_ev1_cicids_train_combined.json
+dataset:
+  name: all_in_one_ev1_cicids_train
+  test_file: all_in_one_ev1_cicids_test
+  partitioner: specialists
+  
+  partitioner_arg: null
+topology:
+  type: ring
+  num_nodes: 14
+simulation:
+  num_rounds: 9
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 1
+  eval_sample: 100000
+  monolithic: false
+scenario:
+  # nodes 3, 4, 11, 12 at 30 min and 9, 10 at 60 min (1-based); 0-based indices here
+  arrival_s: {2: 1800, 3: 1800, 10: 1800, 11: 1800, 8: 3600, 9: 3600}
+architecture:
+  manager: trust_level
+  trace: /home/cassi/datasets/disaster_fd_scenario2
+  t_end: 5880
+  delta_s: 600
+  round_offset_s: 300
+  links: scenario
+  policy: fixed_gossip
+  node_holdings: retain
+  holdings_log: /home/cassi/ereno-Adaptativo/results/ev1_tl/delta_sens/cicids_T2_fixed_gossip_d600
+  aggregation: xgb_union

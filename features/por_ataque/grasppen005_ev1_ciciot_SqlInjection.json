@@ -1,0 +1,30 @@
+{
+  "dataset": "all_in_one_ev1_ciciot_train",
+  "attack": "SqlInjection",
+  "attack_id": 27,
+  "grasp_method": "GR-G-VND(binario)",
+  "classifier_idx": 6,
+  "features": [
+    11,
+    12,
+    15,
+    18,
+    20,
+    26,
+    28,
+    40,
+    44,
+    46
+  ],
+  "n_features": 10,
+  "f1_grasp_cv": 64.61538461538461,
+  "iterations": 6,
+  "evaluations": 1276,
+  "no_improvement": 5,
+  "sample": 60000,
+  "normal_cap": 60000,
+  "attack_cap": "balanced",
+  "feature_penalty": 0.05,
+  "seed": 5,
+  "elapsed_s": 418.5
+}

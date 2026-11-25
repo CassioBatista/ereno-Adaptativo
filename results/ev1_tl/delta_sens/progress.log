@@ -1,0 +1,361 @@
+2026-11-23 10:40:35 start ereno_T2_switching_retain_d600 (9 rounds)
+2026-11-23 10:42:42 done  ereno_T2_switching_retain_d600 in 2 min
+2026-11-23 10:42:42 start ereno_T2_fixed_gossip_retain_d600 (9 rounds)
+2026-11-23 10:44:47 done  ereno_T2_fixed_gossip_retain_d600 in 2 min
+2026-11-23 10:44:47 start ereno_T2_fixed_federated_retain_d600 (9 rounds)
+2026-11-23 10:47:28 done  ereno_T2_fixed_federated_retain_d600 in 2 min
+2026-11-23 10:47:28 start ereno_T1_switching_retain_d600 (8 rounds)
+2026-11-23 10:50:44 done  ereno_T1_switching_retain_d600 in 3 min
+2026-11-23 10:50:44 start ereno_T1_fixed_gossip_retain_d600 (8 rounds)
+2026-11-23 10:52:36 done  ereno_T1_fixed_gossip_retain_d600 in 1 min
+2026-11-23 10:52:36 start ereno_T1_fixed_federated_retain_d600 (8 rounds)
+2026-11-23 10:52:37 start ereno_T1_fixed_federated_retain_d600 (8 rounds)
+2026-11-23 10:59:05 done  ereno_T1_fixed_federated_retain_d600 in 6 min
+2026-11-23 10:59:05 start cicids_T2_switching_retain_d600 (9 rounds)
+2026-11-23 10:59:06 done  ereno_T1_fixed_federated_retain_d600 in 6 min
+2026-11-23 10:59:06 start cicids_T2_switching_retain_d600 (9 rounds)
+2026-11-23 11:07:28 FAIL eval cicids_T2_switching_retain_d600
+2026-11-23 11:07:46 FAIL eval cicids_T2_switching_retain_d600
+2026-11-24 08:40:46 start ereno_T2_switching_d600 (9 rounds)
+2026-11-24 08:42:55 done  ereno_T2_switching_d600 in 2 min
+2026-11-24 08:42:55 start ereno_T2_fixed_federated_d600 (9 rounds)
+2026-11-24 08:45:28 done  ereno_T2_fixed_federated_d600 in 2 min
+2026-11-24 08:45:28 start ereno_T2_fixed_gossip_d600 (9 rounds)
+2026-11-24 08:47:48 done  ereno_T2_fixed_gossip_d600 in 2 min
+2026-11-24 08:47:48 start ereno_T1_switching_d600 (7 rounds)
+2026-11-24 08:50:14 done  ereno_T1_switching_d600 in 2 min
+2026-11-24 08:50:14 start ereno_T1_fixed_federated_d600 (7 rounds)
+2026-11-24 08:52:59 done  ereno_T1_fixed_federated_d600 in 2 min
+2026-11-24 08:52:59 start ereno_T1_fixed_gossip_d600 (7 rounds)
+2026-11-24 08:55:10 done  ereno_T1_fixed_gossip_d600 in 2 min
+2026-11-24 08:55:10 start cicids_T2_switching_d600 (9 rounds)
+2026-11-24 09:01:04 done  cicids_T2_switching_d600 in 5 min
+2026-11-24 09:01:04 start cicids_T2_fixed_federated_d600 (9 rounds)
+2026-11-24 09:03:23 done  cicids_T2_fixed_federated_d600 in 2 min
+2026-11-24 09:03:23 start cicids_T2_fixed_gossip_d600 (9 rounds)
+2026-11-24 09:06:05 done  cicids_T2_fixed_gossip_d600 in 2 min
+2026-11-24 09:06:05 start cicids_T1_switching_d600 (7 rounds)
+2026-11-24 09:09:24 done  cicids_T1_switching_d600 in 3 min
+2026-11-24 09:09:24 start cicids_T1_fixed_federated_d600 (7 rounds)
+2026-11-24 09:11:55 done  cicids_T1_fixed_federated_d600 in 2 min
+2026-11-24 09:11:55 start cicids_T1_fixed_gossip_d600 (7 rounds)
+2026-11-24 09:14:19 done  cicids_T1_fixed_gossip_d600 in 2 min
+2026-11-24 09:14:20 summary updated after delta 600
+2026-11-24 09:14:20 start ereno_T2_switching_d300 (19 rounds)
+2026-11-24 09:18:06 done  ereno_T2_switching_d300 in 3 min
+2026-11-24 09:18:06 start ereno_T2_fixed_federated_d300 (19 rounds)
+2026-11-24 09:21:35 done  ereno_T2_fixed_federated_d300 in 3 min
+2026-11-24 09:21:35 start ereno_T2_fixed_gossip_d300 (19 rounds)
+2026-11-24 09:24:19 done  ereno_T2_fixed_gossip_d300 in 2 min
+2026-11-24 09:24:19 start ereno_T1_switching_d300 (16 rounds)
+2026-11-24 09:27:45 done  ereno_T1_switching_d300 in 3 min
+2026-11-24 09:27:45 start ereno_T1_fixed_federated_d300 (16 rounds)
+2026-11-24 09:32:45 done  ereno_T1_fixed_federated_d300 in 5 min
+2026-11-24 09:32:45 start ereno_T1_fixed_gossip_d300 (16 rounds)
+2026-11-24 09:35:27 done  ereno_T1_fixed_gossip_d300 in 2 min
+2026-11-24 09:35:27 start cicids_T2_switching_d300 (19 rounds)
+2026-11-24 09:42:33 done  cicids_T2_switching_d300 in 7 min
+2026-11-24 09:42:33 start cicids_T2_fixed_federated_d300 (19 rounds)
+2026-11-24 10:01:56 done  cicids_T2_fixed_federated_d300 in 19 min
+2026-11-24 10:01:56 start cicids_T2_fixed_gossip_d300 (19 rounds)
+2026-11-24 10:05:37 done  cicids_T2_fixed_gossip_d300 in 3 min
+2026-11-24 10:05:37 start cicids_T1_switching_d300 (16 rounds)
+2026-11-24 10:08:56 done  cicids_T1_switching_d300 in 3 min
+2026-11-24 10:08:56 start cicids_T1_fixed_federated_d300 (16 rounds)
+2026-11-24 10:12:09 done  cicids_T1_fixed_federated_d300 in 3 min
+2026-11-24 10:12:09 start cicids_T1_fixed_gossip_d300 (16 rounds)
+2026-11-24 10:15:19 done  cicids_T1_fixed_gossip_d300 in 3 min
+2026-11-24 10:15:19 summary updated after delta 300
+2026-11-24 10:15:19 start ereno_T2_switching_d180 (32 rounds)
+2026-11-24 10:18:41 done  ereno_T2_switching_d180 in 3 min
+2026-11-24 10:18:41 start ereno_T2_fixed_federated_d180 (32 rounds)
+2026-11-24 10:21:50 done  ereno_T2_fixed_federated_d180 in 3 min
+2026-11-24 10:21:51 start ereno_T2_fixed_gossip_d180 (32 rounds)
+2026-11-24 10:25:08 done  ereno_T2_fixed_gossip_d180 in 3 min
+2026-11-24 10:25:08 start ereno_T1_switching_d180 (27 rounds)
+2026-11-24 10:29:05 done  ereno_T1_switching_d180 in 3 min
+2026-11-24 10:29:05 start ereno_T1_fixed_federated_d180 (27 rounds)
+2026-11-24 10:32:35 done  ereno_T1_fixed_federated_d180 in 3 min
+2026-11-24 10:32:35 start ereno_T1_fixed_gossip_d180 (27 rounds)
+2026-11-24 10:35:50 done  ereno_T1_fixed_gossip_d180 in 3 min
+2026-11-24 10:35:50 start cicids_T2_switching_d180 (32 rounds)
+2026-11-24 10:39:42 done  cicids_T2_switching_d180 in 3 min
+2026-11-24 10:39:43 start cicids_T2_fixed_federated_d180 (32 rounds)
+2026-11-24 10:43:00 done  cicids_T2_fixed_federated_d180 in 3 min
+2026-11-24 10:43:00 start cicids_T2_fixed_gossip_d180 (32 rounds)
+2026-11-24 10:47:02 done  cicids_T2_fixed_gossip_d180 in 4 min
+2026-11-24 10:47:02 start cicids_T1_switching_d180 (27 rounds)
+2026-11-24 10:51:08 done  cicids_T1_switching_d180 in 4 min
+2026-11-24 10:51:08 start cicids_T1_fixed_federated_d180 (27 rounds)
+2026-11-24 10:56:10 done  cicids_T1_fixed_federated_d180 in 5 min
+2026-11-24 10:56:10 start cicids_T1_fixed_gossip_d180 (27 rounds)
+2026-11-24 12:24:17 done  cicids_T1_fixed_gossip_d180 in 88 min
+2026-11-24 12:24:18 summary updated after delta 180
+2026-11-24 12:24:18 start ereno_T2_switching_d15 (391 rounds)
+2026-11-24 12:36:18 done  ereno_T2_switching_d15 in 12 min
+2026-11-24 12:36:18 start ereno_T2_fixed_federated_d15 (391 rounds)
+2026-11-24 12:47:13 done  ereno_T2_fixed_federated_d15 in 10 min
+2026-11-24 12:47:13 start ereno_T2_fixed_gossip_d15 (391 rounds)
+2026-11-24 12:58:06 done  ereno_T2_fixed_gossip_d15 in 10 min
+2026-11-24 12:58:06 start ereno_T1_switching_d15 (331 rounds)
+2026-11-24 13:07:45 done  ereno_T1_switching_d15 in 9 min
+2026-11-24 13:07:45 start ereno_T1_fixed_federated_d15 (331 rounds)
+2026-11-24 13:14:55 done  ereno_T1_fixed_federated_d15 in 7 min
+2026-11-24 13:14:55 start ereno_T1_fixed_gossip_d15 (331 rounds)
+2026-11-24 13:22:56 done  ereno_T1_fixed_gossip_d15 in 8 min
+2026-11-24 13:22:56 start cicids_T2_switching_d15 (391 rounds)
+2026-11-24 14:11:13 done  cicids_T2_switching_d15 in 48 min
+2026-11-24 14:11:13 start cicids_T2_fixed_federated_d15 (391 rounds)
+2026-11-24 14:56:29 done  cicids_T2_fixed_federated_d15 in 45 min
+2026-11-24 14:56:29 start cicids_T2_fixed_gossip_d15 (391 rounds)
+2026-11-24 15:41:23 done  cicids_T2_fixed_gossip_d15 in 44 min
+2026-11-24 15:41:23 start cicids_T1_switching_d15 (331 rounds)
+2026-11-24 16:14:39 done  cicids_T1_switching_d15 in 33 min
+2026-11-24 16:14:39 start cicids_T1_fixed_federated_d15 (331 rounds)
+2026-11-24 16:36:04 done  cicids_T1_fixed_federated_d15 in 21 min
+2026-11-24 16:36:04 start cicids_T1_fixed_gossip_d15 (331 rounds)
+2026-11-24 17:04:49 done  cicids_T1_fixed_gossip_d15 in 28 min
+2026-11-24 17:04:50 summary updated after delta 15
+2026-11-24 17:04:50 start ereno_T2_switching_d5 (1175 rounds)
+2026-11-24 17:29:17 done  ereno_T2_switching_d5 in 24 min
+2026-11-24 17:29:17 start ereno_T2_fixed_federated_d5 (1175 rounds)
+2026-11-24 19:08:39 done  ereno_T2_fixed_federated_d5 in 99 min
+2026-11-24 19:08:39 start ereno_T2_fixed_gossip_d5 (1175 rounds)
+2026-11-24 19:38:49 done  ereno_T2_fixed_gossip_d5 in 30 min
+2026-11-24 19:38:49 start ereno_T1_switching_d5 (995 rounds)
+2026-11-24 20:02:07 done  ereno_T1_switching_d5 in 23 min
+2026-11-24 20:02:07 start ereno_T1_fixed_federated_d5 (995 rounds)
+2026-11-24 20:20:41 done  ereno_T1_fixed_federated_d5 in 18 min
+2026-11-24 20:20:41 start ereno_T1_fixed_gossip_d5 (995 rounds)
+2026-11-24 20:39:10 done  ereno_T1_fixed_gossip_d5 in 18 min
+2026-11-24 20:39:10 start cicids_T2_switching_d5 (1175 rounds)
+2026-11-24 21:46:22 done  cicids_T2_switching_d5 in 67 min
+2026-11-24 21:46:22 start cicids_T2_fixed_federated_d5 (1175 rounds)
+2026-11-24 22:45:02 done  cicids_T2_fixed_federated_d5 in 58 min
+2026-11-24 22:45:02 start cicids_T2_fixed_gossip_d5 (1175 rounds)
+2026-11-24 23:50:38 done  cicids_T2_fixed_gossip_d5 in 65 min
+2026-11-24 23:50:38 start cicids_T1_switching_d5 (995 rounds)
+2026-11-25 00:45:53 done  cicids_T1_switching_d5 in 55 min
+2026-11-25 00:45:54 start cicids_T1_fixed_federated_d5 (995 rounds)
+2026-11-25 01:37:13 done  cicids_T1_fixed_federated_d5 in 51 min
+2026-11-25 01:37:13 start cicids_T1_fixed_gossip_d5 (995 rounds)
+2026-11-25 02:31:20 done  cicids_T1_fixed_gossip_d5 in 54 min
+2026-11-25 02:31:21 summary updated after delta 5
+sensitivity to the round period (registered arrivals 30/60 min); per block: protected at the end / median latency / exposure all nodes / exposure reachable nodes
+
+==== ERENO
+--- T1
+     5 s ReSIDS     | block 1: 14/14   8 min  14.9%   8.2%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed GL   | block 1: 14/14  16 min  30.6%  17.2%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed FL   | block 1: 14/14  30 min  56.5%  48.1%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s ReSIDS     | block 1: 14/14  18 min  33.3%  20.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed GL   | block 1: 14/14  18 min  33.3%  20.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed FL   | block 1: 14/14  30 min  56.6%  48.2%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s ReSIDS     | block 1: 14/14  29 min  51.8%  42.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed GL   | block 1: 14/14  29 min  53.8%  44.9%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed FL   | block 1: 14/14  30 min  56.6%  48.2%  | block 2: 14/14   0 min   0.0%   0.0%
+   180 s ReSIDS     | block 1: 14/14  32 min  55.6%  47.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   180 s Fixed GL   | block 1:  4/14  48 min  96.0%  95.3%  | block 2: 14/14   2 min   9.8%   9.8%
+   180 s Fixed FL   | block 1: 14/14  32 min  55.6%  47.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s ReSIDS     | block 1: 14/14  32 min  54.5%  46.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s Fixed GL   | block 1:  1/14  52 min  99.4%  99.2%  | block 2: 11/14   2 min  21.4%  21.4%
+   300 s Fixed FL   | block 1: 14/14  32 min  54.5%  46.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   600 s ReSIDS     | block 1: 14/14  35 min  60.0%  54.8%  | block 2: 14/14   5 min   0.0%   0.0%
+   600 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 10/14   5 min  32.1%  32.1%
+   600 s Fixed FL   | block 1: 14/14  35 min  60.0%  54.8%  | block 2: 14/14   5 min   0.0%   0.0%
+--- T2
+     5 s ReSIDS     | block 1: 14/14   0 min   0.0%   0.0%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed GL   | block 1: 14/14   1 min   1.5%   2.1%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed FL   | block 1: 13/14   0 min   7.1%   4.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s ReSIDS     | block 1: 14/14   0 min   0.2%   0.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed GL   | block 1: 14/14   4 min   5.3%   7.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s ReSIDS     | block 1:  9/14  12 min  47.9%  34.0%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed GL   | block 1: 10/14  13 min  45.3%  35.9%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   0 min   0.0%   0.0%
+   180 s ReSIDS     | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   180 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 13/14   2 min   7.1%   0.0%
+   180 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s ReSIDS     | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.9%   1.6%
+   300 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   600 s ReSIDS     | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   5 min   0.0%   0.0%
+   600 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 12/14   5 min  14.3%  25.0%
+   600 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   5 min   0.0%   0.0%
+
+==== CICIDS2017
+--- T1
+     5 s ReSIDS     | block 1: 14/14   8 min  14.9%   8.2%  | block 2: 14/14   0 min   0.1%   0.1%
+     5 s Fixed GL   | block 1: 14/14  16 min  28.6%  14.9%  | block 2: 14/14   1 min   3.3%   3.3%
+     5 s Fixed FL   | block 1: 14/14  30 min  52.6%  43.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s ReSIDS     | block 1: 14/14  18 min  31.5%  18.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed GL   | block 1: 14/14  18 min  28.9%  15.2%  | block 2: 14/14   4 min  14.1%  14.1%
+    15 s Fixed FL   | block 1: 14/14  30 min  52.6%  43.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s ReSIDS     | block 1: 14/14  22 min  38.4%  26.5%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed GL   | block 1: 14/14  22 min  36.5%  24.3%  | block 2: 14/14  12 min  48.1%  48.1%
+    60 s Fixed FL   | block 1: 14/14  30 min  52.6%  43.4%  | block 2: 14/14   0 min   0.0%   0.0%
+   180 s ReSIDS     | block 1: 14/14  32 min  50.0%  40.6%  | block 2: 14/14   2 min   0.0%   0.0%
+   180 s Fixed GL   | block 1: 12/14  36 min  65.9%  59.4%  | block 2:  5/14  16 min  86.6%  86.6%
+   180 s Fixed FL   | block 1: 14/14  32 min  51.6%  42.5%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s ReSIDS     | block 1: 14/14  32 min  50.6%  41.5%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s Fixed GL   | block 1:  3/14   8 min  85.7%  83.1%  | block 2:  0/14       - 100.0% 100.0%
+   300 s Fixed FL   | block 1: 14/14  32 min  50.6%  41.5%  | block 2: 14/14   2 min   0.0%   0.0%
+   600 s ReSIDS     | block 1: 14/14  35 min  54.3%  48.4%  | block 2: 14/14   5 min   0.0%   0.0%
+   600 s Fixed GL   | block 1:  4/14  30 min  85.7%  83.9%  | block 2:  0/14       - 100.0% 100.0%
+   600 s Fixed FL   | block 1: 14/14  35 min  55.7%  50.0%  | block 2: 14/14   5 min   0.0%   0.0%
+--- T2
+     5 s ReSIDS     | block 1: 14/14   0 min   0.0%   0.0%  | block 2:  8/14   0 min  49.0%  10.8%
+     5 s Fixed GL   | block 1: 14/14   1 min   1.6%   2.2%  | block 2:  6/14   0 min  57.4%  25.6%
+     5 s Fixed FL   | block 1: 13/14   0 min   7.1%   4.3%  | block 2:  8/14  15 min  62.7%  34.8%
+    15 s ReSIDS     | block 1: 14/14   0 min   0.2%   0.3%  | block 2:  8/14   1 min  49.5%  11.6%
+    15 s Fixed GL   | block 1: 14/14   4 min   5.4%   7.5%  | block 2:  8/14   2 min  45.1%   3.9%
+    15 s Fixed FL   | block 1:  1/14   0 min  92.9%  97.8%  | block 2:  8/14  15 min  62.6%  34.5%
+    60 s ReSIDS     | block 1: 14/14   8 min  10.8%  14.8%  | block 2:  8/14   5 min  52.1%  16.1%
+    60 s Fixed GL   | block 1: 14/14   8 min  10.8%  14.8%  | block 2:  8/14   4 min  49.6%  11.8%
+    60 s Fixed FL   | block 1:  1/14   0 min  92.9%  97.8%  | block 2:  8/14  16 min  62.6%  34.5%
+   180 s ReSIDS     | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  12 min  56.6%  24.0%
+   180 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2:  7/14  10 min  62.1%  33.7%
+   180 s Fixed FL   | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  16 min  62.1%  33.7%
+   300 s ReSIDS     | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  18 min  59.8%  29.7%
+   300 s Fixed GL   | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  7/14  18 min  69.6%  46.9%
+   300 s Fixed FL   | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  18 min  61.6%  32.8%
+   600 s ReSIDS     | block 1:  2/14   5 min  85.7%  93.1%  | block 2:  8/14  25 min  66.1%  40.6%
+   600 s Fixed GL   | block 1:  2/14  10 min  86.7%  94.4%  | block 2:  0/14       - 100.0% 100.0%
+   600 s Fixed FL   | block 1:  1/14   5 min  92.9%  97.2%  | block 2:  8/14  25 min  67.9%  43.8%
+
+regret (exposure minus the best of the three, points) per period, over informative cells
+     5 s (6 cells): ReSIDS mean 0.0 max 0.1 worst 0; Fixed GL mean 7.4 max 15.7 worst 1; Fixed FL mean 17.9 max 41.6 worst 5
+    15 s (6 cells): ReSIDS mean 1.2 max 4.4 worst 0; Fixed GL mean 4.1 max 14.1 worst 1; Fixed FL mean 42.8 max 99.8 worst 5
+    60 s (6 cells): ReSIDS mean 1.2 max 2.6 worst 0; Fixed GL mean 8.4 max 48.1 worst 1; Fixed FL mean 28.4 max 82.0 worst 5
+   180 s (7 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 24.7 max 86.6 worst 7; Fixed FL mean 1.0 max 5.5 worst 1
+   300 s (5 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 42.2 max 100.0 worst 5; Fixed FL mean 0.4 max 1.8 worst 0
+   600 s (7 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 36.1 max 100.0 worst 6; Fixed FL mean 1.5 max 7.1 worst 1
+2026-11-25 02:31:22 delta sensitivity complete
+2026-11-25 10:57:06 fixed-GL re-run with gl_peers both: 16 runs moved to /home/cassi/ereno-Adaptativo/results/ev1_tl/delta_sens_gl_any
+2026-11-25 10:57:06 start ereno_T2_fixed_gossip_d600 (9 rounds)
+2026-11-25 10:59:12 done  ereno_T2_fixed_gossip_d600 in 2 min
+2026-11-25 10:59:12 start ereno_T1_fixed_gossip_d600 (7 rounds)
+2026-11-25 11:01:04 done  ereno_T1_fixed_gossip_d600 in 1 min
+2026-11-25 11:01:04 start cicids_T2_fixed_gossip_d600 (9 rounds)
+2026-11-25 11:03:15 done  cicids_T2_fixed_gossip_d600 in 2 min
+2026-11-25 11:03:15 start cicids_T1_fixed_gossip_d600 (7 rounds)
+2026-11-25 11:05:10 done  cicids_T1_fixed_gossip_d600 in 1 min
+2026-11-25 11:05:14 summary updated after delta 600
+2026-11-25 11:05:14 start ereno_T2_fixed_gossip_d300 (19 rounds)
+2026-11-25 11:07:54 done  ereno_T2_fixed_gossip_d300 in 2 min
+2026-11-25 11:07:54 start ereno_T1_fixed_gossip_d300 (16 rounds)
+2026-11-25 11:09:56 done  ereno_T1_fixed_gossip_d300 in 2 min
+2026-11-25 11:09:56 start cicids_T2_fixed_gossip_d300 (19 rounds)
+2026-11-25 11:13:01 done  cicids_T2_fixed_gossip_d300 in 3 min
+2026-11-25 11:13:01 start cicids_T1_fixed_gossip_d300 (16 rounds)
+2026-11-25 11:15:21 done  cicids_T1_fixed_gossip_d300 in 2 min
+2026-11-25 11:15:22 summary updated after delta 300
+2026-11-25 11:15:22 start ereno_T2_fixed_gossip_d180 (32 rounds)
+2026-11-25 11:17:53 done  ereno_T2_fixed_gossip_d180 in 2 min
+2026-11-25 11:17:53 start ereno_T1_fixed_gossip_d180 (27 rounds)
+2026-11-25 11:20:36 done  ereno_T1_fixed_gossip_d180 in 2 min
+2026-11-25 11:20:36 start cicids_T2_fixed_gossip_d180 (32 rounds)
+2026-11-25 11:25:37 done  cicids_T2_fixed_gossip_d180 in 5 min
+2026-11-25 11:25:37 start cicids_T1_fixed_gossip_d180 (27 rounds)
+2026-11-25 11:29:27 done  cicids_T1_fixed_gossip_d180 in 3 min
+2026-11-25 11:29:28 summary updated after delta 180
+2026-11-25 11:29:29 start ereno_T2_fixed_gossip_d15 (391 rounds)
+2026-11-25 11:38:56 done  ereno_T2_fixed_gossip_d15 in 9 min
+2026-11-25 11:38:56 start ereno_T1_fixed_gossip_d15 (331 rounds)
+2026-11-25 11:47:31 done  ereno_T1_fixed_gossip_d15 in 8 min
+2026-11-25 11:47:31 start cicids_T2_fixed_gossip_d15 (391 rounds)
+2026-11-25 12:18:49 done  cicids_T2_fixed_gossip_d15 in 31 min
+2026-11-25 12:18:49 start cicids_T1_fixed_gossip_d15 (331 rounds)
+2026-11-25 12:44:44 done  cicids_T1_fixed_gossip_d15 in 25 min
+2026-11-25 12:44:45 summary updated after delta 15
+2026-11-25 12:44:47 summary updated after delta 5
+sensitivity to the round period (registered arrivals 30/60 min); per block: protected at the end / median latency / exposure all nodes / exposure reachable nodes
+
+==== ERENO
+--- T1
+     5 s ReSIDS     | block 1: 14/14   8 min  14.9%   8.2%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed GL   | block 1: 14/14  16 min  30.6%  17.2%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed FL   | block 1: 14/14  30 min  56.5%  48.1%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s ReSIDS     | block 1: 14/14  18 min  33.3%  20.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed GL   | block 1: 14/14  18 min  33.3%  20.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed FL   | block 1: 14/14  30 min  56.6%  48.2%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s ReSIDS     | block 1: 14/14  29 min  51.8%  42.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed GL   | block 1: 14/14  29 min  53.8%  44.9%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed FL   | block 1: 14/14  30 min  56.6%  48.2%  | block 2: 14/14   0 min   0.0%   0.0%
+   180 s ReSIDS     | block 1: 14/14  32 min  55.6%  47.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   180 s Fixed GL   | block 1:  4/14  48 min  96.0%  95.3%  | block 2: 14/14   2 min   9.8%   9.8%
+   180 s Fixed FL   | block 1: 14/14  32 min  55.6%  47.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s ReSIDS     | block 1: 14/14  32 min  54.5%  46.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s Fixed GL   | block 1:  1/14  52 min  99.4%  99.2%  | block 2: 11/14   2 min  21.4%  21.4%
+   300 s Fixed FL   | block 1: 14/14  32 min  54.5%  46.2%  | block 2: 14/14   2 min   0.0%   0.0%
+   600 s ReSIDS     | block 1: 14/14  35 min  60.0%  54.8%  | block 2: 14/14   5 min   0.0%   0.0%
+   600 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 10/14   5 min  32.1%  32.1%
+   600 s Fixed FL   | block 1: 14/14  35 min  60.0%  54.8%  | block 2: 14/14   5 min   0.0%   0.0%
+--- T2
+     5 s ReSIDS     | block 1: 14/14   0 min   0.0%   0.0%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed GL   | block 1: 14/14   1 min   1.5%   2.1%  | block 2: 14/14   0 min   0.0%   0.0%
+     5 s Fixed FL   | block 1: 13/14   0 min   7.1%   4.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s ReSIDS     | block 1: 14/14   0 min   0.2%   0.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed GL   | block 1: 14/14   4 min   5.3%   7.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s ReSIDS     | block 1:  9/14  12 min  47.9%  34.0%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed GL   | block 1:  9/14  12 min  47.9%  34.0%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   0 min   0.0%   0.0%
+   180 s ReSIDS     | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   180 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 12/14   2 min  14.3%   0.0%
+   180 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s ReSIDS     | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   6.2%  10.9%
+   300 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   2 min   0.0%   0.0%
+   600 s ReSIDS     | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   5 min   0.0%   0.0%
+   600 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 10/14   5 min  33.9%  34.4%
+   600 s Fixed FL   | block 1:  0/14       - 100.0% 100.0%  | block 2: 14/14   5 min   0.0%   0.0%
+
+==== CICIDS2017
+--- T1
+     5 s ReSIDS     | block 1: 14/14   8 min  14.9%   8.2%  | block 2: 14/14   0 min   0.1%   0.1%
+     5 s Fixed GL   | block 1: 14/14  16 min  28.6%  14.9%  | block 2: 14/14   1 min   3.3%   3.3%
+     5 s Fixed FL   | block 1: 14/14  30 min  52.6%  43.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s ReSIDS     | block 1: 14/14  18 min  31.5%  18.3%  | block 2: 14/14   0 min   0.0%   0.0%
+    15 s Fixed GL   | block 1: 14/14  18 min  31.5%  18.3%  | block 2: 14/14   4 min  14.1%  14.1%
+    15 s Fixed FL   | block 1: 14/14  30 min  52.6%  43.4%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s ReSIDS     | block 1: 14/14  22 min  38.4%  26.5%  | block 2: 14/14   0 min   0.0%   0.0%
+    60 s Fixed GL   | block 1: 14/14  22 min  38.4%  26.5%  | block 2: 14/14  12 min  48.1%  48.1%
+    60 s Fixed FL   | block 1: 14/14  30 min  52.6%  43.4%  | block 2: 14/14   0 min   0.0%   0.0%
+   180 s ReSIDS     | block 1: 14/14  32 min  50.0%  40.6%  | block 2: 14/14   2 min   0.0%   0.0%
+   180 s Fixed GL   | block 1: 11/14  38 min  73.8%  68.9%  | block 2:  5/14  16 min  86.6%  86.6%
+   180 s Fixed FL   | block 1: 14/14  32 min  51.6%  42.5%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s ReSIDS     | block 1: 14/14  32 min  50.6%  41.5%  | block 2: 14/14   2 min   0.0%   0.0%
+   300 s Fixed GL   | block 1:  1/14   2 min  92.9%  91.5%  | block 2:  0/14       - 100.0% 100.0%
+   300 s Fixed FL   | block 1: 14/14  32 min  50.6%  41.5%  | block 2: 14/14   2 min   0.0%   0.0%
+   600 s ReSIDS     | block 1: 14/14  35 min  54.3%  48.4%  | block 2: 14/14   5 min   0.0%   0.0%
+   600 s Fixed GL   | block 1:  4/14  30 min  85.7%  83.9%  | block 2:  0/14       - 100.0% 100.0%
+   600 s Fixed FL   | block 1: 14/14  35 min  55.7%  50.0%  | block 2: 14/14   5 min   0.0%   0.0%
+--- T2
+     5 s ReSIDS     | block 1: 14/14   0 min   0.0%   0.0%  | block 2:  8/14   0 min  49.0%  10.8%
+     5 s Fixed GL   | block 1: 14/14   1 min   1.6%   2.2%  | block 2:  6/14   0 min  57.4%  25.6%
+     5 s Fixed FL   | block 1: 13/14   0 min   7.1%   4.3%  | block 2:  8/14  15 min  62.7%  34.8%
+    15 s ReSIDS     | block 1: 14/14   0 min   0.2%   0.3%  | block 2:  8/14   1 min  49.5%  11.6%
+    15 s Fixed GL   | block 1: 14/14   4 min   5.4%   7.5%  | block 2:  6/14   1 min  58.0%  26.6%
+    15 s Fixed FL   | block 1:  1/14   0 min  92.9%  97.8%  | block 2:  8/14  15 min  62.6%  34.5%
+    60 s ReSIDS     | block 1: 14/14   8 min  10.8%  14.8%  | block 2:  8/14   5 min  52.1%  16.1%
+    60 s Fixed GL   | block 1: 14/14   8 min  10.8%  14.8%  | block 2:  6/14   4 min  60.7%  31.2%
+    60 s Fixed FL   | block 1:  1/14   0 min  92.9%  97.8%  | block 2:  8/14  16 min  62.6%  34.5%
+   180 s ReSIDS     | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  12 min  56.6%  24.0%
+   180 s Fixed GL   | block 1:  0/14       - 100.0% 100.0%  | block 2:  6/14   9 min  65.4%  39.4%
+   180 s Fixed FL   | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  16 min  62.1%  33.7%
+   300 s ReSIDS     | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  18 min  59.8%  29.7%
+   300 s Fixed GL   | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  6/14  20 min  75.9%  57.8%
+   300 s Fixed FL   | block 1:  1/14   2 min  92.9%  97.9%  | block 2:  8/14  18 min  61.6%  32.8%
+   600 s ReSIDS     | block 1:  2/14   5 min  85.7%  93.1%  | block 2:  8/14  25 min  66.1%  40.6%
+   600 s Fixed GL   | block 1:  1/14   5 min  92.9%  95.8%  | block 2:  3/14  25 min  89.3%  81.2%
+   600 s Fixed FL   | block 1:  1/14   5 min  92.9%  97.2%  | block 2:  8/14  25 min  67.9%  43.8%
+
+regret (exposure minus the best of the three, points) per period, over informative cells
+     5 s (6 cells): ReSIDS mean 0.0 max 0.1 worst 0; Fixed GL mean 7.4 max 15.7 worst 1; Fixed FL mean 17.9 max 41.6 worst 5
+    15 s (6 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 5.5 max 14.1 worst 1; Fixed FL mean 41.7 max 99.8 worst 5
+    60 s (6 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 9.8 max 48.1 worst 1; Fixed FL mean 27.3 max 82.0 worst 5
+   180 s (7 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 27.3 max 86.6 worst 7; Fixed FL mean 1.0 max 5.5 worst 0
+   300 s (6 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 38.5 max 100.0 worst 6; Fixed FL mean 0.3 max 1.8 worst 0
+   600 s (7 cells): ReSIDS mean 0.0 max 0.0 worst 0; Fixed GL mean 38.3 max 100.0 worst 7; Fixed FL mean 1.5 max 7.1 worst 1
+2026-11-25 12:44:48 delta sensitivity complete

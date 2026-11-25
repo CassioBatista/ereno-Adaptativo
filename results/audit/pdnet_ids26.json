@@ -1,0 +1,76 @@
+{
+ "dataset": "PDNet-IDS26",
+ "sample": "all rows",
+ "rows": 21552,
+ "feats": 30,
+ "ids": [
+  "TCP_SrcPort",
+  "TCP_DstPort",
+  "TCP_Seq",
+  "TCP_Ack",
+  "subject_id",
+  "age",
+  "sex",
+  "test_time"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.10449146250927988,
+  "dup_feat": 0.24981440237564959,
+  "multi_rows": 0.002969561989606533,
+  "per_label": {
+   "FDI": {
+    "rows": 5388,
+    "multi": 0.005011135857461025,
+    "as_benign": 0.004454342984409799
+   },
+   "DOS": {
+    "rows": 5388,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Benign": {
+    "rows": 5388,
+    "multi": 0.005382331106161841,
+    "as_benign": null
+   },
+   "Replay": {
+    "rows": 5388,
+    "multi": 0.0014847809948032665,
+    "as_benign": 0.0009279881217520415
+   }
+  }
+ },
+ "time": {
+  "has_time": false
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 5388,
+  "benign_share": 0.25
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.8675960200317612,
+   "per_label": {
+    "Benign": 0.7807144931745571,
+    "DOS": 1.0,
+    "FDI": 0.7616546290216678,
+    "Replay": 0.9280149579308196
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 1.0,
+   "per_label": {
+    "Benign": 1.0,
+    "DOS": 1.0,
+    "FDI": 1.0,
+    "Replay": 1.0
+   }
+  }
+ }
+}

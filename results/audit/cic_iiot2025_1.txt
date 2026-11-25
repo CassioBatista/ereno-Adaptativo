@@ -1,0 +1,55 @@
+DATASET AUDIT — CIC IIoT 2025 (DataSense), 1sec windows
+rows 227,191 (all rows); content features 71; identifiers ['dev', 'tstart']; benign label 'benign'
+note: label = label2 (category); list-valued columns left out; a window describes one device: no source address
+
+=== (i) STRUCTURE ===
+  cic_iiot2025/benign_samples_1sec.csv                         fields per line={94: 136800}; header lines inside the data=0
+  cic_iiot2025/attack_samples_1sec.csv                         fields per line={94: 90391}; header lines inside the data=0
+  columns checked 73; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 227,191; duplicates on all columns 0 (0.00%); without identifiers 79,794 (35.12%)
+feature vectors with >1 label 22; rows in them 79,131 (34.83%)
+  benign                       rows     136,800  in multi-label vectors  50.66%
+  recon                        rows      33,648  in multi-label vectors  17.41%  vector also occurs as benign  17.30%
+  dos                          rows      18,420  in multi-label vectors   4.12%  vector also occurs as benign   4.05%
+  ddos                         rows      18,056  in multi-label vectors   8.19%  vector also occurs as benign   8.05%
+  mitm                         rows       8,062  in multi-label vectors   7.12%  vector also occurs as benign   7.10%
+  malware                      rows       7,541  in multi-label vectors   4.72%  vector also occurs as benign   4.63%
+  web                          rows       2,796  in multi-label vectors  14.20%  vector also occurs as benign  14.20%
+  bruteforce                   rows       1,868  in multi-label vectors  21.90%  vector also occurs as benign  21.90%
+
+=== (iii) TIME ===
+timestamp present in 100.00% of rows; non-decreasing in file order 99.60% of steps (mean over 1 file(s)); span 5690.08 h
+label runs in file order 226 for 8 labels
+  recon                        span          26.37 h  benign share inside   0.00%  benign rows inside 0
+  dos                          span         654.12 h  benign share inside   0.00%  benign rows inside 0
+  ddos                         span         493.30 h  benign share inside   0.00%  benign rows inside 0
+  mitm                         span         697.34 h  benign share inside   0.00%  benign rows inside 0
+  malware                      span           2.07 h  benign share inside   0.00%  benign rows inside 0
+  web                          span         169.73 h  benign share inside   0.00%  benign rows inside 0
+  bruteforce                   span          22.82 h  benign share inside   0.00%  benign rows inside 0
+
+=== (iv) ATTRIBUTION ===
+no source address: alarms cannot be attributed to an emitter
+
+=== (v) PREVALENCE ===
+  benign                           136,800  60.21%
+  recon                             33,648  14.81%
+  dos                               18,420  8.11%
+  ddos                              18,056  7.95%
+  mitm                               8,062  3.55%
+  malware                            7,541  3.32%
+  web                                2,796  1.23%
+  bruteforce                         1,868  0.82%
+benign 136,800 rows (60.21%); attack 39.79%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 190,391: benign 100,000, recon 33,648, dos 18,420, ddos 18,056, mitm 8,062, malware 7,541, web 2,796, bruteforce 1,868
+  content                  random 70/30                                 macro-F1=0.909  benign=0.94  bruteforce=0.81  ddos=0.92  dos=0.96  malware=0.94  mitm=0.91  recon=0.86  web=0.93
+  content                  time-ordered 70/30 per label                 macro-F1=0.654  benign=0.96  bruteforce=0.02  ddos=0.55  dos=0.46  malware=0.77  mitm=0.58  recon=0.93  web=0.96
+  content + identifiers    random 70/30                                 macro-F1=0.999  benign=1.00  bruteforce=0.99  ddos=1.00  dos=1.00  malware=1.00  mitm=1.00  recon=1.00  web=1.00
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.585  benign=1.00  bruteforce=0.82  ddos=0.55  dos=0.02  malware=0.82  mitm=0.43  recon=0.17  web=0.87
+
+(run time 58 s)

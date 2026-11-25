@@ -1,0 +1,82 @@
+{
+ "dataset": "CICIoT2023",
+ "sample": "10 of the 169 part files",
+ "rows": 2366956,
+ "feats": 46,
+ "ids": [],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.1588918425184076,
+  "dup_feat": 0.1588918425184076,
+  "multi_rows": 0.0,
+  "per_label": {
+   "DDoS": {
+    "rows": 1723607,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "DoS": {
+    "rows": 409683,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Mirai": {
+    "rows": 133220,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Benign": {
+    "rows": 55859,
+    "multi": 0.0,
+    "as_benign": null
+   },
+   "Spoofing": {
+    "rows": 24760,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Recon": {
+    "rows": 17985,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "Web": {
+    "rows": 1186,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "BruteForce": {
+    "rows": 656,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": false
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 55859,
+  "benign_share": 0.02359950924309535
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.8351268888208507,
+   "per_label": {
+    "Benign": 0.9330618331994952,
+    "BruteForce": 0.6560509554140127,
+    "DDoS": 0.9995332399813296,
+    "DoS": 0.9997833369443843,
+    "Mirai": 0.9999666677777408,
+    "Recon": 0.8440560783560591,
+    "Spoofing": 0.8730527948121519,
+    "Web": 0.37551020408163266
+   }
+  }
+ }
+}

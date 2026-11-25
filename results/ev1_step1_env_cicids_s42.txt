@@ -1,0 +1,6 @@
+2026-11-19 07:34:24
+HEAD e352d9dc81488ec8ed5c129d945504db0821f1ea
+status:
+diff of the script:
+
+python 3.14.4, xgboost 3.3.0, numpy 2.5.0, scikit-learn 1.9.0, scipy 1.18.0, pandas 3.0.5; nthread 8; seed 42; features [4, 6, 11, 13, 17, 20, 21, 23, 24, 25, 29, 37, 38, 40, 42, 46, 47, 49, 54, 55, 56, 57, 59, 65, 67, 68, 69, 70, 71, 75, 82]

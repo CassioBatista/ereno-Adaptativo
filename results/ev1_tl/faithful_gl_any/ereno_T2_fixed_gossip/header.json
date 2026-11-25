@@ -1,0 +1,73 @@
+{
+ "run_name": "ev1-tl-faithful-ereno_T2_fixed_gossip",
+ "conf": "/home/cassi/ereno-Adaptativo/results/ev1_tl/faithful/cfg_ereno_T2_fixed_gossip.yaml",
+ "dataset": "all_in_one_ereno_train",
+ "test_file": "all_in_one_ereno_test",
+ "features": [
+  5,
+  7,
+  14,
+  15,
+  20,
+  25,
+  40,
+  42,
+  43,
+  44,
+  45,
+  46,
+  55,
+  57,
+  58
+ ],
+ "num_nodes": 14,
+ "num_rounds": 97,
+ "seed": 42,
+ "node_holdings": "retain",
+ "arrival_s": {
+  "2": 1800.0,
+  "3": 1800.0,
+  "10": 1800.0,
+  "11": 1800.0,
+  "8": 3600.0,
+  "9": 3600.0
+ },
+ "node_specialist": [
+  "random_replay",
+  "random_replay",
+  "injection",
+  "injection",
+  "high_StNum",
+  "high_StNum",
+  "inverse_replay",
+  "inverse_replay",
+  "poisoned_high_rate",
+  "poisoned_high_rate",
+  "masquerade_fake_normal",
+  "masquerade_fake_normal",
+  "masquerade_fake_fault",
+  "masquerade_fake_fault"
+ ],
+ "class_names": [
+  "normal",
+  "random_replay",
+  "inverse_replay",
+  "masquerade_fake_fault",
+  "masquerade_fake_normal",
+  "injection",
+  "high_StNum",
+  "poisoned_high_rate"
+ ],
+ "architecture": {
+  "manager": "trust_level",
+  "trace": "/home/cassi/datasets/disaster_fd_scenario2",
+  "t_end": 5880,
+  "delta_s": 60,
+  "round_offset_s": 30,
+  "links": "scenario",
+  "policy": "fixed_gossip",
+  "node_holdings": "retain",
+  "holdings_log": "/home/cassi/ereno-Adaptativo/results/ev1_tl/faithful/ereno_T2_fixed_gossip",
+  "aggregation": "xgb_union"
+ }
+}

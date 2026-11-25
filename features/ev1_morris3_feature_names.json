@@ -1,0 +1,35 @@
+{
+ "source": "water_final.arff (Morris and Gao 2014, Web Archive copy); evaluation-v1",
+ "names": {
+  "1": "command_address",
+  "2": "response_address",
+  "3": "command_memory",
+  "4": "response_memory",
+  "5": "command_memory_count",
+  "6": "response_memory_count",
+  "7": "comm_read_function",
+  "8": "comm_write_fun",
+  "9": "resp_read_fun",
+  "10": "resp_write_fun",
+  "11": "sub_function",
+  "12": "command_length",
+  "13": "resp_length",
+  "14": "HH",
+  "15": "H",
+  "16": "L",
+  "17": "LL",
+  "18": "control_mode",
+  "19": "control_scheme",
+  "20": "pump",
+  "21": "measurement"
+ },
+ "labels": {
+  "DoS": "DoS",
+  "MFCI": "MFCI",
+  "MPCI": "MPCI",
+  "MSCI": "MSCI",
+  "NMRI": "NMRI",
+  "Recon": "Recon",
+  "normal": "Benign"
+ }
+}

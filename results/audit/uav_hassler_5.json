@@ -1,0 +1,33 @@
+{
+ "dataset": "Hassler et al., schema S5 (physical)",
+ "sample": "all rows",
+ "rows": 807,
+ "feats": 31,
+ "ids": [],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.0,
+  "dup_feat": 0.0,
+  "multi_rows": 0.0,
+  "per_label": {
+   "FDI": {
+    "rows": 807,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": false
+ },
+ "attribution": {
+  "has_src": false
+ },
+ "prevalence": {
+  "benign_rows": 0,
+  "benign_share": 0.0
+ },
+ "probe": {}
+}

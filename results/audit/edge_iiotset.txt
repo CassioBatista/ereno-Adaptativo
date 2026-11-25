@@ -1,0 +1,90 @@
+DATASET AUDIT — Edge-IIoTset (DNN file)
+rows 2,219,201 (all rows); content features 38; identifiers ['frame.time', 'ip.src_host', 'ip.dst_host', 'arp.src.proto_ipv4', 'arp.dst.proto_ipv4', 'http.file_data', 'http.request.full_uri', 'icmp.transmit_timestamp', 'http.request.uri.query', 'tcp.options', 'tcp.payload', 'tcp.srcport', 'tcp.dstport', 'udp.port', 'mqtt.msg', 'tcp.seq', 'tcp.ack', 'tcp.ack_raw', 'tcp.checksum', 'icmp.checksum', 'icmp.seq_le', 'udp.stream', 'mbtcp.trans_id']; benign label 'Normal'
+note: identifiers = the authors' drop list plus per-packet arbitrary values (sequence numbers, checksums, stream ids)
+
+=== (i) STRUCTURE ===
+  edge_iiotset/DNN-EdgeIIoT-dataset.csv                        fields per line={63: 2219201}; header lines inside the data=0
+  columns checked 61; value kind contradicting the name or role: 0
+  NaN cells in content features 0; infinite 0
+
+=== (ii) LABELS ===
+rows 2,219,201; duplicates on all columns 815 (0.04%); without identifiers 2,202,243 (99.24%)
+feature vectors with >1 label 61; rows in them 472,985 (21.31%)
+  Normal                       rows   1,615,643  in multi-label vectors   0.00%
+  DDoS_UDP                     rows     121,568  in multi-label vectors  90.51%  vector also occurs as benign   0.00%
+  DDoS_ICMP                    rows     116,436  in multi-label vectors 100.00%  vector also occurs as benign   0.00%
+  SQL_injection                rows      51,203  in multi-label vectors  82.93%  vector also occurs as benign   0.00%
+  Password                     rows      50,153  in multi-label vectors  86.59%  vector also occurs as benign   0.00%
+  Vulnerability_scanner        rows      50,110  in multi-label vectors  15.98%  vector also occurs as benign   0.00%
+  DDoS_TCP                     rows      50,062  in multi-label vectors  41.77%  vector also occurs as benign   0.00%
+  DDoS_HTTP                    rows      49,911  in multi-label vectors  67.63%  vector also occurs as benign   0.00%
+  Uploading                    rows      37,634  in multi-label vectors  72.35%  vector also occurs as benign   0.00%
+  Backdoor                     rows      24,862  in multi-label vectors  91.96%  vector also occurs as benign   0.00%
+  Port_Scanning                rows      22,564  in multi-label vectors 100.00%  vector also occurs as benign   0.00%
+  XSS                          rows      15,915  in multi-label vectors  84.04%  vector also occurs as benign   0.00%
+  Ransomware                   rows      10,925  in multi-label vectors  99.96%  vector also occurs as benign   0.00%
+  MITM                         rows       1,214  in multi-label vectors   0.00%  vector also occurs as benign   0.00%
+  Fingerprinting               rows       1,001  in multi-label vectors 100.00%  vector also occurs as benign   0.00%
+
+=== (iii) TIME ===
+timestamp present in 94.47% of rows; non-decreasing in file order 99.98% of steps (mean over 1 file(s)); span 817608.00 h
+label runs in file order 15 for 15 labels
+  DDoS_UDP                     span      817608.00 h  benign share inside  77.07%  benign rows inside 1,615,643
+  DDoS_ICMP                    span           0.11 h  benign share inside   0.00%  benign rows inside 0
+  SQL_injection                span           0.14 h  benign share inside  32.05%  benign rows inside 24,156
+  Password                     span          19.03 h  benign share inside  82.81%  benign rows inside 1,258,138
+  Vulnerability_scanner        span           0.34 h  benign share inside  67.39%  benign rows inside 117,410
+  DDoS_TCP                     span           0.15 h  benign share inside  51.45%  benign rows inside 56,187
+  DDoS_HTTP                    span           0.08 h  benign share inside   0.00%  benign rows inside 0
+  Uploading                    span           0.14 h  benign share inside   4.66%  benign rows inside 1,874
+  Backdoor                     span           3.14 h  benign share inside  79.58%  benign rows inside 702,228
+  Port_Scanning                span           2.78 h  benign share inside  87.30%  benign rows inside 463,315
+  XSS                          span           2.14 h  benign share inside  75.66%  benign rows inside 498,387
+  Ransomware                   span          24.00 h  benign share inside  77.07%  benign rows inside 1,615,643
+  MITM                         no timestamp
+  Fingerprinting               span           0.23 h  benign share inside  97.52%  benign rows inside 39,437
+
+=== (iv) ATTRIBUTION ===
+  Normal                       distinct sources      15  top: 192.168.0.128 (41.31%), 192.168.0.101 (41.29%), 0 (17.31%)
+  DDoS_UDP                     distinct sources  11,534  top: 192.168.0.128 (90.51%), 244.158.10.197 (0.00%), 211.61.236.242 (0.00%)  sources also emitting benign 90.51%
+  DDoS_ICMP                    distinct sources  96,466  top: 192.168.0.128 (17.13%), 0 (0.01%), 0.52.221.167 (0.00%)  sources also emitting benign 17.14%
+  SQL_injection                distinct sources       4  top: 192.168.0.170 (51.51%), 192.168.0.128 (48.39%), 0 (0.09%)  sources also emitting benign 48.49%
+  Password                     distinct sources       4  top: 192.168.0.128 (50.40%), 192.168.0.170 (49.48%), 0 (0.12%)  sources also emitting benign 50.52%
+  Vulnerability_scanner        distinct sources       7  top: 192.168.0.128 (50.15%), 192.168.0.170 (49.66%), 0 (0.10%)  sources also emitting benign 50.27%
+  DDoS_TCP                     distinct sources  29,151  top: 192.168.0.128 (41.77%), 94.241.144.228 (0.00%), 62.192.176.145 (0.00%)  sources also emitting benign 41.77%
+  DDoS_HTTP                    distinct sources       4  top: 192.168.0.170 (66.78%), 192.168.0.128 (33.20%), 0 (0.02%)  sources also emitting benign 33.21%
+  Uploading                    distinct sources       4  top: 192.168.0.170 (54.39%), 192.168.0.128 (45.46%), 0 (0.14%)  sources also emitting benign 45.61%
+  Backdoor                     distinct sources       4  top: 192.168.0.128 (49.48%), 192.168.0.170 (47.57%), 0 (2.78%)  sources also emitting benign 52.43%
+  Port_Scanning                distinct sources       4  top: 192.168.0.128 (44.62%), 192.168.0.170 (44.26%), 0 (10.77%)  sources also emitting benign 55.74%
+  XSS                          distinct sources       6  top: 192.168.0.170 (50.45%), 192.168.0.128 (45.47%), 0 (3.47%)  sources also emitting benign 49.32%
+  Ransomware                   distinct sources       4  top: 192.168.0.128 (46.00%), 192.168.0.170 (43.90%), 0 (9.51%)  sources also emitting benign 56.10%
+  MITM                         distinct sources       7  top: 0 (71.91%), 192.168.0.101 (12.77%), 192.168.0.152 (9.88%)  sources also emitting benign 89.95%
+  Fingerprinting               distinct sources       4  top: 192.168.0.170 (46.65%), 192.168.0.128 (39.56%), 0 (13.19%)  sources also emitting benign 53.35%
+source alone -> label (majority per source): 80.49%, against 72.80% for the majority class
+
+=== (v) PREVALENCE ===
+  Normal                         1,615,643  72.80%
+  DDoS_UDP                         121,568  5.48%
+  DDoS_ICMP                        116,436  5.25%
+  SQL_injection                     51,203  2.31%
+  Password                          50,153  2.26%
+  Vulnerability_scanner             50,110  2.26%
+  DDoS_TCP                          50,062  2.26%
+  DDoS_HTTP                         49,911  2.25%
+  Uploading                         37,634  1.70%
+  Backdoor                          24,862  1.12%
+  Port_Scanning                     22,564  1.02%
+  XSS                               15,915  0.72%
+  Ransomware                        10,925  0.49%
+  MITM                               1,214  0.05%
+  Fingerprinting                     1,001  0.05%
+benign 1,615,643 rows (72.80%); attack 27.20%
+
+=== (vi) SHORTCUT PROBE — XGBoost macro-F1 (100 trees, depth 6; dedup per label; <= 100,000 rows per label) ===
+probe rows 664,740: Normal 100,000, DDoS_UDP 100,000, DDoS_ICMP 100,000, SQL_injection 51,203, Password 50,153, Vulnerability_scanner 50,110, DDoS_TCP 50,062, DDoS_HTTP 49,911, Uploading 37,634, Backdoor 24,862, Port_Scanning 22,564, XSS 15,915, Ransomware 10,925, Fingerprinting 1,001, MITM 400
+  content                  random 70/30                                 macro-F1=0.638  Backdoor=0.86  DDoS_HTTP=0.84  DDoS_ICMP=0.68  DDoS_TCP=0.90  DDoS_UDP=0.17  Fingerprinting=0.00  MITM=1.00  Normal=1.00  Password=0.38  Port_Scanning=0.64  Ransomware=0.53  SQL_injection=0.59  Uploading=0.56  Vulnerability_scanner=0.91  XSS=0.50
+  content                  time-ordered 70/30 per label                 macro-F1=0.629  Backdoor=0.85  DDoS_HTTP=0.81  DDoS_ICMP=0.69  DDoS_TCP=0.89  DDoS_UDP=0.20  Fingerprinting=0.00  MITM=1.00  Normal=1.00  Password=0.38  Port_Scanning=0.62  Ransomware=0.50  SQL_injection=0.59  Uploading=0.55  Vulnerability_scanner=0.92  XSS=0.43
+  content + identifiers    random 70/30                                 macro-F1=1.000  Backdoor=1.00  DDoS_HTTP=1.00  DDoS_ICMP=1.00  DDoS_TCP=1.00  DDoS_UDP=1.00  Fingerprinting=1.00  MITM=1.00  Normal=1.00  Password=1.00  Port_Scanning=1.00  Ransomware=1.00  SQL_injection=1.00  Uploading=1.00  Vulnerability_scanner=1.00  XSS=1.00
+  content + identifiers    time-ordered 70/30 per label                 macro-F1=0.797  Backdoor=0.95  DDoS_HTTP=1.00  DDoS_ICMP=1.00  DDoS_TCP=0.91  DDoS_UDP=1.00  Fingerprinting=0.17  MITM=1.00  Normal=1.00  Password=0.94  Port_Scanning=0.01  Ransomware=1.00  SQL_injection=0.95  Uploading=1.00  Vulnerability_scanner=0.87  XSS=0.16
+
+(run time 236 s)

@@ -1,0 +1,187 @@
+{
+ "dataset": "ERENO (converted release; attribution from the original)",
+ "sample": "all rows",
+ "rows": 5911386,
+ "feats": 53,
+ "ids": [
+  "F1_Time",
+  "F38_t",
+  "F39_GooseTimestamp",
+  "F40_SqNum",
+  "F41_StNum"
+ ],
+ "structure": {
+  "value_kind_conflicts": []
+ },
+ "labels": {
+  "dup_all": 0.009373267115360087,
+  "dup_feat": 0.5233273550399179,
+  "multi_rows": 0.0,
+  "per_label": {
+   "normal": {
+    "rows": 5514564,
+    "multi": 0.0,
+    "as_benign": null
+   },
+   "random_replay": {
+    "rows": 78000,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "injection": {
+    "rows": 78000,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "high_StNum": {
+    "rows": 78000,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "inverse_replay": {
+    "rows": 56352,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "poisoned_high_rate": {
+    "rows": 37144,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "masquerade_fake_normal": {
+    "rows": 34839,
+    "multi": 0.0,
+    "as_benign": 0.0
+   },
+   "masquerade_fake_fault": {
+    "rows": 34487,
+    "multi": 0.0,
+    "as_benign": 0.0
+   }
+  }
+ },
+ "time": {
+  "has_time": true,
+  "present": 1.0,
+  "monotonic": 0.9853557161308222,
+  "per_label": {
+   "random_replay": {
+    "benign_share_inside": 0.9311617149382625,
+    "benign_inside": 5272422
+   },
+   "injection": {
+    "benign_share_inside": 0.9336055025941276,
+    "benign_inside": 5453622
+   },
+   "high_StNum": {
+    "benign_share_inside": 0.9316933963571844,
+    "benign_inside": 5377138
+   },
+   "inverse_replay": {
+    "benign_share_inside": 0.9321417308113992,
+    "benign_inside": 5335006
+   },
+   "poisoned_high_rate": {
+    "benign_share_inside": 0.9304774682855677,
+    "benign_inside": 5124319
+   },
+   "masquerade_fake_normal": {
+    "benign_share_inside": 0.9333973293188953,
+    "benign_inside": 5485998
+   },
+   "masquerade_fake_fault": {
+    "benign_share_inside": 0.9300812184830559,
+    "benign_inside": 5106610
+   }
+  }
+ },
+ "attribution": {
+  "has_src": true,
+  "src_acc": 0.9336145490567838,
+  "majority": 0.9335824081836753
+ },
+ "prevalence": {
+  "benign_rows": 5514564,
+  "benign_share": 0.9328715803704918
+ },
+ "probe": {
+  "content | random 70/30": {
+   "macro_f1": 0.9999756293685668,
+   "per_label": {
+    "high_StNum": 1.0,
+    "injection": 1.0,
+    "inverse_replay": 1.0,
+    "masquerade_fake_fault": 0.9998550374486591,
+    "masquerade_fake_normal": 1.0,
+    "normal": 0.999949997499875,
+    "poisoned_high_rate": 1.0,
+    "random_replay": 1.0
+   }
+  },
+  "content | time-ordered 70/30 per label": {
+   "macro_f1": 0.9999048560943256,
+   "per_label": {
+    "high_StNum": 0.9999572667834707,
+    "injection": 0.999957263130903,
+    "inverse_replay": 0.9997337514421797,
+    "masquerade_fake_fault": 0.9998550514567328,
+    "masquerade_fake_normal": 0.9999521645539344,
+    "normal": 0.9997833513873844,
+    "poisoned_high_rate": 1.0,
+    "random_replay": 1.0
+   }
+  },
+  "content | independent: release test file": {
+   "macro_f1": 0.9967620625142952,
+   "per_label": {
+    "high_StNum": 0.9998333311965538,
+    "injection": 0.999833335470058,
+    "inverse_replay": 0.9853588340612084,
+    "masquerade_fake_fault": 0.998166952777212,
+    "masquerade_fake_normal": 1.0,
+    "normal": 0.9909040466093298,
+    "poisoned_high_rate": 1.0,
+    "random_replay": 1.0
+   }
+  },
+  "content + identifiers | random 70/30": {
+   "macro_f1": 0.9999918759418555,
+   "per_label": {
+    "high_StNum": 1.0,
+    "injection": 1.0,
+    "inverse_replay": 1.0,
+    "masquerade_fake_fault": 0.9999516744792926,
+    "masquerade_fake_normal": 1.0,
+    "normal": 0.9999833330555509,
+    "poisoned_high_rate": 1.0,
+    "random_replay": 1.0
+   }
+  },
+  "content + identifiers | time-ordered 70/30 per label": {
+   "macro_f1": 0.9997451752583022,
+   "per_label": {
+    "high_StNum": 1.0,
+    "injection": 0.9999786320220517,
+    "inverse_replay": 0.9997337514421797,
+    "masquerade_fake_fault": 0.9986969740842624,
+    "masquerade_fake_normal": 0.9999521645539344,
+    "normal": 0.9995998799639892,
+    "poisoned_high_rate": 1.0,
+    "random_replay": 1.0
+   }
+  },
+  "content + identifiers | independent: release test file": {
+   "macro_f1": 0.9967143907516545,
+   "per_label": {
+    "high_StNum": 1.0,
+    "injection": 0.99997435831688,
+    "inverse_replay": 0.9853423465631483,
+    "masquerade_fake_fault": 0.9976714402142275,
+    "masquerade_fake_normal": 1.0,
+    "normal": 0.9907269809189799,
+    "poisoned_high_rate": 1.0,
+    "random_replay": 1.0
+   }
+  }
+ }
+}

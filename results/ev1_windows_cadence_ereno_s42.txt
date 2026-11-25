@@ -1,0 +1,22 @@
+ERENO, OR at 0.5 over the 14 specialists of step 1, seed 42, 1-s windows
+attack-free windows with at least one flagged sample: 252 of 724 (34.8 %)
+median flagged samples: 52 in those windows; 966 in the 282 attack windows
+
+network-wide rule calibrated once at 1 s on the 724 attack-free windows: T = 326, f = 0.0436; then held fixed
+  window     attack windows alarmed    attack-free windows alarmed
+   0.25s      629/642    ( 98.0 %)        139/2263   ( 6.14 %)
+    0.5s      394/401    ( 98.3 %)         16/1239   ( 1.29 %)
+      1s      276/282    ( 97.9 %)          0/724    ( 0.00 %)
+      2s      255/260    ( 98.1 %)          0/442    ( 0.00 %)
+      5s      241/245    ( 98.4 %)          0/255    ( 0.00 %)
+     10s      218/221    ( 98.6 %)          0/140    ( 0.00 %)
+
+out of sample, blocked-5: thresholds calibrated on the attack-free 1-s windows of the other four blocks, applied to the windows of each length that start in the block
+  thresholds per block: 0: T=326, f=0.0436; 1: T=209, f=0.0436; 2: T=326, f=0.0436; 3: T=326, f=0.0436; 4: T=326, f=0.0436
+  window     attack windows alarmed    attack-free windows alarmed
+   0.25s      629/642    ( 98.0 %)        139/2263   ( 6.14 %)
+    0.5s      394/401    ( 98.3 %)         16/1239   ( 1.29 %)
+      1s      276/282    ( 97.9 %)          1/724    ( 0.14 %)
+      2s      255/260    ( 98.1 %)          1/442    ( 0.23 %)
+      5s      241/245    ( 98.4 %)          1/255    ( 0.39 %)
+     10s      218/221    ( 98.6 %)          1/140    ( 0.71 %)

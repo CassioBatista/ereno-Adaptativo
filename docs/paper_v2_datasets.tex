@@ -14,8 +14,8 @@
 \subsection{Datasets and domain profiles}
 \label{sec:datasets}
 
-ReSIDS~v2 claims generality for its core---the event model, the authority rule, the two
-Disaster-FD cadences and the reconciliation contract---and not for its detectors.
+ReSIDS~v2 claims generality for its core---the event model, the authority rule and the two
+Disaster-FD cadences---and not for its detectors.
 Detectors trained on one intrusion dataset do not carry over to
 another~\cite{dhooge2020interdataset}. In every domain the specialists are retrained,
 and only the profile (Section~\ref{sec:api-events}) changes. The evaluation therefore
@@ -77,8 +77,8 @@ that a specialist learns how an attack behaves and not who performs it or when. 
 audit sets two limits. First, the attacks impersonate the single legitimate publisher,
 so source attribution would point at the victim and cannot name the emitter of an
 alarm. Second, the benign volume available at
-window level, about twelve minutes, bounds the precision that can be certified at low
-prevalence (Section~\ref{sec:api-fp}).
+window level, 724 attack-free one-second windows, about twelve minutes, bounds the
+false-alarm rate that can be measured per window (Section~\ref{sec:res-windows}).
 
 \paragraph{CICIDS2017, improved (attribution and time).}
 CICIDS2017~\cite{sharafaldin2018toward} is the most cited network intrusion benchmark,

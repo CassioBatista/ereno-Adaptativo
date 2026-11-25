@@ -1,0 +1,49 @@
+cross-detection -- CICIoT2023 (step-1 specialists, seed 42; cover = flags >= 50 % of the rows; precise = benign FPR <= 1 %)
+30 attack types, 29 specialists on 14 nodes, 19 precise; 10 groups of types linked by a shared precise specialist
+types covered by a precise specialist of another node: 21 of 30 (99.4 % of the attack rows); by any specialist of another node: 30 (100.0 %)
+
+grp type                                   rows  own %  own node  other nodes, precise  other nodes, any           covered by (precise)
+  1 DDoS_ICMP_Flood                     108,160   99.9         1  2,3,4,5,8,10,11       2,3,4,5,8,9,10,11,12,13,14 DDoS_TCP_Flood; DDoS_PSHACK_Flood; DDoS_SYN_Flood; DoS_UDP_Flood; DoS_TCP_Flood; DDoS_ACK_Fragmentation; DoS_HTTP_Flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DDoS_UDP_Flood                       81,621   99.7         1  2,4,5,7,11            2,4,5,7,8,9,11,12,13,14    DDoS_TCP_Flood; DoS_UDP_Flood; DoS_TCP_Flood; Mirai_greip_flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DDoS_TCP_Flood                       67,695   99.7         2  3,4,5,8,10,11         3,4,5,8,9,10,11,12,13,14   DDoS_PSHACK_Flood; DDoS_SYN_Flood; DoS_UDP_Flood; DoS_TCP_Flood; DDoS_ACK_Fragmentation; DoS_HTTP_Flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DDoS_PSHACK_Flood                    61,653   99.8         2  3,5,8,10,11           3,5,8,9,10,11,12,13,14     DDoS_TCP_Flood; DDoS_SYN_Flood; DoS_TCP_Flood; DDoS_ACK_Fragmentation; DoS_HTTP_Flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DDoS_RSTFINFlood                     60,867   99.9         3  2,4,5,7,8,10,11       2,4,5,7,8,9,10,11,12,13,14 DDoS_TCP_Flood; DDoS_PSHACK_Flood; DDoS_SYN_Flood; DoS_UDP_Flood; DoS_TCP_Flood; DoS_SYN_Flood; Mirai_greip_flood; DDoS_ACK_Fragmentation; DoS_HTTP_Flood; VulnerabilityScan; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DDoS_SYN_Flood                       60,783   99.9         3  2,4,5,8,10,11         2,4,5,8,9,10,11,12,13,14   DDoS_TCP_Flood; DDoS_PSHACK_Flood; DDoS_SynonymousIP_Flood; DoS_UDP_Flood; DoS_TCP_Flood; DoS_SYN_Flood; DDoS_ACK_Fragmentation; DoS_HTTP_Flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DDoS_SynonymousIP_Flood              54,280   99.9         4  2,3,5,8,10,11         2,3,5,8,9,10,11,12,13,14   DDoS_TCP_Flood; DDoS_PSHACK_Flood; DDoS_SYN_Flood; DoS_UDP_Flood; DoS_TCP_Flood; DoS_SYN_Flood; DDoS_ACK_Fragmentation; DoS_HTTP_Flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DoS_UDP_Flood                        50,039   99.6         4  1,2,5,7,11            1,2,5,7,8,9,11,12,13,14    DDoS_UDP_Flood; DDoS_TCP_Flood; DoS_TCP_Flood; Mirai_greip_flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DoS_TCP_Flood                        40,101   99.5         5  2,3,4,8,10,11         2,3,4,8,9,10,11,12,13,14   DDoS_TCP_Flood; DDoS_PSHACK_Flood; DDoS_SYN_Flood; DoS_UDP_Flood; DDoS_ACK_Fragmentation; DoS_HTTP_Flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DoS_SYN_Flood                        30,251   99.5         5  2,3,4,8,10,11         2,3,4,8,9,10,11,12,13,14   DDoS_TCP_Flood; DDoS_PSHACK_Flood; DDoS_SYN_Flood; DDoS_SynonymousIP_Flood; DoS_UDP_Flood; DoS_TCP_Flood; DDoS_ACK_Fragmentation; DoS_HTTP_Flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 Mirai_greeth_flood                   14,697   99.5         6  2,3,4,5,7,11          2,3,4,5,7,8,9,11,12,13,14  DDoS_TCP_Flood; DDoS_PSHACK_Flood; DDoS_SYN_Flood; DoS_UDP_Flood; DoS_TCP_Flood; Mirai_udpplain; Mirai_greip_flood; DDoS_ICMP_Fragmentation; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 Mirai_udpplain                       13,356   99.3         6  1,2,4,5,7,11          1,2,4,5,7,9,11,12,13       DDoS_UDP_Flood; DDoS_TCP_Flood; DoS_UDP_Flood; DoS_TCP_Flood; Mirai_greeth_flood; Mirai_greip_flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 Mirai_greip_flood                    11,427   99.3         7  2,3,4,5,6,11          2,3,4,5,6,8,9,11,12,13,14  DDoS_TCP_Flood; DDoS_PSHACK_Flood; DDoS_SYN_Flood; DoS_UDP_Flood; DoS_TCP_Flood; Mirai_greeth_flood; Mirai_udpplain; DDoS_ICMP_Fragmentation; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DDoS_ICMP_Fragmentation               6,696   98.8         7  1,6,8,10,11           1,6,8,9,10,11,12,13,14     DDoS_ICMP_Flood; Mirai_udpplain; DDoS_ACK_Fragmentation; DoS_HTTP_Flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 DDoS_ACK_Fragmentation                4,280   98.6         8  6,10,11               6,9,10,11,12,13,14         Mirai_udpplain; DoS_HTTP_Flood; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 Recon_PortScan                        1,239   93.3         9  11                    8,11,12,13,14              DDoS_SlowLoris
+  1 DoS_HTTP_Flood                        1,044   98.2        10  11                    8,9,11,12,13,14            VulnerabilityScan; DDoS_HTTP_Flood; DDoS_SlowLoris
+  1 VulnerabilityScan                       565   97.7        10  11                    8,9,11,12,13,14            DDoS_SlowLoris
+  1 DDoS_HTTP_Flood                         429   97.7        11  5,10                  5,8,9,10,12,13,14          DoS_SYN_Flood; DoS_HTTP_Flood; VulnerabilityScan; DDoS_SlowLoris
+  1 DDoS_SlowLoris                          360   99.7        11  10                    9,10,12,13,14              DoS_HTTP_Flood; VulnerabilityScan
+  1 Recon_PingSweep                          32   96.9        14  11                    9,11,12,13                 DDoS_SlowLoris
+  2 Recon_HostDiscovery                   1,961   97.3         8  -                     12,14                      -
+  3 Recon_OSScan                          1,508   86.1         9  -                     12,13,14                   -
+  4 DictionaryBruteForce                    183   97.8        12  -                     14                         -
+  5 BrowserHijacking                         77   89.6        12  -                     14                         -
+  6 CommandInjection                         77   96.1        13  -                     8,12,14                    -
+  7 SqlInjection                             74   98.6        13  -                     8,9,12,14                  -
+  8 Backdoor_Malware                         46   95.7        14  -                     8,9,12,13                  -
+  9 XSS                                      43   88.4        14  -                     8,12,13                    -
+ 10 Uploading_Attack                         23   95.7        14  -                     8,9,12,13                  -
+
+per group: types, attack rows %, nodes holding a precise specialist that covers every type of the group
+  group  1: 21 types,  99.4 % of rows; nodes covering all: [11]; DDoS_ACK_Fragmentation, DDoS_HTTP_Flood, DDoS_ICMP_Flood, DDoS_ICMP_Fragmentatio, DDoS_PSHACK_Flood, DDoS_RSTFINFlood, DDoS_SYN_Flood, DDoS_SlowLoris, DDoS_SynonymousIP_Floo, DDoS_TCP_Flood, DDoS_UDP_Flood, DoS_HTTP_Flood, DoS_SYN_Flood, DoS_TCP_Flood, DoS_UDP_Flood, Mirai_greeth_flood, Mirai_greip_flood, Mirai_udpplain, Recon_PingSweep, Recon_PortScan, VulnerabilityScan
+  group  2:  1 types,   0.3 % of rows; nodes covering all: -; Recon_HostDiscovery
+  group  3:  1 types,   0.2 % of rows; nodes covering all: -; Recon_OSScan
+  group  4:  1 types,   0.0 % of rows; nodes covering all: -; DictionaryBruteForce
+  group  5:  1 types,   0.0 % of rows; nodes covering all: -; BrowserHijacking
+  group  6:  1 types,   0.0 % of rows; nodes covering all: -; CommandInjection
+  group  7:  1 types,   0.0 % of rows; nodes covering all: -; SqlInjection
+  group  8:  1 types,   0.0 % of rows; nodes covering all: -; Backdoor_Malware
+  group  9:  1 types,   0.0 % of rows; nodes covering all: -; XSS
+  group 10:  1 types,   0.0 % of rows; nodes covering all: -; Uploading_Attack
+
+benign false-positive rate per specialist (%): DDoS_ICMP_Flood 0.01, DDoS_UDP_Flood 0.04, DDoS_TCP_Flood 0.03, DDoS_PSHACK_Flood 0.05, DDoS_RSTFINFlood 0.00, DDoS_SYN_Flood 0.04, DDoS_SynonymousIP_ 0.01, DoS_UDP_Flood 0.07, DoS_TCP_Flood 0.22, DoS_SYN_Flood 0.14, Mirai_greeth_flood 0.02, Mirai_udpplain 0.10, Mirai_greip_flood 0.00, DDoS_ICMP_Fragment 0.10, DDoS_ACK_Fragmenta 0.25, Recon_PortScan 7.62, DoS_HTTP_Flood 0.52, VulnerabilityScan 0.07, DDoS_HTTP_Flood 0.06, DDoS_SlowLoris 0.02, shared (Recon_Ping 7.95, Recon_HostDiscover 6.02, Recon_OSScan 11.95, DictionaryBruteFor 16.46, BrowserHijacking 13.50, CommandInjection 7.60, SqlInjection 6.46, Backdoor_Malware 6.14, XSS 12.33

@@ -1,0 +1,63 @@
+cross-detection -- Morris-4 (step-1 specialists, seed 42; cover = flags >= 50 % of the rows; precise = benign FPR <= 1 %)
+35 attack types, 35 specialists on 14 nodes, 20 precise; 19 groups of types linked by a shared precise specialist
+types covered by a precise specialist of another node: 20 of 35 (63.0 % of the attack rows); by any specialist of another node: 33 (90.4 %)
+
+grp type                                   rows  own %  own node  other nodes, precise  other nodes, any           covered by (precise)
+  1 specific_34                             603   99.0         3  4                     1,4,5                      specific_28
+  1 specific_31                             572   99.8         3  4,5,8                 1,4,5,8                    specific_32; specific_28; specific_29; specific_25
+  1 specific_32                             562  100.0         4  3,5,8                 1,3,5,8                    specific_31; specific_28; specific_29; specific_25
+  1 specific_28                             558   90.3         4  3,5,8                 1,3,5,8                    specific_31; specific_32; specific_29; specific_25
+  1 specific_29                             557   98.6         5  3,4,8                 1,3,4,8                    specific_31; specific_32; specific_28; specific_25
+  1 specific_26                             543   99.6         5  3,4,8                 1,3,4,8                    specific_31; specific_32; specific_28; specific_29; specific_25
+  1 specific_33                             482  100.0         7  4                     1,2,4,5                    specific_28
+  1 specific_25                             442   90.5         8  3,4,5                 1,3,4,5                    specific_31; specific_32; specific_28; specific_29
+  2 specific_23                             615  100.0         2  6,7,8,14              6,7,8,14                   specific_21; specific_19; specific_22; specific_24; specific_20
+  2 specific_21                             517  100.0         6  2,7,8,14              2,7,8,14                   specific_23; specific_19; specific_22; specific_24; specific_20
+  2 specific_19                             491  100.0         6  2,7,8,14              2,7,8,14                   specific_23; specific_21; specific_22; specific_24; specific_20
+  2 specific_22                             463  100.0         7  2,6,8,14              2,6,8,14                   specific_23; specific_21; specific_19; specific_24; specific_20
+  2 specific_24                             348   96.6         8  14                    14                         specific_20
+  2 specific_20                             200  100.0        14  8                     8                          specific_24
+  3 specific_18                             327   71.9         8  -                     12,13                      -
+  3 specific_11                             276  100.0        10  8                     8,9,12,13,14               specific_18
+  4 specific_4                              290  100.0         9  11                    11,12,13,14                specific_3
+  4 specific_3                              255  100.0        11  9                     9,12,13,14                 specific_4
+  5 specific_8                              270  100.0        10  12                    12,13,14                   specific_7
+  5 specific_7                              227   88.1        12  10                    10,13,14                   specific_8
+  6 specific_16                             249  100.0        11  -                     12,13                      -
+  6 specific_17                             213  100.0        14  11                    9,11,12,13                 specific_16
+  7 specific_35                             662  100.0         1  -                     -                          -
+  8 specific_30                             636   98.9         1  -                     -                          -
+  9 specific_27                             624   99.4         2  -                     1                          -
+ 10 specific_12                             311  100.0         9  -                     11,12                      -
+ 11 specific_6                              304   86.5         9  -                     12,13                      -
+ 12 specific_1                              269  100.0        10  -                     11,12,13,14                -
+ 13 specific_14                             252   28.6        11  -                     12,13,14                   -
+ 14 specific_13                             240   37.5        12  -                     9,13                       -
+ 15 specific_15                             234   74.8        12  -                     13                         -
+ 16 specific_10                             222   76.6        13  -                     12,14                      -
+ 17 specific_2                              220   83.2        13  -                     10,11,12,14                -
+ 18 specific_5                              213   85.0        13  -                     9,12                       -
+ 19 specific_9                              210   88.1        14  -                     12,13                      -
+
+per group: types, attack rows %, nodes holding a precise specialist that covers every type of the group
+  group  1:  8 types,  32.1 % of rows; nodes covering all: [4]; specific_25, specific_26, specific_28, specific_29, specific_31, specific_32, specific_33, specific_34
+  group  2:  6 types,  19.6 % of rows; nodes covering all: [8, 14]; specific_19, specific_20, specific_21, specific_22, specific_23, specific_24
+  group  3:  2 types,   4.5 % of rows; nodes covering all: [8]; specific_11, specific_18
+  group  4:  2 types,   4.0 % of rows; nodes covering all: [9, 11]; specific_3, specific_4
+  group  5:  2 types,   3.7 % of rows; nodes covering all: [10, 12]; specific_7, specific_8
+  group  6:  2 types,   3.4 % of rows; nodes covering all: [11]; specific_16, specific_17
+  group  7:  1 types,   4.9 % of rows; nodes covering all: -; specific_35
+  group  8:  1 types,   4.7 % of rows; nodes covering all: -; specific_30
+  group  9:  1 types,   4.6 % of rows; nodes covering all: -; specific_27
+  group 10:  1 types,   2.3 % of rows; nodes covering all: [9]; specific_12
+  group 11:  1 types,   2.3 % of rows; nodes covering all: -; specific_6
+  group 12:  1 types,   2.0 % of rows; nodes covering all: -; specific_1
+  group 13:  1 types,   1.9 % of rows; nodes covering all: -; specific_14
+  group 14:  1 types,   1.8 % of rows; nodes covering all: -; specific_13
+  group 15:  1 types,   1.7 % of rows; nodes covering all: -; specific_15
+  group 16:  1 types,   1.6 % of rows; nodes covering all: -; specific_10
+  group 17:  1 types,   1.6 % of rows; nodes covering all: -; specific_2
+  group 18:  1 types,   1.6 % of rows; nodes covering all: -; specific_5
+  group 19:  1 types,   1.6 % of rows; nodes covering all: -; specific_9
+
+benign false-positive rate per specialist (%): specific_34 8.57, specific_31 0.00, specific_32 0.00, specific_28 0.67, specific_29 0.08, specific_26 1.11, specific_33 2.10, specific_25 0.04, specific_23 0.00, specific_21 0.00, specific_19 0.00, specific_22 0.00, specific_24 0.00, specific_20 0.00, specific_18 0.03, specific_11 0.00, specific_4 0.00, specific_3 0.00, specific_8 0.00, specific_7 0.00, specific_16 0.58, specific_17 0.37, specific_35 18.54, specific_30 19.18, specific_27 5.93, specific_12 0.00, specific_6 6.85, specific_1 3.86, specific_14 6.57, specific_13 13.06, specific_15 15.79, specific_10 20.63, specific_2 11.51, specific_5 4.30, specific_9 14.29

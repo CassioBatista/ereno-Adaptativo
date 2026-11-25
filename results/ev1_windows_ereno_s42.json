@@ -1,0 +1,224 @@
+{
+ "domain": "ERENO",
+ "seed": 42,
+ "rows": 2955648,
+ "configs": [
+  {
+   "window": "1-s windows",
+   "mode": "time",
+   "size": 1.0,
+   "role": "primary",
+   "samples_median": 4758.0,
+   "results": {
+    "network-wide": {
+     "attack_windows": 282,
+     "attack_alarmed": 276,
+     "tpr": 0.9787234042553191,
+     "tpr_ci95": [
+      0.95426743476355,
+      0.9921527822452607
+     ],
+     "benign_windows": 724,
+     "false_alarms": 1,
+     "fpr": 0.0013812154696132596,
+     "fpr_hi95": 0.007671387189134275,
+     "per_type": {
+      "random_replay": {
+       "windows": 39,
+       "alarmed": 39,
+       "share": 1.0,
+       "ci95": [
+        0.9097488990396657,
+        1.0
+       ]
+      },
+      "inverse_replay": {
+       "windows": 39,
+       "alarmed": 35,
+       "share": 0.8974358974358975,
+       "ci95": [
+        0.7577902730493822,
+        0.9713398948739037
+       ]
+      },
+      "masquerade_fake_fault": {
+       "windows": 39,
+       "alarmed": 39,
+       "share": 1.0,
+       "ci95": [
+        0.9097488990396657,
+        1.0
+       ]
+      },
+      "masquerade_fake_normal": {
+       "windows": 39,
+       "alarmed": 39,
+       "share": 1.0,
+       "ci95": [
+        0.9097488990396657,
+        1.0
+       ]
+      },
+      "injection": {
+       "windows": 48,
+       "alarmed": 47,
+       "share": 0.9791666666666666,
+       "ci95": [
+        0.8893038394068478,
+        0.9994726847465769
+       ]
+      },
+      "high_StNum": {
+       "windows": 50,
+       "alarmed": 49,
+       "share": 0.98,
+       "ci95": [
+        0.8935304542885001,
+        0.9994937720169592
+       ]
+      },
+      "poisoned_high_rate": {
+       "windows": 39,
+       "alarmed": 39,
+       "share": 1.0,
+       "ci95": [
+        0.9097488990396657,
+        1.0
+       ]
+      }
+     }
+    },
+    "full rule": {
+     "attack_windows": 282,
+     "attack_alarmed": 280,
+     "tpr": 0.9929078014184397,
+     "tpr_ci95": [
+      0.974616774691177,
+      0.9991399448679136
+     ],
+     "benign_windows": 724,
+     "false_alarms": 1,
+     "fpr": 0.0013812154696132596,
+     "fpr_hi95": 0.007671387189134275,
+     "per_type": {
+      "random_replay": {
+       "windows": 39,
+       "alarmed": 39,
+       "share": 1.0,
+       "ci95": [
+        0.9097488990396657,
+        1.0
+       ]
+      },
+      "inverse_replay": {
+       "windows": 39,
+       "alarmed": 39,
+       "share": 1.0,
+       "ci95": [
+        0.9097488990396657,
+        1.0
+       ]
+      },
+      "masquerade_fake_fault": {
+       "windows": 39,
+       "alarmed": 39,
+       "share": 1.0,
+       "ci95": [
+        0.9097488990396657,
+        1.0
+       ]
+      },
+      "masquerade_fake_normal": {
+       "windows": 39,
+       "alarmed": 39,
+       "share": 1.0,
+       "ci95": [
+        0.9097488990396657,
+        1.0
+       ]
+      },
+      "injection": {
+       "windows": 48,
+       "alarmed": 47,
+       "share": 0.9791666666666666,
+       "ci95": [
+        0.8893038394068478,
+        0.9994726847465769
+       ]
+      },
+      "high_StNum": {
+       "windows": 50,
+       "alarmed": 49,
+       "share": 0.98,
+       "ci95": [
+        0.8935304542885001,
+        0.9994937720169592
+       ]
+      },
+      "poisoned_high_rate": {
+       "windows": 39,
+       "alarmed": 39,
+       "share": 1.0,
+       "ci95": [
+        0.9097488990396657,
+        1.0
+       ]
+      }
+     }
+    }
+   },
+   "folds": [
+    {
+     "fold": 0,
+     "windows": 202,
+     "attack": 52,
+     "benign_calibration": 574,
+     "T": 326,
+     "f": 0.043611,
+     "Ts_min": 2,
+     "Ts_max": 294
+    },
+    {
+     "fold": 1,
+     "windows": 201,
+     "attack": 74,
+     "benign_calibration": 597,
+     "T": 209,
+     "f": 0.043602,
+     "Ts_min": 2,
+     "Ts_max": 193
+    },
+    {
+     "fold": 2,
+     "windows": 201,
+     "attack": 57,
+     "benign_calibration": 580,
+     "T": 326,
+     "f": 0.043611,
+     "Ts_min": 2,
+     "Ts_max": 294
+    },
+    {
+     "fold": 3,
+     "windows": 201,
+     "attack": 38,
+     "benign_calibration": 561,
+     "T": 326,
+     "f": 0.043611,
+     "Ts_min": 2,
+     "Ts_max": 294
+    },
+    {
+     "fold": 4,
+     "windows": 201,
+     "attack": 61,
+     "benign_calibration": 584,
+     "T": 326,
+     "f": 0.043611,
+     "Ts_min": 2,
+     "Ts_max": 294
+    }
+   ]
+  }
+ ]
+}
