@@ -1,0 +1,35 @@
+# Arrival-offset check of the trust-level grid (paper 2, 5.3; exploratory, not registered):
+# same as tl_grid_template.yaml, with the two late blocks shifted by an offset.
+# Placeholders filled by run_tl_arrival_offsets.sh.
+run_name: RUNNAME
+seed: 42
+grasp:
+  features_file: features/all_in_one_ev1_DOMSEL_train_combined.json
+dataset:
+  name: TRAIN
+  test_file: TEST
+  partitioner: specialists
+  CAPLINE
+  partitioner_arg: null
+topology:
+  type: ring
+  num_nodes: 14
+simulation:
+  num_rounds: NROUNDS
+  strategy: xgb_bagging
+  xgb_fusion: or
+  xgb_fusion_k: 1
+  eval_sample: 100000
+  monolithic: false
+scenario:
+  # nodes 3, 4, 11, 12 at 30 min + offset and 9, 10 at 60 min + offset (1-based); 0-based here
+  arrival_s: {2: ARR1, 3: ARR1, 10: ARR1, 11: ARR1, 8: ARR2, 9: ARR2}
+architecture:
+  manager: trust_level
+  trace: TRACE
+  t_end: TEND
+  delta_s: 60
+  policy: POLICY
+  node_holdings: retain
+  holdings_log: LOGDIR
+  aggregation: xgb_union

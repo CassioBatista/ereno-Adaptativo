@@ -25,9 +25,9 @@ The results follow the four parts of the evaluation (Section~\ref{sec:evaldesign
 \label{sec:res-partition}
 
 % Numbers: results/ev1_step1_<domain>_s42.{txt,json} (seed 42, reported); seeds 43-46,
-% results/ev1_step1_<domain>_s4{3..6}.* (dispersion, ~/.audit_tmp/seed_dispersion.py).
-% Morris-4 categories and benign-identical shares: ~/.audit_tmp/morris4_test_identical.py;
-% unseen benign vectors: ~/.audit_tmp/morris4_fp_cause.py (post hoc diagnostic, declared).
+% results/ev1_step1_<domain>_s4{3..6}.* (dispersion, scripts/ev1_checks/seed_dispersion.py).
+% Morris-4 categories and benign-identical shares: scripts/ev1_checks/morris4_test_identical.py;
+% unseen benign vectors: scripts/ev1_checks/morris4_fp_cause.py (post hoc diagnostic, declared).
 
 Table~\ref{tab:partition-domains} compares the two partitions on the same training rows, features and tree budget. With all nodes present, every node holds the same models in FL and in GL, so each partition yields one detector. In all four domains, both partitions detect at least 98.5\,\% of the attacks; the difference between them lies in the false positives and in the recall of individual types. A node alone, with only its own specialists, detects 35.9, 14.6, 27.3 and 79.8\,\% of the attacks in ERENO, CICIDS2017, Morris-4 and CICIoT2023, almost all of them of its own types (93.4 to 99.3\,\%): the shared detector is what extends each node to the attacks seen elsewhere.
 
@@ -143,7 +143,7 @@ In CICIoT2023, the selected features include the IAT column, which the audit of 
 % results/ev1_ciciot_tcpflood_rule.txt; without Header_Length / IAT
 % results/ev1_ciciot_feature_sensitivity.txt; matrix results/ev1_crossdetect_<domain>.{csv,txt},
 % fig results/ev1_crossdetect.pdf (scripts/ev1_crossdetect.py); counts
-% ~/.audit_tmp/crossdetect_counts.py; coverage rule results/ev1_coverage_rule.{txt,json}
+% scripts/ev1_checks/crossdetect_counts.py; coverage rule results/ev1_coverage_rule.{txt,json}
 % (scripts/ev1_coverage_rule.py; cover 50 %: results/ev1_coverage_rule_c0.5_p0.01.txt);
 % seeds 42-46: results/ev1_coverage_rule_seeds.txt (cover-2 / precise-2 are the reported variants).
 % The matrix and the rule are post hoc and exploratory (protocol change log 2026-11-20).
@@ -224,7 +224,7 @@ The same procedure thus gives each domain its own detector. In ERENO, it keeps t
 % results/ev1_tl/faithful/<dom>_<trace>_<policy>/node_eval.{csv,txt}; summary, regret and the
 % scenario-2 questions scripts/ev1_tl_faithful_summary.py -> results/ev1_tl_faithful_summary.txt,
 % figs results/ev1_tl_faithful_{T1,T2}.pdf; stability scripts/ev1_tl_faithful_stability.py ->
-% results/ev1_tl_faithful_stability.txt; per-node end state ~/.audit_tmp/faithful_endnodes.py.
+% results/ev1_tl_faithful_stability.txt; per-node end state scripts/ev1_checks/faithful_endnodes.py.
 % RECORD ONLY (not reported): first grid results/ev1_tl/grid_d60 (links seen by each monitor,
 % rounds on event instants) and the arrival-offset check results/ev1_tl/arrival_offsets.
 % DONE 2026-11-25: delta sensitivity 5-600 s (pre-registered), reported after the regret paragraph.
@@ -264,7 +264,7 @@ In T2, the block of 30 min arrives as the aggregator is lost, and the scenario p
 Across the four domains, the two traces and the two blocks, the three configurations differ by more than one point in 12 of the 16 combinations, and ReSIDS has the smallest share of unprotected node-rounds in all 12. Fixed FL is the worst in 7, exceeding the best by 17.4 points on average and 82.0 at most, always while the aggregator is lost; fixed GL is the worst in 5, exceeding the best by 9.5 on average and 48.1 at most, because it does not use the aggregator while it answers. The best fixed mode changes with the state of the network, which is why no single one can replace switching. In no round does ReSIDS protect fewer nodes than either fixed mode (lower rows of Figures~\ref{fig:tl-grid-t1} and~\ref{fig:tl-grid-t2}). This follows from how switching combines the two modes: while the aggregator answers, ReSIDS federates, and one round brings every specialist to every node; when it is lost, ReSIDS gossips with the same nodes as fixed GL. The gain over each fixed mode is therefore what that mode loses in the periods in which the other one is the better. The first of these periods comes before any late block: from 15 to 30 min, ReSIDS and fixed FL protect every node against the initial attacks in one federated round, whereas fixed GL needs 11 to 13 rounds in CICIoT2023 and CICIDS2017 and, by 30 min, protects 71.4\,\% of the nodes in ERENO and 64.3\,\% in Morris-4.
 
 The period of the rounds does not change this. In ERENO and CICIDS2017, with rounds every 5, 15, 60, 180, 300 and 600\,s, ReSIDS has the smallest share of unprotected node-rounds, or one at most 0.1 points above it, in every combination in which the three configurations differ, whereas the fixed mode that falls behind changes with the period. With short periods, gossip has many rounds between the events of the scenario, and fixed FL is the worst, exceeding the best by up to 99.8 points; with long periods, gossip has few rounds, and fixed GL is the worst, by up to 100 points, while fixed FL comes within 7.1 points of the best.
-% Delta sensitivity (pre-registered): results/ev1_tl/delta_sens, ~/.audit_tmp/validate_flgl/run_tl_delta.sh,
+% Delta sensitivity (pre-registered): results/ev1_tl/delta_sens, scripts/ev1_tl_runners/run_tl_delta.sh,
 % summary scripts/ev1_tl_delta_summary.py; ERENO and CICIDS2017, T1 and T2, rounds at delta r + delta/2.
 % DECLARE if kept: at 5 s the offset of 2.5 s from the events lies within the +-10 s jitter of the
 % events in the traces, so rounds can fall inside a transition. Fixed GL with gl_peers both (2026-11-25).
@@ -278,7 +278,7 @@ ReSIDS thus combines what each fixed mode does well: it federates while the aggr
 \label{sec:res-windows}
 
 % Numbers: per sample results/ev1_step1_<domain>_s42.txt; windows scripts/ev1_windows.py ->
-% results/ev1_windows_<domain>_s42.{txt,json}; by volume ~/.audit_tmp/win_by_volume.py (exploratory);
+% results/ev1_windows_<domain>_s42.{txt,json}; by volume scripts/ev1_checks/win_by_volume.py (exploratory);
 % thinning scripts/ev1_windows_thinning.py -> results/ev1_windows_thinning_s42.txt (exploratory,
 % declared in the protocol change log of 2026-11-25). No appendix: sensitivities in the text.
 % ERENO volume (252/724, medians 52/966) and fixed-threshold cadence (2-10 s, 0.25 s):

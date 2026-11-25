@@ -345,12 +345,12 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   (2) when the largest benign flagged fraction is 1 (CICIDS2017 at 1 s and 10 s, windows of
   a single flagged flow), f = 1.25 and the fraction rule cannot fire. Exploratory additions
   (not registered): alarms by number of attack samples in the window
-  (`~/.audit_tmp/win_by_volume.py`); thinning of the attacks, each attack sample kept with
+  (`scripts/ev1_checks/win_by_volume.py`); thinning of the attacks, each attack sample kept with
   probability 0.1, 0.01, 0.001, benign stream whole, 5 draws
   (`scripts/ev1_windows_thinning.py`, `results/ev1_windows_thinning_s42.txt`). The ERENO
   thinning is not informative: 203 of its 282 attack windows hold no benign sample (the attack
   intervals of the trace carry no benign traffic), so a thinned window of one attack sample
-  has flagged fraction 1 and alarms (`~/.audit_tmp/win_attack_removed.py`); ERENO, network-wide
+  has flagged fraction 1 and alarms (`scripts/ev1_checks/win_attack_removed.py`); ERENO, network-wide
   thresholds calibrated by blocked-5 on 1-s windows and held fixed on windows of 0.25 to 10 s
   (`scripts/ev1_windows_cadence.py`, `results/ev1_windows_cadence_ereno_s42.txt`). Results
   `results/ev1_windows_<domain>_s42.{txt,json}`.
@@ -369,12 +369,12 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   nothing" is wrong. GLow takes as neighbours of the head the ring neighbours that are in the
   active set of the round (fd/topology.py up_neighbors: node status, not link state), so in T1,
   30-45 min, adjacent active nodes exchange across ring links that are down (all but 3-4, 7-8,
-  11-12; holdings grow on nodes 2-13, ~/.audit_tmp/band15_t1_check.py). The T1 band-15 runs are
+  11-12; holdings grow on nodes 2-13, scripts/ev1_checks/band15_t1_check.py). The T1 band-15 runs are
   therefore NOT valid and are not reported. In T2 no two adjacent active nodes have a down link
   between them in any round (45-60: 3 with 2, 6 with 7; 60-75: 1 with 14, 8 with 9), so the T2
   runs are valid. The main runs are not affected: with the band at 30 and gl_peers both, every
   active node has both ring links up, so every link between two active neighbours is up.
-  Checked without training for every gossip round (~/.audit_tmp/check_down_links.py): exchanges
+  Checked without training for every gossip round (scripts/ev1_checks/check_down_links.py): exchanges
   over down links 0 for ReSIDS band 30, fixed GL both and fixed GL any in T1 and T2, and for
   ReSIDS band 15 in T2; 120 node-pair-rounds for ReSIDS band 15 in T1 (30.5-44.5 min).
 
@@ -389,9 +389,9 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   fixed GL (node 3 of T2 in the three domains checked). Correction (user): fixed GL takes only
   nodes with both ring links up (`gl_peers: both`, `fd/arch_manager.py`; `LinkStates.both_peers_up`
   in `fd/trust_level.py`; default `any` keeps earlier runs reproducible). Checked without
-  training (`~/.audit_tmp/check_gl_peers.py`): every gossip round of ReSIDS has the same nodes as
+  training (`scripts/ev1_checks/check_gl_peers.py`): every gossip round of ReSIDS has the same nodes as
   fixed GL with `both`, in T1 and T2; every federated round of ReSIDS has the same nodes as fixed
-  FL (`~/.audit_tmp/check_fl_nodes.py`). Re-run: fixed GL, four domains, T1 and T2
+  FL (`scripts/ev1_checks/check_fl_nodes.py`). Re-run: fixed GL, four domains, T1 and T2
   (`run_tl_faithful_glboth.sh`); the runs with `any` move to `results/ev1_tl/faithful_gl_any/`
   as record. The delta-sensitivity runs of fixed GL follow the same rule.
 
