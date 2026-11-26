@@ -1,0 +1,39 @@
+EXPLORATORY: communication per policy and sensitivity of the protection criterion (faithful replay, results/ev1_tl/faithful)
+
+1. Communication over the run: rounds in FL / GL / local, booster-set transfers, full-state volume (MB)
+  ERENO      T1 ReSIDS  rounds  38/ 15/ 29  transfers  1094  full-state  114.76 MB  new boosters delivered   1.65 MB
+  ERENO      T1 FL      rounds  38/  0/ 44  transfers  1064  full-state  111.73 MB  new boosters delivered   1.65 MB
+  ERENO      T1 GL      rounds   0/ 53/ 29  transfers   106  full-state    8.50 MB  new boosters delivered   1.65 MB
+  ERENO      T2 ReSIDS  rounds  38/ 45/ 14  transfers   870  full-state   86.03 MB  new boosters delivered   1.46 MB
+  ERENO      T2 FL      rounds  38/  0/ 59  transfers   788  full-state   71.47 MB  new boosters delivered   1.23 MB
+  ERENO      T2 GL      rounds   0/ 83/ 14  transfers   150  full-state   14.23 MB  new boosters delivered   1.42 MB
+  CICIDS2017 T1 ReSIDS  rounds  38/ 15/ 29  transfers  1094  full-state  190.07 MB  new boosters delivered   2.77 MB
+  CICIDS2017 T1 FL      rounds  38/  0/ 44  transfers  1064  full-state  185.04 MB  new boosters delivered   2.77 MB
+  CICIDS2017 T1 GL      rounds   0/ 53/ 29  transfers   106  full-state   14.21 MB  new boosters delivered   2.77 MB
+  CICIDS2017 T2 ReSIDS  rounds  38/ 45/ 14  transfers   870  full-state  141.89 MB  new boosters delivered   2.42 MB
+  CICIDS2017 T2 FL      rounds  38/  0/ 59  transfers   788  full-state  116.87 MB  new boosters delivered   2.02 MB
+  CICIDS2017 T2 GL      rounds   0/ 83/ 14  transfers   150  full-state   23.76 MB  new boosters delivered   2.35 MB
+  Morris-4   T1 ReSIDS  rounds  38/ 15/ 29  transfers  1094  full-state  289.19 MB  new boosters delivered   4.19 MB
+  Morris-4   T1 FL      rounds  38/  0/ 44  transfers  1064  full-state  281.73 MB  new boosters delivered   4.19 MB
+  Morris-4   T1 GL      rounds   0/ 53/ 29  transfers   106  full-state   21.07 MB  new boosters delivered   4.19 MB
+  Morris-4   T2 ReSIDS  rounds  38/ 45/ 14  transfers   870  full-state  215.94 MB  new boosters delivered   3.65 MB
+  Morris-4   T2 FL      rounds  38/  0/ 59  transfers   788  full-state  180.10 MB  new boosters delivered   3.11 MB
+  Morris-4   T2 GL      rounds   0/ 83/ 14  transfers   150  full-state   35.56 MB  new boosters delivered   3.54 MB
+  CICIoT2023 T1 ReSIDS  rounds  38/ 15/ 29  transfers  1094  full-state  305.95 MB  new boosters delivered   4.37 MB
+  CICIoT2023 T1 FL      rounds  38/  0/ 44  transfers  1064  full-state  298.26 MB  new boosters delivered   4.37 MB
+  CICIoT2023 T1 GL      rounds   0/ 53/ 29  transfers   106  full-state   22.18 MB  new boosters delivered   4.37 MB
+  CICIoT2023 T2 ReSIDS  rounds  38/ 45/ 14  transfers   870  full-state  229.51 MB  new boosters delivered   3.81 MB
+  CICIoT2023 T2 FL      rounds  38/  0/ 59  transfers   788  full-state  195.60 MB  new boosters delivered   3.38 MB
+  CICIoT2023 T2 GL      rounds   0/ 83/ 14  transfers   150  full-state   37.13 MB  new boosters delivered   3.68 MB
+  mean over the four domains:
+    T1 FL      transfers  1064.0  full-state  219.19 MB  new boosters delivered   3.24 MB
+    T1 GL      transfers   106.0  full-state   16.49 MB  new boosters delivered   3.24 MB
+    T1 ReSIDS  transfers  1094.0  full-state  224.99 MB  new boosters delivered   3.24 MB
+    T2 FL      transfers   788.0  full-state  141.01 MB  new boosters delivered   2.44 MB
+    T2 GL      transfers   150.0  full-state   27.67 MB  new boosters delivered   2.75 MB
+    T2 ReSIDS  transfers   870.0  full-state  168.34 MB  new boosters delivered   2.84 MB
+
+2. Sensitivity of the protection criterion
+  REL 0.90: informative cells 12 of 16; ReSIDS best (within 1) in 12; regret mean/max ReSIDS 0.0/0.0, FL 17.2/82.0, GL 9.0/48.1; smallest gain vs FL 0.0, vs GL 0.0
+  REL 0.95: informative cells 12 of 16; ReSIDS best (within 1) in 12; regret mean/max ReSIDS 0.0/0.0, FL 17.4/82.0, GL 9.5/48.1; smallest gain vs FL 0.0, vs GL 0.0
+  REL 0.99: informative cells 12 of 16; ReSIDS best (within 1) in 12; regret mean/max ReSIDS 0.0/0.0, FL 19.5/82.0, GL 10.8/50.0; smallest gain vs FL 0.0, vs GL 0.0

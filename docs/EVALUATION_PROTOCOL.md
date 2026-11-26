@@ -333,6 +333,18 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
 
 ## Change log
 
+- **2026-11-26, exploratory additions (no new run), sections 7 and 9.** (1) Communication per
+  policy in the faithful replay, from the holdings logs and the booster files: booster-set
+  transfers and full-state volume as implemented (federated: every active node uploads its set
+  and downloads the union; GLow: the head receives the set of each active ring neighbour), and
+  the volume of the boosters each node receives that it did not hold, the lower bound of an
+  exchange that sends only what is missing (not implemented). (2) Sensitivity of the protection
+  criterion to 90 and 99 % of the reference (registered: 95 %). Both by
+  `scripts/ev1_tl_cost_sensitivity.py`, `results/ev1_tl_cost_sensitivity.txt`. (3) The
+  per-model calibrated thresholds of `scripts/ev1_step1_calib.py` (exploratory since
+  2026-11-19, models trained on 80 % of the benign rows) are cited in the text of 5.1 as a
+  sensitivity, not as a result of the registered rule.
+
 - **2026-11-25, implementation, section 6: window alarms run.** `scripts/ev1_windows.py`, on
   the per-sample scores of step 1 (`results/.cache/ev1_step1_<domain>_s42.npz`), so the
   specialists, features and test rows are those of step 1; no model trained. Time: ERENO

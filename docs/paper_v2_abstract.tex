@@ -64,8 +64,8 @@ The evolution of networks has increased their complexity and driven a shift towa
 distributed cyber and cyber-physical systems, from enterprise networks to the Internet of
 Things and critical infrastructure. This shift enlarges the attack surface, calling for
 resilient, adaptive intrusion detection that keeps working while its own nodes fail.
-Federated learning (FL) trains intrusion detectors through a server; gossip learning (GL),
-far less explored, lets peers exchange models directly. This research presents ReSIDS, an
+In federated learning (FL), a server aggregates detectors trained at the nodes; in gossip
+learning (GL), far less explored, nodes exchange them directly. This research presents ReSIDS, an
 adaptive intrusion detection system that combines both: it fuses per-attack
 gradient-boosted specialists by OR, keeps every specialist it receives, and switches its
 learning mode at runtime. A federated failure detector, Disaster-FD, supplies a trust level
@@ -77,8 +77,7 @@ specialist. On IEC~61850 substation (ERENO), enterprise (improved CICIDS2017), g
 control (Morris-4) and IoT (CICIoT2023) traffic, replayed on two runs of Disaster-FD,
 switching was never behind fixed FL or fixed GL in protecting nodes against new attacks,
 while these fell up to 82.0 and 48.1 points behind it; retention kept every attack type as
-nodes were lost. Windowed alarms flag 99.3\%, 70.2\% and 84.0\% of attack windows in ERENO,
-CICIDS2017 and Morris-4, at false-alarm rates of 0.14\% to 2.9\%.
+nodes were lost. Adaptive switching turns the learning topology into an operational choice.
 \end{abstract}
 
 \begin{keyword}
@@ -91,7 +90,9 @@ intrusion detection \sep federated learning \sep gossip learning \sep failure de
 %    (alternative: "ReSIDS keeps spreading new attack specialists while the FL aggregator is lost" (77))
 %  - Switching is never behind fixed federated or fixed gossip learning in two real runs (83)
 %  - Retained specialists keep every attack type as nodes drop from 14 to 3 (70)
-%  - Window alarms flag 70-99% of attack windows at 0.14-2.9% false-alarm rates (74)
+%  - Attack specialists cost no recall against an IID split in four network domains (78)
+%    (2026-11-26, user: results in the abstract and highlights must hold in the four domains;
+%     the window highlight and the window numbers of the abstract were removed)
 %  - One architecture for substation, enterprise, gas-pipeline control and IoT traffic (81)
 %  (2026-11-25; earlier: "Detection is unchanged as the training membership shrinks...",
 %   "Per-specialist window triage: 99.3%...", "...railway Modbus and IoT traffic")
