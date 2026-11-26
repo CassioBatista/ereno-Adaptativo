@@ -333,6 +333,19 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
 
 ## Change log
 
+- **2026-11-26, exploratory addition (no training), section 9: noisy trust levels and the settle
+  time.** Constructed variants of T1 and T2 (`scripts/build_noisy_trace.py`; written outside the
+  repository, `~/datasets/disaster_fd_<T1|T2>_noise_l<p>_m<q>_s<seed>`): probe loss (an answered
+  probe becomes a timeout with probability 1, 5 or 10 %; the trust level recomputed from the
+  probes, which reproduces the recorded one in 100 % of the rows of both unchanged traces), and
+  misreport (a published trust level replaced by another value with probability 1 or 5 %);
+  three draws each (seeds 1-3). With S = 5 s (registered) and 10 s: mode switches per node and
+  the share of node-rounds in which the mode of ReSIDS differs from the recorded trace
+  (`scripts/ev1_checks/noise_seeds.py`, `results/ev1_tl_noise_summary.txt`; single-draw checks
+  `noise_check.py`, `noise_settle.py`). On the recorded traces, S = 10 s gives the mode of S = 5 s
+  in every round, so the replay results hold for both; S = 5 s stays the reported setting. No
+  training run under noise is made.
+
 - **2026-11-26, exploratory addition (no training), section 9: aggregator re-election as a
   complement.** A baseline of aggregator re-election (policy `failover_federated` of
   `fd/arch_manager.py`: the largest set of connected nodes elects an aggregator when it holds a
