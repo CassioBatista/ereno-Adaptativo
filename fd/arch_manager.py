@@ -428,13 +428,14 @@ class TrustLevelArchManager(ArchitectureManager):
     """
 
     uses_gossip = True
-    POLICIES = ("switching", "fixed_local", "fixed_gossip", "fixed_federated")
+    POLICIES = ("switching", "fixed_local", "fixed_gossip", "fixed_federated", "failover_federated")
 
     def __init__(self, run: str, t_end: float, delta_s: float = 60.0,
                  settle: float = 5.0, stale: float = 15.0, gl: float = 30.0,
                  fl: float = 50.0, n_nodes: int | None = None,
                  policy: str = "switching", links: str = "monitor",
-                 round_offset_s: float = 0.0, gl_peers: str = "any") -> None:
+                 round_offset_s: float = 0.0, gl_peers: str = "any",
+                 election_rounds: int = 1, quorum: str = "majority") -> None:
         """policy: 'switching' (ReSIDS: each node's mode from its trust level) or a fixed
         mode for every node, which ignores the trust level: the counterfactuals of
         evaluation-v1 section 9. Under a fixed policy the failures still happen: a round
@@ -451,8 +452,22 @@ class TrustLevelArchManager(ArchitectureManager):
         gl_peers: which nodes take part in a round of fixed GL. 'any' (default): a node with
         at least one ring link up. 'both': a node with both ring links up, the condition of GL
         in the scenario documents and of the gossip band of ReSIDS (trust level 30 = both
-        neighbours), so that fixed GL and ReSIDS gossip with the same nodes."""
+        neighbours), so that fixed GL and ReSIDS gossip with the same nodes.
+        failover_federated (baseline of aggregator re-election, added 2026-11-26): federated
+        learning that elects a new aggregator among the nodes when the original one is lost,
+        as RAFT-based failover does. While some node reaches the original aggregator, the round
+        federates those nodes, as fixed FL. Otherwise the largest set of nodes connected by up
+        ring links elects one of them as aggregator, if it holds at least `quorum` nodes
+        ('majority': more than half of all nodes, as RAFT requires; 'none': any two), once the
+        original aggregator has been unreachable for more than `election_rounds` rounds; the
+        round then federates that set, its members reaching the elected node over the ring
+        links (multi-hop relay assumed). Below the quorum, or during the election, no node
+        exchanges. One federated group per round; the cost of consensus is not modelled."""
         from fd.trust_level import LinkStates, NodeModes
+        if quorum not in ("majority", "none"):
+            raise ValueError(f"quorum inválido: '{quorum}'. Use 'majority' | 'none'.")
+        self.election_rounds = max(0, int(election_rounds))
+        self.quorum = quorum
         if policy not in self.POLICIES:
             raise ValueError(f"policy inválida: '{policy}'. Use {self.POLICIES}.")
         if links not in ("monitor", "scenario"):
@@ -478,6 +493,8 @@ class TrustLevelArchManager(ArchitectureManager):
         print(f"[TLArch] trace {run}: {self.modes.n_nodes} monitors, run_t0 "
               f"{self.modes.t0:.2f} ({self.modes.t0_source}); policy '{self.policy}', "
               f"links '{self.link_model}', gl_peers '{self.gl_peers}', "
+              + (f"election_rounds {self.election_rounds}, quorum '{self.quorum}', "
+                 if self.policy == "failover_federated" else "") +
               f"TL policy {self.modes.params}; delta {self.delta:g} s, offset {self.offset:g} s, "
               f"{self.n_rounds} rounds")
 
@@ -497,12 +514,55 @@ class TrustLevelArchManager(ArchitectureManager):
         elif self.policy == "fixed_federated":
             nodes = [i for i in range(n) if self.links.aggregator_up(i, t)]
             mode = "federated" if nodes else "local"
+        elif self.policy == "failover_federated":
+            nodes = [i for i in range(n) if self.links.aggregator_up(i, t)]
+            if not nodes:
+                comp = self._largest_component(t)
+                if len(comp) >= self._quorum_size() and self._election_wait(round) > self.election_rounds:
+                    nodes = comp
+            mode = "federated" if nodes else "local"
         else:                                                    # fixed_gossip
             ok = self.links.both_peers_up if self.gl_peers == "both" else self.links.peer_up
             nodes = [i for i in range(n) if ok(i, t)]
             mode = "gossip" if nodes else "local"
         m = [mode if i in nodes else "local" for i in range(n)]
         return mode, nodes, m
+
+    def _largest_component(self, t: float) -> list[int]:
+        """Largest set of nodes connected by ring links that are up at t (failover baseline)."""
+        n = self.modes.n_nodes
+        parent = list(range(n))
+
+        def find(a):
+            while parent[a] != a:
+                parent[a] = parent[parent[a]]
+                a = parent[a]
+            return a
+        for i in range(n):
+            j = (i + 1) % n
+            if self.links.link_up(i, j + 1, t):
+                parent[find(i)] = find(j)
+        groups: dict[int, list[int]] = {}
+        for i in range(n):
+            groups.setdefault(find(i), []).append(i)
+        return sorted(max(groups.values(), key=lambda g: (len(g), -min(g))))
+
+    def _quorum_size(self) -> int:
+        n = self.modes.n_nodes
+        return n // 2 + 1 if self.quorum == "majority" else 2
+
+    def _election_wait(self, round: int) -> int:
+        """Consecutive rounds, up to and including `round`, in which no node reaches the
+        original aggregator and a set of connected nodes holds the quorum (failover baseline:
+        the election starts in the first of them and takes `election_rounds` rounds)."""
+        k, n = 0, self.modes.n_nodes
+        while round - k >= 1:
+            t = self.time_of(round - k)
+            if any(self.links.aggregator_up(i, t) for i in range(n)) \
+                    or len(self._largest_component(t)) < self._quorum_size():
+                break
+            k += 1
+        return k
 
     def _decide(self, round: int) -> tuple[str, list[int], list[str]]:
         if round not in self._cache and self.policy != "switching":
@@ -625,6 +685,8 @@ def load_arch_manager(conf: dict, num_nodes: int | None = None) -> ArchitectureM
             links   = arch_conf.get("links", "monitor"),
             round_offset_s = float(arch_conf.get("round_offset_s", 0.0)),
             gl_peers = arch_conf.get("gl_peers", "any"),
+            election_rounds = int(arch_conf.get("election_rounds", 1)),
+            quorum   = arch_conf.get("quorum", "majority"),
         )
 
     if kind == "api":

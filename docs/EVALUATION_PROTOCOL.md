@@ -333,6 +333,18 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
 
 ## Change log
 
+- **2026-11-26, exploratory addition (no training), section 9: aggregator re-election as a
+  complement.** A baseline of aggregator re-election (policy `failover_federated` of
+  `fd/arch_manager.py`: the largest set of connected nodes elects an aggregator when it holds a
+  majority, after an election of 1 or 3 rounds) and a regional-partition variant of T2,
+  constructed by `scripts/build_regional_trace.py` (clients 2-7 keep their internal links after
+  the cut; the recomputed trust level reproduces the recorded one in 100 % of the rows of the
+  unchanged trace) are used without training (`scripts/ev1_checks/failover_gap.py`) to count
+  where ReSIDS keeps nodes in gossip that re-election cannot serve. The training runs of the
+  baseline (`scripts/ev1_tl_runners/run_tl_failover.sh`) are prepared but not run; the paper
+  does not compare detection under re-election. Decision of the authors: re-election is
+  discussed as a complement of switching, not as an alternative.
+
 - **2026-11-26, exploratory additions (no new run), sections 7 and 9.** (1) Communication per
   policy in the faithful replay, from the holdings logs and the booster files: booster-set
   transfers and full-state volume as implemented (federated: every active node uploads its set
