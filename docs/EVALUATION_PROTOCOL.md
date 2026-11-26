@@ -343,7 +343,14 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
   `scripts/ev1_tl_cost_sensitivity.py`, `results/ev1_tl_cost_sensitivity.txt`. (3) The
   per-model calibrated thresholds of `scripts/ev1_step1_calib.py` (exploratory since
   2026-11-19, models trained on 80 % of the benign rows) are cited in the text of 5.1 as a
-  sensitivity, not as a result of the registered rule.
+  sensitivity, not as a result of the registered rule. (4) Specified before the runs: the
+  faithful replay repeated with seeds 43-46 (seed of the partition and of the training; the
+  same 24 runs per seed, 96 in all; `scripts/ev1_tl_runners/run_tl_faithful_seeds.sh`,
+  results in `results/ev1_tl/faithful_seeds/s<seed>/`), summarized with seed 42 by
+  `scripts/ev1_tl_seeds_summary.py` (`results/ev1_tl_seeds_summary.txt`): per seed, the
+  informative cells, the cells where ReSIDS is the best, the regret of each configuration and
+  the smallest gain of ReSIDS over each fixed mode; per cell, the mean and range over the five
+  seeds. Seed 42 stays the reported value; the seeds give its dispersion.
 
 - **2026-11-25, implementation, section 6: window alarms run.** `scripts/ev1_windows.py`, on
   the per-sample scores of step 1 (`results/.cache/ev1_step1_<domain>_s42.npz`), so the

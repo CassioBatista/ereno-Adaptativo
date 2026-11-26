@@ -16,6 +16,7 @@ One run at a time (memory); each runner refuses to start while another pipeline 
 | `run_tl_faithful.sh` + `tl_faithful_template.yaml` | faithful replay: ReSIDS, fixed FL, fixed GL, 4 domains x T1/T2 (reported) | `results/ev1_tl/faithful/` |
 | `run_tl_faithful_glboth.sh` + `tl_faithful_glboth_template.yaml` | fixed GL re-run with `gl_peers: both` (same gossip nodes as ReSIDS; reported) | `results/ev1_tl/faithful/`, old runs in `faithful_gl_any/` |
 | `run_tl_delta.sh`, `run_tl_delta_glboth.sh` | sensitivity to the round period, 5-600 s, ERENO and CICIDS2017 (reported) | `results/ev1_tl/delta_sens/`, old GL runs in `delta_sens_gl_any/` |
+| `run_tl_faithful_seeds.sh` (uses `tl_faithful_template.yaml`) | the faithful replay with seeds 43-46, 96 runs (dispersion; exploratory), summary `scripts/ev1_tl_seeds_summary.py` | `results/ev1_tl/faithful_seeds/s<seed>/` |
 | `run_tl_faithful_band15.sh` + `tl_faithful_band15_template.yaml` | ReSIDS with the gossip band at 15 (T2 reported; T1 invalid, see its `NOTE.md`) | `results/ev1_tl/faithful_band15/` |
 | `run_tl_grid.sh` + `tl_grid_template.yaml` | first grid, links as seen by each monitor (record only) | `results/ev1_tl/grid_d60/` |
 | `run_tl_arrival_offsets.sh` + `tl_offset_template.yaml` | arrival-offset check (record only) | `results/ev1_tl/arrival_offsets/` |
