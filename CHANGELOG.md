@@ -4,7 +4,15 @@ All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); this project uses simple
 `vMAJOR.MINOR` tags.
 
-## [v2.1.2] — 2026-11-27
+## [v2.1.3] — 2026-11-27
+
+The artifact intended for v2.1.2. The tag `v2.1.2` was created on the branch `master`
+(commit `5d8c5a8`, the state of v2.0.0) instead of `ereno-adaptive-v2`, and its archive does
+not contain the second paper. The tag `v2.1.3` is on commit `bb2df86`, with the content
+listed under v2.1.2 below; its `CITATION.cff` and `.zenodo.json` still read 2.1.2. No code or
+result changes; this entry and the version 2.1.3 in the metadata files come after the tag.
+
+## [v2.1.2] — 2026-11-27 (tag created on the wrong branch; see v2.1.3)
 
 Artifact of the second paper, revised. The code of v2.1.1 plus one replay policy; the
 reported results of v2.1.1 are unchanged.

@@ -11,7 +11,7 @@ abstract: >-
   domains (ERENO, improved CICIDS2017, Morris-4 and CICIoT2023) under pre-registered
   protocols, including the replay of two recorded Disaster-FD runs.
 type: software
-version: 2.1.2
+version: 2.1.3
 date-released: 2026-11-27
 license: MIT
 repository-code: "https://github.com/CassioBatista/ereno-Adaptativo"
