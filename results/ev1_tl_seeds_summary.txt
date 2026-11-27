@@ -1,0 +1,37 @@
+EXPLORATORY: faithful replay over seeds (42 reported; 43-46 added 2026-11-26)
+
+seed 42: informative 12/16; ReSIDS best in 12; worst ReSIDS/FL/GL 0/7/5; regret mean/max ReSIDS 0.0/0.0, FL 17.4/82.0, GL 9.5/48.1; smallest gain vs FL 0.0, vs GL 0.0
+seed 43: informative 12/16; ReSIDS best in 12; worst ReSIDS/FL/GL 0/7/5; regret mean/max ReSIDS 0.0/0.0, FL 17.6/82.0, GL 9.7/50.0; smallest gain vs FL 0.0, vs GL 0.0
+seed 44: informative 12/16; ReSIDS best in 12; worst ReSIDS/FL/GL 0/7/5; regret mean/max ReSIDS 0.0/0.0, FL 17.6/82.0, GL 10.2/50.0; smallest gain vs FL 0.0, vs GL 0.0
+seed 45: informative 12/16; ReSIDS best in 12; worst ReSIDS/FL/GL 0/7/5; regret mean/max ReSIDS 0.0/0.0, FL 17.6/82.0, GL 9.7/50.0; smallest gain vs FL 0.0, vs GL 0.0
+seed 46: informative 12/16; ReSIDS best in 12; worst ReSIDS/FL/GL 0/7/5; regret mean/max ReSIDS 0.0/0.0, FL 17.4/82.0, GL 10.0/48.1; smallest gain vs FL 0.0, vs GL 0.0
+
+over 5 seeds (mean, min-max):
+  informative cells        12.0  (12.0-12.0)
+  ReSIDS best in           12.0  (12.0-12.0)
+  regret mean ReSIDS        0.0  (0.0-0.0)
+  regret mean FL           17.5  (17.4-17.6)
+  regret mean GL            9.8  (9.5-10.2)
+  regret max ReSIDS         0.0  (0.0-0.0)
+  regret max FL            82.0  (82.0-82.0)
+  regret max GL            49.3  (48.1-50.0)
+  smallest gain vs FL       0.0  (0.0-0.0)
+  smallest gain vs GL       0.0  (0.0-0.0)
+
+unprotected share of node-rounds per cell (%), mean (min-max) over the seeds:
+  CICIDS2017 T1 block 30 min: ReSIDS  38.4 (38.4-38.4)  FL  52.6 (52.6-52.6)  GL  38.4 (38.4-38.4)
+  CICIDS2017 T1 block 60 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL  49.3 (48.1-50.0)
+  CICIDS2017 T2 block 30 min: ReSIDS  10.8 (10.8-10.8)  FL  92.9 (92.9-92.9)  GL  10.8 (10.8-10.8)
+  CICIDS2017 T2 block 60 min: ReSIDS  52.3 (52.1-52.4)  FL  64.3 (62.6-65.4)  GL  60.9 (60.7-61.1)
+  CICIoT2023 T1 block 30 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   0.0 (0.0-0.0)
+  CICIoT2023 T1 block 60 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   3.9 (3.1-5.0)
+  CICIoT2023 T2 block 30 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   0.0 (0.0-0.0)
+  CICIoT2023 T2 block 60 min: ReSIDS  36.8 (35.7-38.5)  FL  60.9 (59.8-62.6)  GL  38.6 (35.7-42.9)
+  ERENO      T1 block 30 min: ReSIDS  51.8 (51.8-51.8)  FL  56.6 (56.6-56.6)  GL  53.8 (53.8-53.8)
+  ERENO      T1 block 60 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   0.0 (0.0-0.0)
+  ERENO      T2 block 30 min: ReSIDS  47.9 (47.9-47.9)  FL 100.0 (100.0-100.0)  GL  47.9 (47.9-47.9)
+  ERENO      T2 block 60 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   0.0 (0.0-0.0)
+  Morris-4   T1 block 30 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL  41.1 (41.1-41.1)
+  Morris-4   T1 block 60 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   6.5 (6.5-6.5)
+  Morris-4   T2 block 30 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   4.7 (4.7-4.7)
+  Morris-4   T2 block 60 min: ReSIDS  35.7 (35.7-35.7)  FL  57.0 (57.0-57.0)  GL  35.7 (35.7-35.7)

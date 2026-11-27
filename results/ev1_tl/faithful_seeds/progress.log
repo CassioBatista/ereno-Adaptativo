@@ -1,1 +1,234 @@
 2026-11-26 15:22:57 start s43 ereno_T2_switching (97 rounds)
+2026-11-26 15:28:12 done  s43 ereno_T2_switching in 5 min
+2026-11-26 15:28:12 start s43 ereno_T2_fixed_federated (97 rounds)
+2026-11-26 15:32:40 done  s43 ereno_T2_fixed_federated in 4 min
+2026-11-26 15:32:40 start s43 ereno_T2_fixed_gossip (97 rounds)
+2026-11-26 15:37:34 done  s43 ereno_T2_fixed_gossip in 4 min
+2026-11-26 15:37:34 start s43 ereno_T1_switching (82 rounds)
+2026-11-26 15:41:56 done  s43 ereno_T1_switching in 4 min
+2026-11-26 15:41:56 start s43 ereno_T1_fixed_federated (82 rounds)
+2026-11-26 15:46:14 done  s43 ereno_T1_fixed_federated in 4 min
+2026-11-26 15:46:14 start s43 ereno_T1_fixed_gossip (82 rounds)
+2026-11-26 15:51:06 done  s43 ereno_T1_fixed_gossip in 4 min
+2026-11-26 15:51:06 start s43 cicids_T2_switching (97 rounds)
+2026-11-26 16:04:11 done  s43 cicids_T2_switching in 13 min
+2026-11-26 16:04:11 start s43 cicids_T2_fixed_federated (97 rounds)
+2026-11-26 16:19:10 done  s43 cicids_T2_fixed_federated in 14 min
+2026-11-26 16:19:10 start s43 cicids_T2_fixed_gossip (97 rounds)
+2026-11-26 16:36:08 done  s43 cicids_T2_fixed_gossip in 16 min
+2026-11-26 16:36:08 start s43 cicids_T1_switching (82 rounds)
+2026-11-26 16:47:23 done  s43 cicids_T1_switching in 11 min
+2026-11-26 16:47:23 start s43 cicids_T1_fixed_federated (82 rounds)
+2026-11-26 16:56:44 done  s43 cicids_T1_fixed_federated in 9 min
+2026-11-26 16:56:44 start s43 cicids_T1_fixed_gossip (82 rounds)
+2026-11-26 17:06:28 done  s43 cicids_T1_fixed_gossip in 9 min
+2026-11-26 17:06:28 start s43 morris4_T2_switching (97 rounds)
+2026-11-26 17:09:03 done  s43 morris4_T2_switching in 2 min
+2026-11-26 17:09:03 start s43 morris4_T2_fixed_federated (97 rounds)
+2026-11-26 17:10:47 done  s43 morris4_T2_fixed_federated in 1 min
+2026-11-26 17:10:47 start s43 morris4_T2_fixed_gossip (97 rounds)
+2026-11-26 17:12:32 done  s43 morris4_T2_fixed_gossip in 1 min
+2026-11-26 17:12:32 start s43 morris4_T1_switching (82 rounds)
+2026-11-26 17:15:02 done  s43 morris4_T1_switching in 2 min
+2026-11-26 17:15:02 start s43 morris4_T1_fixed_federated (82 rounds)
+2026-11-26 17:16:37 done  s43 morris4_T1_fixed_federated in 1 min
+2026-11-26 17:16:37 start s43 morris4_T1_fixed_gossip (82 rounds)
+2026-11-26 17:18:09 done  s43 morris4_T1_fixed_gossip in 1 min
+2026-11-26 17:18:09 start s43 ciciot_T2_switching (97 rounds)
+2026-11-26 17:26:37 done  s43 ciciot_T2_switching in 8 min
+2026-11-26 17:26:37 start s43 ciciot_T2_fixed_federated (97 rounds)
+2026-11-26 18:52:40 done  s43 ciciot_T2_fixed_federated in 86 min
+2026-11-26 18:52:40 start s43 ciciot_T2_fixed_gossip (97 rounds)
+2026-11-26 18:59:20 done  s43 ciciot_T2_fixed_gossip in 6 min
+2026-11-26 18:59:20 start s43 ciciot_T1_switching (82 rounds)
+2026-11-26 19:05:25 done  s43 ciciot_T1_switching in 6 min
+2026-11-26 19:05:25 start s43 ciciot_T1_fixed_federated (82 rounds)
+2026-11-26 19:11:48 done  s43 ciciot_T1_fixed_federated in 6 min
+2026-11-26 19:11:48 start s43 ciciot_T1_fixed_gossip (82 rounds)
+2026-11-26 19:18:47 done  s43 ciciot_T1_fixed_gossip in 6 min
+2026-11-26 19:18:47 seed 43 complete
+2026-11-26 19:18:47 start s44 ereno_T2_switching (97 rounds)
+2026-11-26 19:23:06 done  s44 ereno_T2_switching in 4 min
+2026-11-26 19:23:06 start s44 ereno_T2_fixed_federated (97 rounds)
+2026-11-26 19:26:53 done  s44 ereno_T2_fixed_federated in 3 min
+2026-11-26 19:26:53 start s44 ereno_T2_fixed_gossip (97 rounds)
+2026-11-26 19:31:01 done  s44 ereno_T2_fixed_gossip in 4 min
+2026-11-26 19:31:01 start s44 ereno_T1_switching (82 rounds)
+2026-11-26 19:34:45 done  s44 ereno_T1_switching in 3 min
+2026-11-26 19:34:45 start s44 ereno_T1_fixed_federated (82 rounds)
+2026-11-26 19:38:21 done  s44 ereno_T1_fixed_federated in 3 min
+2026-11-26 19:38:21 start s44 ereno_T1_fixed_gossip (82 rounds)
+2026-11-26 19:41:54 done  s44 ereno_T1_fixed_gossip in 3 min
+2026-11-26 19:41:54 start s44 cicids_T2_switching (97 rounds)
+2026-11-26 19:49:02 done  s44 cicids_T2_switching in 7 min
+2026-11-26 19:49:02 start s44 cicids_T2_fixed_federated (97 rounds)
+2026-11-26 19:55:48 done  s44 cicids_T2_fixed_federated in 6 min
+2026-11-26 19:55:48 start s44 cicids_T2_fixed_gossip (97 rounds)
+2026-11-26 20:02:36 done  s44 cicids_T2_fixed_gossip in 6 min
+2026-11-26 20:02:36 start s44 cicids_T1_switching (82 rounds)
+2026-11-26 20:07:49 done  s44 cicids_T1_switching in 5 min
+2026-11-26 20:07:49 start s44 cicids_T1_fixed_federated (82 rounds)
+2026-11-26 20:12:44 done  s44 cicids_T1_fixed_federated in 4 min
+2026-11-26 20:12:44 start s44 cicids_T1_fixed_gossip (82 rounds)
+2026-11-26 20:17:54 done  s44 cicids_T1_fixed_gossip in 5 min
+2026-11-26 20:17:54 start s44 morris4_T2_switching (97 rounds)
+2026-11-26 20:19:20 done  s44 morris4_T2_switching in 1 min
+2026-11-26 20:19:20 start s44 morris4_T2_fixed_federated (97 rounds)
+2026-11-26 20:20:33 done  s44 morris4_T2_fixed_federated in 1 min
+2026-11-26 20:20:33 start s44 morris4_T2_fixed_gossip (97 rounds)
+2026-11-26 20:21:55 done  s44 morris4_T2_fixed_gossip in 1 min
+2026-11-26 20:21:55 start s44 morris4_T1_switching (82 rounds)
+2026-11-26 20:23:07 done  s44 morris4_T1_switching in 1 min
+2026-11-26 20:23:07 start s44 morris4_T1_fixed_federated (82 rounds)
+2026-11-26 20:24:13 done  s44 morris4_T1_fixed_federated in 1 min
+2026-11-26 20:24:13 start s44 morris4_T1_fixed_gossip (82 rounds)
+2026-11-26 20:25:20 done  s44 morris4_T1_fixed_gossip in 1 min
+2026-11-26 20:25:20 start s44 ciciot_T2_switching (97 rounds)
+2026-11-26 20:31:01 done  s44 ciciot_T2_switching in 5 min
+2026-11-26 20:31:01 start s44 ciciot_T2_fixed_federated (97 rounds)
+2026-11-26 20:36:07 done  s44 ciciot_T2_fixed_federated in 5 min
+2026-11-26 20:36:07 start s44 ciciot_T2_fixed_gossip (97 rounds)
+2026-11-26 20:41:32 done  s44 ciciot_T2_fixed_gossip in 5 min
+2026-11-26 20:41:32 start s44 ciciot_T1_switching (82 rounds)
+2026-11-26 20:46:12 done  s44 ciciot_T1_switching in 4 min
+2026-11-26 20:46:12 start s44 ciciot_T1_fixed_federated (82 rounds)
+2026-11-26 20:50:49 done  s44 ciciot_T1_fixed_federated in 4 min
+2026-11-26 20:50:49 start s44 ciciot_T1_fixed_gossip (82 rounds)
+2026-11-26 20:55:43 done  s44 ciciot_T1_fixed_gossip in 4 min
+2026-11-26 20:55:43 seed 44 complete
+2026-11-26 20:55:43 start s45 ereno_T2_switching (97 rounds)
+2026-11-26 20:59:13 done  s45 ereno_T2_switching in 3 min
+2026-11-26 20:59:13 start s45 ereno_T2_fixed_federated (97 rounds)
+2026-11-26 21:02:19 done  s45 ereno_T2_fixed_federated in 3 min
+2026-11-26 21:02:19 start s45 ereno_T2_fixed_gossip (97 rounds)
+2026-11-26 21:05:44 done  s45 ereno_T2_fixed_gossip in 3 min
+2026-11-26 21:05:44 start s45 ereno_T1_switching (82 rounds)
+2026-11-26 21:08:55 done  s45 ereno_T1_switching in 3 min
+2026-11-26 21:08:55 start s45 ereno_T1_fixed_federated (82 rounds)
+2026-11-26 21:11:52 done  s45 ereno_T1_fixed_federated in 2 min
+2026-11-26 21:11:52 start s45 ereno_T1_fixed_gossip (82 rounds)
+2026-11-26 21:15:04 done  s45 ereno_T1_fixed_gossip in 3 min
+2026-11-26 21:15:04 start s45 cicids_T2_switching (97 rounds)
+2026-11-26 21:21:26 done  s45 cicids_T2_switching in 6 min
+2026-11-26 21:21:26 start s45 cicids_T2_fixed_federated (97 rounds)
+2026-11-26 21:26:57 done  s45 cicids_T2_fixed_federated in 5 min
+2026-11-26 21:26:57 start s45 cicids_T2_fixed_gossip (97 rounds)
+2026-11-26 21:32:55 done  s45 cicids_T2_fixed_gossip in 5 min
+2026-11-26 21:32:55 start s45 cicids_T1_switching (82 rounds)
+2026-11-26 21:38:26 done  s45 cicids_T1_switching in 5 min
+2026-11-26 21:38:26 start s45 cicids_T1_fixed_federated (82 rounds)
+2026-11-26 21:43:54 done  s45 cicids_T1_fixed_federated in 5 min
+2026-11-26 21:43:54 start s45 cicids_T1_fixed_gossip (82 rounds)
+2026-11-26 21:49:54 done  s45 cicids_T1_fixed_gossip in 6 min
+2026-11-26 21:49:54 start s45 morris4_T2_switching (97 rounds)
+2026-11-26 21:51:35 done  s45 morris4_T2_switching in 1 min
+2026-11-26 21:51:35 start s45 morris4_T2_fixed_federated (97 rounds)
+2026-11-26 21:53:02 done  s45 morris4_T2_fixed_federated in 1 min
+2026-11-26 21:53:02 start s45 morris4_T2_fixed_gossip (97 rounds)
+2026-11-26 21:54:42 done  s45 morris4_T2_fixed_gossip in 1 min
+2026-11-26 21:54:42 start s45 morris4_T1_switching (82 rounds)
+2026-11-26 21:56:06 done  s45 morris4_T1_switching in 1 min
+2026-11-26 21:56:06 start s45 morris4_T1_fixed_federated (82 rounds)
+2026-11-26 21:57:25 done  s45 morris4_T1_fixed_federated in 1 min
+2026-11-26 21:57:25 start s45 morris4_T1_fixed_gossip (82 rounds)
+2026-11-26 21:58:47 done  s45 morris4_T1_fixed_gossip in 1 min
+2026-11-26 21:58:47 start s45 ciciot_T2_switching (97 rounds)
+2026-11-26 22:05:11 done  s45 ciciot_T2_switching in 6 min
+2026-11-26 22:05:11 start s45 ciciot_T2_fixed_federated (97 rounds)
+2026-11-26 22:10:55 done  s45 ciciot_T2_fixed_federated in 5 min
+2026-11-26 22:10:55 start s45 ciciot_T2_fixed_gossip (97 rounds)
+2026-11-26 22:17:16 done  s45 ciciot_T2_fixed_gossip in 6 min
+2026-11-26 22:17:16 start s45 ciciot_T1_switching (82 rounds)
+2026-11-26 22:22:46 done  s45 ciciot_T1_switching in 5 min
+2026-11-26 22:22:46 start s45 ciciot_T1_fixed_federated (82 rounds)
+2026-11-26 22:28:05 done  s45 ciciot_T1_fixed_federated in 5 min
+2026-11-26 22:28:05 start s45 ciciot_T1_fixed_gossip (82 rounds)
+2026-11-26 22:33:33 done  s45 ciciot_T1_fixed_gossip in 5 min
+2026-11-26 22:33:33 seed 45 complete
+2026-11-26 22:33:33 start s46 ereno_T2_switching (97 rounds)
+2026-11-26 22:37:22 done  s46 ereno_T2_switching in 3 min
+2026-11-26 22:37:22 start s46 ereno_T2_fixed_federated (97 rounds)
+2026-11-26 22:40:24 done  s46 ereno_T2_fixed_federated in 3 min
+2026-11-26 22:40:24 start s46 ereno_T2_fixed_gossip (97 rounds)
+2026-11-26 22:43:58 done  s46 ereno_T2_fixed_gossip in 3 min
+2026-11-26 22:43:58 start s46 ereno_T1_switching (82 rounds)
+2026-11-26 22:47:11 done  s46 ereno_T1_switching in 3 min
+2026-11-26 22:47:11 start s46 ereno_T1_fixed_federated (82 rounds)
+2026-11-26 22:50:13 done  s46 ereno_T1_fixed_federated in 3 min
+2026-11-26 22:50:13 start s46 ereno_T1_fixed_gossip (82 rounds)
+2026-11-26 22:53:22 done  s46 ereno_T1_fixed_gossip in 3 min
+2026-11-26 22:53:22 start s46 cicids_T2_switching (97 rounds)
+2026-11-26 22:59:52 done  s46 cicids_T2_switching in 6 min
+2026-11-26 22:59:52 start s46 cicids_T2_fixed_federated (97 rounds)
+2026-11-26 23:05:41 done  s46 cicids_T2_fixed_federated in 5 min
+2026-11-26 23:05:41 start s46 cicids_T2_fixed_gossip (97 rounds)
+2026-11-26 23:11:44 done  s46 cicids_T2_fixed_gossip in 6 min
+2026-11-26 23:11:44 start s46 cicids_T1_switching (82 rounds)
+2026-11-26 23:16:49 done  s46 cicids_T1_switching in 5 min
+2026-11-26 23:16:49 start s46 cicids_T1_fixed_federated (82 rounds)
+2026-11-26 23:21:45 done  s46 cicids_T1_fixed_federated in 4 min
+2026-11-26 23:21:45 start s46 cicids_T1_fixed_gossip (82 rounds)
+2026-11-26 23:26:49 done  s46 cicids_T1_fixed_gossip in 5 min
+2026-11-26 23:26:49 start s46 morris4_T2_switching (97 rounds)
+2026-11-26 23:28:14 done  s46 morris4_T2_switching in 1 min
+2026-11-26 23:28:14 start s46 morris4_T2_fixed_federated (97 rounds)
+2026-11-26 23:29:24 done  s46 morris4_T2_fixed_federated in 1 min
+2026-11-26 23:29:24 start s46 morris4_T2_fixed_gossip (97 rounds)
+2026-11-26 23:30:45 done  s46 morris4_T2_fixed_gossip in 1 min
+2026-11-26 23:30:45 start s46 morris4_T1_switching (82 rounds)
+2026-11-26 23:31:55 done  s46 morris4_T1_switching in 1 min
+2026-11-26 23:31:55 start s46 morris4_T1_fixed_federated (82 rounds)
+2026-11-26 23:33:03 done  s46 morris4_T1_fixed_federated in 1 min
+2026-11-26 23:33:03 start s46 morris4_T1_fixed_gossip (82 rounds)
+2026-11-26 23:34:12 done  s46 morris4_T1_fixed_gossip in 1 min
+2026-11-26 23:34:12 start s46 ciciot_T2_switching (97 rounds)
+2026-11-26 23:40:43 done  s46 ciciot_T2_switching in 6 min
+2026-11-26 23:40:43 start s46 ciciot_T2_fixed_federated (97 rounds)
+2026-11-26 23:46:28 done  s46 ciciot_T2_fixed_federated in 5 min
+2026-11-26 23:46:28 start s46 ciciot_T2_fixed_gossip (97 rounds)
+2026-11-26 23:53:09 done  s46 ciciot_T2_fixed_gossip in 6 min
+2026-11-26 23:53:09 start s46 ciciot_T1_switching (82 rounds)
+2026-11-26 23:58:53 done  s46 ciciot_T1_switching in 5 min
+2026-11-26 23:58:53 start s46 ciciot_T1_fixed_federated (82 rounds)
+2026-11-27 00:04:21 done  s46 ciciot_T1_fixed_federated in 5 min
+2026-11-27 00:04:21 start s46 ciciot_T1_fixed_gossip (82 rounds)
+2026-11-27 00:09:58 done  s46 ciciot_T1_fixed_gossip in 5 min
+2026-11-27 00:09:58 seed 46 complete
+EXPLORATORY: faithful replay over seeds (42 reported; 43-46 added 2026-11-26)
+
+seed 42: informative 12/16; ReSIDS best in 12; worst ReSIDS/FL/GL 0/7/5; regret mean/max ReSIDS 0.0/0.0, FL 17.4/82.0, GL 9.5/48.1; smallest gain vs FL 0.0, vs GL 0.0
+seed 43: informative 12/16; ReSIDS best in 12; worst ReSIDS/FL/GL 0/7/5; regret mean/max ReSIDS 0.0/0.0, FL 17.6/82.0, GL 9.7/50.0; smallest gain vs FL 0.0, vs GL 0.0
+seed 44: informative 12/16; ReSIDS best in 12; worst ReSIDS/FL/GL 0/7/5; regret mean/max ReSIDS 0.0/0.0, FL 17.6/82.0, GL 10.2/50.0; smallest gain vs FL 0.0, vs GL 0.0
+seed 45: informative 12/16; ReSIDS best in 12; worst ReSIDS/FL/GL 0/7/5; regret mean/max ReSIDS 0.0/0.0, FL 17.6/82.0, GL 9.7/50.0; smallest gain vs FL 0.0, vs GL 0.0
+seed 46: informative 12/16; ReSIDS best in 12; worst ReSIDS/FL/GL 0/7/5; regret mean/max ReSIDS 0.0/0.0, FL 17.4/82.0, GL 10.0/48.1; smallest gain vs FL 0.0, vs GL 0.0
+
+over 5 seeds (mean, min-max):
+  informative cells        12.0  (12.0-12.0)
+  ReSIDS best in           12.0  (12.0-12.0)
+  regret mean ReSIDS        0.0  (0.0-0.0)
+  regret mean FL           17.5  (17.4-17.6)
+  regret mean GL            9.8  (9.5-10.2)
+  regret max ReSIDS         0.0  (0.0-0.0)
+  regret max FL            82.0  (82.0-82.0)
+  regret max GL            49.3  (48.1-50.0)
+  smallest gain vs FL       0.0  (0.0-0.0)
+  smallest gain vs GL       0.0  (0.0-0.0)
+
+unprotected share of node-rounds per cell (%), mean (min-max) over the seeds:
+  CICIDS2017 T1 block 30 min: ReSIDS  38.4 (38.4-38.4)  FL  52.6 (52.6-52.6)  GL  38.4 (38.4-38.4)
+  CICIDS2017 T1 block 60 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL  49.3 (48.1-50.0)
+  CICIDS2017 T2 block 30 min: ReSIDS  10.8 (10.8-10.8)  FL  92.9 (92.9-92.9)  GL  10.8 (10.8-10.8)
+  CICIDS2017 T2 block 60 min: ReSIDS  52.3 (52.1-52.4)  FL  64.3 (62.6-65.4)  GL  60.9 (60.7-61.1)
+  CICIoT2023 T1 block 30 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   0.0 (0.0-0.0)
+  CICIoT2023 T1 block 60 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   3.9 (3.1-5.0)
+  CICIoT2023 T2 block 30 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   0.0 (0.0-0.0)
+  CICIoT2023 T2 block 60 min: ReSIDS  36.8 (35.7-38.5)  FL  60.9 (59.8-62.6)  GL  38.6 (35.7-42.9)
+  ERENO      T1 block 30 min: ReSIDS  51.8 (51.8-51.8)  FL  56.6 (56.6-56.6)  GL  53.8 (53.8-53.8)
+  ERENO      T1 block 60 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   0.0 (0.0-0.0)
+  ERENO      T2 block 30 min: ReSIDS  47.9 (47.9-47.9)  FL 100.0 (100.0-100.0)  GL  47.9 (47.9-47.9)
+  ERENO      T2 block 60 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   0.0 (0.0-0.0)
+  Morris-4   T1 block 30 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL  41.1 (41.1-41.1)
+  Morris-4   T1 block 60 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   6.5 (6.5-6.5)
+  Morris-4   T2 block 30 min: ReSIDS   0.0 (0.0-0.0)  FL   0.0 (0.0-0.0)  GL   4.7 (4.7-4.7)
+  Morris-4   T2 block 60 min: ReSIDS  35.7 (35.7-35.7)  FL  57.0 (57.0-57.0)  GL  35.7 (35.7-35.7)
+2026-11-27 00:10:00 faithful replay, seeds 43-46, complete

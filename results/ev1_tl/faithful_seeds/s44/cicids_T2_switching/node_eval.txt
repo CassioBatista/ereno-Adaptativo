@@ -1,0 +1,124 @@
+[load] all_in_one_ev1_cicids_test.csv: 630,008 rows, 31 of 82 columns
+run ev1-tl-faithful-s44-cicids_T2_switching: 97 rounds, 14 nodes, holdings retain, arrival {2: 1800.0, 3: 1800.0, 10: 1800.0, 11: 1800.0, 8: 3600.0, 9: 3600.0}
+types by arrival: 0 s: Botnet, Botnet_Attempted, DoS_GoldenEye, DoS_GoldenEye_Attempted, DoS_Hulk, DoS_Hulk_Attempted, DoS_Slowloris, FTP_Patator, FTP_Patator_Attempted, Heartbleed, Infiltration, Infiltration_Attempted, Portscan, SSH_Patator_Attempted, Web_Attack_Brute_Force, Web_Attack_SQL_Injection, Web_Attack_SQL_Injection_Attempted, Web_Attack_XSS, Web_Attack_XSS_Attempted; 1800 s: DDoS, DoS_Slowhttptest, DoS_Slowloris_Attempted, Infiltration_Portscan, Web_Attack_Brute_Force_Attempted; 3600 s: DoS_Slowhttptest_Attempted, SSH_Patator
+
+per phase of 900 s: mean over the node-rounds, split by group (U unreachable / R reachable: reaches the aggregator or a ring neighbour)
+phase       group     n boosters   recall   late 1800   late 3600    FPR %
+0-900       U       196      0.7     7.72         nan         nan    0.158
+900-1800    R       210     10.0    99.51         nan         nan    2.188
+1800-2700   R       210     11.6    96.65       90.93         nan    2.490
+2700-3600   U        30     12.0    99.53       99.55         nan    2.743
+2700-3600   R       180     13.9    99.63       99.61         nan    2.819
+3600-4500   U        90     12.5    99.04       99.57       57.68    2.762
+3600-4500   R       120     15.9    99.47       99.63       82.32    2.903
+4500-5400   U        90     12.5    99.04       99.57       57.68    2.762
+4500-5400   R       120     17.0    99.70       99.64       99.47    2.944
+5400-6300   U        48     12.5    99.04       99.57       57.68    2.762
+5400-6300   R        64     17.0    99.70       99.64       99.47    2.944
+
+per node at the last round of each phase: boosters / recall present / recall_late_1800 / recall_late_3600 / FPR % (mode)
+  t=   870 s (round 14):
+    node  1 LU   1   47.79     —       —    0.002
+    node  2 LU   1   48.29     —       —    0.003
+    node  3 LU   0    0.00     —       —    0.000
+    node  4 LU   0    0.00     —       —    0.000
+    node  5 LU   1    2.23     —       —    0.021
+    node  6 LU   1    1.28     —       —    0.004
+    node  7 LU   1    1.16     —       —    0.001
+    node  8 LU   1    0.80     —       —    0.019
+    node  9 LU   0    0.00     —       —    0.000
+    node 10 LU   0    0.00     —       —    0.000
+    node 11 LU   0    0.00     —       —    0.000
+    node 12 LU   0    0.00     —       —    0.000
+    node 13 LU   2    3.06     —       —    0.051
+    node 14 LU   2    3.40     —       —    2.109
+  t=  1770 s (round 29):
+    node  1 FR  10   99.51     —       —    2.188
+    node  2 FR  10   99.51     —       —    2.188
+    node  3 FR  10   99.51     —       —    2.188
+    node  4 FR  10   99.51     —       —    2.188
+    node  5 FR  10   99.51     —       —    2.188
+    node  6 FR  10   99.51     —       —    2.188
+    node  7 FR  10   99.51     —       —    2.188
+    node  8 FR  10   99.51     —       —    2.188
+    node  9 FR  10   99.51     —       —    2.188
+    node 10 FR  10   99.51     —       —    2.188
+    node 11 FR  10   99.51     —       —    2.188
+    node 12 FR  10   99.51     —       —    2.188
+    node 13 FR  10   99.51     —       —    2.188
+    node 14 FR  10   99.51     —       —    2.188
+  t=  2670 s (round 44):
+    node  1 GR  15   99.70   99.64     —    2.857
+    node  2 GR  15   99.70   99.64     —    2.857
+    node  3 GR  12   99.53   99.55     —    2.743
+    node  4 GR  12   99.53   99.55     —    2.743
+    node  5 GR  12   99.53   99.55     —    2.743
+    node  6 GR  12   99.53   99.55     —    2.743
+    node  7 GR  12   99.53   99.55     —    2.743
+    node  8 GR  12   99.53   99.55     —    2.743
+    node  9 GR  12   99.53   99.55     —    2.743
+    node 10 GR  13   99.54   99.57     —    2.817
+    node 11 GR  15   99.70   99.64     —    2.857
+    node 12 GR  15   99.70   99.64     —    2.857
+    node 13 GR  15   99.70   99.64     —    2.857
+    node 14 GR  15   99.70   99.64     —    2.857
+  t=  3570 s (round 59):
+    node  1 GR  15   99.70   99.64     —    2.857
+    node  2 GR  15   99.70   99.64     —    2.857
+    node  3 LR  12   99.53   99.55     —    2.743
+    node  4 LU  12   99.53   99.55     —    2.743
+    node  5 LU  12   99.53   99.55     —    2.743
+    node  6 LR  12   99.53   99.55     —    2.743
+    node  7 GR  12   99.53   99.55     —    2.743
+    node  8 GR  13   99.54   99.57     —    2.817
+    node  9 GR  15   99.70   99.64     —    2.857
+    node 10 GR  15   99.70   99.64     —    2.857
+    node 11 GR  15   99.70   99.64     —    2.857
+    node 12 GR  15   99.70   99.64     —    2.857
+    node 13 GR  15   99.70   99.64     —    2.857
+    node 14 GR  15   99.70   99.64     —    2.857
+  t=  4470 s (round 74):
+    node  1 LR  15   99.18   99.64   57.68  2.857
+    node  2 LU  15   99.18   99.64   57.68  2.857
+    node  3 LU  12   99.02   99.55   57.68  2.743
+    node  4 LU  12   99.02   99.55   57.68  2.743
+    node  5 LU  12   99.02   99.55   57.68  2.743
+    node  6 LU  12   99.02   99.55   57.68  2.743
+    node  7 LU  12   99.02   99.55   57.68  2.743
+    node  8 LR  13   99.02   99.57   57.68  2.817
+    node  9 GR  17   99.70   99.64   99.47  2.944
+    node 10 GR  17   99.70   99.64   99.47  2.944
+    node 11 GR  17   99.70   99.64   99.47  2.944
+    node 12 GR  17   99.70   99.64   99.47  2.944
+    node 13 GR  17   99.70   99.64   99.47  2.944
+    node 14 GR  17   99.70   99.64   99.47  2.944
+  t=  5370 s (round 89):
+    node  1 FR  17   99.70   99.64   99.47  2.944
+    node  2 LU  15   99.18   99.64   57.68  2.857
+    node  3 LU  12   99.02   99.55   57.68  2.743
+    node  4 LU  12   99.02   99.55   57.68  2.743
+    node  5 LU  12   99.02   99.55   57.68  2.743
+    node  6 LU  12   99.02   99.55   57.68  2.743
+    node  7 LU  12   99.02   99.55   57.68  2.743
+    node  8 FR  17   99.70   99.64   99.47  2.944
+    node  9 FR  17   99.70   99.64   99.47  2.944
+    node 10 FR  17   99.70   99.64   99.47  2.944
+    node 11 FR  17   99.70   99.64   99.47  2.944
+    node 12 FR  17   99.70   99.64   99.47  2.944
+    node 13 FR  17   99.70   99.64   99.47  2.944
+    node 14 FR  17   99.70   99.64   99.47  2.944
+  t=  5850 s (round 97):
+    node  1 FR  17   99.70   99.64   99.47  2.944
+    node  2 LU  15   99.18   99.64   57.68  2.857
+    node  3 LU  12   99.02   99.55   57.68  2.743
+    node  4 LU  12   99.02   99.55   57.68  2.743
+    node  5 LU  12   99.02   99.55   57.68  2.743
+    node  6 LU  12   99.02   99.55   57.68  2.743
+    node  7 LU  12   99.02   99.55   57.68  2.743
+    node  8 FR  17   99.70   99.64   99.47  2.944
+    node  9 FR  17   99.70   99.64   99.47  2.944
+    node 10 FR  17   99.70   99.64   99.47  2.944
+    node 11 FR  17   99.70   99.64   99.47  2.944
+    node 12 FR  17   99.70   99.64   99.47  2.944
+    node 13 FR  17   99.70   99.64   99.47  2.944
+    node 14 FR  17   99.70   99.64   99.47  2.944
