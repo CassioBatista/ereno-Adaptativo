@@ -4,6 +4,30 @@ All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); this project uses simple
 `vMAJOR.MINOR` tags.
 
+## [v2.1.2] — 2026-11-27
+
+Artifact of the second paper, revised. The code of v2.1.1 plus one replay policy; the
+reported results of v2.1.1 are unchanged.
+
+### Added
+- **Replay over seeds 43-46** (`scripts/ev1_tl_runners/run_tl_faithful_seeds.sh`,
+  `scripts/ev1_tl_seeds_summary.py` -> `results/ev1_tl_seeds_summary.txt`): the 24 runs of
+  the faithful replay with the partition and training seed changed, 96 runs; configs and
+  per-node evaluation summaries in `results/ev1_tl/faithful_seeds/`.
+- **Communication and criterion sensitivity** (exploratory; `scripts/ev1_tl_cost_sensitivity.py`
+  -> `results/ev1_tl_cost_sensitivity.txt`): bytes exchanged per policy as implemented
+  (full state) and the protection criterion at 90 and 99 %.
+- **Aggregator re-election** (exploratory, no training): replay policy `failover_federated`
+  in `TrustLevelArchManager` (majority quorum over the largest connected component, election
+  of 1 or 3 rounds; the existing policies give the same rounds as before), a constructed
+  regional variant of T2 (`scripts/build_regional_trace.py`), runner and template
+  (`scripts/ev1_tl_runners/run_tl_failover.sh`, not run) and summaries
+  (`scripts/ev1_tl_failover_summary.py`, `scripts/ev1_checks/failover_gap.py`).
+- **Noisy trust levels** (exploratory, no training): constructed variants of T1 and T2 with
+  probe loss or misreported levels (`scripts/build_noisy_trace.py`) and the settle time at 5
+  and 10 s (`scripts/ev1_checks/noise_*.py` -> `results/ev1_tl_noise_summary.txt`).
+- Protocol change log entries of 2026-11-26 in `docs/EVALUATION_PROTOCOL.md`; draft updates.
+
 ## [v2.1.1] — 2026-11-25
 
 Artifact of the second paper. Same code as the tag `v2.1.0`, which was created before
