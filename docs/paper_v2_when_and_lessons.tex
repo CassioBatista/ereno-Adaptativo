@@ -1,5 +1,7 @@
 % Paper 2 (EAAI) draft, 2026-11-27: (a) when switching matters (Section 4.3, exploratory, no
-% training); (b) the negative findings as findings (contributions, Discussion, Conclusion).
+% training); (b) the findings for the evaluation of distributed intrusion detection (Section 4.6,
+% Table tab:findings; pointers in the Introduction, Discussion and Conclusion); (c) the
+% special-issue additions (operator, trustworthiness, attacks on the learning).
 % Numbers: results/ev1_tl_sweep.txt (scripts/ev1_tl_sweep.py, offline replay
 % scripts/ev1_tl_offline.py, which reproduces the holdings of the 24 faithful runs exactly).
 
@@ -32,35 +34,115 @@ gain in CICIDS2017 (26.2 to 26.4 points) and the largest lag of fixed GL in CICI
 to 15\,min; for another period or overlay, it scales with the number of gossip rounds needed to
 cross the overlay.
 
-% ---------------------------------------------------------------- (b1) Introduction, contributions:
-% add as the last bullet before the artifact
-%  \item Evidence, in four domains, of effects that per-sample evaluation at the prevalence of
-%  an attack-rich test split hides: false alarms at operational prevalence, benign traffic absent
-%  from training, labels assigned per capture session, and isolated attacks under window alarms.
+% ---------------------------------------------------------------- (b1) Introduction, end of the
+% paragraph on the four datasets
+Beyond ReSIDS, the evaluation yields four findings on how distributed intrusion detection is
+evaluated, which per-sample metrics at the prevalence of an attack-rich test split hide
+(Section~\ref{sec:res-findings}).
 
-% ---------------------------------------------------------------- (b2) Discussion, before the
+% ---------------------------------------------------------------- (b2) Introduction, contributions:
+% last item before the artifact
+\item Four findings, in four domains, on what per-sample evaluation at the prevalence of an
+attack-rich test split hides, each with a quantity that exposes it: false alarms at operational
+prevalence, benign traffic absent from training, labels assigned per capture session, and
+isolated attacks under window alarms.
+
+% ---------------------------------------------------------------- (b3) Discussion, before the
 % closing paragraph ("Across the four domains, three results held ...")
-Four findings concern the evaluation of distributed intrusion detection rather than ReSIDS. First,
-detectors evaluated at the prevalence of their test split are not usable sample by sample in
-operation: at a prevalence of 0.1\,\%, at least 86\,\% of the per-sample alerts are false in all
-four domains, and the centralized model, trained on every row, does not escape this in three of
-them (Section~\ref{sec:res-windows}). Second, a high recall can hide a detector that flags
-whatever it has not seen: in Morris-4, 29.3\,\% of the benign test rows have a feature vector absent
-from training, both partitions flag 99.2\,\% of them, and their recall of 99.8\,\% is no evidence of
-detection (Section~\ref{sec:res-partition}). Third, labels assigned per capture session rather than
-per attack produce specialists that cannot separate their type from benign traffic: in CICIoT2023
-they raise the false-positive rate of the attack-based partition to 28.6\,\%, against 0.68\,\% under
-IID, and the coverage rule, decided on training rows alone, brings it to 0.61\,\% at a recall of
-99.5\,\% by dropping them (Section~\ref{sec:res-nodeloss}). Fourth, alarming per window trades the
-isolated attacks for few false alarms: a window with a single attack flow alarms in 1 of 106 cases
-in CICIDS2017, and attacks thinned to a prevalence of 0.03\,\% reach the operator in 24.1\,\% of
-their samples, although the specialists flag 99.5\,\% of them (Section~\ref{sec:res-windows}). Each
-of these would stay hidden in an evaluation that reports only per-sample metrics at the prevalence
-of an attack-rich test split.
+Beyond the three gaps, the evaluation yields four findings on how distributed intrusion detection
+is evaluated, gathered in Section~\ref{sec:res-findings}.
 
-% ---------------------------------------------------------------- (b3) Conclusion, after "The
-% results separate what belongs to ReSIDS from what belongs to the data. ..." paragraph, append:
-% The evaluation also exposes four effects that per-sample metrics at the prevalence of an
-% attack-rich test split hide: most alerts are false at operational prevalence, benign traffic
-% absent from training passes for detection, labels per capture session make imprecise
-% specialists, and window alarms miss isolated attacks.
+% ---------------------------------------------------------------- (b4) Section 4.6, after the
+% Discussion (Reproducibility becomes 4.7)
+\subsection{Findings for the evaluation of distributed intrusion detection}
+\label{sec:res-findings}
+Four results of Sections~\ref{sec:res-partition} to~\ref{sec:res-windows} concern how distributed
+intrusion detection is evaluated rather than ReSIDS itself. Each would stay hidden in an
+evaluation that reports only per-sample metrics at the prevalence of an attack-rich test split,
+and each is exposed by a quantity that such an evaluation can add without changing the detector,
+from its per-sample decisions, its training rows and the timestamps of its test traffic
+(Table~\ref{tab:findings}).
+
+\begin{table}[t]
+\caption{Findings for the evaluation of distributed intrusion detection: what each one is, the
+evidence for it in this paper, and the quantity that exposes it.}
+\label{tab:findings}
+\small
+\begin{tabular}{@{}p{0.25\textwidth}p{0.42\textwidth}p{0.27\textwidth}@{}}
+\toprule
+Finding & Evidence & Quantity to report \\
+\midrule
+F1. Per-sample alerts are not usable as alarms at operational prevalence. &
+At a prevalence of 0.1\,\%, the precision of the attack-based detector is 13.8, 3.7, 0.2 and
+0.4\,\% (ERENO, CICIDS2017, Morris-4, CICIoT2023); the centralized model, trained on every row, is
+at 61.3, 16.6 and 1.6\,\% in the first three (Section~\ref{sec:res-windows}). &
+Precision at prevalences of 1 and 0.1\,\%, derived from recall and false-positive rate. \\
+F2. A high recall can come from flagging whatever is unseen. &
+In Morris-4, 29.3\,\% of the benign test rows have a feature vector absent from training; both
+partitions flag 99.2\,\% of them, against 12.1\,\% for the centralized model, and their recall of
+99.8\,\% is no evidence of detection (Section~\ref{sec:res-partition}). &
+Share of benign test rows unseen in training, and the false-positive rate on them. \\
+F3. Labels assigned per capture session make detectors that cannot separate their type from benign
+traffic. &
+In CICIoT2023, these specialists raise the false-positive rate of the attack-based partition to
+28.6\,\%, against 0.68\,\% under IID; the coverage rule, decided on training rows alone, drops them
+and reaches 0.61\,\% at a recall of 99.5\,\% (Sections~\ref{sec:res-partition}
+and~\ref{sec:res-nodeloss}). &
+False-positive rate of each per-type detector, and which types each detector flags. \\
+F4. Window alarms trade isolated attacks for few false alarms. &
+In CICIDS2017, a window with a single attack flow alarms in 1 of 106 cases, and attacks thinned to
+a prevalence of 0.03\,\% fall in alarmed windows in 24.1\,\% of their samples, although the
+specialists flag 99.5\,\% of them (Section~\ref{sec:res-windows}). &
+Alarmed windows by the number of attack samples they hold, and at thinned prevalence. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------- (b5) Conclusion, end of the
+% paragraph "The results separate what belongs to ReSIDS from what belongs to the data. ..."
+The evaluation also yields four findings that per-sample metrics at the prevalence of an
+attack-rich test split hide: most alerts are false at operational prevalence, benign traffic
+absent from training passes for detection, labels per capture session make imprecise
+detectors, and window alarms miss isolated attacks; each is exposed by a quantity that any
+evaluation can report (Table~\ref{tab:findings}).
+
+% ---------------------------------------------------------------- (c1) Introduction, second gap
+% (after "... the prevalence they would face in operation")
+~\cite{axelsson2000baserate}. Each alert is validated by a human operator, and a stream of mostly
+false alerts leads to alarm burnout and desensitization, in which true alerts are dismissed along
+with the false ones~\cite{alahmadi2022soc}.
+% ... answer to the second gap, after "whereas false alarms spread across specialists":
+% ", and the operator validates alarms per window rather than alerts per sample."
+% ... first gap, after "so that no single component holds the control plane":
+% " (the trust level measures which peers a node can reach, not confidence in a detector or in
+% its alerts)"
+
+% ---------------------------------------------------------------- (c2) Discussion, end of the
+% second-gap paragraph
+For the operator who validates the alarms, this is the trade-off that matters: at a prevalence
+of 0.1\,\%, at least 86 of every 100 per-sample alerts are false in every domain, the condition
+that leads analysts to alarm burnout~\cite{alahmadi2022soc}, whereas in the three domains with
+ordered traffic a window alarms falsely in 0.14 to 2.9\,\% of the attack-free windows; what the
+windows cost the operator is the isolated attacks.
+% (The two figures are different quantities: per-sample precision and the false-alarm rate per
+% attack-free window. The precision of the window alarms at operational prevalence is not
+% measured, so the text does not claim the alarms are mostly true.)
+
+% ---------------------------------------------------------------- (c3) Discussion, first gap,
+% before "Table~\ref{tab:design-rules} gathers the rules ..."
+These properties make the control plane trustworthy in the sense of dependable engineering: its
+behaviour is guaranteed under stated conditions (Proposition~\ref{prop:dominance}) rather than
+only observed on average, a faulty monitor can degrade only its own node, and every switch can
+be re-derived from the evidence that caused it (Section~\ref{sec:impl}).
+
+% ---------------------------------------------------------------- (c4) Section 3.5, "Transport and
+% security", last sentence
+Byzantine monitors, which could vouch for a compromised aggregator, are outside the scope of
+this work, as are attacks on the learning itself, such as poisoned training rows or a
+specialist crafted to flag benign traffic. Under OR fusion, a specialist crafted to miss an
+attack cannot hide it from another specialist that flags it, but one that flags benign traffic
+raises false alarms on every node that holds it, and retention keeps it there; the coverage rule
+of Section~\ref{sec:res-nodeloss}, applied to the specialists a node receives, would screen out
+one that flags benign training rows, but not one crafted to pass that screen.
+% Conclusion, future work: "... chosen by the coverage rule of Section 4.2, which would also screen
+% out a poisoned specialist that flags benign traffic, ..."

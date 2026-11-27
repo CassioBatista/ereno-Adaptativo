@@ -4,6 +4,36 @@ All notable changes to this project are documented here. Format loosely follows
 [Keep a Changelog](https://keepachangelog.com/); this project uses simple
 `vMAJOR.MINOR` tags.
 
+## [v2.1.4] — 2026-11-27
+
+Artifact of the second paper as submitted. The code and the reported results of v2.1.3 are
+unchanged; this release adds analyses without training that the paper cites (Sections 3.6 and
+4.3) and the final paper drafts.
+
+### Added
+- **Conditions of the dominance proposition** (`scripts/ev1_checks/dominance_conditions.py`):
+  checks, per round of T1 and T2 and for settle times of 5 and 10 s, mode consistency (C1) and
+  uniform reach (C2); both hold in the 82 rounds of T1 and the 97 of T2, and C2 fails in rounds
+  75-97 of the constructed regional variant of T2.
+- **Offline replay** (`scripts/ev1_tl_offline.py`): propagates the specialists by the rules of
+  the pipeline from the cached scores, with no training; it reproduces the logged holdings of
+  every node in every round of the 24 faithful runs of each seed (42-46).
+- **Outage sweep** (exploratory; `scripts/ev1_tl_sweep.py` -> `results/ev1_tl_sweep.txt`,
+  `scripts/ev1_tl_sweep_seeds.py` -> `results/ev1_tl_sweep_seeds.txt`): outages of 0 to 60
+  rounds on the ring with every link up, one or two late blocks, four domains, seeds 42-46.
+- **Trust-level series export** (`scripts/export_tl_series.py`): the fields of the two
+  Disaster-FD runs that the replay reads, written outside the repository and checked to give
+  the same round decisions as the original traces. The series are not part of this release.
+- Paper drafts: the proposition and its proof, the design rules (`docs/paper_v2_dominance.tex`),
+  when switching matters and the findings for the evaluation of distributed intrusion
+  detection (`docs/paper_v2_when_and_lessons.tex`), abstract, title and keywords for the EAAI
+  special issue (`docs/paper_v2_abstract.tex`), two references (`docs/refs_v2.bib`).
+- Protocol change log entries of 2026-11-27 in `docs/EVALUATION_PROTOCOL.md`.
+
+### Changed
+- Title in `CITATION.cff` and `.zenodo.json` aligned with the paper: "ReSIDS: A Resilient,
+  adaptive runtime-Switchable federated–gossip Intrusion Detection System".
+
 ## [v2.1.3] — 2026-11-27
 
 The artifact intended for v2.1.2. The tag `v2.1.2` was created on the branch `master`
