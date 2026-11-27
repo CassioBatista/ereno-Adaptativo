@@ -1,0 +1,114 @@
+% Paper 2 (EAAI) draft, 2026-11-27: dominance proposition (Section 3.6), design rules (Discussion),
+% and the corrections they require in Sections 3.5, 4.3 and 4.5.
+% Conditions checked by scripts/ev1_checks/dominance_conditions.py (no training): C1 and C2 hold in
+% all 82 rounds of T1 and 97 of T2 with S = 5 and 10 s; in the regional variant of T2, C2 fails in
+% rounds 75-97 (region in GL, the rest in FL: the simulation runs the majority mode, FL).
+% Preamble, if the template does not define them (cas-sc provides \newproof):
+%   \newtheorem{proposition}{Proposition}
+%   \newproof{pf}{Proof}
+
+% ---------------------------------------------------------------- Section 3.6, new last paragraph
+\paragraph{What the replay can show}
+Under retention, the sign of the comparison of Section~\ref{sec:res-switching} follows from the policy,
+under two conditions on each round~$r$. Let $A_r$ be the nodes that reach the aggregator and
+$\Gamma_r$ the nodes whose links to both overlay neighbours are up, that is, the participants of
+fixed FL and of fixed GL in round~$r$ (Section~\ref{sec:impl}), and let $H_i^{P}(r)$ be the set of
+specialists held by node~$i$ after round~$r$ under configuration
+$P\in\{\mathrm{R},\mathrm{F},\mathrm{G}\}$: ReSIDS, fixed FL and fixed GL.
+(C1)~\emph{Mode consistency}: under ReSIDS, node~$i$ federates in round~$r$ if and only if
+$i\in A_r$, and gossips if and only if $i\in\Gamma_r\setminus A_r$; it holds when each monitor
+trusts a target exactly while the link to it is up and no trust level changes within $S$ before the
+round.
+(C2)~\emph{Uniform reach}: if $A_r\neq\emptyset$, then $\Gamma_r\subseteq A_r$.
+
+\begin{proposition}\label{prop:dominance}
+If C1 and C2 hold in every round, then
+$H_i^{\mathrm{F}}(r)\cup H_i^{\mathrm{G}}(r)\subseteq H_i^{\mathrm{R}}(r)$ for every node~$i$ and
+round~$r$. Consequently, in every round, every node flags under ReSIDS every sample that it flags
+under fixed FL or under fixed GL.
+\end{proposition}
+
+\begin{pf}
+The three configurations train the same specialists from the same data, deterministically and in the
+same rounds, and every operation of Algorithm~1 is a union with the set already held, so
+$H_i^{P}(r-1)\subseteq H_i^{P}(r)$ for every~$P$. Let $\tilde H_i^{P}$ be $H_i^{P}(r-1)$ together
+with the specialists that node~$i$ trains in round~$r$. Before the first round, every node holds only
+its own specialists under every configuration. Assume the claim after round $r-1$, so that
+$\tilde H_i^{\mathrm{F}}\cup\tilde H_i^{\mathrm{G}}\subseteq\tilde H_i^{\mathrm{R}}$ for every~$i$.
+
+If $A_r\neq\emptyset$, then by C1 and C2 ReSIDS federates exactly the nodes of $A_r$, as fixed FL
+does, and no node gossips. A node $i\in A_r$ receives $\bigcup_{j\in A_r}\tilde H_j^{\mathrm{R}}$,
+which contains $\bigcup_{j\in A_r}\tilde H_j^{\mathrm{F}}=H_i^{\mathrm{F}}(r)$. Under fixed GL,
+$i$ keeps $\tilde H_i^{\mathrm{G}}$ or, if it heads the round, adds the sets of its neighbours
+in~$\Gamma_r$, which lie in $A_r$ by C2, so that
+$H_i^{\mathrm{G}}(r)\subseteq\bigcup_{j\in A_r}\tilde H_j^{\mathrm{G}}\subseteq H_i^{\mathrm{R}}(r)$.
+A node $i\notin A_r$ keeps its set under ReSIDS and under fixed FL, and under fixed GL too, since the
+head of a gossip round lies in $\Gamma_r\subseteq A_r$.
+
+If $A_r=\emptyset$, fixed FL exchanges nothing, and by C1 ReSIDS gossips over $\Gamma_r$, the
+participants of fixed GL. The head is chosen in turn among the participants, so both configurations
+have the same head~$h$, which takes the union of its set with those of its neighbours
+in~$\Gamma_r$; $H_h^{\mathrm{G}}(r)\subseteq H_h^{\mathrm{R}}(r)$ then follows from the hypothesis
+applied to $h$ and to each of them, and every other node keeps its set.
+
+Finally, a node flags a sample when any specialist it holds scores it at least 0.5, so a larger held
+set flags a superset of the samples.
+\end{pf}
+
+The proposition fixes the sign of the comparison, not its size. Recall on any set of attack types,
+and with it the share of nodes protected, is never lower under ReSIDS than under either fixed mode;
+nor is the false-positive rate, the cost of retention seen in Section~\ref{sec:res-nodeloss}. What
+remains to be measured is how much each fixed mode loses, which depends on how long the aggregator or
+the neighbours are lost and on the period of the rounds, and whether C1 and C2 hold on recorded trust
+levels. Both hold in every round of the two runs of Disaster-FD, the 82 of T1 and the 97 of T2, with
+settle times of 5 and 10\,s. C1 fails where probes are lost, in the rounds in which the mode of a node
+differs from that on the recorded run (Section~\ref{sec:fd-interface}), and when the gossip band starts
+at 15, so that a node with a single trusted neighbour gossips while fixed GL does not. C2 fails when
+the aggregator returns for only part of the nodes that can gossip, as in the variant of T2 constructed
+in Section~\ref{sec:res-discussion}. Where either fails, the proposition does not apply, and only the
+replay decides.
+
+% ---------------------------------------------------------------- Section 3.5, find/replace
+% FIND:    a third strategy delegates each round to the one of the current mode, while each node keeps the specialists it holds across a switch (Section~\ref{sec:resids}).
+% REPLACE: a third strategy delegates each round to the one of the current mode, while each node keeps the specialists it holds across a switch (Section~\ref{sec:resids}). The simulation thus runs one mode per round; if the modes of the nodes differ, it runs the mode of the majority, which never happens in the two recorded runs (Section~\ref{sec:evaldesign}).
+
+% ---------------------------------------------------------------- Section 4.3, find/replace
+% FIND:    This follows from how switching combines the two modes: while the aggregator answers,
+% REPLACE: This is the outcome that Proposition~\ref{prop:dominance} guarantees, since both of its conditions hold in every round of the two runs; what the replay adds is its size. While the aggregator answers,
+
+% ---------------------------------------------------------------- Section 4.5, find/replace
+% FIND:    In a variant of T2 constructed for this case, in which clients 2 to 7 keep their internal links after the cut, ReSIDS keeps four of them in gossip for the remaining 38 rounds, whereas re-election leaves the whole region in local learning to the end.
+% REPLACE: In a variant of T2 constructed for this case, in which clients 2 to 7 keep their internal links after the cut, four of them gossip among themselves under ReSIDS for the 15 rounds until the aggregator returns for the other clients at 75 min, whereas re-election leaves the whole region in local learning to the end. From 75 min, the region would gossip while the rest of the ring federates, a mix that C2 excludes (Section~\ref{sec:evaldesign}): the simulation runs one mode per round, and the region keeps what it holds. Running both modes side by side, as Algorithm~1 allows, is left to the live implementation.
+
+% ---------------------------------------------------------------- Section 4.5, first gap: add at the end of its first paragraph
+% Table~\ref{tab:design-rules} gathers the rules that the control plane of ReSIDS follows, with the evidence for each. They concern where and how a node decides its learning mode, not the detector, and carry over to any system that switches between a coordinated and a serverless mode on the output of a failure detector.
+
+\begin{table}[t]
+\caption{Design rules of the control plane of ReSIDS, the reason for each and the evidence for it in this paper.}
+\label{tab:design-rules}
+\small
+\begin{tabular}{@{}p{0.26\textwidth}p{0.36\textwidth}p{0.32\textwidth}@{}}
+\toprule
+Rule & Reason & Evidence \\
+\midrule
+R1. Decide where the evidence is: a monitor colocated with each node, read only by that node's agent. &
+The monitor shares every partition with its node, so a node that is cut off sees its own trust level drop; no remote decider is needed to move it out of FL. &
+Every node changes mode only at the changes of the scenario (4 times in T1, 3 or 4 in T2), and no round mixes federated and gossip nodes, with no node consulting another (Section~\ref{sec:res-switching}). \\
+R2. Report evidence, not commands. &
+The monitor publishes a trust level and the agent applies a fixed policy, so a faulty monitor can misreport the level of its own node but cannot set a mode outside the policy or act on another node. &
+A conformance check rejects any switch that is not the band of the recorded level (Section~\ref{sec:impl}); with 1 or 5\,\% of levels misreported, nodes switch 3 to 7 times (Section~\ref{sec:fd-interface}). \\
+R3. Return to the coordinated mode only when the coordinator itself is trusted. &
+FL re-accepts a single point of failure; with $w_A>\sum_j w_j$, the FL band is reached only through the aggregator, whatever the neighbours report. &
+By construction of the bands (Table~2). The gossip band is a separate trade-off: starting it at 15 instead of 30 protects 2.5 to 6.0 points more node-rounds in four of the eight combinations of T2, at 13\,\% more gossip (Section~\ref{sec:res-switching}). \\
+R4. Commit a mode only after it has held for one probe cycle, two where probes can be lost. &
+The trust level changes one target at a time, so a single change of conditions passes through intermediate bands; a lost probe lowers it for one cycle. &
+$S=5$\,s removes every transient on T1, with the last switch at most 8.7\,s after a change (Table~3); with 5\,\% of probes lost, $S=10$\,s brings 17--96 switches down to 3--15, and gives the same round decisions as 5\,s on both runs (Section~\ref{sec:fd-interface}). \\
+R5. Treat silence as no evidence of health. &
+A monitor that stops reporting may share a failure with the aggregator; staying in FL would wait on it. &
+By design: with no level for $F=15$\,s, the agent falls back to local learning, and the conformance check rejects any other destination (Sections~\ref{sec:fd-interface} and~\ref{sec:impl}). \\
+R6. Never discard what a node holds when it changes mode. &
+A switch then loses no knowledge, and switching is never behind either fixed mode under C1 and C2. &
+Proposition~\ref{prop:dominance}; without retention, an aggregate re-formed from the nodes present loses the types of the nodes that left (recall 54.1\,\% in CICIDS2017, Section~\ref{sec:res-nodeloss}). \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -333,6 +333,18 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
 
 ## Change log
 
+- **2026-11-27, analysis addition (no training), section 9: conditions of the dominance of
+  switching.** Under retention, ReSIDS holds every specialist that fixed FL or fixed GL holds, in
+  every round, when (C1) each node federates exactly when it reaches the aggregator and gossips
+  exactly when its two overlay links are up and it does not, and (C2) whenever some node reaches
+  the aggregator, every gossip-eligible node does (proposition and proof in
+  `docs/paper_v2_dominance.tex`). `scripts/ev1_checks/dominance_conditions.py` checks both on the
+  traces: they hold in all 82 rounds of T1 and 97 of T2, with S = 5 and 10 s; in the regional
+  variant of T2, C2 fails in rounds 75-97. The simulation runs one mode per round (the majority
+  one if the modes differ), so in those rounds the region labelled GL does not exchange; the
+  statement on the regional variant is corrected to the 15 rounds in which it gossips. No result
+  changes.
+
 - **2026-11-26, exploratory addition (no training), section 9: noisy trust levels and the settle
   time.** Constructed variants of T1 and T2 (`scripts/build_noisy_trace.py`; written outside the
   repository, `~/datasets/disaster_fd_<T1|T2>_noise_l<p>_m<q>_s<seed>`): probe loss (an answered
