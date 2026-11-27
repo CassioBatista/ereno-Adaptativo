@@ -1,0 +1,66 @@
+% Paper 2 (EAAI) draft, 2026-11-27: (a) when switching matters (Section 4.3, exploratory, no
+% training); (b) the negative findings as findings (contributions, Discussion, Conclusion).
+% Numbers: results/ev1_tl_sweep.txt (scripts/ev1_tl_sweep.py, offline replay
+% scripts/ev1_tl_offline.py, which reproduces the holdings of the 24 faithful runs exactly).
+
+% ---------------------------------------------------------------- (a) Section 4.3, after the
+% paragraph on the period of the rounds
+\paragraph{When switching matters}
+The recorded runs fix the length of each outage; constructed scenarios vary it, to measure what
+each choice of mode costs when the length of an outage is not known in advance. On the ring of 14
+nodes with every link up, so that C1 and C2 hold, the aggregator is lost for $D$ rounds, from 0 to
+60, as the block of nodes 3, 4, 11 and 12 arrives, and the specialists held by each node are
+propagated offline by the rules of the pipeline, which reproduces the holdings of every node in
+every round of the 24 runs above exactly. A mode fixed at design time is wrong in one regime or the
+other: fixed FL leaves up to 80.6 points more node-rounds unprotected than switching after a long
+outage (75.8 in ERENO), and fixed GL up to 24.2 points more when the aggregator is never lost (12.3
+in CICIDS2017), whereas switching is never behind either, as Proposition~\ref{prop:dominance}
+guarantees. The two fixed modes cross at the time gossip takes to spread a specialist over the
+ring, 8 rounds in CICIDS2017 and 15 in ERENO: for shorter outages fixed FL is the better fixed
+mode, for longer ones fixed GL. Even against the fixed mode that would be chosen knowing the length
+of the outage, switching loses nothing, and gains up to 2.5 points near the crossover. When, as in
+the recorded runs, a second block arrives as the aggregator returns, the better mode changes within
+the scenario and no fixed mode is right: in CICIDS2017, switching then gains up to 26.2 points over
+the better fixed mode, with outages of 20 to 40 rounds, and fixed GL falls up to 27.7 points
+behind. In ERENO, the types of the second block also have their other specialist on nodes present
+from the start, and the second block changes nothing. In Morris-4 and CICIoT2023, the specialists
+already present detect the block that arrives during the outage, so fixed FL loses nothing, and
+the mode matters only against fixed GL, which falls up to 19.6 and 18.9 points behind with two
+blocks. The boosters of seeds 43 to 46 give the same figures, except, with two blocks, the largest
+gain in CICIDS2017 (26.2 to 26.4 points) and the largest lag of fixed GL in CICIDS2017 (27.7 to
+29.2) and CICIoT2023 (18.9 to 20.0). With rounds of 60\,s, the crossover corresponds to outages of 8
+to 15\,min; for another period or overlay, it scales with the number of gossip rounds needed to
+cross the overlay.
+
+% ---------------------------------------------------------------- (b1) Introduction, contributions:
+% add as the last bullet before the artifact
+%  \item Evidence, in four domains, of effects that per-sample evaluation at the prevalence of
+%  an attack-rich test split hides: false alarms at operational prevalence, benign traffic absent
+%  from training, labels assigned per capture session, and isolated attacks under window alarms.
+
+% ---------------------------------------------------------------- (b2) Discussion, before the
+% closing paragraph ("Across the four domains, three results held ...")
+Four findings concern the evaluation of distributed intrusion detection rather than ReSIDS. First,
+detectors evaluated at the prevalence of their test split are not usable sample by sample in
+operation: at a prevalence of 0.1\,\%, at least 86\,\% of the per-sample alerts are false in all
+four domains, and the centralized model, trained on every row, does not escape this in three of
+them (Section~\ref{sec:res-windows}). Second, a high recall can hide a detector that flags
+whatever it has not seen: in Morris-4, 29.3\,\% of the benign test rows have a feature vector absent
+from training, both partitions flag 99.2\,\% of them, and their recall of 99.8\,\% is no evidence of
+detection (Section~\ref{sec:res-partition}). Third, labels assigned per capture session rather than
+per attack produce specialists that cannot separate their type from benign traffic: in CICIoT2023
+they raise the false-positive rate of the attack-based partition to 28.6\,\%, against 0.68\,\% under
+IID, and the coverage rule, decided on training rows alone, brings it to 0.61\,\% at a recall of
+99.5\,\% by dropping them (Section~\ref{sec:res-nodeloss}). Fourth, alarming per window trades the
+isolated attacks for few false alarms: a window with a single attack flow alarms in 1 of 106 cases
+in CICIDS2017, and attacks thinned to a prevalence of 0.03\,\% reach the operator in 24.1\,\% of
+their samples, although the specialists flag 99.5\,\% of them (Section~\ref{sec:res-windows}). Each
+of these would stay hidden in an evaluation that reports only per-sample metrics at the prevalence
+of an attack-rich test split.
+
+% ---------------------------------------------------------------- (b3) Conclusion, after "The
+% results separate what belongs to ReSIDS from what belongs to the data. ..." paragraph, append:
+% The evaluation also exposes four effects that per-sample metrics at the prevalence of an
+% attack-rich test split hide: most alerts are false at operational prevalence, benign traffic
+% absent from training passes for detection, labels per capture session make imprecise
+% specialists, and window alarms miss isolated attacks.

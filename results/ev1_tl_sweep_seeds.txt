@@ -1,0 +1,61 @@
+EXPLORATORY (no training): outage sweep over seeds 42-46 (scripts/ev1_tl_sweep.py scenarios; boosters of the faithful T2 switching run of each seed).
+
+seed 42: offline replay reproduces the logged holdings in 24 of 24 runs
+  family 1 ERENO       gain over better fixed   2.5 (D=15), crossover D=15, FL lag max  75.8, GL lag max  24.2, smallest gain  0.0
+  family 1 CICIDS2017  gain over better fixed   2.5 (D=8), crossover D=8, FL lag max  80.6, GL lag max  12.3, smallest gain  0.0
+  family 1 Morris-4    gain over better fixed   0.0 (D=0), crossover D=None, FL lag max   0.0, GL lag max   4.3, smallest gain  0.0
+  family 1 CICIoT2023  gain over better fixed   0.0 (D=0), crossover D=1, FL lag max   0.0, GL lag max   0.0, smallest gain  0.0
+  family 2 ERENO       gain over better fixed   2.5 (D=15), crossover D=15, FL lag max  75.8, GL lag max  24.2, smallest gain  0.0
+  family 2 CICIDS2017  gain over better fixed  26.2 (D=25), crossover D=20, FL lag max  80.6, GL lag max  27.7, smallest gain  0.0
+  family 2 Morris-4    gain over better fixed   0.0 (D=0), crossover D=None, FL lag max   0.0, GL lag max  19.6, smallest gain  0.0
+  family 2 CICIoT2023  gain over better fixed   0.0 (D=0), crossover D=20, FL lag max   0.0, GL lag max  18.9, smallest gain  0.0
+
+seed 43: offline replay reproduces the logged holdings in 24 of 24 runs
+  family 1 ERENO       gain over better fixed   2.5 (D=15), crossover D=15, FL lag max  75.8, GL lag max  24.2, smallest gain  0.0
+  family 1 CICIDS2017  gain over better fixed   2.5 (D=8), crossover D=8, FL lag max  80.6, GL lag max  12.3, smallest gain  0.0
+  family 1 Morris-4    gain over better fixed   0.0 (D=0), crossover D=None, FL lag max   0.0, GL lag max   4.3, smallest gain  0.0
+  family 1 CICIoT2023  gain over better fixed   0.0 (D=0), crossover D=1, FL lag max   0.0, GL lag max   0.0, smallest gain  0.0
+  family 2 ERENO       gain over better fixed   2.5 (D=15), crossover D=15, FL lag max  75.8, GL lag max  24.2, smallest gain  0.0
+  family 2 CICIDS2017  gain over better fixed  26.4 (D=25), crossover D=20, FL lag max  80.6, GL lag max  29.2, smallest gain  0.0
+  family 2 Morris-4    gain over better fixed   0.0 (D=0), crossover D=None, FL lag max   0.0, GL lag max  19.6, smallest gain  0.0
+  family 2 CICIoT2023  gain over better fixed   0.0 (D=0), crossover D=20, FL lag max   0.0, GL lag max  18.9, smallest gain  0.0
+
+seed 44: offline replay reproduces the logged holdings in 24 of 24 runs
+  family 1 ERENO       gain over better fixed   2.5 (D=15), crossover D=15, FL lag max  75.8, GL lag max  24.2, smallest gain  0.0
+  family 1 CICIDS2017  gain over better fixed   2.5 (D=8), crossover D=8, FL lag max  80.6, GL lag max  12.3, smallest gain  0.0
+  family 1 Morris-4    gain over better fixed   0.0 (D=0), crossover D=None, FL lag max   0.0, GL lag max   4.3, smallest gain  0.0
+  family 1 CICIoT2023  gain over better fixed   0.0 (D=0), crossover D=1, FL lag max   0.0, GL lag max   0.0, smallest gain  0.0
+  family 2 ERENO       gain over better fixed   2.5 (D=15), crossover D=15, FL lag max  75.8, GL lag max  24.2, smallest gain  0.0
+  family 2 CICIDS2017  gain over better fixed  26.4 (D=25), crossover D=20, FL lag max  80.6, GL lag max  29.2, smallest gain  0.0
+  family 2 Morris-4    gain over better fixed   0.0 (D=0), crossover D=None, FL lag max   0.0, GL lag max  19.6, smallest gain  0.0
+  family 2 CICIoT2023  gain over better fixed   0.0 (D=0), crossover D=25, FL lag max   0.0, GL lag max  20.0, smallest gain  0.0
+
+seed 45: offline replay reproduces the logged holdings in 24 of 24 runs
+  family 1 ERENO       gain over better fixed   2.5 (D=15), crossover D=15, FL lag max  75.8, GL lag max  24.2, smallest gain  0.0
+  family 1 CICIDS2017  gain over better fixed   2.5 (D=8), crossover D=8, FL lag max  80.6, GL lag max  12.3, smallest gain  0.0
+  family 1 Morris-4    gain over better fixed   0.0 (D=0), crossover D=None, FL lag max   0.0, GL lag max   4.3, smallest gain  0.0
+  family 1 CICIoT2023  gain over better fixed   0.0 (D=0), crossover D=1, FL lag max   0.0, GL lag max   0.0, smallest gain  0.0
+  family 2 ERENO       gain over better fixed   2.5 (D=15), crossover D=15, FL lag max  75.8, GL lag max  24.2, smallest gain  0.0
+  family 2 CICIDS2017  gain over better fixed  26.4 (D=25), crossover D=20, FL lag max  80.6, GL lag max  29.2, smallest gain  0.0
+  family 2 Morris-4    gain over better fixed   0.0 (D=0), crossover D=None, FL lag max   0.0, GL lag max  19.6, smallest gain  0.0
+  family 2 CICIoT2023  gain over better fixed   0.0 (D=0), crossover D=20, FL lag max   0.0, GL lag max  18.9, smallest gain  0.0
+
+seed 46: offline replay reproduces the logged holdings in 24 of 24 runs
+  family 1 ERENO       gain over better fixed   2.5 (D=15), crossover D=15, FL lag max  75.8, GL lag max  24.2, smallest gain  0.0
+  family 1 CICIDS2017  gain over better fixed   2.5 (D=8), crossover D=8, FL lag max  80.6, GL lag max  12.3, smallest gain  0.0
+  family 1 Morris-4    gain over better fixed   0.0 (D=0), crossover D=None, FL lag max   0.0, GL lag max   4.3, smallest gain  0.0
+  family 1 CICIoT2023  gain over better fixed   0.0 (D=0), crossover D=1, FL lag max   0.0, GL lag max   0.0, smallest gain  0.0
+  family 2 ERENO       gain over better fixed   2.5 (D=15), crossover D=15, FL lag max  75.8, GL lag max  24.2, smallest gain  0.0
+  family 2 CICIDS2017  gain over better fixed  26.2 (D=25), crossover D=20, FL lag max  80.6, GL lag max  27.7, smallest gain  0.0
+  family 2 Morris-4    gain over better fixed   0.0 (D=0), crossover D=None, FL lag max   0.0, GL lag max  19.6, smallest gain  0.0
+  family 2 CICIoT2023  gain over better fixed   0.0 (D=0), crossover D=25, FL lag max   0.0, GL lag max  20.0, smallest gain  0.0
+
+over the five seeds, mean (min-max):
+  family 1 ERENO       gain over better fixed   2.5 (2.5-2.5), at D [15], crossover D [15], FL lag  75.8 (75.8-75.8), GL lag  24.2 (24.2-24.2), smallest gain 0.0
+  family 1 CICIDS2017  gain over better fixed   2.5 (2.5-2.5), at D [8], crossover D [8], FL lag  80.6 (80.6-80.6), GL lag  12.3 (12.3-12.3), smallest gain 0.0
+  family 1 Morris-4    gain over better fixed   0.0 (0.0-0.0), at D [0], crossover D none, FL lag   0.0 (0.0-0.0), GL lag   4.3 (4.3-4.3), smallest gain 0.0
+  family 1 CICIoT2023  gain over better fixed   0.0 (0.0-0.0), at D [0], crossover D [1], FL lag   0.0 (0.0-0.0), GL lag   0.0 (0.0-0.0), smallest gain 0.0
+  family 2 ERENO       gain over better fixed   2.5 (2.5-2.5), at D [15], crossover D [15], FL lag  75.8 (75.8-75.8), GL lag  24.2 (24.2-24.2), smallest gain 0.0
+  family 2 CICIDS2017  gain over better fixed  26.3 (26.2-26.4), at D [25], crossover D [20], FL lag  80.6 (80.6-80.6), GL lag  28.6 (27.7-29.2), smallest gain 0.0
+  family 2 Morris-4    gain over better fixed   0.0 (0.0-0.0), at D [0], crossover D none, FL lag   0.0 (0.0-0.0), GL lag  19.6 (19.6-19.6), smallest gain 0.0
+  family 2 CICIoT2023  gain over better fixed   0.0 (0.0-0.0), at D [0], crossover D [20, 25], FL lag   0.0 (0.0-0.0), GL lag  19.4 (18.9-20.0), smallest gain 0.0

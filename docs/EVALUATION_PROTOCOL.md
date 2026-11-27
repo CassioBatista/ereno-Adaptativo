@@ -333,6 +333,21 @@ per type. Types with fewer than 100 test samples are reported with exact 95 % in
 
 ## Change log
 
+- **2026-11-27, exploratory additions (no training), section 9: offline replay, outage sweep and
+  export of the trust-level series.** (1) `scripts/ev1_tl_offline.py` propagates the held
+  boosters of a finished run under any schedule of modes and participants; on the 24 faithful
+  runs it reproduces the logged holdings of every node in every round (0 differences). (2)
+  `scripts/ev1_tl_sweep.py` -> `results/ev1_tl_sweep.txt`: constructed scenarios on the ring with
+  every link up, the aggregator lost for D = 0-60 rounds as the block of nodes 3, 4, 11, 12
+  arrives (first family), and in addition the block of nodes 9, 10 arriving as it returns (second
+  family); boosters of the faithful T2 runs, seed 42; unprotected node-rounds over 60 rounds from
+  the arrival. Repeated with the boosters of seeds 43-46 (`scripts/ev1_tl_sweep_seeds.py` ->
+  `results/ev1_tl_sweep_seeds.txt`; the offline replay reproduces the logged holdings of all 24
+  runs of each seed). (3) `scripts/export_tl_series.py` writes, outside the repository, a minimal copy of
+  the two runs (ts_arrival, msg_id, dev_id, is_timeout, trust_level; run start), for publication
+  if the Disaster-FD team agrees; the replay from it gives the same modes and participants in every
+  round as the original, for the three policies and S = 5 and 10 s.
+
 - **2026-11-27, analysis addition (no training), section 9: conditions of the dominance of
   switching.** Under retention, ReSIDS holds every specialist that fixed FL or fixed GL holds, in
   every round, when (C1) each node federates exactly when it reaches the aggregator and gossips

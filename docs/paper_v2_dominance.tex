@@ -61,9 +61,9 @@ nor is the false-positive rate, the cost of retention seen in Section~\ref{sec:r
 remains to be measured is how much each fixed mode loses, which depends on how long the aggregator or
 the neighbours are lost and on the period of the rounds, and whether C1 and C2 hold on recorded trust
 levels. Both hold in every round of the two runs of Disaster-FD, the 82 of T1 and the 97 of T2, with
-settle times of 5 and 10\,s. C1 fails where probes are lost, in the rounds in which the mode of a node
-differs from that on the recorded run (Section~\ref{sec:fd-interface}), and when the gossip band starts
-at 15, so that a node with a single trusted neighbour gossips while fixed GL does not. C2 fails when
+settle times of 5 and 10\,s. C1 fails where probes are lost: a lost probe makes a monitor distrust a
+target whose link is up, so that the mode of its node no longer follows the state of its links until
+the next probe answers (Section~\ref{sec:fd-interface}); and when the gossip band starts at 15, so that a node with a single trusted neighbour gossips while fixed GL does not. C2 fails when
 the aggregator returns for only part of the nodes that can gossip, as in the variant of T2 constructed
 in Section~\ref{sec:res-discussion}. Where either fails, the proposition does not apply, and only the
 replay decides.
